@@ -175,21 +175,21 @@ class ImageLoader(QtWidgets.QWidget):
     def load_2d_annot(self):
         if self.base_output_dir is None:
             self.select_output_dir()
-            print("3")
-        if os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
+
+        if self.base_output_dir is not None and os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
             with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "r") as stream:
                 self.annotation_2d_dict = json.load(stream)
-            print("4")
+
         else:
             self.annotation_2d_dict = dict()
 
     def save_2d(self):
         if self.base_output_dir is None:
             self.select_output_dir()
-            print("1")
+
         if self.annotation_2d_dict is None:
             self.load_2d_annot()
-            print("2")
+
         if (self.top_left_x is not None and
                 self.top_left_y is not None and
                 self.bottom_right_x is not None and
