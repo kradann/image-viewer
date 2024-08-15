@@ -6,11 +6,12 @@ import os
 import sys
 import shutil
 from functools import partial
+from traceback import print_tb
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QLabel, QComboBox
-from PyQt5.QtGui import QPainter, QPen, QBrush
-from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtWidgets import QLabel, QComboBox, QApplication, QWidget, QVBoxLayout, QMainWindow, QGraphicsView, QGraphicsLineItem
+from PyQt5.QtGui import QPainter, QPen, QBrush, QPixmap, QColor
+from PyQt5.QtCore import Qt, QRect, QPoint, QLineF
 
 #from qt_utils.sing_types import eu_sign_types, us_sign_types
 from sing_types import eu_sign_types, us_sign_types
@@ -150,6 +151,9 @@ class ImageLoader(QtWidgets.QWidget):
         self.bottom_right_y = None
         self.annotation_2d_dict = None
 
+        self.cursorPos = self.rect().center()  # Initialize cursor position
+        self.crossPos = None  # To store the cross position
+
     def select_input_dir(self):
         self.input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Output Directory"))
 
@@ -286,8 +290,14 @@ class ImageLoader(QtWidgets.QWidget):
 
             self.update()
             self.update_image()
+        if event.button() == Qt.RightButton:
+            self.crossPos = event.pos()  # Store the position of the right-click
+            self.update()  # Trigger a repaint to draw the cross
 
     def mouseMoveEvent(self, event):
+        self.cursorPos = event.pos()
+        self.update_image()
+        self.update()
         if event.buttons() & Qt.LeftButton:
             self.end_x, self.end_y = self.get_image_coordinates(event.pos())
             self.end_dx = self.end_x - event.x()
@@ -295,6 +305,7 @@ class ImageLoader(QtWidgets.QWidget):
 
             self.update()
             self.update_image()
+
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -316,8 +327,9 @@ class ImageLoader(QtWidgets.QWidget):
                 print("(at least) One of the coordinates is None")
 
     def paintEvent(self, event):
+        painter = QPainter(self)
         if self.start_x is not None and self.start_y is not None and self.end_x is not None and self.end_y is not None:
-            painter = QPainter(self)
+
             painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
             painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
 
@@ -328,7 +340,12 @@ class ImageLoader(QtWidgets.QWidget):
             height = abs(self.end_y - self.start_y)
 
             painter.drawRect(QRect(top_left_x, top_left_y, width, height))
-            painter.end()
+        # Draw cross at the position of the right-click
+        if self.crossPos:
+            self.drawCross(painter, self.crossPos)
+
+    
+        painter.end()
 
     def update_image(self):
         temp_pixmap = self.pixmap.copy()
@@ -347,6 +364,8 @@ class ImageLoader(QtWidgets.QWidget):
 
         painter.end()
         self.image.setPixmap(temp_pixmap)
+
+
 
     def get_image_coordinates(self, pos):
         # Get the position of the click relative to the QLabel
@@ -385,6 +404,18 @@ class ImageLoader(QtWidgets.QWidget):
                     pred, annot = "-", "-"
                 return "prediction: {}\nannotation: {}".format(pred, annot)
 
+    def drawCross(self, painter, position):
+        #painter = QPainter(self.pixmap.copy())
+        painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
+
+        # Draw horizontal line following the cursor
+        painter.drawLine(0, self.cursorPos.y(), self.width(), self.cursorPos.y())
+        # Draw vertical line following the cursor
+        painter.drawLine(self.cursorPos.x(), 0, self.cursorPos.x(), self.height())
+        self.image.setPixmap(self.pixmap.copy())
+
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -392,10 +423,13 @@ if __name__ == '__main__':
     args = parser.parse_args()
     sign_types = us_sign_types if args.us else eu_sign_types
 
+
+
     app = QtWidgets.QApplication(sys.argv)
     imageLoader = ImageLoader(args.us)
     # width = imageLoader.frameGeometry().width()
     # height = imageLoader.frameGeometry().height()
+
     imageLoader.setFixedSize(600, 800)
     imageLoader.show()
     sys.exit(app.exec_())
