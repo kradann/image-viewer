@@ -153,6 +153,7 @@ class ImageLoader(QtWidgets.QWidget):
 
         self.cursorPos = self.rect().center()  # Initialize cursor position
         self.crossPos = None  # To store the cross position
+        self.right_button_pressed = False
 
     def select_input_dir(self):
         self.input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Output Directory"))
@@ -291,13 +292,15 @@ class ImageLoader(QtWidgets.QWidget):
             self.update()
             self.update_image()
         if event.button() == Qt.RightButton:
-            self.crossPos = event.pos()  # Store the position of the right-click
+            self.crossPos = event.pos() # Store the position of the right-click
+            self.right_button_pressed = True
             self.update()  # Trigger a repaint to draw the cross
 
     def mouseMoveEvent(self, event):
-        self.cursorPos = event.pos()
-        self.update_image()
-        self.update()
+        if self.right_button_pressed:
+            self.cursorPos = event.pos()
+            self.update_image()
+            self.update()
         if event.buttons() & Qt.LeftButton:
             self.end_x, self.end_y = self.get_image_coordinates(event.pos())
             self.end_dx = self.end_x - event.x()
@@ -326,6 +329,12 @@ class ImageLoader(QtWidgets.QWidget):
             else:
                 print("(at least) One of the coordinates is None")
 
+        if event.button() == Qt.RightButton:
+            self.right_button_pressed = False
+            self.cursorPos = event.pos()
+            self.update_image()
+            self.update()
+
     def paintEvent(self, event):
         painter = QPainter(self)
         if self.start_x is not None and self.start_y is not None and self.end_x is not None and self.end_y is not None:
@@ -341,7 +350,7 @@ class ImageLoader(QtWidgets.QWidget):
 
             painter.drawRect(QRect(top_left_x, top_left_y, width, height))
         # Draw cross at the position of the right-click
-        if self.crossPos:
+        if self.crossPos and self.right_button_pressed:
             self.drawCross(painter, self.crossPos)
 
     
@@ -361,6 +370,10 @@ class ImageLoader(QtWidgets.QWidget):
             height = abs(self.end_y - self.start_y)
 
             painter.drawRect(QRect(top_left_x, top_left_y, width, height))
+
+        # Draw cross at the position of the right-click
+        if self.crossPos and self.right_button_pressed:
+            self.drawCross(painter, self.crossPos)
 
         painter.end()
         self.image.setPixmap(temp_pixmap)
@@ -412,10 +425,6 @@ class ImageLoader(QtWidgets.QWidget):
         painter.drawLine(0, self.cursorPos.y(), self.width(), self.cursorPos.y())
         # Draw vertical line following the cursor
         painter.drawLine(self.cursorPos.x(), 0, self.cursorPos.x(), self.height())
-        self.image.setPixmap(self.pixmap.copy())
-
-
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
