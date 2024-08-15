@@ -237,6 +237,7 @@ class ImageLoader(QtWidgets.QWidget):
             self.load_image_and_set_name()
             self.clear_coords()
 
+
     def prev_image(self):
         # ensure that the file list has not been cleared due to missing files
         if self.file_list:
@@ -349,9 +350,7 @@ class ImageLoader(QtWidgets.QWidget):
             height = abs(self.end_y - self.start_y)
 
             painter.drawRect(QRect(top_left_x, top_left_y, width, height))
-        # Draw cross at the position of the right-click
-        if self.crossPos and self.right_button_pressed:
-            self.drawCross(painter, self.crossPos)
+
 
     
         painter.end()
@@ -373,7 +372,7 @@ class ImageLoader(QtWidgets.QWidget):
 
         # Draw cross at the position of the right-click
         if self.crossPos and self.right_button_pressed:
-            self.drawCross(painter, self.crossPos)
+            self.drawcross(painter, self.crossPos)
 
         painter.end()
         self.image.setPixmap(temp_pixmap)
@@ -417,14 +416,14 @@ class ImageLoader(QtWidgets.QWidget):
                     pred, annot = "-", "-"
                 return "prediction: {}\nannotation: {}".format(pred, annot)
 
-    def drawCross(self, painter, position):
+    def drawcross(self, painter, position):
         #painter = QPainter(self.pixmap.copy())
         painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
 
         # Draw horizontal line following the cursor
-        painter.drawLine(0, self.cursorPos.y(), self.width(), self.cursorPos.y())
+        painter.drawLine(0, self.cursorPos.y()-47, self.width(), self.cursorPos.y()-47)
         # Draw vertical line following the cursor
-        painter.drawLine(self.cursorPos.x(), 0, self.cursorPos.x(), self.height())
+        painter.drawLine(self.cursorPos.x()-140, 0, self.cursorPos.x()-140, self.height())
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
