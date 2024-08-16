@@ -336,7 +336,7 @@ class ImageLoader(QtWidgets.QWidget):
             self.update_image()
             self.update()
 
-    def paintEvent(self, event):
+    """def paintEvent(self, event):
         painter = QPainter(self)
         if self.start_x is not None and self.start_y is not None and self.end_x is not None and self.end_y is not None:
 
@@ -352,14 +352,16 @@ class ImageLoader(QtWidgets.QWidget):
             painter.drawRect(QRect(top_left_x, top_left_y, width, height))
 
 
-    
-        painter.end()
+
+        painter.end()"""
 
     def update_image(self):
         temp_pixmap = self.pixmap.copy()
         painter = QPainter(temp_pixmap)
         painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
         painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
+
+
 
         if self.start_x is not None and self.start_y is not None and self.end_x is not None and self.end_y is not None:
             top_left_x = min(self.start_x, self.end_x)
@@ -376,7 +378,6 @@ class ImageLoader(QtWidgets.QWidget):
 
         painter.end()
         self.image.setPixmap(temp_pixmap)
-
 
 
     def get_image_coordinates(self, pos):
@@ -418,12 +419,12 @@ class ImageLoader(QtWidgets.QWidget):
 
     def drawcross(self, painter, position):
         #painter = QPainter(self.pixmap.copy())
-        painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
+        painter.setPen(QPen(Qt.yellow, 2, Qt.SolidLine))
 
         # Draw horizontal line following the cursor
-        painter.drawLine(0, self.cursorPos.y()-47, self.width(), self.cursorPos.y()-47)
+        painter.drawLine(0, self.cursorPos.y()-13, self.width(), self.cursorPos.y()-13)
         # Draw vertical line following the cursor
-        painter.drawLine(self.cursorPos.x()-140, 0, self.cursorPos.x()-140, self.height())
+        painter.drawLine(self.cursorPos.x()-174, 0, self.cursorPos.x()-174, self.height())
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
