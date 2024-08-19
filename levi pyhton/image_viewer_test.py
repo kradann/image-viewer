@@ -5,11 +5,14 @@ import json
 import os
 import sys
 import shutil
+import math
+from curses.textpad import rectangle
 from functools import partial
+from operator import truediv
 from traceback import print_tb
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QLabel, QComboBox
+from PyQt5.QtWidgets import QLabel, QComboBox, QMessageBox
 #QApplication, QWidget, QVBoxLayout, QMainWindow, QGraphicsView, QGraphicsLineItem
 from PyQt5.QtGui import QPainter, QPen, QBrush
 #QPixmap, QColor
@@ -161,6 +164,7 @@ class ImageLoader(QtWidgets.QWidget):
         self.right_button_pressed = False
         self.x_off = None
         self.y_off = None
+        self.annotation_filename = "annotation_2d.json"
 
     def select_input_dir(self):
         self.input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Output Directory"))
@@ -183,14 +187,36 @@ class ImageLoader(QtWidgets.QWidget):
         self.base_output_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Output Directory"))
         if self.base_output_dir == "":
             self.base_output_dir = None
+        filepath = os.path.join(self.base_output_dir, self.annotation_filename)
+        if os.path.isfile(filepath):
+            self.load_2d_annot()
+
+
 
     def load_2d_annot(self):
         if self.base_output_dir is None:
             self.select_output_dir()
-
         if self.base_output_dir is not None and os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
             with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "r") as stream:
                 self.annotation_2d_dict = json.load(stream)
+                filename = self.current_file_name.split('/')[-1]
+                if filename in self.annotation_2d_dict:
+                    self.coordinates = self.annotation_2d_dict[filename]
+                    print(self.coordinates)
+                    if len(self.coordinates) == 4:
+                        x1,y1,x2,y2 = self.coordinates
+                        x1 = int(math.floor(x1*1.28))
+                        y1 = int(math.floor(y1*1.28))
+                        x2 = int(math.ceil(x2*1.28))
+                        y2 = int(math.ceil(y2*1.28))
+                        temp_pixmap = self.pixmap.copy()
+                        painter = QPainter(temp_pixmap)
+                        painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
+                        painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
+
+                        painter.drawRect(QRect(x1,y1,x2-x1,y2-y1))
+                        painter.end()
+                        self.image.setPixmap(temp_pixmap)
 
         else:
             self.annotation_2d_dict = dict()
