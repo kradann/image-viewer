@@ -59,6 +59,11 @@ class ImageLoader(QtWidgets.QWidget):
         self.coords_label.setFixedSize(500, 50)
         layout.addWidget(self.coords_label, 2, 0, 1, num_of_columns)
 
+        self.info_label = QLabel(self)
+        self.info_label.setText("Welcome!")
+        layout.addWidget(self.info_label, 2, 0, 2, num_of_columns)
+
+
         self.move_func_dict = {
             "something_wrong": self.get_move_func("something_wrong"),
             "to_delete": self.get_move_func("to_delete"),
@@ -175,6 +180,7 @@ class ImageLoader(QtWidgets.QWidget):
                 fpath = os.path.join(self.input_dir, f)
                 if os.path.isfile(fpath) and f.endswith(('.png', '.jpg', '.jpeg')):
                     self.file_list.append(fpath)
+            self.info_label.setText("Input folder loaded!")
         except FileNotFoundError:
             print("Input folder not found ({})".format(self.input_dir))
             return
@@ -199,10 +205,10 @@ class ImageLoader(QtWidgets.QWidget):
         if self.base_output_dir is not None and os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
             with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "r") as stream:
                 self.annotation_2d_dict = json.load(stream)
-                filename = self.current_file_name.split('/')[-1]
-                if filename in self.annotation_2d_dict:
-                    self.coordinates = self.annotation_2d_dict[filename]
-                    print(self.coordinates)
+                #filename = self.current_file_name.split('/')[-1]
+                if os.path.basename(self.current_file_name) in self.annotation_2d_dict:
+                    self.coordinates = self.annotation_2d_dict[os.path.basename(self.current_file_name)]
+                    #0print(self.coordinates)
                     if len(self.coordinates) == 4:
                         x1,y1,x2,y2 = self.coordinates
                         x1 = int(math.floor(x1*1.28))
@@ -217,8 +223,11 @@ class ImageLoader(QtWidgets.QWidget):
                         painter.drawRect(QRect(x1,y1,x2-x1,y2-y1))
                         painter.end()
                         self.image.setPixmap(temp_pixmap)
-
+                        self.info_label.setText("Box loaded!")
+                else:
+                    self.info_label.setText("File name not found!")
         else:
+            self.info_label.setText("No annotation_2d.json found or no output directory!")
             self.annotation_2d_dict = dict()
 
     def save_2d(self):
@@ -238,6 +247,7 @@ class ImageLoader(QtWidgets.QWidget):
                                                                                  self.bottom_right_y * self.y_back_scale]
             with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "w") as f:
                 json.dump(self.annotation_2d_dict, f, indent=4)
+            self.info_label.setText("Coordinates have been saved!")
         else:
             print("2d annotation can not be saved!")
 
@@ -259,8 +269,9 @@ class ImageLoader(QtWidgets.QWidget):
                 self.y_back_scale = ori_height / current_height
                 self.image.setPixmap(self.pixmap)
                 self.current_file_name = filename
-
+                self.load_2d_annot()
                 self.setWindowTitle(os.path.basename(self.current_file_name))
+                self.info_label.setText("Image loaded!")
                 self.pred_annot.setText(self.get_label(os.path.basename(self.current_file_name)))
 
     def next_image(self):
@@ -469,9 +480,6 @@ class ImageLoader(QtWidgets.QWidget):
         painter.drawLine(0, self.cursorPos.y()-13, self.width(), self.cursorPos.y()-13)
         # Draw vertical line following the cursor
         painter.drawLine(self.cursorPos.x()-174, 0, self.cursorPos.x()-174, self.height())
-
-
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
