@@ -9,9 +9,14 @@ from functools import partial
 from traceback import print_tb
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QLabel, QComboBox, QApplication, QWidget, QVBoxLayout, QMainWindow, QGraphicsView, QGraphicsLineItem
-from PyQt5.QtGui import QPainter, QPen, QBrush, QPixmap, QColor
-from PyQt5.QtCore import Qt, QRect, QPoint, QLineF
+from PyQt5.QtWidgets import QLabel, QComboBox
+#QApplication, QWidget, QVBoxLayout, QMainWindow, QGraphicsView, QGraphicsLineItem
+from PyQt5.QtGui import QPainter, QPen, QBrush
+#QPixmap, QColor
+from PyQt5.QtCore import Qt, QRect
+from markdown_it.rules_inline import image
+
+#QPoint, QLineF
 
 #from qt_utils.sing_types import eu_sign_types, us_sign_types
 from sing_types import eu_sign_types, us_sign_types
@@ -154,6 +159,8 @@ class ImageLoader(QtWidgets.QWidget):
         self.cursorPos = self.rect().center()  # Initialize cursor position
         self.crossPos = None  # To store the cross position
         self.right_button_pressed = False
+        self.x_off = None
+        self.y_off = None
 
     def select_input_dir(self):
         self.input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Output Directory"))
@@ -281,7 +288,7 @@ class ImageLoader(QtWidgets.QWidget):
     # draw rectangle
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
-            self.start_x, self.start_y = self.get_image_coordinates(event.pos())
+            self.start_x, self.start_y, self.x_off, self.y_off = self.get_image_coordinates(event.pos())
             self.end_x = self.start_x
             self.end_y = self.start_y
 
@@ -303,7 +310,7 @@ class ImageLoader(QtWidgets.QWidget):
             self.update_image()
             self.update()
         if event.buttons() & Qt.LeftButton:
-            self.end_x, self.end_y = self.get_image_coordinates(event.pos())
+            self.end_x, self.end_y, self.x_off, self.y_off = self.get_image_coordinates(event.pos())
             self.end_dx = self.end_x - event.x()
             self.end_dy = self.end_y - event.y()
 
@@ -313,7 +320,7 @@ class ImageLoader(QtWidgets.QWidget):
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
-            self.end_x, self.end_y = self.get_image_coordinates(event.pos())
+            self.end_x, self.end_y, self.x_off, self.y_off= self.get_image_coordinates(event.pos())
             self.end_dx = self.end_x - event.x()
             self.end_dy = self.end_y - event.y()
             self.update()
@@ -324,9 +331,18 @@ class ImageLoader(QtWidgets.QWidget):
                 self.top_left_y = min(self.start_y, self.end_y)
                 self.bottom_right_x = max(self.start_x, self.end_x)
                 self.bottom_right_y = max(self.start_y, self.end_y)
-                self.coords_label.setText("Coordinates: ({}, {}), ({}, {})".format(self.top_left_x, self.top_left_y,
+                image_width = self.image.width()-self.x_off
+                image_heigth = self.image.height()-self.y_off
+                if 0 < self.top_left_x < image_width and 0 < self.top_left_y < image_heigth and 0 < self.bottom_right_x < image_width and 0 < self.bottom_right_y < image_heigth:
+                    self.coords_label.setText("Coordinates: ({}, {}), ({}, {})".format(self.top_left_x, self.top_left_y,
                                                                                    self.bottom_right_x,
                                                                                    self.bottom_right_y))
+                else:
+                    self.coords_label.setText("Coordinates: Invalid")
+                    self.top_left_x = None
+                    self.top_left_y = None
+                    self.bottom_right_x = None
+                    self.bottom_right_y = None
             else:
                 print("(at least) One of the coordinates is None")
 
@@ -390,6 +406,7 @@ class ImageLoader(QtWidgets.QWidget):
         pixmap_width = self.pixmap.width()
         pixmap_height = self.pixmap.height()
 
+
         # Calculate the position of the Pixmap within the QLabel
         if self.image.hasScaledContents():
             x_ratio = pixmap_width / label_width
@@ -398,7 +415,8 @@ class ImageLoader(QtWidgets.QWidget):
         else:
             x_offset = (label_width - pixmap_width) // 2
             y_offset = (label_height - pixmap_height) // 2
-            return relative_pos.x() - x_offset, relative_pos.y() - y_offset
+            return relative_pos.x() - x_offset, relative_pos.y() - y_offset, x_offset*2, y_offset*2
+
 
     def get_label(self, file_name: str = None):
         if self.us:
@@ -425,6 +443,9 @@ class ImageLoader(QtWidgets.QWidget):
         painter.drawLine(0, self.cursorPos.y()-13, self.width(), self.cursorPos.y()-13)
         # Draw vertical line following the cursor
         painter.drawLine(self.cursorPos.x()-174, 0, self.cursorPos.x()-174, self.height())
+
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
