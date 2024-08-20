@@ -6,15 +6,17 @@ import os
 import sys
 import shutil
 import math
+import subprocess
+import platform
 from curses.textpad import rectangle
 from functools import partial
 from operator import truediv
 from traceback import print_tb
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QLabel, QComboBox, QMessageBox
+from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QShortcut
 #QApplication, QWidget, QVBoxLayout, QMainWindow, QGraphicsView, QGraphicsLineItem
-from PyQt5.QtGui import QPainter, QPen, QBrush
+from PyQt5.QtGui import QPainter, QPen, QBrush, QPalette, QColor, QKeySequence
 #QPixmap, QColor
 from PyQt5.QtCore import Qt, QRect
 from markdown_it.rules_inline import image
@@ -31,6 +33,7 @@ class ImageLoader(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self)
         layout = QtWidgets.QGridLayout(self)
         layout.setSpacing(10)
+        self.set_dark_theme()
 
         self.us = us
         num_of_columns = 3
@@ -61,8 +64,8 @@ class ImageLoader(QtWidgets.QWidget):
 
         self.info_label = QLabel(self)
         self.info_label.setText("Welcome!")
-        layout.addWidget(self.info_label, 2, 0, 2, num_of_columns)
-
+        layout.addWidget(self.info_label, 2, 0, 1, num_of_columns)
+        self.info_label.setAlignment(Qt.AlignRight)
 
         self.move_func_dict = {
             "something_wrong": self.get_move_func("something_wrong"),
@@ -73,7 +76,7 @@ class ImageLoader(QtWidgets.QWidget):
         }
 
         button_size = 40
-        self.inputFolderButton = QtWidgets.QPushButton('Input Folder')
+        self.inputFolderButton = QPushButton('Input Folder', self)
         self.inputFolderButton.setFixedHeight(button_size)
         layout.addWidget(self.inputFolderButton, 3, 0)
 
@@ -113,8 +116,8 @@ class ImageLoader(QtWidgets.QWidget):
         self.UsButton.setFixedHeight(button_size)
         layout.addWidget(self.UsButton, 6, 1)
 
-        self.JokerButton = QtWidgets.QPushButton('Joker 1')
-        layout.addWidget(self.JokerButton, 7, 0)
+        self.AnnotdirButton = QtWidgets.QPushButton('Open annotation directory')
+        layout.addWidget(self.AnnotdirButton, 7, 0)
 
         self.Joker2Button = QtWidgets.QPushButton('Joker 2')
         layout.addWidget(self.Joker2Button, 8, 0)
@@ -124,6 +127,7 @@ class ImageLoader(QtWidgets.QWidget):
         self.prevImageButton.clicked.connect(self.prev_image)
         self.nextImageButton.clicked.connect(self.next_image)
         self.save2dButton.clicked.connect(self.save_2d)
+        self.AnnotdirButton.clicked.connect(self.open_annotation_dir)
 
         self.moveImageButton.clicked.connect(self.move_func_dict["something_wrong"])
         self.NasButton.clicked.connect(self.move_func_dict["new_not_a_sign"])
@@ -140,8 +144,8 @@ class ImageLoader(QtWidgets.QWidget):
         self.combobox2.addItems(sign_types)
         layout.addWidget(self.combobox2, 8, 1)
 
-        self.JokerButton.clicked.connect(partial(self.get_joker_move_funk, self.combobox))
-        self.Joker2Button.clicked.connect(partial(self.get_joker_move_funk, self.combobox2))
+        #self.AnnotdirButton.clicked.connect(partial(self.get_joker_move_funk, self.combobox))
+        #self.Joker2Button.clicked.connect(partial(self.get_joker_move_funk, self.combobox2))
 
         # self.dirIterator = None
         self.file_index = 0
@@ -171,8 +175,11 @@ class ImageLoader(QtWidgets.QWidget):
         self.y_off = None
         self.annotation_filename = "annotation_2d.json"
 
+        self.shortcut = QShortcut(QKeySequence("Ctrl+S"), self)
+        self.shortcut.activated.connect(self.save_2d)
+
     def select_input_dir(self):
-        self.input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Output Directory"))
+        self.input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Input Directory"))
 
         self.file_list = list()
         try:
@@ -193,11 +200,15 @@ class ImageLoader(QtWidgets.QWidget):
         self.base_output_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Output Directory"))
         if self.base_output_dir == "":
             self.base_output_dir = None
-        filepath = os.path.join(self.base_output_dir, self.annotation_filename)
-        if os.path.isfile(filepath):
-            self.load_2d_annot()
-
-
+        elif self.input_dir is None:
+            self.select_input_dir()
+            filepath = os.path.join(self.base_output_dir, self.annotation_filename)
+            if os.path.isfile(filepath):
+                self.load_2d_annot()
+        else:
+            filepath = os.path.join(self.base_output_dir, self.annotation_filename)
+            if os.path.isfile(filepath):
+                self.load_2d_annot()
 
     def load_2d_annot(self):
         if self.base_output_dir is None:
@@ -211,10 +222,10 @@ class ImageLoader(QtWidgets.QWidget):
                     #0print(self.coordinates)
                     if len(self.coordinates) == 4:
                         x1,y1,x2,y2 = self.coordinates
-                        x1 = int(math.floor(x1*1.28))
-                        y1 = int(math.floor(y1*1.28))
-                        x2 = int(math.ceil(x2*1.28))
-                        y2 = int(math.ceil(y2*1.28))
+                        x1 = int(math.floor(x1/self.x_back_scale))
+                        y1 = int(math.floor(y1/self.y_back_scale))
+                        x2 = int(math.ceil(x2/self.x_back_scale))
+                        y2 = int(math.ceil(y2/self.y_back_scale))
                         temp_pixmap = self.pixmap.copy()
                         painter = QPainter(temp_pixmap)
                         painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
@@ -233,6 +244,9 @@ class ImageLoader(QtWidgets.QWidget):
     def save_2d(self):
         if self.base_output_dir is None:
             self.select_output_dir()
+        print(self.input_dir)
+        if self.input_dir is None:
+            self.select_input_dir()
 
         if self.annotation_2d_dict is None:
             self.load_2d_annot()
@@ -245,11 +259,12 @@ class ImageLoader(QtWidgets.QWidget):
                                                                                  self.top_left_y * self.y_back_scale,
                                                                                  self.bottom_right_x * self.x_back_scale,
                                                                                  self.bottom_right_y * self.y_back_scale]
+            print(self.x_back_scale,self.y_back_scale)
             with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "w") as f:
                 json.dump(self.annotation_2d_dict, f, indent=4)
             self.info_label.setText("Coordinates have been saved!")
         else:
-            print("2d annotation can not be saved!")
+            self.info_label.setText("2d annotation can not be saved!")
 
     def load_image_and_set_name(self):
         if self.file_list:
@@ -280,6 +295,8 @@ class ImageLoader(QtWidgets.QWidget):
             self.file_index += 1
             self.load_image_and_set_name()
             self.clear_coords()
+        else:
+            self.info_label.setText("No directory loaded!")
 
 
     def prev_image(self):
@@ -288,6 +305,8 @@ class ImageLoader(QtWidgets.QWidget):
             self.file_index -= 1
             self.load_image_and_set_name()
             self.clear_coords()
+        else:
+            self.info_label.setText("No directory loaded!")
 
     def clear_coords(self):
         self.coords_label.setText("Coordinates: (N/A, N/A)")
@@ -305,7 +324,6 @@ class ImageLoader(QtWidgets.QWidget):
                 self.move_file(file_name)
             else:
                 print("first select output dir")
-
         return move_func
 
     def get_joker_move_funk(self, combobox):
@@ -350,7 +368,6 @@ class ImageLoader(QtWidgets.QWidget):
             self.end_x, self.end_y, self.x_off, self.y_off = self.get_image_coordinates(event.pos())
             self.end_dx = self.end_x - event.x()
             self.end_dy = self.end_y - event.y()
-
             self.update()
             self.update_image()
 
@@ -369,17 +386,17 @@ class ImageLoader(QtWidgets.QWidget):
                 self.bottom_right_x = max(self.start_x, self.end_x)
                 self.bottom_right_y = max(self.start_y, self.end_y)
                 image_width = self.image.width()-self.x_off
-                image_heigth = self.image.height()-self.y_off
-                if 0 < self.top_left_x < image_width and 0 < self.top_left_y < image_heigth and 0 < self.bottom_right_x < image_width and 0 < self.bottom_right_y < image_heigth:
-                    self.coords_label.setText("Coordinates: ({}, {}), ({}, {})".format(self.top_left_x, self.top_left_y,
-                                                                                   self.bottom_right_x,
-                                                                                   self.bottom_right_y))
+                image_height = self.image.height()-self.y_off
+
+                if (self.top_left_x < 0 or self.top_left_x > image_width or self.top_left_y < 0 or self.top_left_y > image_height or # check if top left point is in the pixmap
+                      self.bottom_right_x < 0 or self.bottom_right_x > image_width or self.bottom_right_y < 0 or self.bottom_right_y > image_height): # check if bottom right point is in the pixmap
+                    self.coords_label.setText("Coordinates: Invalid coordinates!")
+                    self.clear_coords()
+                elif self.top_left_x == self.bottom_right_x or self.top_left_y == self.bottom_right_y: # check if shape is rectangle
+                    self.coords_label.setText("Coordinates: Invalid values, shape is not rectangle")
+                    self.clear_coords()
                 else:
-                    self.coords_label.setText("Coordinates: Invalid")
-                    self.top_left_x = None
-                    self.top_left_y = None
-                    self.bottom_right_x = None
-                    self.bottom_right_y = None
+                    self.coords_label.setText("Coordinates: ({}, {}), ({}, {})".format(self.top_left_x, self.top_left_y, self.bottom_right_x, self.bottom_right_y))
             else:
                 print("(at least) One of the coordinates is None")
 
@@ -404,8 +421,6 @@ class ImageLoader(QtWidgets.QWidget):
 
             painter.drawRect(QRect(top_left_x, top_left_y, width, height))
 
-
-
         painter.end()"""
 
     def update_image(self):
@@ -413,8 +428,6 @@ class ImageLoader(QtWidgets.QWidget):
         painter = QPainter(temp_pixmap)
         painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
         painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
-
-
 
         if self.start_x is not None and self.start_y is not None and self.end_x is not None and self.end_y is not None:
             top_left_x = min(self.start_x, self.end_x)
@@ -427,11 +440,16 @@ class ImageLoader(QtWidgets.QWidget):
 
         # Draw cross at the position of the right-click
         if self.crossPos and self.right_button_pressed:
-            self.drawcross(painter, self.crossPos)
+            #self.drawcross(painter, self.crossPos)
+            painter.setPen(QPen(Qt.yellow, 2, Qt.SolidLine))
+
+            # Draw horizontal line following the cursor
+            painter.drawLine(0, self.cursorPos.y() - 13, self.width(), self.cursorPos.y() - 13)
+            # Draw vertical line following the cursor
+            painter.drawLine(self.cursorPos.x() - 174, 0, self.cursorPos.x() - 174, self.height())
 
         painter.end()
         self.image.setPixmap(temp_pixmap)
-
 
     def get_image_coordinates(self, pos):
         # Get the position of the click relative to the QLabel
@@ -443,7 +461,6 @@ class ImageLoader(QtWidgets.QWidget):
         pixmap_width = self.pixmap.width()
         pixmap_height = self.pixmap.height()
 
-
         # Calculate the position of the Pixmap within the QLabel
         if self.image.hasScaledContents():
             x_ratio = pixmap_width / label_width
@@ -453,7 +470,6 @@ class ImageLoader(QtWidgets.QWidget):
             x_offset = (label_width - pixmap_width) // 2
             y_offset = (label_height - pixmap_height) // 2
             return relative_pos.x() - x_offset, relative_pos.y() - y_offset, x_offset*2, y_offset*2
-
 
     def get_label(self, file_name: str = None):
         if self.us:
@@ -472,22 +488,35 @@ class ImageLoader(QtWidgets.QWidget):
                     pred, annot = "-", "-"
                 return "prediction: {}\nannotation: {}".format(pred, annot)
 
-    def drawcross(self, painter, position):
-        #painter = QPainter(self.pixmap.copy())
-        painter.setPen(QPen(Qt.yellow, 2, Qt.SolidLine))
+    def set_dark_theme(self):
+        palette = QPalette()
 
-        # Draw horizontal line following the cursor
-        painter.drawLine(0, self.cursorPos.y()-13, self.width(), self.cursorPos.y()-13)
-        # Draw vertical line following the cursor
-        painter.drawLine(self.cursorPos.x()-174, 0, self.cursorPos.x()-174, self.height())
+        palette.setColor(QPalette.Window, QColor(45,45,48)) #Background color
+        palette.setColor(QPalette.WindowText, Qt.white) #Text color
+
+        palette.setColor(QPalette.Button, QColor(60,60,60)) #Button color
+        palette.setColor(QPalette.ButtonText, Qt.white) #Buttontext color
+
+        self.setPalette(palette)
+
+    def open_annotation_dir(self):
+        if self.base_output_dir is not None:
+            if os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
+                if platform.system() == "Windows":
+                    subprocess.Popen(f'explorer "{self.base_output_dir}"')
+                else:  # Linux
+                    subprocess.Popen(["xdg-open", self.base_output_dir])
+                self.info_label.setText("Folder opened!")
+            else:
+                self.info_label.setText("annotation_2d.json not found!")
+        else:
+            self.info_label.setText("No output directory specified!")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--us", default=False, action="store_true", help="Use US signs instead of EU")
     args = parser.parse_args()
     sign_types = us_sign_types if args.us else eu_sign_types
-
-
 
     app = QtWidgets.QApplication(sys.argv)
     imageLoader = ImageLoader(args.us)
