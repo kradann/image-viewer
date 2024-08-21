@@ -130,7 +130,7 @@ class ImageLoader(QtWidgets.QWidget):
         self.AnnotdirButton.clicked.connect(self.open_annotation_dir)
 
         self.moveImageButton.clicked.connect(self.move_func_dict["something_wrong"])
-        self.NasButton.clicked.connect(self.move_func_dict["new_not_a_sign"])
+        self.NasButton.clicked.connect(self.not_a_sign)
         self.UsButton.clicked.connect(self.move_func_dict["new_unknown_sign"])
         self.TdButton.clicked.connect(self.move_func_dict["to_delete"])
         self.OkButton.clicked.connect(self.move_func_dict["new_ok"])
@@ -214,13 +214,13 @@ class ImageLoader(QtWidgets.QWidget):
         if self.base_output_dir is None:
             self.select_output_dir()
         if self.base_output_dir is not None and os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
-            with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "r") as stream:
+            with (open(os.path.join(self.base_output_dir, "annotation_2d.json"), "r") as stream):
                 self.annotation_2d_dict = json.load(stream)
                 #filename = self.current_file_name.split('/')[-1]
                 if os.path.basename(self.current_file_name) in self.annotation_2d_dict:
                     self.coordinates = self.annotation_2d_dict[os.path.basename(self.current_file_name)]
-                    #0print(self.coordinates)
-                    if len(self.coordinates) == 4:
+                    #print(self.coordinates)
+                    if len(self.coordinates) == 4 and self.coordinates[0] is not None and self.coordinates[1] is not None and self.coordinates[2] is not None and self.coordinates[3] is not None:
                         x1,y1,x2,y2 = self.coordinates
                         x1 = int(math.floor(x1/self.x_back_scale))
                         y1 = int(math.floor(y1/self.y_back_scale))
@@ -244,7 +244,6 @@ class ImageLoader(QtWidgets.QWidget):
     def save_2d(self):
         if self.base_output_dir is None:
             self.select_output_dir()
-        print(self.input_dir)
         if self.input_dir is None:
             self.select_input_dir()
 
@@ -259,7 +258,6 @@ class ImageLoader(QtWidgets.QWidget):
                                                                                  self.top_left_y * self.y_back_scale,
                                                                                  self.bottom_right_x * self.x_back_scale,
                                                                                  self.bottom_right_y * self.y_back_scale]
-            print(self.x_back_scale,self.y_back_scale)
             with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "w") as f:
                 json.dump(self.annotation_2d_dict, f, indent=4)
             self.info_label.setText("Coordinates have been saved!")
@@ -346,7 +344,7 @@ class ImageLoader(QtWidgets.QWidget):
             self.start_x, self.start_y, self.x_off, self.y_off = self.get_image_coordinates(event.pos())
             self.end_x = self.start_x
             self.end_y = self.start_y
-
+            
             self.start_dx = self.start_x - event.x()
             self.start_dy = self.start_y - event.y()
             self.end_dx = 0
@@ -362,7 +360,7 @@ class ImageLoader(QtWidgets.QWidget):
     def mouseMoveEvent(self, event):
         if self.right_button_pressed:
             self.cursorPos = event.pos()
-            self.update_image()
+            self.drawCross()
             self.update()
         if event.buttons() & Qt.LeftButton:
             self.end_x, self.end_y, self.x_off, self.y_off = self.get_image_coordinates(event.pos())
@@ -403,7 +401,7 @@ class ImageLoader(QtWidgets.QWidget):
         if event.button() == Qt.RightButton:
             self.right_button_pressed = False
             self.cursorPos = event.pos()
-            self.update_image()
+            self.drawCross()
             self.update()
 
     """def paintEvent(self, event):
@@ -438,7 +436,13 @@ class ImageLoader(QtWidgets.QWidget):
 
             painter.drawRect(QRect(top_left_x, top_left_y, width, height))
 
-        # Draw cross at the position of the right-click
+        painter.end()
+        self.image.setPixmap(temp_pixmap)
+
+    def drawCross(self):
+        temp_pixmap = self.pixmap.copy()
+        painter = QPainter(temp_pixmap)
+
         if self.crossPos and self.right_button_pressed:
             #self.drawcross(painter, self.crossPos)
             painter.setPen(QPen(Qt.yellow, 2, Qt.SolidLine))
@@ -511,6 +515,21 @@ class ImageLoader(QtWidgets.QWidget):
                 self.info_label.setText("annotation_2d.json not found!")
         else:
             self.info_label.setText("No output directory specified!")
+            self.select_output_dir()
+
+    def not_a_sign(self):
+        if self.base_output_dir is not None:
+            if os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
+                self.annotation_2d_dict[os.path.basename(self.current_file_name)] = [None,None,None,None]
+                with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "w") as f:
+                    json.dump(self.annotation_2d_dict, f, indent=4)
+            else:
+                self.info_label.setText("annotation_2d.json not found!")
+        else:
+            self.info_label.setText("No output directory specified!")
+            self.select_output_dir()
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
