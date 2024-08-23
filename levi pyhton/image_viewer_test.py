@@ -173,10 +173,17 @@ class ImageLoader(QtWidgets.QWidget):
         self.right_button_pressed = False
         self.x_off = None
         self.y_off = None
+        self.coordinates = None
         self.annotation_filename = "annotation_2d.json"
 
-        self.shortcut = QShortcut(QKeySequence("Ctrl+S"), self)
-        self.shortcut.activated.connect(self.save_2d)
+        self.shortcut_save = QShortcut(QKeySequence("S"), self)
+        self.shortcut_save.activated.connect(self.save_2d)
+        self.shortcut_next1 = QShortcut(QKeySequence("N"), self)
+        self.shortcut_next1.activated.connect(self.next_image)
+        self.shortcut_next2 = QShortcut(QKeySequence("Right"), self)
+        self.shortcut_next2.activated.connect(self.next_image)
+        self.shortcut_prev = QShortcut(QKeySequence("P"), self)
+        self.shortcut_prev.activated.connect(self.prev_image)
 
     def select_input_dir(self):
         self.input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Input Directory"))
@@ -284,7 +291,10 @@ class ImageLoader(QtWidgets.QWidget):
                 self.current_file_name = filename
                 self.load_2d_annot()
                 self.setWindowTitle(os.path.basename(self.current_file_name))
-                self.info_label.setText("Image loaded!")
+                if (self.file_index % len(self.file_list)) == 0:
+                    self.info_label.setText("Images loaded!")
+                else:
+                    self.info_label.setText("Next image loaded!")
                 self.pred_annot.setText(self.get_label(os.path.basename(self.current_file_name)))
 
     def next_image(self):
@@ -444,7 +454,7 @@ class ImageLoader(QtWidgets.QWidget):
         painter = QPainter(temp_pixmap)
 
         if self.crossPos and self.right_button_pressed:
-            #self.drawcross(painter, self.crossPos)
+            #self.drawCross(painter, self.crossPos)
             painter.setPen(QPen(Qt.yellow, 2, Qt.SolidLine))
 
             # Draw horizontal line following the cursor
