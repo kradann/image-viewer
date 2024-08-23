@@ -8,10 +8,10 @@ import shutil
 import math
 import subprocess
 import platform
-from curses.textpad import rectangle
+"""from curses.textpad import rectangle
 from functools import partial
 from operator import truediv
-from traceback import print_tb
+from traceback import print_tb"""
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QShortcut
@@ -169,10 +169,10 @@ class ImageLoader(QtWidgets.QWidget):
         self.annotation_2d_dict = None
 
         self.cursorPos = self.rect().center()  # Initialize cursor position
-        self.crossPos = None  # To store the cross position
+        self.crossPos = None, None  # To store the cross position
         self.right_button_pressed = False
-        self.x_off = None
-        self.y_off = None
+        self.x_off = 0
+        self.y_off = 0
         self.coordinates = None
         self.annotation_filename = "annotation_2d.json"
 
@@ -184,6 +184,9 @@ class ImageLoader(QtWidgets.QWidget):
         self.shortcut_next2.activated.connect(self.next_image)
         self.shortcut_prev = QShortcut(QKeySequence("P"), self)
         self.shortcut_prev.activated.connect(self.prev_image)
+
+        self.x_offset = 0
+        self.y_offset = 0
 
     def select_input_dir(self):
         self.input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Input Directory"))
@@ -292,9 +295,9 @@ class ImageLoader(QtWidgets.QWidget):
                 self.load_2d_annot()
                 self.setWindowTitle(os.path.basename(self.current_file_name))
                 if (self.file_index % len(self.file_list)) == 0:
-                    self.info_label.setText("Images loaded!")
+                    self.info_label.setText("{} Images loaded!".format(len(self.file_list)))
                 else:
-                    self.info_label.setText("Next image loaded!")
+                    self.info_label.setText("Image ({}/{}) loaded!".format( self.file_index % len(self.file_list)+1,len(self.file_list)))
                 self.pred_annot.setText(self.get_label(os.path.basename(self.current_file_name)))
 
     def next_image(self):
@@ -351,7 +354,7 @@ class ImageLoader(QtWidgets.QWidget):
     # draw rectangle
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
-            self.start_x, self.start_y, self.x_off, self.y_off = self.get_image_coordinates(event.pos())
+            self.start_x, self.start_y= self.get_image_coordinates(event.pos())
             self.end_x = self.start_x
             self.end_y = self.start_y
             
@@ -363,17 +366,17 @@ class ImageLoader(QtWidgets.QWidget):
             self.update()
             self.update_image()
         if event.button() == Qt.RightButton:
-            self.crossPos = event.pos() # Store the position of the right-click
+            self.crossPos = self.get_image_coordinates(event.pos()) # Store the position of the right-click
             self.right_button_pressed = True
             self.update()  # Trigger a repaint to draw the cross
 
     def mouseMoveEvent(self, event):
         if self.right_button_pressed:
-            self.cursorPos = event.pos()
-            self.drawCross()
+            self.cursorPos = self.get_image_coordinates(event.pos())
+            self.drawCross(self.cursorPos[0], self.cursorPos[1])
             self.update()
         if event.buttons() & Qt.LeftButton:
-            self.end_x, self.end_y, self.x_off, self.y_off = self.get_image_coordinates(event.pos())
+            self.end_x, self.end_y= self.get_image_coordinates(event.pos())
             self.end_dx = self.end_x - event.x()
             self.end_dy = self.end_y - event.y()
             self.update()
@@ -382,9 +385,10 @@ class ImageLoader(QtWidgets.QWidget):
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
-            self.end_x, self.end_y, self.x_off, self.y_off= self.get_image_coordinates(event.pos())
+            self.end_x, self.end_y= self.get_image_coordinates(event.pos())
             self.end_dx = self.end_x - event.x()
             self.end_dy = self.end_y - event.y()
+
             self.update()
             self.update_image()
 
@@ -393,8 +397,10 @@ class ImageLoader(QtWidgets.QWidget):
                 self.top_left_y = min(self.start_y, self.end_y)
                 self.bottom_right_x = max(self.start_x, self.end_x)
                 self.bottom_right_y = max(self.start_y, self.end_y)
+
                 image_width = self.image.width()-self.x_off
                 image_height = self.image.height()-self.y_off
+
 
                 if (self.top_left_x < 0 or self.top_left_x > image_width or self.top_left_y < 0 or self.top_left_y > image_height or # check if top left point is in the pixmap
                       self.bottom_right_x < 0 or self.bottom_right_x > image_width or self.bottom_right_y < 0 or self.bottom_right_y > image_height): # check if bottom right point is in the pixmap
@@ -411,8 +417,10 @@ class ImageLoader(QtWidgets.QWidget):
         if event.button() == Qt.RightButton:
             self.right_button_pressed = False
             self.cursorPos = event.pos()
-            self.drawCross()
+            x,y = self.get_image_coordinates(event.pos())
+            self.drawCross(x,y)
             self.update()
+
 
     """def paintEvent(self, event):
         painter = QPainter(self)
@@ -449,18 +457,19 @@ class ImageLoader(QtWidgets.QWidget):
         painter.end()
         self.image.setPixmap(temp_pixmap)
 
-    def drawCross(self):
+    def drawCross(self,x,y):
         temp_pixmap = self.pixmap.copy()
         painter = QPainter(temp_pixmap)
-
         if self.crossPos and self.right_button_pressed:
             #self.drawCross(painter, self.crossPos)
             painter.setPen(QPen(Qt.yellow, 2, Qt.SolidLine))
 
             # Draw horizontal line following the cursor
-            painter.drawLine(0, self.cursorPos.y() - 13, self.width(), self.cursorPos.y() - 13)
+            #painter.drawLine(0, self.cursorPos.y() - 13, self.width(), self.cursorPos.y() - 13)
             # Draw vertical line following the cursor
-            painter.drawLine(self.cursorPos.x() - 174, 0, self.cursorPos.x() - 174, self.height())
+            #painter.drawLine(self.cursorPos.x() - 174, 0, self.cursorPos.x() - 174, self.height())
+            painter.drawLine(0,y, self.width(),y)
+            painter.drawLine(x, 0,x, self.height())
 
         painter.end()
         self.image.setPixmap(temp_pixmap)
@@ -481,9 +490,9 @@ class ImageLoader(QtWidgets.QWidget):
             y_ratio = pixmap_height / label_height
             return relative_pos.x() * x_ratio, relative_pos.y() * y_ratio
         else:
-            x_offset = (label_width - pixmap_width) // 2
-            y_offset = (label_height - pixmap_height) // 2
-            return relative_pos.x() - x_offset, relative_pos.y() - y_offset, x_offset*2, y_offset*2
+            self.x_offset = (label_width - pixmap_width) // 2
+            self.y_offset = (label_height - pixmap_height) // 2
+            return relative_pos.x() - self.x_offset, relative_pos.y() - self.y_offset
 
     def get_label(self, file_name: str = None):
         if self.us:
@@ -508,8 +517,8 @@ class ImageLoader(QtWidgets.QWidget):
         palette.setColor(QPalette.Window, QColor(45,45,48)) #Background color
         palette.setColor(QPalette.WindowText, Qt.white) #Text color
 
-        palette.setColor(QPalette.Button, QColor(60,60,60)) #Button color
-        palette.setColor(QPalette.ButtonText, Qt.white) #Buttontext color
+        #palette.setColor(QPalette.Button, QColor(60,70,80)) #Button color
+        palette.setColor(QPalette.ButtonText, Qt.black) #Buttontext color
 
         self.setPalette(palette)
 
