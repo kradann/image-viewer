@@ -19,7 +19,7 @@ from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QShortcut
 from PyQt5.QtGui import QPainter, QPen, QBrush, QPalette, QColor, QKeySequence
 #QPixmap, QColor
 from PyQt5.QtCore import Qt, QRect
-from markdown_it.rules_inline import image
+#from markdown_it.rules_inline import image
 
 #QPoint, QLineF
 
@@ -76,11 +76,11 @@ class ImageLoader(QtWidgets.QWidget):
         }
 
         button_size = 40
-        self.inputFolderButton = QPushButton('Input Folder', self)
+        self.inputFolderButton = QPushButton('Change Input Folder', self)
         self.inputFolderButton.setFixedHeight(button_size)
         layout.addWidget(self.inputFolderButton, 3, 0)
 
-        self.outputFolderButton = QtWidgets.QPushButton('Output Folder')
+        self.outputFolderButton = QtWidgets.QPushButton('Change Output Folder')
         self.outputFolderButton.setFixedHeight(button_size)
         layout.addWidget(self.outputFolderButton, 3, 1)
 
@@ -188,6 +188,9 @@ class ImageLoader(QtWidgets.QWidget):
         self.x_offset = 0
         self.y_offset = 0
 
+        self.first = False
+        self.select_input_dir()
+
     def select_input_dir(self):
         self.input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Input Directory"))
 
@@ -205,6 +208,7 @@ class ImageLoader(QtWidgets.QWidget):
         self.file_list.sort()
         self.file_index = 0
         self.load_image_and_set_name()
+        self.first = False
 
     def select_output_dir(self):
         self.base_output_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Output Directory"))
@@ -221,9 +225,8 @@ class ImageLoader(QtWidgets.QWidget):
                 self.load_2d_annot()
 
     def load_2d_annot(self):
-        if self.base_output_dir is None:
-            self.select_output_dir()
-        if self.base_output_dir is not None and os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
+        self.directory_check()
+        if os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
             with (open(os.path.join(self.base_output_dir, "annotation_2d.json"), "r") as stream):
                 self.annotation_2d_dict = json.load(stream)
                 #filename = self.current_file_name.split('/')[-1]
@@ -252,11 +255,7 @@ class ImageLoader(QtWidgets.QWidget):
             self.annotation_2d_dict = dict()
 
     def save_2d(self):
-        if self.base_output_dir is None:
-            self.select_output_dir()
-        if self.input_dir is None:
-            self.select_input_dir()
-
+        self.directory_check()
         if self.annotation_2d_dict is None:
             self.load_2d_annot()
 
@@ -294,8 +293,11 @@ class ImageLoader(QtWidgets.QWidget):
                 self.current_file_name = filename
                 self.load_2d_annot()
                 self.setWindowTitle(os.path.basename(self.current_file_name))
-                if (self.file_index % len(self.file_list)) == 0:
+                if (self.file_index % len(self.file_list) == 0) and self.first is False:
                     self.info_label.setText("{} Images loaded!".format(len(self.file_list)))
+
+                elif self.file_index % len(self.file_list) == 0 and self.first :
+                    self.info_label.setText("Image (1/{}) loaded!".format(len(self.file_list)))
                 else:
                     self.info_label.setText("Image ({}/{}) loaded!".format( self.file_index % len(self.file_list)+1,len(self.file_list)))
                 self.pred_annot.setText(self.get_label(os.path.basename(self.current_file_name)))
@@ -303,6 +305,7 @@ class ImageLoader(QtWidgets.QWidget):
     def next_image(self):
         # ensure that the file list has not been cleared due to missing files
         if self.file_list:
+            self.first = True
             self.file_index += 1
             self.load_image_and_set_name()
             self.clear_coords()
@@ -313,6 +316,7 @@ class ImageLoader(QtWidgets.QWidget):
     def prev_image(self):
         # ensure that the file list has not been cleared due to missing files
         if self.file_list:
+            self.first = True
             self.file_index -= 1
             self.load_image_and_set_name()
             self.clear_coords()
@@ -523,29 +527,30 @@ class ImageLoader(QtWidgets.QWidget):
         self.setPalette(palette)
 
     def open_annotation_dir(self):
-        if self.base_output_dir is not None:
-            if os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
-                if platform.system() == "Windows":
-                    subprocess.Popen(f'explorer "{self.base_output_dir}"')
-                else:  # Linux
-                    subprocess.Popen(["xdg-open", self.base_output_dir])
-                self.info_label.setText("Folder opened!")
-            else:
-                self.info_label.setText("annotation_2d.json not found!")
+        self.directory_check()
+        if os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
+            if platform.system() == "Windows":
+                subprocess.Popen(f'explorer "{self.base_output_dir}"')
+            else:  # Linux
+                subprocess.Popen(["xdg-open", self.base_output_dir])
+            self.info_label.setText("Folder opened!")
         else:
-            self.info_label.setText("No output directory specified!")
-            self.select_output_dir()
+             self.info_label.setText("annotation_2d.json not found!")
+
 
     def not_a_sign(self):
-        if self.base_output_dir is not None:
-            if os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
-                self.annotation_2d_dict[os.path.basename(self.current_file_name)] = [None,None,None,None]
-                with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "w") as f:
-                    json.dump(self.annotation_2d_dict, f, indent=4)
-            else:
-                self.info_label.setText("annotation_2d.json not found!")
+        self.directory_check()
+        if os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
+            self.annotation_2d_dict[os.path.basename(self.current_file_name)] = [None,None,None,None]
+            with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "w") as f:
+                json.dump(self.annotation_2d_dict, f, indent=4)
         else:
-            self.info_label.setText("No output directory specified!")
+            self.info_label.setText("annotation_2d.json not found!")
+
+    def directory_check(self):
+        if self.input_dir is None:
+            self.select_input_dir()
+        if self.base_output_dir is None:
             self.select_output_dir()
 
 
