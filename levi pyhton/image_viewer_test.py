@@ -14,7 +14,7 @@ from operator import truediv
 from traceback import print_tb"""
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QShortcut
+from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QShortcut, QInputDialog
 #QApplication, QWidget, QVBoxLayout, QMainWindow, QGraphicsView, QGraphicsLineItem
 from PyQt5.QtGui import QPainter, QPen, QBrush, QPalette, QColor, QKeySequence
 #QPixmap, QColor
@@ -119,8 +119,8 @@ class ImageLoader(QtWidgets.QWidget):
         self.AnnotdirButton = QtWidgets.QPushButton('Open annotation directory')
         layout.addWidget(self.AnnotdirButton, 7, 0)
 
-        self.Joker2Button = QtWidgets.QPushButton('Joker 2')
-        layout.addWidget(self.Joker2Button, 8, 0)
+        self.JumpTo = QtWidgets.QPushButton('Jump to')
+        layout.addWidget(self.JumpTo, 8, 0)
 
         self.inputFolderButton.clicked.connect(self.select_input_dir)
         self.outputFolderButton.clicked.connect(self.select_output_dir)
@@ -128,6 +128,7 @@ class ImageLoader(QtWidgets.QWidget):
         self.nextImageButton.clicked.connect(self.next_image)
         self.save2dButton.clicked.connect(self.save_2d)
         self.AnnotdirButton.clicked.connect(self.open_annotation_dir)
+        self.JumpTo.clicked.connect(self.jumpto)
 
         self.moveImageButton.clicked.connect(self.move_func_dict["something_wrong"])
         self.NasButton.clicked.connect(self.not_a_sign)
@@ -553,6 +554,18 @@ class ImageLoader(QtWidgets.QWidget):
         if self.base_output_dir is None:
             self.select_output_dir()
 
+    def jumpto(self):
+        self.directory_check()
+        num, ok = QInputDialog.getInt(self, "Input Image Number", "Enter image number:")
+
+        if ok:
+            # Create the image file path based on the entered number
+            if 0 < num < len(self.file_list)+1:
+                self.file_index = int(num)-1
+                self.load_image_and_set_name()
+                self.clear_coords()
+            else:
+                self.info_label.setText("Incorrect image number!")
 
 
 if __name__ == '__main__':
