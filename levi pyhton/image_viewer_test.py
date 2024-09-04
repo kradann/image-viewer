@@ -226,53 +226,57 @@ class ImageLoader(QtWidgets.QWidget):
                 self.load_2d_annot()
 
     def load_2d_annot(self):
-        self.directory_check()
-        if os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
-            with (open(os.path.join(self.base_output_dir, "annotation_2d.json"), "r") as stream):
-                self.annotation_2d_dict = json.load(stream)
-                #filename = self.current_file_name.split('/')[-1]
-                if os.path.basename(self.current_file_name) in self.annotation_2d_dict:
-                    self.coordinates = self.annotation_2d_dict[os.path.basename(self.current_file_name)]
-                    #print(self.coordinates)
-                    if len(self.coordinates) == 4 and self.coordinates[0] is not None and self.coordinates[1] is not None and self.coordinates[2] is not None and self.coordinates[3] is not None:
-                        x1,y1,x2,y2 = self.coordinates
-                        x1 = int(math.floor(x1/self.x_back_scale))
-                        y1 = int(math.floor(y1/self.y_back_scale))
-                        x2 = int(math.ceil(x2/self.x_back_scale))
-                        y2 = int(math.ceil(y2/self.y_back_scale))
-                        temp_pixmap = self.pixmap.copy()
-                        painter = QPainter(temp_pixmap)
-                        painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
-                        painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
+        if self.directory_check():
+            if os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
+                with (open(os.path.join(self.base_output_dir, "annotation_2d.json"), "r") as stream):
+                    self.annotation_2d_dict = json.load(stream)
+                    #filename = self.current_file_name.split('/')[-1]
+                    if os.path.basename(self.current_file_name) in self.annotation_2d_dict:
+                        self.coordinates = self.annotation_2d_dict[os.path.basename(self.current_file_name)]
+                        #print(self.coordinates)
+                        if len(self.coordinates) == 4 and self.coordinates[0] is not None and self.coordinates[1] is not None and self.coordinates[2] is not None and self.coordinates[3] is not None:
+                            x1,y1,x2,y2 = self.coordinates
+                            x1 = int(math.floor(x1/self.x_back_scale))
+                            y1 = int(math.floor(y1/self.y_back_scale))
+                            x2 = int(math.ceil(x2/self.x_back_scale))
+                            y2 = int(math.ceil(y2/self.y_back_scale))
+                            temp_pixmap = self.pixmap.copy()
+                            painter = QPainter(temp_pixmap)
+                            painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
+                            painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
 
-                        painter.drawRect(QRect(x1,y1,x2-x1,y2-y1))
-                        painter.end()
-                        self.image.setPixmap(temp_pixmap)
-                        self.info_label.setText("Box loaded!")
-                else:
-                    self.info_label.setText("File name not found!")
+                            painter.drawRect(QRect(x1,y1,x2-x1,y2-y1))
+                            painter.end()
+                            self.image.setPixmap(temp_pixmap)
+                            self.info_label.setText("Box loaded!")
+                    else:
+                        self.info_label.setText("File name not found!")
+            else:
+                self.info_label.setText("No annotation_2d.json found or no output directory!")
+                self.annotation_2d_dict = dict()
         else:
-            self.info_label.setText("No annotation_2d.json found or no output directory!")
-            self.annotation_2d_dict = dict()
+            self.info_label.setText("In or output directory not found!")
 
     def save_2d(self):
-        self.directory_check()
-        if self.annotation_2d_dict is None:
-            self.load_2d_annot()
+        if self.directory_check():
+            if self.annotation_2d_dict is None:
+                self.load_2d_annot()
 
-        if (self.top_left_x is not None and
-                self.top_left_y is not None and
-                self.bottom_right_x is not None and
-                self.bottom_right_y is not None):
-            self.annotation_2d_dict[os.path.basename(self.current_file_name)] = [self.top_left_x * self.x_back_scale,
-                                                                                 self.top_left_y * self.y_back_scale,
-                                                                                 self.bottom_right_x * self.x_back_scale,
-                                                                                 self.bottom_right_y * self.y_back_scale]
-            with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "w") as f:
-                json.dump(self.annotation_2d_dict, f, indent=4)
-            self.info_label.setText("Coordinates have been saved!")
+            if (self.top_left_x is not None and
+                    self.top_left_y is not None and
+                    self.bottom_right_x is not None and
+                    self.bottom_right_y is not None):
+                self.annotation_2d_dict[os.path.basename(self.current_file_name)] = [self.top_left_x * self.x_back_scale,
+                                                                                     self.top_left_y * self.y_back_scale,
+                                                                                     self.bottom_right_x * self.x_back_scale,
+                                                                                     self.bottom_right_y * self.y_back_scale]
+                with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "w") as f:
+                    json.dump(self.annotation_2d_dict, f, indent=4)
+                self.info_label.setText("Coordinates have been saved!")
+            else:
+                self.info_label.setText("2d annotation can not be saved!")
         else:
-            self.info_label.setText("2d annotation can not be saved!")
+            self.info_label.setText("In or output directory not found!")
 
     def load_image_and_set_name(self):
         if self.file_list:
@@ -553,6 +557,10 @@ class ImageLoader(QtWidgets.QWidget):
             self.select_input_dir()
         if self.base_output_dir is None:
             self.select_output_dir()
+        if self.input_dir is not None and self.base_output_dir is not None:
+            return True
+        else:
+            return False
 
     def jumpto(self):
         self.directory_check()
