@@ -97,8 +97,10 @@ class ImageLoader(QtWidgets.QWidget):
         layout.addWidget(self.OkButton, 4, 1)
 
         self.nextImageButton = QtWidgets.QPushButton('Next image')
-        self.nextImageButton.setFixedHeight(button_size * 5)
-        layout.addWidget(self.nextImageButton, 4, 2, 5, 1)
+        self.nextImageButton.setFixedHeight(button_size * 4)
+        layout.addWidget(self.nextImageButton, 4, 2,4,1)
+
+
 
         self.moveImageButton = QtWidgets.QPushButton('Move image')
         self.moveImageButton.setFixedHeight(button_size)
@@ -122,6 +124,10 @@ class ImageLoader(QtWidgets.QWidget):
         self.JumpTo = QtWidgets.QPushButton('Jump to')
         layout.addWidget(self.JumpTo, 8, 0)
 
+        self.checker = QtWidgets.QPushButton('Checking')
+        self.nextImageButton.setFixedHeight(button_size*4)
+        layout.addWidget(self.checker, 8, 2,1,1)
+
         self.inputFolderButton.clicked.connect(self.select_input_dir)
         self.outputFolderButton.clicked.connect(self.select_output_dir)
         self.prevImageButton.clicked.connect(self.prev_image)
@@ -129,6 +135,7 @@ class ImageLoader(QtWidgets.QWidget):
         self.save2dButton.clicked.connect(self.save_2d)
         self.AnnotdirButton.clicked.connect(self.open_annotation_dir)
         self.JumpTo.clicked.connect(self.jumpto)
+        self.checker.clicked.connect(self.checking)
 
         self.moveImageButton.clicked.connect(self.move_func_dict["something_wrong"])
         self.NasButton.clicked.connect(self.not_a_sign)
@@ -574,6 +581,17 @@ class ImageLoader(QtWidgets.QWidget):
                 self.clear_coords()
             else:
                 self.info_label.setText("Incorrect image number!")
+
+    def get_filenames(self):
+        return [os.path.basename(file) for file in self.file_list]
+
+
+    def checking(self):
+        filenames = self.get_filenames()
+        msg = QtWidgets.QMessageBox()
+        msg.setText("List of files:\n" + "\n".join(filenames))
+        msg.exec_()
+
 
 
 if __name__ == '__main__':
