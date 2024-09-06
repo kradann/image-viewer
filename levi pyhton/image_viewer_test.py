@@ -196,6 +196,8 @@ class ImageLoader(QtWidgets.QWidget):
         self.x_offset = 0
         self.y_offset = 0
 
+        self.allnames = []
+
         self.first = False
         self.select_input_dir()
 
@@ -587,11 +589,42 @@ class ImageLoader(QtWidgets.QWidget):
 
 
     def checking(self):
+        not_found_names = []
         filenames = self.get_filenames()
-        msg = QtWidgets.QMessageBox()
-        msg.setText("List of files:\n" + "\n".join(filenames))
-        msg.exec_()
+        """try:
+            with open("names.json", 'r') as file:
+                allnames = json.load(file)
+        except FileNotFoundError:
+            print(f"File not found: {"names.json"}")
 
+        except json.JSONDecodeError:
+            print(f"Error decoding JSON in file: {"names.json"}")"""
+        not_found_text = ""
+        for filename in filenames:
+            if filename not in self.annotation_2d_dict.keys():
+                not_found_text += f"File name: {filename}, Index:{self.file_index+1}\n"
+            self.file_index += 1
+
+
+        msg = QtWidgets.QMessageBox()
+        msg.setStyleSheet("""
+                QMessageBox {
+                    background-color: #2e2e2e;  /* Dark background */
+                }
+                QLabel {
+                    color: white;  /* White text for labels */
+                }
+                QPushButton {
+                    background-color: #555555;  /* Darker buttons */
+                    color: white;  /* White text for buttons */
+                }
+            """)
+        if not_found_text == "":
+            msg.setText("All files in this directory has annotation")
+        else:
+            msg.setText("List of files:\n" + not_found_text)
+
+        msg.exec_()
 
 
 if __name__ == '__main__':
