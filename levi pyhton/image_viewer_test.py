@@ -8,6 +8,9 @@ import shutil
 import math
 import subprocess
 import platform
+
+from PIL.ImageMath import imagemath_equal
+
 """from curses.textpad import rectangle
 from functools import partial
 from operator import truediv
@@ -237,7 +240,7 @@ class ImageLoader(QtWidgets.QWidget):
     def load_2d_annot(self):
         if self.directory_check():
             if os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
-                with (open(os.path.join(self.base_output_dir, "annotation_2d.json"), "r") as stream):
+                with ((open(os.path.join(self.base_output_dir, "annotation_2d.json"), "r"))as stream):
                     self.annotation_2d_dict = json.load(stream)
                     #filename = self.current_file_name.split('/')[-1]
                     if os.path.basename(self.current_file_name) in self.annotation_2d_dict:
@@ -325,7 +328,6 @@ class ImageLoader(QtWidgets.QWidget):
             self.clear_coords()
         else:
             self.info_label.setText("No directory loaded!")
-
 
     def prev_image(self):
         # ensure that the file list has not been cleared due to missing files
@@ -416,12 +418,8 @@ class ImageLoader(QtWidgets.QWidget):
                 self.bottom_right_x = max(self.start_x, self.end_x)
                 self.bottom_right_y = max(self.start_y, self.end_y)
 
-                image_width = self.image.width()-self.x_off
-                image_height = self.image.height()-self.y_off
-
-
-                if (self.top_left_x < 0 or self.top_left_x > image_width or self.top_left_y < 0 or self.top_left_y > image_height or # check if top left point is in the pixmap
-                      self.bottom_right_x < 0 or self.bottom_right_x > image_width or self.bottom_right_y < 0 or self.bottom_right_y > image_height): # check if bottom right point is in the pixmap
+                if (self.top_left_x < 0 or self.top_left_x > self.pixmap.width() or self.top_left_y < 0 or self.top_left_y > self.pixmap.height() or # check if top left point is in the pixmap
+                      self.bottom_right_x < 0 or self.bottom_right_x > self.pixmap.width() or self.bottom_right_y < 0 or self.bottom_right_y > self.pixmap.height()): # check if bottom right point is in the pixmap
                     self.coords_label.setText("Coordinates: Invalid coordinates!")
                     self.clear_coords()
                 elif self.top_left_x == self.bottom_right_x or self.top_left_y == self.bottom_right_y: # check if shape is rectangle
@@ -573,7 +571,7 @@ class ImageLoader(QtWidgets.QWidget):
 
     def jumpto(self):
         self.directory_check()
-        num, ok = QInputDialog.getInt(self, "Input Image Number", "Enter image number:")
+        num, ok = QInputDialog.getInt(self, "Input Image Number", "Enter image number:") #check if input number correct
 
         if ok:
             # Create the image file path based on the entered number
@@ -585,46 +583,45 @@ class ImageLoader(QtWidgets.QWidget):
                 self.info_label.setText("Incorrect image number!")
 
     def get_filenames(self):
-        return [os.path.basename(file) for file in self.file_list]
-
+        return [os.path.basename(file) for file in self.file_list] #get only filename not path
 
     def checking(self):
-        not_found_names = []
-        filenames = self.get_filenames()
-        """try:
-            with open("names.json", 'r') as file:
-                allnames = json.load(file)
-        except FileNotFoundError:
-            print(f"File not found: {"names.json"}")
+        if self.directory_check():
+            first = True
+            set_index = 0
+            filenames = self.get_filenames()
+            not_found_text = ""
+            for filename in filenames:
+                if filename not in self.annotation_2d_dict.keys(): #if true that means no annotation saved
+                    not_found_text += f"File name: {filename}, Index:{self.file_index+1}\n"
+                    if first: #to jump to first found image
+                        self.load_image_and_set_name()
+                        first = False
+                        set_index = self.file_index # save first found image index
+                self.file_index += 1
+            self.file_index = set_index # to be able to use next image correctly
 
-        except json.JSONDecodeError:
-            print(f"Error decoding JSON in file: {"names.json"}")"""
-        not_found_text = ""
-        for filename in filenames:
-            if filename not in self.annotation_2d_dict.keys():
-                not_found_text += f"File name: {filename}, Index:{self.file_index+1}\n"
-            self.file_index += 1
+            msg = QtWidgets.QMessageBox()
+            msg.setStyleSheet("""
+                    QMessageBox {
+                        background-color: #2e2e2e;  /* Dark background */
+                    }
+                    QLabel {
+                        color: white;  /* White text for labels */
+                    }
+                    QPushButton {
+                        background-color: #555555;  /* Darker buttons */
+                        color: white;  /* White text for buttons */
+                    }
+                """)
+            if not_found_text == "":
+                msg.setText("All files in this directory has annotation")
+            else:
+                msg.setText("List of files:\n" + not_found_text)
 
-
-        msg = QtWidgets.QMessageBox()
-        msg.setStyleSheet("""
-                QMessageBox {
-                    background-color: #2e2e2e;  /* Dark background */
-                }
-                QLabel {
-                    color: white;  /* White text for labels */
-                }
-                QPushButton {
-                    background-color: #555555;  /* Darker buttons */
-                    color: white;  /* White text for buttons */
-                }
-            """)
-        if not_found_text == "":
-            msg.setText("All files in this directory has annotation")
+            msg.exec_()
         else:
-            msg.setText("List of files:\n" + not_found_text)
-
-        msg.exec_()
+            self.info_label.setText("Directory not opened!")
 
 
 if __name__ == '__main__':
