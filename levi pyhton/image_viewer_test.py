@@ -9,7 +9,7 @@ import math
 import subprocess
 import platform
 
-from PIL.ImageMath import imagemath_equal
+#from PIL.ImageMath import imagemath_equal
 
 """from curses.textpad import rectangle
 from functools import partial
@@ -103,8 +103,6 @@ class ImageLoader(QtWidgets.QWidget):
         self.nextImageButton.setFixedHeight(button_size * 4)
         layout.addWidget(self.nextImageButton, 4, 2,4,1)
 
-
-
         self.moveImageButton = QtWidgets.QPushButton('Move image')
         self.moveImageButton.setFixedHeight(button_size)
         layout.addWidget(self.moveImageButton, 5, 0)
@@ -182,8 +180,6 @@ class ImageLoader(QtWidgets.QWidget):
         self.cursorPos = self.rect().center()  # Initialize cursor position
         self.crossPos = None, None  # To store the cross position
         self.right_button_pressed = False
-        self.x_off = 0
-        self.y_off = 0
         self.coordinates = None
         self.annotation_filename = "annotation_2d.json"
 
@@ -199,10 +195,8 @@ class ImageLoader(QtWidgets.QWidget):
         self.x_offset = 0
         self.y_offset = 0
 
-        self.allnames = []
-
         self.first = False
-        self.select_input_dir()
+
 
     def select_input_dir(self):
         self.input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Input Directory"))
@@ -232,10 +226,12 @@ class ImageLoader(QtWidgets.QWidget):
             filepath = os.path.join(self.base_output_dir, self.annotation_filename)
             if os.path.isfile(filepath):
                 self.load_2d_annot()
+
         else:
             filepath = os.path.join(self.base_output_dir, self.annotation_filename)
             if os.path.isfile(filepath):
                 self.load_2d_annot()
+
 
     def load_2d_annot(self):
         if self.directory_check():
@@ -246,7 +242,7 @@ class ImageLoader(QtWidgets.QWidget):
                     if os.path.basename(self.current_file_name) in self.annotation_2d_dict:
                         self.coordinates = self.annotation_2d_dict[os.path.basename(self.current_file_name)]
                         #print(self.coordinates)
-                        if len(self.coordinates) == 4 and self.coordinates[0] is not None and self.coordinates[1] is not None and self.coordinates[2] is not None and self.coordinates[3] is not None:
+                        if len(self.coordinates) == 4 and any(coord is not None for coord in self.coordinates):
                             x1,y1,x2,y2 = self.coordinates
                             x1 = int(math.floor(x1/self.x_back_scale))
                             y1 = int(math.floor(y1/self.y_back_scale))
@@ -274,10 +270,7 @@ class ImageLoader(QtWidgets.QWidget):
             if self.annotation_2d_dict is None:
                 self.load_2d_annot()
 
-            if (self.top_left_x is not None and
-                    self.top_left_y is not None and
-                    self.bottom_right_x is not None and
-                    self.bottom_right_y is not None):
+            if self.valid_coordinates(self.top_left_x, self.top_left_y, self.bottom_right_x, self.bottom_right_y):
                 self.annotation_2d_dict[os.path.basename(self.current_file_name)] = [self.top_left_x * self.x_back_scale,
                                                                                      self.top_left_y * self.y_back_scale,
                                                                                      self.bottom_right_x * self.x_back_scale,
@@ -412,14 +405,13 @@ class ImageLoader(QtWidgets.QWidget):
             self.update()
             self.update_image()
 
-            if self.start_x is not None and self.start_y is not None and self.end_x is not None and self.end_y is not None:
+            if self.valid_coordinates(self.start_x, self.start_y, self.end_x, self.end_y):
                 self.top_left_x = min(self.start_x, self.end_x)
                 self.top_left_y = min(self.start_y, self.end_y)
                 self.bottom_right_x = max(self.start_x, self.end_x)
                 self.bottom_right_y = max(self.start_y, self.end_y)
 
-                if (self.top_left_x < 0 or self.top_left_x > self.pixmap.width() or self.top_left_y < 0 or self.top_left_y > self.pixmap.height() or # check if top left point is in the pixmap
-                      self.bottom_right_x < 0 or self.bottom_right_x > self.pixmap.width() or self.bottom_right_y < 0 or self.bottom_right_y > self.pixmap.height()): # check if bottom right point is in the pixmap
+                if self.out_of_bounds():
                     self.coords_label.setText("Coordinates: Invalid coordinates!")
                     self.clear_coords()
                 elif self.top_left_x == self.bottom_right_x or self.top_left_y == self.bottom_right_y: # check if shape is rectangle
@@ -461,7 +453,7 @@ class ImageLoader(QtWidgets.QWidget):
         painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
         painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
 
-        if self.start_x is not None and self.start_y is not None and self.end_x is not None and self.end_y is not None:
+        if self.valid_coordinates(self.start_x, self.start_y, self.end_x, self.end_y):
             top_left_x = min(self.start_x, self.end_x)
             top_left_y = min(self.start_y, self.end_y)
 
@@ -602,6 +594,7 @@ class ImageLoader(QtWidgets.QWidget):
             self.file_index = set_index # to be able to use next image correctly
 
             msg = QtWidgets.QMessageBox()
+            msg.setWindowTitle("Checker")
             msg.setStyleSheet("""
                     QMessageBox {
                         background-color: #2e2e2e;  /* Dark background */
@@ -622,6 +615,17 @@ class ImageLoader(QtWidgets.QWidget):
             msg.exec_()
         else:
             self.info_label.setText("Directory not opened!")
+
+    @staticmethod
+    def valid_coordinates(a, b, c, d):
+        return a is not None and b is not None and c is not None and d is not None
+
+    def out_of_bounds(self):
+        return (self.top_left_x < 0 or self.top_left_x > self.pixmap.width() or # check if top left point is in the pixmap
+                self.top_left_y < 0 or self.top_left_y > self.pixmap.height() or
+                self.bottom_right_x < 0 or self.bottom_right_x > self.pixmap.width() or # check if bottom right point is in the pixmap
+                self.bottom_right_y < 0 or self.bottom_right_y > self.pixmap.height())
+
 
 
 if __name__ == '__main__':
