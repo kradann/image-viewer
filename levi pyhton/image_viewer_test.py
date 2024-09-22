@@ -287,12 +287,12 @@ class ImageLoader(QtWidgets.QWidget):
             if self.valid_coordinates(self.top_left_x, self.top_left_y, self.bottom_right_x, self.bottom_right_y):
                 annotation_entry = {
                     "image_name": os.path.basename(self.current_file_name).split('_')[-1],
-                    "label": self.current_label,  # Assuming label is static; modify if necessary
+                    "label": self.current_label,
                     "x1": self.top_left_x * self.x_back_scale,
                     "y1": self.top_left_y * self.y_back_scale,
                     "x2": self.bottom_right_x * self.x_back_scale,
                     "y2": self.bottom_right_y * self.y_back_scale
-            }
+                }
                 # Load existing annotations if any
                 annotation_file_path = os.path.join(self.base_output_dir, "annotation_2d.json")
 
@@ -356,9 +356,11 @@ class ImageLoader(QtWidgets.QWidget):
                         if predicted_label == "unknown":
                             self.current_label = "unknown_sign"
                             self.button.setText("unknown_sign")
-                        if predicted_label == action.text():
+                        elif predicted_label == action.text():
                             self.current_label = predicted_label
                             self.button.setText(predicted_label)
+                        else:
+                            self.button.setText("No matching label")
 
                 if (self.file_index % len(self.file_list) == 0) and self.first is False:
                     self.info_label.setText("{} Images loaded!".format(len(self.file_list)))
@@ -689,7 +691,6 @@ class ImageLoader(QtWidgets.QWidget):
         selected_text = selected_action.text()
         self.current_label = selected_text
         # Get the text of the selected menu item
-        print(f"Selected menu item: {selected_text}")
 
         # Set the button text to the selected label
         self.button.setText(selected_text)
