@@ -17,7 +17,8 @@ from operator import truediv
 from traceback import print_tb"""
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QShortcut, QInputDialog
+from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QShortcut, QInputDialog, QListWidget, QLineEdit, QCompleter, \
+    QMenu, QTabWidget, QAction
 #QApplication, QWidget, QVBoxLayout, QMainWindow, QGraphicsView, QGraphicsLineItem
 from PyQt5.QtGui import QPainter, QPen, QBrush, QPalette, QColor, QKeySequence
 #QPixmap, QColor
@@ -145,9 +146,22 @@ class ImageLoader(QtWidgets.QWidget):
         self.OkButton.clicked.connect(self.move_func_dict["new_ok"])
 
         # Dropdown button and combobox
-        self.combobox = QComboBox(self)
-        self.combobox.addItems(sign_types)
-        layout.addWidget(self.combobox, 7, 1)
+        """self.combobox = QComboBox(self)
+        self.combobox.addItems(sign_types)"""
+
+        self.button = QPushButton("No input file",self)
+
+        self.menu = QMenu(self)
+        for i in sign_types:
+            action = QAction(i, self)
+            action.triggered.connect(self.menu_item_selected)  # Connect to selection handler
+            self.menu.addAction(action)
+        self.button.setMenu(self.menu)
+
+        layout.addWidget(self.button, 7, 1)
+        """self.list = QListWidget(self)
+        self.list.addItems(sign_types)
+        layout.addWidget(self.list, 7, 1)"""
 
         self.combobox2 = QComboBox(self)
         self.combobox2.addItems(sign_types)
@@ -196,7 +210,7 @@ class ImageLoader(QtWidgets.QWidget):
         self.y_offset = 0
 
         self.first = False
-
+        self.current_label = ""
 
     def select_input_dir(self):
         self.input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Input Directory"))
@@ -271,12 +285,40 @@ class ImageLoader(QtWidgets.QWidget):
                 self.load_2d_annot()
 
             if self.valid_coordinates(self.top_left_x, self.top_left_y, self.bottom_right_x, self.bottom_right_y):
-                self.annotation_2d_dict[os.path.basename(self.current_file_name)] = [self.top_left_x * self.x_back_scale,
-                                                                                     self.top_left_y * self.y_back_scale,
-                                                                                     self.bottom_right_x * self.x_back_scale,
-                                                                                     self.bottom_right_y * self.y_back_scale]
-                with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "w") as f:
+                annotation_entry = {
+                    "image_name": os.path.basename(self.current_file_name).split('_')[-1],
+                    "label": self.current_label,  # Assuming label is static; modify if necessary
+                    "x1": self.top_left_x * self.x_back_scale,
+                    "y1": self.top_left_y * self.y_back_scale,
+                    "x2": self.bottom_right_x * self.x_back_scale,
+                    "y2": self.bottom_right_y * self.y_back_scale
+            }
+                # Load existing annotations if any
+                annotation_file_path = os.path.join(self.base_output_dir, "annotation_2d.json")
+
+                if os.path.exists(annotation_file_path):
+                    with open(annotation_file_path, "r") as f:
+                        self.annotation_2d_dict = json.load(f)
+                else:
+                    self.annotation_2d_dict = []
+
+                # Find if the image annotation already exists
+                found = False
+                for entry in self.annotation_2d_dict:
+                    if entry["image_name"] == annotation_entry["image_name"]:
+                        # Update existing entry
+                        entry.update(annotation_entry)
+                        found = True
+                        break
+
+                if not found:
+                    # If the entry doesn't exist, append the new annotation entry
+                    self.annotation_2d_dict.append(annotation_entry)
+
+                # Save back the updated annotations
+                with open(annotation_file_path, "w") as f:
                     json.dump(self.annotation_2d_dict, f, indent=4)
+
                 self.info_label.setText("Coordinates have been saved!")
             else:
                 self.info_label.setText("2d annotation can not be saved!")
@@ -303,6 +345,21 @@ class ImageLoader(QtWidgets.QWidget):
                 self.current_file_name = filename
                 self.load_2d_annot()
                 self.setWindowTitle(os.path.basename(self.current_file_name))
+
+                first_underscore_idx = os.path.basename(self.current_file_name).find('_')  # Index of the first underscore
+                last_underscore_idx = os.path.basename(self.current_file_name).rfind('_')  # Index of the last underscore
+
+                if first_underscore_idx != -1 and last_underscore_idx != -1 and first_underscore_idx < last_underscore_idx:
+                    predicted_label = os.path.basename(self.current_file_name)[first_underscore_idx + 1:last_underscore_idx]  # Predicted label is between the first and last underscore
+                    print(predicted_label)
+                    for action in self.menu.actions():
+                        if predicted_label == "unknown":
+                            self.current_label = "unknown_sign"
+                            self.button.setText("unknown_sign")
+                        if predicted_label == action.text():
+                            self.current_label = predicted_label
+                            self.button.setText(predicted_label)
+
                 if (self.file_index % len(self.file_list) == 0) and self.first is False:
                     self.info_label.setText("{} Images loaded!".format(len(self.file_list)))
 
@@ -625,6 +682,17 @@ class ImageLoader(QtWidgets.QWidget):
                 self.top_left_y < 0 or self.top_left_y > self.pixmap.height() or
                 self.bottom_right_x < 0 or self.bottom_right_x > self.pixmap.width() or # check if bottom right point is in the pixmap
                 self.bottom_right_y < 0 or self.bottom_right_y > self.pixmap.height())
+
+    def menu_item_selected(self):
+        # Get the action that was triggered
+        selected_action = self.sender()
+        selected_text = selected_action.text()
+        self.current_label = selected_text
+        # Get the text of the selected menu item
+        print(f"Selected menu item: {selected_text}")
+
+        # Set the button text to the selected label
+        self.button.setText(selected_text)
 
 
 
