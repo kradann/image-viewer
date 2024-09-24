@@ -8,6 +8,7 @@ import shutil
 import math
 import subprocess
 import platform
+from re import search
 
 #from PIL.ImageMath import imagemath_equal
 
@@ -35,6 +36,7 @@ sign_types = None
 class ImageLoader(QtWidgets.QWidget):
     def __init__(self, us):
         QtWidgets.QWidget.__init__(self)
+
         layout = QtWidgets.QGridLayout(self)
         layout.setSpacing(10)
         self.set_dark_theme()
@@ -211,6 +213,8 @@ class ImageLoader(QtWidgets.QWidget):
 
         self.first = False
         self.current_label = ""
+        self.full_current_file_name = None
+        self.state = None
 
     def select_input_dir(self):
         self.input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Input Directory"))
@@ -233,18 +237,32 @@ class ImageLoader(QtWidgets.QWidget):
 
     def select_output_dir(self):
         self.base_output_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Output Directory"))
-        if self.base_output_dir == "":
-            self.base_output_dir = None
-        elif self.input_dir is None:
-            self.select_input_dir()
-            filepath = os.path.join(self.base_output_dir, self.annotation_filename)
-            if os.path.isfile(filepath):
-                self.load_2d_annot()
+
+        if self.directory_check():
+            last_index_file = os.path.join(self.base_output_dir, "last_index.json")
+
+            if os.path.isfile(last_index_file):
+                with open(last_index_file, "r") as stream:
+                    try:
+                        self.state = json.load(stream)
+                        # Ensure self.state is a dictionary, not a list or string
+                        if isinstance(self.state, dict):
+                            # Check if "last_image_index" exists and load it
+                            if "last_image_index" in self.state:
+                                self.file_index = self.state["last_image_index"]
+                            else:
+                                self.info_label.setText("last_image_index key not found in the JSON file.")
+                        else:
+                            self.info_label.setText("Unexpected data structure in the last_index.json file.")
+                    except json.JSONDecodeError:
+                        self.info_label.setText("Error loading last_index.json, possibly corrupt.")
+            else:
+                self.info_label.setText("No last_index.json file found.")
+
+            self.load_image_and_set_name()
 
         else:
-            filepath = os.path.join(self.base_output_dir, self.annotation_filename)
-            if os.path.isfile(filepath):
-                self.load_2d_annot()
+            self.info_label.setText("No input or output directory")
 
 
     def load_2d_annot(self):
@@ -253,15 +271,15 @@ class ImageLoader(QtWidgets.QWidget):
                 with ((open(os.path.join(self.base_output_dir, "annotation_2d.json"), "r"))as stream):
                     self.annotation_2d_dict = json.load(stream)
                     #filename = self.current_file_name.split('/')[-1]
-                    if os.path.basename(self.current_file_name) in self.annotation_2d_dict:
-                        self.coordinates = self.annotation_2d_dict[os.path.basename(self.current_file_name)]
+                    entry = self.search_annotation_by_image_name(self.annotation_2d_dict,self.full_current_file_name)
+                    if entry is not None:
                         #print(self.coordinates)
-                        if len(self.coordinates) == 4 and any(coord is not None for coord in self.coordinates):
-                            x1,y1,x2,y2 = self.coordinates
-                            x1 = int(math.floor(x1/self.x_back_scale))
-                            y1 = int(math.floor(y1/self.y_back_scale))
-                            x2 = int(math.ceil(x2/self.x_back_scale))
-                            y2 = int(math.ceil(y2/self.y_back_scale))
+                        if all([entry["x1"] is not None , entry["y1"] is not None, entry["x2"] is not None, entry["y2"] is not None]) :
+                            x1 = math.floor(entry["x1"]/self.x_back_scale)
+                            y1 = math.floor(entry["y1"]/self.y_back_scale)
+                            x2 = math.floor(entry["x2"]/self.x_back_scale)
+                            y2 = math.floor(entry["y2"]/self.y_back_scale)
+
                             temp_pixmap = self.pixmap.copy()
                             painter = QPainter(temp_pixmap)
                             painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
@@ -271,8 +289,11 @@ class ImageLoader(QtWidgets.QWidget):
                             painter.end()
                             self.image.setPixmap(temp_pixmap)
                             self.info_label.setText("Box loaded!")
+                        else:
+                            self.info_label.setText("save as Not a sign")
                     else:
                         self.info_label.setText("File name not found!")
+
             else:
                 self.info_label.setText("No annotation_2d.json found or no output directory!")
                 self.annotation_2d_dict = dict()
@@ -286,7 +307,7 @@ class ImageLoader(QtWidgets.QWidget):
 
             if self.valid_coordinates(self.top_left_x, self.top_left_y, self.bottom_right_x, self.bottom_right_y):
                 annotation_entry = {
-                    "image_name": os.path.basename(self.current_file_name).split('_')[-1],
+                    "image_name": os.path.basename(self.full_current_file_name),
                     "label": self.current_label,
                     "x1": self.top_left_x * self.x_back_scale,
                     "y1": self.top_left_y * self.y_back_scale,
@@ -304,6 +325,7 @@ class ImageLoader(QtWidgets.QWidget):
 
                 # Find if the image annotation already exists
                 found = False
+
                 for entry in self.annotation_2d_dict:
                     if entry["image_name"] == annotation_entry["image_name"]:
                         # Update existing entry
@@ -342,25 +364,25 @@ class ImageLoader(QtWidgets.QWidget):
                 self.x_back_scale = ori_width / current_width
                 self.y_back_scale = ori_height / current_height
                 self.image.setPixmap(self.pixmap)
-                self.current_file_name = filename
+                self.full_current_file_name = os.path.basename(filename)
+                self.current_file_name = filename.split('_')[-1]
                 self.load_2d_annot()
-                self.setWindowTitle(os.path.basename(self.current_file_name))
+                self.setWindowTitle(os.path.basename(self.full_current_file_name))
 
-                first_underscore_idx = os.path.basename(self.current_file_name).find('_')  # Index of the first underscore
-                last_underscore_idx = os.path.basename(self.current_file_name).rfind('_')  # Index of the last underscore
+                first_underscore_idx = os.path.basename(self.full_current_file_name).find('_')  # Index of the first underscore
+                last_underscore_idx = os.path.basename(self.full_current_file_name).rfind('_')  # Index of the last underscore
 
                 if first_underscore_idx != -1 and last_underscore_idx != -1 and first_underscore_idx < last_underscore_idx:
-                    predicted_label = os.path.basename(self.current_file_name)[first_underscore_idx + 1:last_underscore_idx]  # Predicted label is between the first and last underscore
-                    print(predicted_label)
+                    predicted_label = os.path.basename(self.full_current_file_name)[first_underscore_idx + 1:last_underscore_idx]  # Predicted label is between the first and last underscore
+                    found_label = False
                     for action in self.menu.actions():
-                        if predicted_label == "unknown":
-                            self.current_label = "unknown_sign"
-                            self.button.setText("unknown_sign")
-                        elif predicted_label == action.text():
+                        if predicted_label == action.text():
                             self.current_label = predicted_label
                             self.button.setText(predicted_label)
-                        else:
-                            self.button.setText("No matching label")
+                            found_label = True
+                    if not found_label:
+                        self.current_label = "unknown_sign"
+                        self.button.setText("unknown_sign")
 
                 if (self.file_index % len(self.file_list) == 0) and self.first is False:
                     self.info_label.setText("{} Images loaded!".format(len(self.file_list)))
@@ -604,10 +626,38 @@ class ImageLoader(QtWidgets.QWidget):
     def not_a_sign(self):
         self.directory_check()
         if os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
-            self.annotation_2d_dict[os.path.basename(self.current_file_name)] = [None,None,None,None]
+            with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "r") as f:
+                    self.annotation_2d_dict = json.load(f)
+
+            annotation_entry = {
+                "image_name": os.path.basename(self.full_current_file_name),
+                "label": None,
+                "x1": None,
+                "y1": None,
+                "x2": None,
+                "y2": None
+            }
+
+            # Find if the image annotation already exists
+            found = False
+            for entry in self.annotation_2d_dict:
+                if entry["image_name"] == annotation_entry["image_name"]:
+                    # Update existing entry
+                    entry.update(annotation_entry)
+                    found = True
+                    break
+
+            if not found:
+                # If the entry doesn't exist, append the new annotation entry
+                self.annotation_2d_dict.append(annotation_entry)
+
             with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "w") as f:
                 json.dump(self.annotation_2d_dict, f, indent=4)
+
+            self.info_label.setText("Not a sign saved")
+            self.coords_label.setText("Null/Null, Null/Null")
         else:
+            self.annotation_2d_dict = []
             self.info_label.setText("annotation_2d.json not found!")
 
     def directory_check(self):
@@ -695,7 +745,38 @@ class ImageLoader(QtWidgets.QWidget):
         # Set the button text to the selected label
         self.button.setText(selected_text)
 
+    def search_annotation_by_image_name(self, annotations, image_name):
+        for entry in annotations:
+            if entry["image_name"] == image_name:
+                return entry  # Return the matching dictionary
+        return None  # Return None if not found
 
+    def closeEvent(self, event):
+        # Path to the annotation file
+        file_path = os.path.join(self.base_output_dir, "last_index.json")
+
+        # Load the existing JSON file (if it exists)
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                try:
+                    index_data = json.load(f)  # Load existing data
+                    # Ensure the loaded data is a dictionary, not a list
+                    if not isinstance(index_data, dict):
+                        index_data = {}  # If it's a list or other type, initialize as an empty dictionary
+                except json.JSONDecodeError:
+                    index_data = {}  # If file is empty or corrupted, initialize as an empty dictionary
+        else:
+            index_data = {}  # If file does not exist, start fresh
+
+        # Update or add the 'last_image_index'
+        index_data["last_image_index"] = self.file_index  # Assuming self.file_index holds the current index
+
+        # Write the updated data back to the JSON file
+        with open(file_path, "w") as f:
+            json.dump(index_data, f, indent=4)
+
+        # Optionally call the default close event behavior
+        super().closeEvent(event)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
