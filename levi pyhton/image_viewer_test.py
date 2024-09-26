@@ -8,7 +8,6 @@ import shutil
 import math
 import subprocess
 import platform
-from re import search
 
 #from PIL.ImageMath import imagemath_equal
 
@@ -216,6 +215,11 @@ class ImageLoader(QtWidgets.QWidget):
         self.full_current_file_name = None
         self.state = None
 
+        self.last_left_x = None
+        self.last_left_y = None
+        self.last_right_x = None
+        self.last_right_y = None
+
     def select_input_dir(self):
         self.input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Input Directory"))
 
@@ -273,13 +277,18 @@ class ImageLoader(QtWidgets.QWidget):
                     #filename = self.current_file_name.split('/')[-1]
                     entry = self.search_annotation_by_image_name(self.annotation_2d_dict,self.full_current_file_name)
                     if entry is not None:
+                        print(1)
                         #print(self.coordinates)
                         if all([entry["x1"] is not None , entry["y1"] is not None, entry["x2"] is not None, entry["y2"] is not None]) :
+                            print(2)
                             x1 = math.floor(entry["x1"]/self.x_back_scale)
                             y1 = math.floor(entry["y1"]/self.y_back_scale)
                             x2 = math.floor(entry["x2"]/self.x_back_scale)
                             y2 = math.floor(entry["y2"]/self.y_back_scale)
-
+                            self.last_left_x = x1
+                            self.last_left_y = y1
+                            self.last_right_x = x2
+                            self.last_right_y = y2
                             temp_pixmap = self.pixmap.copy()
                             painter = QPainter(temp_pixmap)
                             painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
@@ -292,7 +301,19 @@ class ImageLoader(QtWidgets.QWidget):
                         else:
                             self.info_label.setText("save as Not a sign")
                     else:
-                        self.info_label.setText("File name not found!")
+                        print(3)
+                        if self.last_left_x is not None and self.last_left_y is not None and self.last_right_x is not None and self.last_right_y is not None:
+                            #draw previos box
+                            print(self.last_left_x, self.last_left_y, self.last_right_x, self.last_right_y)
+                            print(4)
+                            temp_pixmap = self.pixmap.copy()
+                            painter = QPainter(temp_pixmap)
+                            painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
+                            painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
+
+                            painter.drawRect(QRect(self.last_left_x, self.last_left_y, self.last_right_x - self.last_left_x, self.last_right_y - self.last_left_y))
+                            painter.end()
+                            self.image.setPixmap(temp_pixmap)
 
             else:
                 self.info_label.setText("No annotation_2d.json found or no output directory!")
@@ -399,7 +420,7 @@ class ImageLoader(QtWidgets.QWidget):
             self.first = True
             self.file_index += 1
             self.load_image_and_set_name()
-            self.clear_coords()
+
         else:
             self.info_label.setText("No directory loaded!")
 
@@ -409,11 +430,12 @@ class ImageLoader(QtWidgets.QWidget):
             self.first = True
             self.file_index -= 1
             self.load_image_and_set_name()
-            self.clear_coords()
+
         else:
             self.info_label.setText("No directory loaded!")
 
     def clear_coords(self):
+        print(5)
         self.coords_label.setText("Coordinates: (N/A, N/A)")
         self.top_left_x = None
         self.top_left_y = None
@@ -692,8 +714,9 @@ class ImageLoader(QtWidgets.QWidget):
             set_index = 0
             filenames = self.get_filenames()
             not_found_text = ""
+            print(len(filenames))
             for filename in filenames:
-                if filename not in self.annotation_2d_dict.keys(): #if true that means no annotation saved
+                if not self.image_name_exists(self.annotation_2d_dict, filename): #if true that means no annotation saved
                     not_found_text += f"File name: {filename}, Index:{self.file_index+1}\n"
                     if first: #to jump to first found image
                         self.load_image_and_set_name()
@@ -716,14 +739,23 @@ class ImageLoader(QtWidgets.QWidget):
                         color: white;  /* White text for buttons */
                     }
                 """)
+            list_len = len(not_found_text.strip().split("\n"))
             if not_found_text == "":
                 msg.setText("All files in this directory has annotation")
+            elif list_len > 50:
+                msg.setText("List of files:\n" + "\n".join(not_found_text.strip().split("\n")[:50]) + f"\n... and {list_len - 50} more")
             else:
-                msg.setText("List of files:\n" + not_found_text)
+                msg.setText("List of files:\n" + "\n".join(not_found_text.strip().split("\n")[:50]))
 
             msg.exec_()
         else:
             self.info_label.setText("Directory not opened!")
+
+    def image_name_exists(self, annotation_list, filename):
+        for annotation in annotation_list:
+            if annotation["image_name"] == filename:
+                return True
+        return False
 
     @staticmethod
     def valid_coordinates(a, b, c, d):
