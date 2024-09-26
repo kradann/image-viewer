@@ -197,7 +197,7 @@ class ImageLoader(QtWidgets.QWidget):
         self.crossPos = None, None  # To store the cross position
         self.right_button_pressed = False
         self.coordinates = None
-        self.annotation_filename = "annotation_2d.json"
+        self.annotation_filename = "us_cutouts_1_annotation.json"
 
         self.shortcut_save = QShortcut(QKeySequence("S"), self)
         self.shortcut_save.activated.connect(self.save_2d)
@@ -267,8 +267,8 @@ class ImageLoader(QtWidgets.QWidget):
 
     def load_2d_annot(self):
         if self.directory_check():
-            if os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
-                with ((open(os.path.join(self.base_output_dir, "annotation_2d.json"), "r"))as stream):
+            if os.path.isfile(os.path.join(self.base_output_dir, "us_cutouts_1_annotation.json")):
+                with ((open(os.path.join(self.base_output_dir, "us_cutouts_1_annotation.json"), "r"))as stream):
                     self.annotation_2d_dict = json.load(stream)
                     #filename = self.current_file_name.split('/')[-1]
                     entry = self.search_annotation_by_image_name(self.annotation_2d_dict,self.full_current_file_name)
@@ -315,7 +315,7 @@ class ImageLoader(QtWidgets.QWidget):
                     "y2": self.bottom_right_y * self.y_back_scale
                 }
                 # Load existing annotations if any
-                annotation_file_path = os.path.join(self.base_output_dir, "annotation_2d.json")
+                annotation_file_path = os.path.join(self.base_output_dir, "us_cutouts_1_annotation.json")
 
                 if os.path.exists(annotation_file_path):
                     with open(annotation_file_path, "r") as f:
@@ -613,7 +613,7 @@ class ImageLoader(QtWidgets.QWidget):
 
     def open_annotation_dir(self):
         self.directory_check()
-        if os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
+        if os.path.isfile(os.path.join(self.base_output_dir, "us_cutouts_1_annotation.json")):
             if platform.system() == "Windows":
                 subprocess.Popen(f'explorer "{self.base_output_dir}"')
             else:  # Linux
@@ -625,8 +625,8 @@ class ImageLoader(QtWidgets.QWidget):
 
     def not_a_sign(self):
         self.directory_check()
-        if os.path.isfile(os.path.join(self.base_output_dir, "annotation_2d.json")):
-            with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "r") as f:
+        if os.path.isfile(os.path.join(self.base_output_dir, "us_cutouts_1_annotation.json")):
+            with open(os.path.join(self.base_output_dir, "us_cutouts_1_annotation.json"), "r") as f:
                     self.annotation_2d_dict = json.load(f)
 
             annotation_entry = {
@@ -651,7 +651,7 @@ class ImageLoader(QtWidgets.QWidget):
                 # If the entry doesn't exist, append the new annotation entry
                 self.annotation_2d_dict.append(annotation_entry)
 
-            with open(os.path.join(self.base_output_dir, "annotation_2d.json"), "w") as f:
+            with open(os.path.join(self.base_output_dir, "us_cutouts_1_annotation.json"), "w") as f:
                 json.dump(self.annotation_2d_dict, f, indent=4)
 
             self.info_label.setText("Not a sign saved")
