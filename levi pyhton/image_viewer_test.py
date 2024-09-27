@@ -72,6 +72,12 @@ class ImageLoader(QtWidgets.QWidget):
         layout.addWidget(self.info_label, 2, 0, 1, num_of_columns)
         self.info_label.setAlignment(Qt.AlignRight)
 
+        self.saved_check_label = QLabel(self)
+        self.saved_check_label.setText("----------")
+        layout.addWidget(self.saved_check_label, 2, 0, 2, num_of_columns)
+        self.saved_check_label.setStyleSheet("font-size: 16px; color: white")
+
+
         self.move_func_dict = {
             "something_wrong": self.get_move_func("something_wrong"),
             "to_delete": self.get_move_func("to_delete"),
@@ -277,10 +283,10 @@ class ImageLoader(QtWidgets.QWidget):
                     #filename = self.current_file_name.split('/')[-1]
                     entry = self.search_annotation_by_image_name(self.annotation_2d_dict,self.full_current_file_name)
                     if entry is not None:
-                        print(1)
+
                         #print(self.coordinates)
                         if all([entry["x1"] is not None , entry["y1"] is not None, entry["x2"] is not None, entry["y2"] is not None]) :
-                            print(2)
+
                             x1 = math.floor(entry["x1"]/self.x_back_scale)
                             y1 = math.floor(entry["y1"]/self.y_back_scale)
                             x2 = math.floor(entry["x2"]/self.x_back_scale)
@@ -298,14 +304,19 @@ class ImageLoader(QtWidgets.QWidget):
                             painter.end()
                             self.image.setPixmap(temp_pixmap)
                             self.info_label.setText("Box loaded!")
+                            self.saved_check_label.setText("Saved")
                         else:
                             self.info_label.setText("save as Not a sign")
                     else:
-                        print(3)
+
                         if self.last_left_x is not None and self.last_left_y is not None and self.last_right_x is not None and self.last_right_y is not None:
-                            #draw previos box
-                            print(self.last_left_x, self.last_left_y, self.last_right_x, self.last_right_y)
-                            print(4)
+                            #draw previous box
+                            self.saved_check_label.setText("Not saved")
+                            self.top_left_x = self.last_left_x
+                            self.top_left_y = self.last_left_y
+                            self.bottom_right_x = self.last_right_x
+                            self.bottom_right_y = self.last_right_y
+
                             temp_pixmap = self.pixmap.copy()
                             painter = QPainter(temp_pixmap)
                             painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
@@ -335,6 +346,11 @@ class ImageLoader(QtWidgets.QWidget):
                     "x2": self.bottom_right_x * self.x_back_scale,
                     "y2": self.bottom_right_y * self.y_back_scale
                 }
+                self.last_left_x = self.top_left_x
+                self.last_left_y = self.top_left_y
+                self.last_right_x = self.bottom_right_x
+                self.last_right_y = self.bottom_right_y
+                self.saved_check_label.setText("Saved")
                 # Load existing annotations if any
                 annotation_file_path = os.path.join(self.base_output_dir, "us_cutouts_1_annotation.json")
 
@@ -435,7 +451,6 @@ class ImageLoader(QtWidgets.QWidget):
             self.info_label.setText("No directory loaded!")
 
     def clear_coords(self):
-        print(5)
         self.coords_label.setText("Coordinates: (N/A, N/A)")
         self.top_left_x = None
         self.top_left_y = None
