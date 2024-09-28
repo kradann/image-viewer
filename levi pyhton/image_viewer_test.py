@@ -293,6 +293,15 @@ class ImageLoader(QtWidgets.QWidget):
                             self.last_left_y = y1
                             self.last_right_x = x2
                             self.last_right_y = y2
+                            if entry["label"] == "unknown":
+                                self.current_label = "unknown_sign"
+                                self.button.setText("unknown_sign")
+                            else:
+                                for action in self.menu.actions():
+                                    if action.text() == entry["label"]:
+                                        self.current_label = entry["label"]
+                                        self.button.setText(entry["label"])
+
                             temp_pixmap = self.pixmap.copy()
                             painter = QPainter(temp_pixmap)
                             painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
@@ -401,7 +410,7 @@ class ImageLoader(QtWidgets.QWidget):
                 self.image.setPixmap(self.pixmap)
                 self.full_current_file_name = os.path.basename(filename)
                 self.current_file_name = filename.split('_')[-1]
-                self.load_2d_annot()
+
                 self.setWindowTitle(os.path.basename(self.full_current_file_name))
 
                 first_underscore_idx = os.path.basename(self.full_current_file_name).find('_')  # Index of the first underscore
@@ -418,6 +427,8 @@ class ImageLoader(QtWidgets.QWidget):
                     if not found_label:
                         self.current_label = "unknown_sign"
                         self.button.setText("unknown_sign")
+
+                self.load_2d_annot()
 
                 if (self.file_index % len(self.file_list) == 0) and self.first is False:
                     self.info_label.setText("{} Images loaded!".format(len(self.file_list)))
@@ -449,7 +460,6 @@ class ImageLoader(QtWidgets.QWidget):
             self.info_label.setText("No directory loaded!")
 
     def clear_coords(self):
-        print(5)
         self.coords_label.setText("Coordinates: (N/A, N/A)")
         self.top_left_x = None
         self.top_left_y = None
