@@ -311,6 +311,7 @@ class ImageLoader(QtWidgets.QWidget):
                             painter.end()
                             self.image.setPixmap(temp_pixmap)
                             self.info_label.setText("Box loaded!")
+
                         else:
                             self.info_label.setText("save as Not a sign")
                     else:
@@ -330,6 +331,9 @@ class ImageLoader(QtWidgets.QWidget):
                             self.top_left_y = self.last_left_y
                             self.bottom_right_x = self.last_right_x
                             self.bottom_right_y = self.last_right_y
+                    self.coords_label.setText(
+                        "Coordinates: ({}, {}), ({}, {})".format(self.last_left_x, self.last_left_y,
+                                                                 self.last_right_x, self.last_right_y))
 
             else:
                 self.info_label.setText("No annotation_2d.json found or no output directory!")
@@ -484,10 +488,10 @@ class ImageLoader(QtWidgets.QWidget):
     def move_file(self, file_name: str):
         dst_dir = os.path.join(self.base_output_dir, file_name)
         os.makedirs(dst_dir, exist_ok=True)
-        dst = os.path.join(dst_dir, os.path.basename(self.current_file_name))
+        dst = os.path.join(dst_dir, os.path.basename(self.full_current_file_name))
         try:
             print("dst path: {}".format(dst))
-            shutil.move(self.current_file_name, dst)
+            shutil.move(os.path.basename(self.full_current_file_name), dst)
         except FileNotFoundError:
             print("Error during moving file: {}".format(dst))
 
