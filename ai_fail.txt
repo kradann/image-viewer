@@ -2,3 +2,4 @@ tábla - ai - helyes
 
 railroad crossing (x alakú) - white rectangle - unknown_sign
 sárga kör x-el - yellow rectangle - unknown_sign
+yield to pedestrian - white rectangle - yield to ped 

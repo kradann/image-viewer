@@ -314,6 +314,7 @@ class ImageLoader(QtWidgets.QWidget):
 
                         else:
                             self.info_label.setText("save as Not a sign")
+                            self.saved_check_label.setText("Saved")
                     else:
                         self.saved_check_label.setText("Not saved")
                         if self.last_left_x is not None and self.last_left_y is not None and self.last_right_x is not None and self.last_right_y is not None:
@@ -488,10 +489,11 @@ class ImageLoader(QtWidgets.QWidget):
     def move_file(self, file_name: str):
         dst_dir = os.path.join(self.base_output_dir, file_name)
         os.makedirs(dst_dir, exist_ok=True)
-        dst = os.path.join(dst_dir, os.path.basename(self.full_current_file_name))
+        dst = os.path.join(dst_dir, self.full_current_file_name)
         try:
             print("dst path: {}".format(dst))
-            shutil.move(os.path.basename(self.full_current_file_name), dst)
+            shutil.copy2(os.path.join(self.input_dir, self.full_current_file_name), dst)  # Copy instead of move
+            self.info_label.setText("Copied!")
         except FileNotFoundError:
             print("Error during moving file: {}".format(dst))
 
