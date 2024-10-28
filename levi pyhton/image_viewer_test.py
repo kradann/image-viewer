@@ -205,12 +205,18 @@ class ImageLoader(QtWidgets.QWidget):
 
         self.shortcut_save = QShortcut(QKeySequence("S"), self)
         self.shortcut_save.activated.connect(self.save_2d)
+
         self.shortcut_next1 = QShortcut(QKeySequence("N"), self)
         self.shortcut_next1.activated.connect(self.next_image)
+
         self.shortcut_next2 = QShortcut(QKeySequence("Right"), self)
         self.shortcut_next2.activated.connect(self.next_image)
+
         self.shortcut_prev = QShortcut(QKeySequence("P"), self)
         self.shortcut_prev.activated.connect(self.prev_image)
+
+        self.shortcut_not_a_sign = QShortcut(QKeySequence("V"), self)
+        self.shortcut_not_a_sign.activated.connect(self.not_a_sign)
 
         self.x_offset = 0
         self.y_offset = 0
