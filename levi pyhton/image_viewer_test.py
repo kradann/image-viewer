@@ -201,7 +201,7 @@ class ImageLoader(QtWidgets.QWidget):
         self.crossPos = None, None  # To store the cross position
         self.right_button_pressed = False
         self.coordinates = None
-        self.annotation_filename = "us_cutouts_1_annotation.json"
+        self.annotation_filename = "eu_traffic_sign_annotation.json"
 
         self.shortcut_save = QShortcut(QKeySequence("S"), self)
         self.shortcut_save.activated.connect(self.save_2d)
@@ -217,6 +217,9 @@ class ImageLoader(QtWidgets.QWidget):
 
         self.shortcut_not_a_sign = QShortcut(QKeySequence("V"), self)
         self.shortcut_not_a_sign.activated.connect(self.not_a_sign)
+
+        self.shortcut_to_delete = QShortcut(QKeySequence("D"), self)
+        self.shortcut_to_delete.activated.connect(self.move_func_dict["to_delete"])
 
         self.x_offset = 0
         self.y_offset = 0
@@ -282,8 +285,8 @@ class ImageLoader(QtWidgets.QWidget):
 
     def load_2d_annot(self):
         if self.directory_check():
-            if os.path.isfile(os.path.join(self.base_output_dir, "us_cutouts_1_annotation.json")):
-                with ((open(os.path.join(self.base_output_dir, "us_cutouts_1_annotation.json"), "r"))as stream):
+            if os.path.isfile(os.path.join(self.base_output_dir, "eu_traffic_sign_annotation.json")):
+                with ((open(os.path.join(self.base_output_dir, "eu_traffic_sign_annotation.json"), "r"))as stream):
                     self.annotation_2d_dict = json.load(stream)
                     #filename = self.current_file_name.split('/')[-1]
                     entry = self.search_annotation_by_image_name(self.annotation_2d_dict,self.full_current_file_name)
@@ -370,7 +373,7 @@ class ImageLoader(QtWidgets.QWidget):
 
                 self.saved_check_label.setText("Saved")
                 # Load existing annotations if any
-                annotation_file_path = os.path.join(self.base_output_dir, "us_cutouts_1_annotation.json")
+                annotation_file_path = os.path.join(self.base_output_dir, "eu_traffic_sign_annotation.json")
 
                 if os.path.exists(annotation_file_path):
                     with open(annotation_file_path, "r") as f:
@@ -500,6 +503,11 @@ class ImageLoader(QtWidgets.QWidget):
             print("dst path: {}".format(dst))
             shutil.copy2(os.path.join(self.input_dir, self.full_current_file_name), dst)  # Copy instead of move
             self.info_label.setText("Copied!")
+
+            if file_name == "to_delete":
+                original_file_path = os.path.join(self.input_dir, self.full_current_file_name)
+                os.remove(original_file_path)
+                print("Original file deleted from source: {}".format(original_file_path))
         except FileNotFoundError:
             print("Error during moving file: {}".format(dst))
 
@@ -671,7 +679,7 @@ class ImageLoader(QtWidgets.QWidget):
 
     def open_annotation_dir(self):
         self.directory_check()
-        if os.path.isfile(os.path.join(self.base_output_dir, "us_cutouts_1_annotation.json")):
+        if os.path.isfile(os.path.join(self.base_output_dir, "eu_traffic_sign_annotation.json")):
             if platform.system() == "Windows":
                 subprocess.Popen(f'explorer "{self.base_output_dir}"')
             else:  # Linux
@@ -683,8 +691,8 @@ class ImageLoader(QtWidgets.QWidget):
 
     def not_a_sign(self):
         self.directory_check()
-        if os.path.isfile(os.path.join(self.base_output_dir, "us_cutouts_1_annotation.json")):
-            with open(os.path.join(self.base_output_dir, "us_cutouts_1_annotation.json"), "r") as f:
+        if os.path.isfile(os.path.join(self.base_output_dir, "eu_traffic_sign_annotation.json")):
+            with open(os.path.join(self.base_output_dir, "eu_traffic_sign_annotation.json"), "r") as f:
                     self.annotation_2d_dict = json.load(f)
 
             annotation_entry = {
@@ -709,7 +717,7 @@ class ImageLoader(QtWidgets.QWidget):
                 # If the entry doesn't exist, append the new annotation entry
                 self.annotation_2d_dict.append(annotation_entry)
 
-            with open(os.path.join(self.base_output_dir, "us_cutouts_1_annotation.json"), "w") as f:
+            with open(os.path.join(self.base_output_dir, "eu_traffic_sign_annotation.json"), "w") as f:
                 json.dump(self.annotation_2d_dict, f, indent=4)
 
             self.info_label.setText("Not a sign saved")
@@ -746,20 +754,22 @@ class ImageLoader(QtWidgets.QWidget):
 
     def checking(self):
         if self.directory_check():
+
             first = True
             set_index = 0
+            first_index = 0
             filenames = self.get_filenames()
             not_found_text = ""
             print(len(filenames))
             for filename in filenames:
                 if not self.image_name_exists(self.annotation_2d_dict, filename): #if true that means no annotation saved
-                    not_found_text += f"File name: {filename}, Index:{self.file_index+1}\n"
+                    not_found_text += f"File name: {filename}, Index:{set_index}\n"
                     if first: #to jump to first found image
                         self.load_image_and_set_name()
                         first = False
-                        set_index = self.file_index # save first found image index
-                self.file_index += 1
-            self.file_index = set_index # to be able to use next image correctly
+                        first_index = self.file_index # save first found image index
+                set_index += 1
+            self.file_index = first_index # to be able to use next image correctly
 
             msg = QtWidgets.QMessageBox()
             msg.setWindowTitle("Checker")
@@ -778,10 +788,10 @@ class ImageLoader(QtWidgets.QWidget):
             list_len = len(not_found_text.strip().split("\n"))
             if not_found_text == "":
                 msg.setText("All files in this directory has annotation")
-            elif list_len > 50:
-                msg.setText("List of files:\n" + "\n".join(not_found_text.strip().split("\n")[:50]) + f"\n... and {list_len - 50} more")
+            elif list_len > 30:
+                msg.setText("List of files:\n" + "\n".join(not_found_text.strip().split("\n")[:30]) + f"\n... and {list_len - 30} more")
             else:
-                msg.setText("List of files:\n" + "\n".join(not_found_text.strip().split("\n")[:50]))
+                msg.setText("List of files:\n" + "\n".join(not_found_text.strip().split("\n")[:30]))
 
             msg.exec_()
         else:
