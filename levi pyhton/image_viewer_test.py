@@ -502,12 +502,15 @@ class ImageLoader(QtWidgets.QWidget):
         try:
             print("dst path: {}".format(dst))
             shutil.copy2(os.path.join(self.input_dir, self.full_current_file_name), dst)  # Copy instead of move
-            self.info_label.setText("Copied!")
+
 
             if file_name == "to_delete":
                 original_file_path = os.path.join(self.input_dir, self.full_current_file_name)
                 os.remove(original_file_path)
                 print("Original file deleted from source: {}".format(original_file_path))
+                self.info_label.setText("Deleted!")
+            else:
+                self.info_label.setText("Copied!")
         except FileNotFoundError:
             print("Error during moving file: {}".format(dst))
 
