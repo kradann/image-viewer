@@ -14230,5 +14230,2381 @@
         "y1": 99.21875,
         "x2": 189.84375,
         "y2": 196.09375
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013270.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 105.46875,
+        "x2": 192.1875,
+        "y2": 192.1875
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013271.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 105.46875,
+        "x2": 192.1875,
+        "y2": 192.1875
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013272.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 105.46875,
+        "x2": 192.1875,
+        "y2": 192.1875
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013273.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 105.46875,
+        "x2": 192.1875,
+        "y2": 192.1875
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013274.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 105.46875,
+        "x2": 192.1875,
+        "y2": 192.1875
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013275.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 105.46875,
+        "x2": 192.1875,
+        "y2": 192.1875
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013276.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 105.46875,
+        "x2": 192.1875,
+        "y2": 192.1875
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013277.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 105.46875,
+        "x2": 192.1875,
+        "y2": 192.1875
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013278.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 105.46875,
+        "x2": 192.1875,
+        "y2": 192.1875
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013279.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 111.71875,
+        "y1": 103.90625,
+        "x2": 210.15625,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013282.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 102.34375,
+        "y1": 96.09375,
+        "x2": 203.125,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013283.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 102.34375,
+        "y1": 96.09375,
+        "x2": 203.125,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013284.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 102.34375,
+        "y1": 96.09375,
+        "x2": 203.125,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013285.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 102.34375,
+        "y1": 96.09375,
+        "x2": 203.125,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013286.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 102.34375,
+        "y1": 96.09375,
+        "x2": 203.125,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "339_eu_direction_position_indication_unknown_0013287.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 102.34375,
+        "y1": 96.09375,
+        "x2": 203.125,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "340_eu_nostop_nopark_0013277.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 120.3125,
+        "y1": 102.34375,
+        "x2": 178.90625,
+        "y2": 189.0625
+    },
+    {
+        "image_name": "340_eu_nostop_nopark_0013281.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 125.78125,
+        "y1": 107.8125,
+        "x2": 179.6875,
+        "y2": 185.15625
+    },
+    {
+        "image_name": "340_eu_nostop_nopark_0013282.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 125.78125,
+        "y1": 107.8125,
+        "x2": 179.6875,
+        "y2": 185.15625
+    },
+    {
+        "image_name": "340_eu_nostop_nopark_0013283.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 125.78125,
+        "y1": 107.8125,
+        "x2": 179.6875,
+        "y2": 185.15625
+    },
+    {
+        "image_name": "341_eu_blue_ground_circle_unknown_0013388.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 106.25,
+        "y1": 105.46875,
+        "x2": 191.40625,
+        "y2": 199.21875
+    },
+    {
+        "image_name": "341_eu_blue_ground_circle_unknown_0013389.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 106.25,
+        "y1": 105.46875,
+        "x2": 191.40625,
+        "y2": 199.21875
+    },
+    {
+        "image_name": "341_eu_blue_ground_circle_unknown_0013390.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 106.25,
+        "y1": 105.46875,
+        "x2": 191.40625,
+        "y2": 199.21875
+    },
+    {
+        "image_name": "341_eu_blue_ground_circle_unknown_0013391.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 106.25,
+        "y1": 105.46875,
+        "x2": 191.40625,
+        "y2": 199.21875
+    },
+    {
+        "image_name": "341_eu_blue_ground_circle_unknown_0013392.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 106.25,
+        "y1": 105.46875,
+        "x2": 191.40625,
+        "y2": 199.21875
+    },
+    {
+        "image_name": "341_eu_blue_ground_circle_unknown_0013393.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 106.25,
+        "y1": 105.46875,
+        "x2": 191.40625,
+        "y2": 199.21875
+    },
+    {
+        "image_name": "341_eu_blue_ground_circle_unknown_0013394.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 106.25,
+        "y1": 105.46875,
+        "x2": 191.40625,
+        "y2": 199.21875
+    },
+    {
+        "image_name": "341_eu_blue_ground_circle_unknown_0013395.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 106.25,
+        "y1": 105.46875,
+        "x2": 191.40625,
+        "y2": 199.21875
+    },
+    {
+        "image_name": "341_eu_blue_ground_circle_unknown_0013396.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 106.25,
+        "y1": 105.46875,
+        "x2": 191.40625,
+        "y2": 199.21875
+    },
+    {
+        "image_name": "341_eu_blue_ground_circle_unknown_0013397.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 106.25,
+        "y1": 105.46875,
+        "x2": 191.40625,
+        "y2": 199.21875
+    },
+    {
+        "image_name": "344_eu_direction_position_indication_unknown_0013693.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 105.46875,
+        "y1": 100.78125,
+        "x2": 196.875,
+        "y2": 196.875
+    },
+    {
+        "image_name": "344_eu_direction_position_indication_unknown_0013694.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 105.46875,
+        "y1": 100.78125,
+        "x2": 196.875,
+        "y2": 196.875
+    },
+    {
+        "image_name": "344_eu_direction_position_indication_unknown_0013695.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 105.46875,
+        "y1": 100.78125,
+        "x2": 196.875,
+        "y2": 196.875
+    },
+    {
+        "image_name": "344_eu_direction_position_indication_unknown_0013696.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 105.46875,
+        "y1": 100.78125,
+        "x2": 196.875,
+        "y2": 196.875
+    },
+    {
+        "image_name": "344_eu_direction_position_indication_unknown_0013697.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 105.46875,
+        "y1": 100.78125,
+        "x2": 196.875,
+        "y2": 196.875
+    },
+    {
+        "image_name": "344_eu_direction_position_indication_unknown_0013698.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 105.46875,
+        "y1": 100.78125,
+        "x2": 196.875,
+        "y2": 196.875
+    },
+    {
+        "image_name": "344_eu_direction_position_indication_unknown_0013699.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 105.46875,
+        "y1": 100.78125,
+        "x2": 196.875,
+        "y2": 196.875
+    },
+    {
+        "image_name": "344_eu_direction_position_indication_unknown_0013700.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 105.46875,
+        "y1": 100.78125,
+        "x2": 196.875,
+        "y2": 196.875
+    },
+    {
+        "image_name": "344_eu_direction_position_indication_unknown_0013701.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 105.46875,
+        "y1": 100.78125,
+        "x2": 196.875,
+        "y2": 196.875
+    },
+    {
+        "image_name": "344_eu_direction_position_indication_unknown_0013702.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 105.46875,
+        "y1": 100.78125,
+        "x2": 196.875,
+        "y2": 196.875
+    },
+    {
+        "image_name": "346_eu_nostop_nopark_0013693.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 111.71875,
+        "y1": 99.21875,
+        "x2": 191.40625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "346_eu_nostop_nopark_0013694.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 111.71875,
+        "y1": 99.21875,
+        "x2": 191.40625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "346_eu_nostop_nopark_0013695.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 111.71875,
+        "y1": 99.21875,
+        "x2": 191.40625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "346_eu_nostop_nopark_0013696.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 111.71875,
+        "y1": 99.21875,
+        "x2": 191.40625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "346_eu_nostop_nopark_0013697.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 111.71875,
+        "y1": 99.21875,
+        "x2": 191.40625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "346_eu_nostop_nopark_0013698.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 111.71875,
+        "y1": 99.21875,
+        "x2": 191.40625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "346_eu_nostop_nopark_0013699.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 111.71875,
+        "y1": 99.21875,
+        "x2": 191.40625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "346_eu_nostop_nopark_0013700.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 111.71875,
+        "y1": 99.21875,
+        "x2": 191.40625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "346_eu_nostop_nopark_0013701.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 111.71875,
+        "y1": 99.21875,
+        "x2": 191.40625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "346_eu_nostop_nopark_0013702.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 111.71875,
+        "y1": 99.21875,
+        "x2": 191.40625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "347_eu_blue_ground_rectangle_unknown_0013821.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 116.40625,
+        "y1": 104.6875,
+        "x2": 183.59375,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "347_eu_blue_ground_rectangle_unknown_0013822.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 116.40625,
+        "y1": 104.6875,
+        "x2": 183.59375,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "347_eu_blue_ground_rectangle_unknown_0013823.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 116.40625,
+        "y1": 104.6875,
+        "x2": 183.59375,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "347_eu_blue_ground_rectangle_unknown_0013824.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 116.40625,
+        "y1": 104.6875,
+        "x2": 183.59375,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "347_eu_blue_ground_rectangle_unknown_0013828.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 116.40625,
+        "y1": 104.6875,
+        "x2": 183.59375,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "347_eu_blue_ground_rectangle_unknown_0013829.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 116.40625,
+        "y1": 104.6875,
+        "x2": 183.59375,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "347_eu_blue_ground_rectangle_unknown_0013830.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 116.40625,
+        "y1": 104.6875,
+        "x2": 183.59375,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "347_eu_blue_ground_rectangle_unknown_0013831.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 116.40625,
+        "y1": 104.6875,
+        "x2": 183.59375,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "347_eu_blue_ground_rectangle_unknown_0013832.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 67.96875,
+        "y1": 108.59375,
+        "x2": 163.28125,
+        "y2": 199.21875
+    },
+    {
+        "image_name": "347_eu_blue_ground_rectangle_unknown_0013833.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 116.40625,
+        "y1": 95.3125,
+        "x2": 192.96875,
+        "y2": 189.0625
+    },
+    {
+        "image_name": "348_eu_direction_position_indication_unknown_0014045.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 112.5,
+        "y1": 98.4375,
+        "x2": 192.1875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "348_eu_direction_position_indication_unknown_0014046.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 112.5,
+        "y1": 98.4375,
+        "x2": 192.1875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "348_eu_direction_position_indication_unknown_0014047.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 112.5,
+        "y1": 98.4375,
+        "x2": 192.1875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "348_eu_direction_position_indication_unknown_0014048.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 112.5,
+        "y1": 98.4375,
+        "x2": 192.1875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "348_eu_direction_position_indication_unknown_0014049.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 112.5,
+        "y1": 98.4375,
+        "x2": 192.1875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "348_eu_direction_position_indication_unknown_0014050.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 112.5,
+        "y1": 98.4375,
+        "x2": 192.1875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "348_eu_direction_position_indication_unknown_0014051.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 112.5,
+        "y1": 98.4375,
+        "x2": 192.1875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "348_eu_direction_position_indication_unknown_0014052.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 112.5,
+        "y1": 98.4375,
+        "x2": 192.1875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "348_eu_direction_position_indication_unknown_0014053.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 112.5,
+        "y1": 98.4375,
+        "x2": 192.1875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "348_eu_direction_position_indication_unknown_0014054.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 112.5,
+        "y1": 98.4375,
+        "x2": 192.1875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "349_eu_direction_position_indication_unknown_0015328.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 105.46875,
+        "x2": 199.21875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "349_eu_direction_position_indication_unknown_0015329.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 105.46875,
+        "x2": 199.21875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "349_eu_direction_position_indication_unknown_0015330.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 105.46875,
+        "x2": 199.21875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "349_eu_direction_position_indication_unknown_0015331.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 105.46875,
+        "x2": 199.21875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "349_eu_direction_position_indication_unknown_0015332.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 105.46875,
+        "x2": 199.21875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "349_eu_direction_position_indication_unknown_0015333.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 105.46875,
+        "x2": 199.21875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "349_eu_direction_position_indication_unknown_0015334.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 106.25,
+        "x2": 198.4375,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "349_eu_direction_position_indication_unknown_0015335.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 106.25,
+        "x2": 198.4375,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "349_eu_direction_position_indication_unknown_0015336.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 106.25,
+        "x2": 198.4375,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "349_eu_direction_position_indication_unknown_0015337.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 106.25,
+        "x2": 198.4375,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "351_eu_blue_border_rectangle_unknown_0015330.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 104.6875,
+        "y1": 103.90625,
+        "x2": 188.28125,
+        "y2": 193.75
+    },
+    {
+        "image_name": "351_eu_blue_border_rectangle_unknown_0015331.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 104.6875,
+        "y1": 103.90625,
+        "x2": 188.28125,
+        "y2": 193.75
+    },
+    {
+        "image_name": "351_eu_blue_border_rectangle_unknown_0015332.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 104.6875,
+        "y1": 103.90625,
+        "x2": 188.28125,
+        "y2": 193.75
+    },
+    {
+        "image_name": "351_eu_blue_border_rectangle_unknown_0015333.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 104.6875,
+        "y1": 103.90625,
+        "x2": 188.28125,
+        "y2": 193.75
+    },
+    {
+        "image_name": "351_eu_blue_border_rectangle_unknown_0015334.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 104.6875,
+        "y1": 103.90625,
+        "x2": 188.28125,
+        "y2": 193.75
+    },
+    {
+        "image_name": "351_eu_blue_border_rectangle_unknown_0015335.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 104.6875,
+        "y1": 103.90625,
+        "x2": 188.28125,
+        "y2": 193.75
+    },
+    {
+        "image_name": "351_eu_blue_border_rectangle_unknown_0015336.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 104.6875,
+        "y1": 103.90625,
+        "x2": 188.28125,
+        "y2": 193.75
+    },
+    {
+        "image_name": "351_eu_blue_border_rectangle_unknown_0015337.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 104.6875,
+        "y1": 103.90625,
+        "x2": 188.28125,
+        "y2": 193.75
+    },
+    {
+        "image_name": "351_eu_blue_border_rectangle_unknown_0015338.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 104.6875,
+        "y1": 103.90625,
+        "x2": 188.28125,
+        "y2": 193.75
+    },
+    {
+        "image_name": "351_eu_blue_border_rectangle_unknown_0015339.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 104.6875,
+        "y1": 103.90625,
+        "x2": 188.28125,
+        "y2": 193.75
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015409.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 103.125,
+        "y1": 107.8125,
+        "x2": 196.09375,
+        "y2": 200.78125
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015410.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 103.125,
+        "y1": 107.8125,
+        "x2": 196.09375,
+        "y2": 200.78125
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015411.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 103.125,
+        "y1": 107.8125,
+        "x2": 196.09375,
+        "y2": 200.78125
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015412.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 103.125,
+        "y1": 107.8125,
+        "x2": 196.09375,
+        "y2": 200.78125
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015413.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 103.125,
+        "y1": 107.8125,
+        "x2": 196.09375,
+        "y2": 200.78125
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015414.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 103.125,
+        "y1": 107.8125,
+        "x2": 196.09375,
+        "y2": 200.78125
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015415.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 103.125,
+        "y1": 107.8125,
+        "x2": 196.09375,
+        "y2": 200.78125
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015416.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 103.125,
+        "y1": 107.8125,
+        "x2": 196.09375,
+        "y2": 200.78125
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015417.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 103.125,
+        "y1": 107.8125,
+        "x2": 196.09375,
+        "y2": 200.78125
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015418.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 103.125,
+        "y1": 107.8125,
+        "x2": 196.09375,
+        "y2": 200.78125
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015674.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 103.125,
+        "y1": 107.8125,
+        "x2": 196.09375,
+        "y2": 200.78125
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015679.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 103.125,
+        "y1": 107.8125,
+        "x2": 196.09375,
+        "y2": 200.78125
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015681.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015702.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015705.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015713.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015725.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015736.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015738.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015754.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015797.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015806.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015839.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015850.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015857.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015866.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015869.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015881.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015895.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015898.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015994.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0015999.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016005.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016009.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016014.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016017.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016024.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016047.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016056.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016062.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016213.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016214.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016215.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016216.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016217.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016227.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016232.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016248.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016249.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016347.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016437.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016440.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016441.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016444.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016445.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016446.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016449.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016450.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016451.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "352_eu_blue_ground_circle_unknown_0016452.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 104.6875,
+        "x2": 192.1875,
+        "y2": 200.0
+    },
+    {
+        "image_name": "353_eu_direction_position_indication_unknown_0016585.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 100.78125,
+        "x2": 193.75,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "353_eu_direction_position_indication_unknown_0016586.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 100.78125,
+        "x2": 193.75,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "353_eu_direction_position_indication_unknown_0016587.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 100.78125,
+        "x2": 193.75,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "353_eu_direction_position_indication_unknown_0016588.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 100.78125,
+        "x2": 193.75,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "353_eu_direction_position_indication_unknown_0016589.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 100.78125,
+        "x2": 193.75,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "353_eu_direction_position_indication_unknown_0016590.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 100.78125,
+        "x2": 193.75,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "353_eu_direction_position_indication_unknown_0016591.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 100.78125,
+        "x2": 193.75,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "353_eu_direction_position_indication_unknown_0016592.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 100.78125,
+        "x2": 193.75,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "353_eu_direction_position_indication_unknown_0016593.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 100.78125,
+        "x2": 193.75,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "353_eu_direction_position_indication_unknown_0016594.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 107.03125,
+        "y1": 100.78125,
+        "x2": 193.75,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "354_back_of_sign_0016561.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 139.84375,
+        "y1": 92.1875,
+        "x2": 192.96875,
+        "y2": 151.5625
+    },
+    {
+        "image_name": "354_back_of_sign_0016562.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 139.84375,
+        "y1": 92.1875,
+        "x2": 192.96875,
+        "y2": 151.5625
+    },
+    {
+        "image_name": "354_back_of_sign_0016563.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 139.84375,
+        "y1": 92.1875,
+        "x2": 192.96875,
+        "y2": 151.5625
+    },
+    {
+        "image_name": "354_back_of_sign_0016564.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 139.84375,
+        "y1": 92.1875,
+        "x2": 192.96875,
+        "y2": 151.5625
+    },
+    {
+        "image_name": "354_back_of_sign_0016565.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 139.84375,
+        "y1": 92.1875,
+        "x2": 192.96875,
+        "y2": 151.5625
+    },
+    {
+        "image_name": "354_back_of_sign_0016566.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 139.84375,
+        "y1": 92.1875,
+        "x2": 188.28125,
+        "y2": 150.0
+    },
+    {
+        "image_name": "354_back_of_sign_0016567.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 139.84375,
+        "y1": 92.1875,
+        "x2": 188.28125,
+        "y2": 150.0
+    },
+    {
+        "image_name": "354_back_of_sign_0016568.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 139.84375,
+        "y1": 92.1875,
+        "x2": 188.28125,
+        "y2": 150.0
+    },
+    {
+        "image_name": "354_back_of_sign_0016569.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 139.84375,
+        "y1": 92.1875,
+        "x2": 188.28125,
+        "y2": 150.0
+    },
+    {
+        "image_name": "354_back_of_sign_0016570.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 139.84375,
+        "y1": 92.1875,
+        "x2": 188.28125,
+        "y2": 150.0
+    },
+    {
+        "image_name": "355_eu_noentry_0016562.jpg",
+        "label": "eu_noentry",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "355_eu_noentry_0016563.jpg",
+        "label": "eu_noentry",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "355_eu_noentry_0016564.jpg",
+        "label": "eu_noentry",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "355_eu_noentry_0016565.jpg",
+        "label": "eu_noentry",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "355_eu_noentry_0016566.jpg",
+        "label": "eu_noentry",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "355_eu_noentry_0016567.jpg",
+        "label": "eu_noentry",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "355_eu_noentry_0016568.jpg",
+        "label": "eu_noentry",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "355_eu_noentry_0016569.jpg",
+        "label": "eu_noentry",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "355_eu_noentry_0016570.jpg",
+        "label": "eu_noentry",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "355_eu_noentry_0016571.jpg",
+        "label": "eu_noentry",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "356_eu_blue_border_rectangle_unknown_0016639.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "356_eu_blue_border_rectangle_unknown_0016640.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "356_eu_blue_border_rectangle_unknown_0016641.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "356_eu_blue_border_rectangle_unknown_0016642.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "356_eu_blue_border_rectangle_unknown_0016643.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "356_eu_blue_border_rectangle_unknown_0016644.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "356_eu_blue_border_rectangle_unknown_0016645.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 111.71875,
+        "y1": 101.5625,
+        "x2": 190.625,
+        "y2": 194.53125
+    },
+    {
+        "image_name": "356_eu_blue_border_rectangle_unknown_0016646.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 116.40625,
+        "y1": 102.34375,
+        "x2": 185.9375,
+        "y2": 192.1875
+    },
+    {
+        "image_name": "356_eu_blue_border_rectangle_unknown_0016647.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 116.40625,
+        "y1": 102.34375,
+        "x2": 185.9375,
+        "y2": 192.1875
+    },
+    {
+        "image_name": "356_eu_blue_border_rectangle_unknown_0016648.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 116.40625,
+        "y1": 102.34375,
+        "x2": 185.9375,
+        "y2": 192.1875
+    },
+    {
+        "image_name": "356_eu_blue_border_rectangle_unknown_0016657.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 135.9375,
+        "y1": 98.4375,
+        "x2": 185.15625,
+        "y2": 183.59375
+    },
+    {
+        "image_name": "356_eu_blue_border_rectangle_unknown_0016658.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 137.5,
+        "y1": 97.65625,
+        "x2": 178.90625,
+        "y2": 182.03125
+    },
+    {
+        "image_name": "356_eu_blue_border_rectangle_unknown_0016659.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 139.0625,
+        "y1": 100.0,
+        "x2": 177.34375,
+        "y2": 184.375
+    },
+    {
+        "image_name": "358_eu_blue_ground_rectangle_unknown_0016657.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 107.8125,
+        "y1": 103.90625,
+        "x2": 196.09375,
+        "y2": 201.5625
+    },
+    {
+        "image_name": "358_eu_blue_ground_rectangle_unknown_0016658.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 107.8125,
+        "y1": 103.90625,
+        "x2": 196.09375,
+        "y2": 201.5625
+    },
+    {
+        "image_name": "358_eu_blue_ground_rectangle_unknown_0016659.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 107.8125,
+        "y1": 103.90625,
+        "x2": 196.09375,
+        "y2": 201.5625
+    },
+    {
+        "image_name": "358_eu_blue_ground_rectangle_unknown_0016660.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 107.8125,
+        "y1": 103.90625,
+        "x2": 196.09375,
+        "y2": 201.5625
+    },
+    {
+        "image_name": "358_eu_blue_ground_rectangle_unknown_0016661.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 107.8125,
+        "y1": 103.90625,
+        "x2": 196.09375,
+        "y2": 201.5625
+    },
+    {
+        "image_name": "358_eu_blue_ground_rectangle_unknown_0016662.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 107.8125,
+        "y1": 103.90625,
+        "x2": 196.09375,
+        "y2": 201.5625
+    },
+    {
+        "image_name": "358_eu_blue_ground_rectangle_unknown_0016663.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 107.8125,
+        "y1": 103.90625,
+        "x2": 196.09375,
+        "y2": 201.5625
+    },
+    {
+        "image_name": "358_eu_blue_ground_rectangle_unknown_0016664.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 107.8125,
+        "y1": 103.90625,
+        "x2": 196.09375,
+        "y2": 201.5625
+    },
+    {
+        "image_name": "358_eu_blue_ground_rectangle_unknown_0016665.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 107.03125,
+        "y1": 105.46875,
+        "x2": 194.53125,
+        "y2": 199.21875
+    },
+    {
+        "image_name": "358_eu_blue_ground_rectangle_unknown_0016666.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 107.03125,
+        "y1": 105.46875,
+        "x2": 194.53125,
+        "y2": 199.21875
+    },
+    {
+        "image_name": "359_eu_direction_position_indication_unknown_0016681.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 99.21875,
+        "x2": 192.1875,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "359_eu_direction_position_indication_unknown_0016682.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 99.21875,
+        "x2": 192.1875,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "359_eu_direction_position_indication_unknown_0016683.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 99.21875,
+        "x2": 192.1875,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "359_eu_direction_position_indication_unknown_0016684.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 99.21875,
+        "x2": 192.1875,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "359_eu_direction_position_indication_unknown_0016685.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 99.21875,
+        "x2": 192.1875,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "359_eu_direction_position_indication_unknown_0016686.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 99.21875,
+        "x2": 192.1875,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "359_eu_direction_position_indication_unknown_0016687.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 99.21875,
+        "x2": 192.1875,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "359_eu_direction_position_indication_unknown_0016688.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 99.21875,
+        "x2": 192.1875,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "359_eu_direction_position_indication_unknown_0016689.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 99.21875,
+        "x2": 192.1875,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "359_eu_direction_position_indication_unknown_0016691.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 99.21875,
+        "x2": 192.1875,
+        "y2": 197.65625
+    },
+    {
+        "image_name": "360_eu_overtaking_not_allowed_by_trucks_0016768.jpg",
+        "label": "unknown_sign",
+        "x1": 95.3125,
+        "y1": 106.25,
+        "x2": 204.6875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "360_eu_overtaking_not_allowed_by_trucks_0016769.jpg",
+        "label": "unknown_sign",
+        "x1": 95.3125,
+        "y1": 106.25,
+        "x2": 204.6875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "360_eu_overtaking_not_allowed_by_trucks_0016770.jpg",
+        "label": "unknown_sign",
+        "x1": 89.84375,
+        "y1": 104.6875,
+        "x2": 207.8125,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "360_eu_overtaking_not_allowed_by_trucks_0016771.jpg",
+        "label": "unknown_sign",
+        "x1": 89.84375,
+        "y1": 104.6875,
+        "x2": 207.8125,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "360_eu_overtaking_not_allowed_by_trucks_0016772.jpg",
+        "label": "unknown_sign",
+        "x1": 86.71875,
+        "y1": 105.46875,
+        "x2": 213.28125,
+        "y2": 196.875
+    },
+    {
+        "image_name": "360_eu_overtaking_not_allowed_by_trucks_0016773.jpg",
+        "label": "unknown_sign",
+        "x1": 86.71875,
+        "y1": 105.46875,
+        "x2": 213.28125,
+        "y2": 196.875
+    },
+    {
+        "image_name": "360_eu_overtaking_not_allowed_by_trucks_0016774.jpg",
+        "label": "unknown_sign",
+        "x1": 82.8125,
+        "y1": 105.46875,
+        "x2": 217.1875,
+        "y2": 196.875
+    },
+    {
+        "image_name": "360_eu_overtaking_not_allowed_by_trucks_0016775.jpg",
+        "label": "unknown_sign",
+        "x1": 82.8125,
+        "y1": 105.46875,
+        "x2": 217.1875,
+        "y2": 196.875
+    },
+    {
+        "image_name": "360_eu_overtaking_not_allowed_by_trucks_0016787.jpg",
+        "label": "unknown_sign",
+        "x1": 31.25,
+        "y1": 89.84375,
+        "x2": 286.71875,
+        "y2": 179.6875
+    },
+    {
+        "image_name": "360_eu_overtaking_not_allowed_by_trucks_0016788.jpg",
+        "label": "unknown_sign",
+        "x1": 22.65625,
+        "y1": 83.59375,
+        "x2": 292.1875,
+        "y2": 178.125
+    },
+    {
+        "image_name": "361_eu_white_ground_rectangle_0016783.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 110.15625,
+        "y1": 101.5625,
+        "x2": 191.40625,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "361_eu_white_ground_rectangle_0016784.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 110.15625,
+        "y1": 101.5625,
+        "x2": 191.40625,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "361_eu_white_ground_rectangle_0016785.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 110.15625,
+        "y1": 101.5625,
+        "x2": 191.40625,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "361_eu_white_ground_rectangle_0016786.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 110.15625,
+        "y1": 101.5625,
+        "x2": 191.40625,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "361_eu_white_ground_rectangle_0016787.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 110.15625,
+        "y1": 101.5625,
+        "x2": 191.40625,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "361_eu_white_ground_rectangle_0016788.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 110.15625,
+        "y1": 101.5625,
+        "x2": 191.40625,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "361_eu_white_ground_rectangle_0016789.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 110.15625,
+        "y1": 101.5625,
+        "x2": 191.40625,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "361_eu_white_ground_rectangle_0016790.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 110.15625,
+        "y1": 101.5625,
+        "x2": 191.40625,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "361_eu_white_ground_rectangle_0016791.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 110.15625,
+        "y1": 101.5625,
+        "x2": 191.40625,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "361_eu_white_ground_rectangle_0016792.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 114.84375,
+        "y1": 99.21875,
+        "x2": 189.0625,
+        "y2": 192.96875
+    },
+    {
+        "image_name": "363_eu_priorityroad_ahead_0016853.jpg",
+        "label": "eu_priorityroad_ends",
+        "x1": 103.90625,
+        "y1": 96.09375,
+        "x2": 196.875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "363_eu_priorityroad_ahead_0016854.jpg",
+        "label": "eu_priorityroad_ends",
+        "x1": 103.90625,
+        "y1": 96.09375,
+        "x2": 196.875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "363_eu_priorityroad_ahead_0016855.jpg",
+        "label": "eu_priorityroad_ends",
+        "x1": 103.90625,
+        "y1": 96.09375,
+        "x2": 196.875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "363_eu_priorityroad_ahead_0016856.jpg",
+        "label": "eu_priorityroad_ends",
+        "x1": 103.90625,
+        "y1": 96.09375,
+        "x2": 196.875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "363_eu_priorityroad_ahead_0016857.jpg",
+        "label": "eu_priorityroad_ends",
+        "x1": 103.90625,
+        "y1": 96.09375,
+        "x2": 196.875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "363_eu_priorityroad_ahead_0016858.jpg",
+        "label": "eu_priorityroad_ends",
+        "x1": 103.90625,
+        "y1": 96.09375,
+        "x2": 196.875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "363_eu_priorityroad_ahead_0016859.jpg",
+        "label": "eu_priorityroad_ends",
+        "x1": 103.90625,
+        "y1": 96.09375,
+        "x2": 196.875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "363_eu_priorityroad_ahead_0016860.jpg",
+        "label": "eu_priorityroad_ends",
+        "x1": 103.90625,
+        "y1": 96.09375,
+        "x2": 196.875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "363_eu_priorityroad_ahead_0016861.jpg",
+        "label": "eu_priorityroad_ends",
+        "x1": 103.90625,
+        "y1": 96.09375,
+        "x2": 196.875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "363_eu_priorityroad_ahead_0016862.jpg",
+        "label": "eu_priorityroad_ends",
+        "x1": 103.90625,
+        "y1": 96.09375,
+        "x2": 196.875,
+        "y2": 196.09375
+    },
+    {
+        "image_name": "363_eu_priorityroad_ahead_0016882.jpg",
+        "label": "eu_priorityroad_ends",
+        "x1": 121.875,
+        "y1": 96.09375,
+        "x2": 171.09375,
+        "y2": 189.0625
+    },
+    {
+        "image_name": "364_eu_giveway_0016853.jpg",
+        "label": "eu_giveway",
+        "x1": 105.46875,
+        "y1": 108.59375,
+        "x2": 200.0,
+        "y2": 207.03125
+    },
+    {
+        "image_name": "364_eu_giveway_0016854.jpg",
+        "label": "eu_giveway",
+        "x1": 105.46875,
+        "y1": 108.59375,
+        "x2": 200.0,
+        "y2": 207.03125
+    },
+    {
+        "image_name": "364_eu_giveway_0016855.jpg",
+        "label": "eu_giveway",
+        "x1": 105.46875,
+        "y1": 108.59375,
+        "x2": 200.0,
+        "y2": 207.03125
+    },
+    {
+        "image_name": "364_eu_giveway_0016856.jpg",
+        "label": "eu_giveway",
+        "x1": 105.46875,
+        "y1": 108.59375,
+        "x2": 200.0,
+        "y2": 207.03125
+    },
+    {
+        "image_name": "364_eu_giveway_0016857.jpg",
+        "label": "eu_giveway",
+        "x1": 105.46875,
+        "y1": 108.59375,
+        "x2": 200.0,
+        "y2": 207.03125
+    },
+    {
+        "image_name": "364_eu_giveway_0016858.jpg",
+        "label": "eu_giveway",
+        "x1": 105.46875,
+        "y1": 108.59375,
+        "x2": 200.0,
+        "y2": 207.03125
+    },
+    {
+        "image_name": "364_eu_giveway_0016859.jpg",
+        "label": "eu_giveway",
+        "x1": 105.46875,
+        "y1": 108.59375,
+        "x2": 200.0,
+        "y2": 207.03125
+    },
+    {
+        "image_name": "364_eu_giveway_0016860.jpg",
+        "label": "eu_giveway",
+        "x1": 105.46875,
+        "y1": 108.59375,
+        "x2": 200.0,
+        "y2": 207.03125
+    },
+    {
+        "image_name": "364_eu_giveway_0016861.jpg",
+        "label": "eu_giveway",
+        "x1": 105.46875,
+        "y1": 108.59375,
+        "x2": 200.0,
+        "y2": 207.03125
+    },
+    {
+        "image_name": "364_eu_giveway_0016862.jpg",
+        "label": "eu_giveway",
+        "x1": 105.46875,
+        "y1": 108.59375,
+        "x2": 200.0,
+        "y2": 207.03125
+    },
+    {
+        "image_name": "366_eu_direction_position_indication_unknown_0016917.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 100.78125,
+        "y1": 105.46875,
+        "x2": 201.5625,
+        "y2": 192.96875
+    },
+    {
+        "image_name": "366_eu_direction_position_indication_unknown_0016918.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 100.78125,
+        "y1": 105.46875,
+        "x2": 201.5625,
+        "y2": 192.96875
+    },
+    {
+        "image_name": "366_eu_direction_position_indication_unknown_0016919.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 100.78125,
+        "y1": 105.46875,
+        "x2": 201.5625,
+        "y2": 192.96875
+    },
+    {
+        "image_name": "366_eu_direction_position_indication_unknown_0016920.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 100.78125,
+        "y1": 105.46875,
+        "x2": 201.5625,
+        "y2": 192.96875
+    },
+    {
+        "image_name": "366_eu_direction_position_indication_unknown_0016921.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 100.78125,
+        "y1": 105.46875,
+        "x2": 201.5625,
+        "y2": 192.96875
+    },
+    {
+        "image_name": "366_eu_direction_position_indication_unknown_0016922.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 100.78125,
+        "y1": 105.46875,
+        "x2": 201.5625,
+        "y2": 192.96875
+    },
+    {
+        "image_name": "366_eu_direction_position_indication_unknown_0016923.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 100.78125,
+        "y1": 105.46875,
+        "x2": 201.5625,
+        "y2": 192.96875
+    },
+    {
+        "image_name": "366_eu_direction_position_indication_unknown_0016924.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 96.09375,
+        "y1": 107.03125,
+        "x2": 207.03125,
+        "y2": 192.96875
+    },
+    {
+        "image_name": "366_eu_direction_position_indication_unknown_0016925.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 96.09375,
+        "y1": 107.03125,
+        "x2": 207.03125,
+        "y2": 192.96875
+    },
+    {
+        "image_name": "366_eu_direction_position_indication_unknown_0016926.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 94.53125,
+        "y1": 102.34375,
+        "x2": 210.15625,
+        "y2": 192.1875
+    },
+    {
+        "image_name": "367_eu_direction_position_indication_unknown_0016916.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 102.34375,
+        "x2": 192.96875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "367_eu_direction_position_indication_unknown_0016917.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 102.34375,
+        "x2": 192.96875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "367_eu_direction_position_indication_unknown_0016918.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 102.34375,
+        "x2": 192.96875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "367_eu_direction_position_indication_unknown_0016919.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 102.34375,
+        "x2": 192.96875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "367_eu_direction_position_indication_unknown_0016920.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 102.34375,
+        "x2": 192.96875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "367_eu_direction_position_indication_unknown_0016921.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 102.34375,
+        "x2": 192.96875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "367_eu_direction_position_indication_unknown_0016922.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 102.34375,
+        "x2": 192.96875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "367_eu_direction_position_indication_unknown_0016923.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 102.34375,
+        "x2": 192.96875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "367_eu_direction_position_indication_unknown_0016924.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 102.34375,
+        "x2": 192.96875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "367_eu_direction_position_indication_unknown_0016926.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.59375,
+        "y1": 102.34375,
+        "x2": 192.96875,
+        "y2": 195.3125
+    },
+    {
+        "image_name": "368_eu_additional_panel_0016988.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 108.59375,
+        "y1": 107.8125,
+        "x2": 199.21875,
+        "y2": 188.28125
+    },
+    {
+        "image_name": "368_eu_additional_panel_0016989.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 108.59375,
+        "y1": 107.8125,
+        "x2": 199.21875,
+        "y2": 188.28125
+    },
+    {
+        "image_name": "368_eu_additional_panel_0016990.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 108.59375,
+        "y1": 107.8125,
+        "x2": 199.21875,
+        "y2": 188.28125
+    },
+    {
+        "image_name": "368_eu_additional_panel_0016991.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 107.8125,
+        "y1": 100.78125,
+        "x2": 197.65625,
+        "y2": 191.40625
+    },
+    {
+        "image_name": "368_eu_additional_panel_0016992.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 107.8125,
+        "y1": 100.78125,
+        "x2": 197.65625,
+        "y2": 191.40625
+    },
+    {
+        "image_name": "368_eu_additional_panel_0016993.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 107.8125,
+        "y1": 100.78125,
+        "x2": 197.65625,
+        "y2": 191.40625
+    },
+    {
+        "image_name": "368_eu_additional_panel_0016994.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 108.59375,
+        "y1": 103.125,
+        "x2": 194.53125,
+        "y2": 190.625
+    },
+    {
+        "image_name": "368_eu_additional_panel_0016995.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 108.59375,
+        "y1": 103.125,
+        "x2": 194.53125,
+        "y2": 190.625
+    },
+    {
+        "image_name": "368_eu_additional_panel_0016996.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 111.71875,
+        "y1": 104.6875,
+        "x2": 191.40625,
+        "y2": 190.625
+    },
+    {
+        "image_name": "368_eu_additional_panel_0016997.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 111.71875,
+        "y1": 104.6875,
+        "x2": 191.40625,
+        "y2": 190.625
+    },
+    {
+        "image_name": "369_eu_blue_ground_circle_unknown_0017002.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 107.8125,
+        "x2": 195.3125,
+        "y2": 200.0
+    },
+    {
+        "image_name": "369_eu_blue_ground_circle_unknown_0017003.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 107.8125,
+        "x2": 195.3125,
+        "y2": 200.0
+    },
+    {
+        "image_name": "369_eu_blue_ground_circle_unknown_0017004.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 107.8125,
+        "x2": 195.3125,
+        "y2": 200.0
+    },
+    {
+        "image_name": "369_eu_blue_ground_circle_unknown_0017005.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 107.8125,
+        "x2": 195.3125,
+        "y2": 200.0
+    },
+    {
+        "image_name": "369_eu_blue_ground_circle_unknown_0017006.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 107.8125,
+        "x2": 195.3125,
+        "y2": 200.0
+    },
+    {
+        "image_name": "369_eu_blue_ground_circle_unknown_0017007.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 107.8125,
+        "x2": 195.3125,
+        "y2": 200.0
+    },
+    {
+        "image_name": "369_eu_blue_ground_circle_unknown_0017008.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 107.8125,
+        "x2": 195.3125,
+        "y2": 200.0
+    },
+    {
+        "image_name": "369_eu_blue_ground_circle_unknown_0017009.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.03125,
+        "y1": 107.8125,
+        "x2": 195.3125,
+        "y2": 200.0
+    },
+    {
+        "image_name": "369_eu_blue_ground_circle_unknown_0017010.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 106.25,
+        "y1": 98.4375,
+        "x2": 196.875,
+        "y2": 198.4375
+    },
+    {
+        "image_name": "369_eu_blue_ground_circle_unknown_0017011.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 106.25,
+        "y1": 98.4375,
+        "x2": 196.875,
+        "y2": 198.4375
+    },
+    {
+        "image_name": "370_eu_blue_ground_circle_unknown_0017007.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 116.40625,
+        "y1": 102.34375,
+        "x2": 182.03125,
+        "y2": 192.1875
+    },
+    {
+        "image_name": "370_eu_blue_ground_circle_unknown_0017008.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 116.40625,
+        "y1": 102.34375,
+        "x2": 182.03125,
+        "y2": 192.1875
+    },
+    {
+        "image_name": "370_eu_blue_ground_circle_unknown_0017009.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 116.40625,
+        "y1": 102.34375,
+        "x2": 182.03125,
+        "y2": 192.1875
     }
 ]
