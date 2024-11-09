@@ -868,7 +868,7 @@ class ImageLoader(QtWidgets.QWidget):
             index_data = {}  # If file does not exist, start fresh
 
         # Update or add the 'last_image_index'
-        index_data["last_image_index"] = self.file_index  # Assuming self.file_index holds the current index
+        index_data["last_image_index"] = len(self.annotation_2d_dict)  # Assuming self.file_index holds the current index
 
         # Write the updated data back to the JSON file
         with open(file_path, "w") as f:
