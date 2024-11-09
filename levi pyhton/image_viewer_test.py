@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 import argparse
 import json
-import os
-import sys
-import shutil
 import math
-import subprocess
+import os
 import platform
+import shutil
+import subprocess
+import sys
 
 #from PIL.ImageMath import imagemath_equal
 
@@ -17,8 +17,7 @@ from operator import truediv
 from traceback import print_tb"""
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QShortcut, QInputDialog, QListWidget, QLineEdit, QCompleter, \
-    QMenu, QTabWidget, QAction
+from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QShortcut, QInputDialog, QMenu, QAction
 #QApplication, QWidget, QVBoxLayout, QMainWindow, QGraphicsView, QGraphicsLineItem
 from PyQt5.QtGui import QPainter, QPen, QBrush, QPalette, QColor, QKeySequence
 #QPixmap, QColor
@@ -35,6 +34,7 @@ sign_types = None
 class ImageLoader(QtWidgets.QWidget):
     def __init__(self, us):
         QtWidgets.QWidget.__init__(self)
+
 
         layout = QtWidgets.QGridLayout(self)
         layout.setSpacing(10)
@@ -201,7 +201,7 @@ class ImageLoader(QtWidgets.QWidget):
         self.crossPos = None, None  # To store the cross position
         self.right_button_pressed = False
         self.coordinates = None
-        self.annotation_filename = "eu_traffic_sign_annotation.json"
+        self.annotation_filename = "eu_2_annotation.json"
 
         self.shortcut_save = QShortcut(QKeySequence("S"), self)
         self.shortcut_save.activated.connect(self.save_2d)
@@ -233,6 +233,11 @@ class ImageLoader(QtWidgets.QWidget):
         self.last_left_y = None
         self.last_right_x = None
         self.last_right_y = None
+
+        self.last_label = None
+        self.current_batch_index = None
+        self.last_batch_index = None
+        self.last_image = None
 
     def select_input_dir(self):
         self.input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Input Directory"))
@@ -285,8 +290,8 @@ class ImageLoader(QtWidgets.QWidget):
 
     def load_2d_annot(self):
         if self.directory_check():
-            if os.path.isfile(os.path.join(self.base_output_dir, "eu_traffic_sign_annotation.json")):
-                with ((open(os.path.join(self.base_output_dir, "eu_traffic_sign_annotation.json"), "r"))as stream):
+            if os.path.isfile(os.path.join(self.base_output_dir, "eu_2_annotation.json")):
+                with ((open(os.path.join(self.base_output_dir, "eu_2_annotation.json"), "r"))as stream):
                     self.annotation_2d_dict = json.load(stream)
                     #filename = self.current_file_name.split('/')[-1]
                     entry = self.search_annotation_by_image_name(self.annotation_2d_dict,self.full_current_file_name)
@@ -373,7 +378,7 @@ class ImageLoader(QtWidgets.QWidget):
 
                 self.saved_check_label.setText("Saved")
                 # Load existing annotations if any
-                annotation_file_path = os.path.join(self.base_output_dir, "eu_traffic_sign_annotation.json")
+                annotation_file_path = os.path.join(self.base_output_dir, "eu_2_annotation.json")
 
                 if os.path.exists(annotation_file_path):
                     with open(annotation_file_path, "r") as f:
@@ -427,20 +432,25 @@ class ImageLoader(QtWidgets.QWidget):
 
                 self.setWindowTitle(os.path.basename(self.full_current_file_name))
 
+                self.current_batch_index = self.full_current_file_name.split('_')[0]
+
                 first_underscore_idx = os.path.basename(self.full_current_file_name).find('_')  # Index of the first underscore
                 last_underscore_idx = os.path.basename(self.full_current_file_name).rfind('_')  # Index of the last underscore
 
-                if first_underscore_idx != -1 and last_underscore_idx != -1 and first_underscore_idx < last_underscore_idx:
-                    predicted_label = os.path.basename(self.full_current_file_name)[first_underscore_idx + 1:last_underscore_idx]  # Predicted label is between the first and last underscore
-                    found_label = False
-                    for action in self.menu.actions():
-                        if predicted_label == action.text():
-                            self.current_label = predicted_label
-                            self.button.setText(predicted_label)
-                            found_label = True
-                    if not found_label:
-                        self.current_label = "unknown_sign"
-                        self.button.setText("unknown_sign")
+                if self.current_batch_index != self.last_batch_index:
+                    if first_underscore_idx != -1 and last_underscore_idx != -1 and first_underscore_idx < last_underscore_idx:
+                        predicted_label = os.path.basename(self.full_current_file_name)[first_underscore_idx + 1:last_underscore_idx]  # Predicted label is between the first and last underscore
+                        found_label = False
+                        for action in self.menu.actions():
+                            if predicted_label == action.text():
+                                self.current_label = predicted_label
+                                self.button.setText(predicted_label)
+                                found_label = True
+                        if not found_label:
+                            self.current_label = "unknown_sign"
+                            self.button.setText("unknown_sign")
+                else:
+                    self.current_label = self.last_label
 
                 self.load_2d_annot()
 
@@ -458,6 +468,13 @@ class ImageLoader(QtWidgets.QWidget):
         if self.file_list:
             self.first = True
             self.file_index += 1
+            self.last_batch_index = self.full_current_file_name.split('_')[0]
+            self.last_image = self.search_annotation_by_image_name(self.annotation_2d_dict, self.full_current_file_name)
+            if self.last_image is not None:
+                self.last_label = self.last_image["label"]
+
+            print(self.last_label)
+            print(self.last_batch_index)
             self.load_image_and_set_name()
 
         else:
@@ -468,6 +485,7 @@ class ImageLoader(QtWidgets.QWidget):
         if self.file_list:
             self.first = True
             self.file_index -= 1
+            self.last_batch_index = self.full_current_file_name.split('_')[0]
             self.load_image_and_set_name()
 
         else:
@@ -682,7 +700,7 @@ class ImageLoader(QtWidgets.QWidget):
 
     def open_annotation_dir(self):
         self.directory_check()
-        if os.path.isfile(os.path.join(self.base_output_dir, "eu_traffic_sign_annotation.json")):
+        if os.path.isfile(os.path.join(self.base_output_dir, "eu_2_annotation.json")):
             if platform.system() == "Windows":
                 subprocess.Popen(f'explorer "{self.base_output_dir}"')
             else:  # Linux
@@ -694,8 +712,8 @@ class ImageLoader(QtWidgets.QWidget):
 
     def not_a_sign(self):
         self.directory_check()
-        if os.path.isfile(os.path.join(self.base_output_dir, "eu_traffic_sign_annotation.json")):
-            with open(os.path.join(self.base_output_dir, "eu_traffic_sign_annotation.json"), "r") as f:
+        if os.path.isfile(os.path.join(self.base_output_dir, "eu_2_annotation.json")):
+            with open(os.path.join(self.base_output_dir, "eu_2_annotation.json"), "r") as f:
                     self.annotation_2d_dict = json.load(f)
 
             annotation_entry = {
@@ -720,7 +738,7 @@ class ImageLoader(QtWidgets.QWidget):
                 # If the entry doesn't exist, append the new annotation entry
                 self.annotation_2d_dict.append(annotation_entry)
 
-            with open(os.path.join(self.base_output_dir, "eu_traffic_sign_annotation.json"), "w") as f:
+            with open(os.path.join(self.base_output_dir, "eu_2_annotation.json"), "w") as f:
                 json.dump(self.annotation_2d_dict, f, indent=4)
 
             self.info_label.setText("Not a sign saved")
@@ -800,11 +818,11 @@ class ImageLoader(QtWidgets.QWidget):
         else:
             self.info_label.setText("Directory not opened!")
 
-    def image_name_exists(self, annotation_list, filename):
-        for annotation in annotation_list:
-            if annotation["image_name"] == filename:
-                return True
-        return False
+    #def image_name_exists(self, annotation_list, filename):
+    #    for annotation in annotation_list:
+    #        if annotation["image_name"] == filename:
+    #           return True
+    #    return False
 
     @staticmethod
     def valid_coordinates(a, b, c, d):
