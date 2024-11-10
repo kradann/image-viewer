@@ -24270,5 +24270,5365 @@
         "y1": 117.56756756756756,
         "x2": 180.4054054054054,
         "y2": 179.7297297297297
+    },
+    {
+        "image_name": "454_eu_priorityroad_ahead_0022134.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.1081081081081,
+        "y1": 102.02702702702702,
+        "x2": 197.97297297297297,
+        "y2": 200.0
+    },
+    {
+        "image_name": "454_eu_priorityroad_ahead_0022135.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.1081081081081,
+        "y1": 102.02702702702702,
+        "x2": 197.97297297297297,
+        "y2": 200.0
+    },
+    {
+        "image_name": "454_eu_priorityroad_ahead_0022136.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.1081081081081,
+        "y1": 102.02702702702702,
+        "x2": 197.97297297297297,
+        "y2": 200.0
+    },
+    {
+        "image_name": "454_eu_priorityroad_ahead_0022137.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.1081081081081,
+        "y1": 102.02702702702702,
+        "x2": 197.97297297297297,
+        "y2": 200.0
+    },
+    {
+        "image_name": "454_eu_priorityroad_ahead_0022138.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.1081081081081,
+        "y1": 102.02702702702702,
+        "x2": 197.97297297297297,
+        "y2": 200.0
+    },
+    {
+        "image_name": "454_eu_priorityroad_ahead_0022139.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.1081081081081,
+        "y1": 102.02702702702702,
+        "x2": 197.97297297297297,
+        "y2": 200.0
+    },
+    {
+        "image_name": "454_eu_priorityroad_ahead_0022140.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.1081081081081,
+        "y1": 102.02702702702702,
+        "x2": 197.97297297297297,
+        "y2": 200.0
+    },
+    {
+        "image_name": "454_eu_priorityroad_ahead_0022141.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.1081081081081,
+        "y1": 102.02702702702702,
+        "x2": 197.97297297297297,
+        "y2": 200.0
+    },
+    {
+        "image_name": "454_eu_priorityroad_ahead_0022142.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.1081081081081,
+        "y1": 102.02702702702702,
+        "x2": 197.97297297297297,
+        "y2": 200.0
+    },
+    {
+        "image_name": "454_eu_priorityroad_ahead_0022143.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.1081081081081,
+        "y1": 102.02702702702702,
+        "x2": 197.97297297297297,
+        "y2": 200.0
+    },
+    {
+        "image_name": "493_eu_red_border_up_triangle_unknown_0022856.jpg",
+        "label": "unknown_sign",
+        "x1": 89.86486486486486,
+        "y1": 113.51351351351352,
+        "x2": 206.75675675675674,
+        "y2": 181.75675675675674
+    },
+    {
+        "image_name": "493_eu_red_border_up_triangle_unknown_0022857.jpg",
+        "label": "unknown_sign",
+        "x1": 89.86486486486486,
+        "y1": 113.51351351351352,
+        "x2": 206.75675675675674,
+        "y2": 181.75675675675674
+    },
+    {
+        "image_name": "493_eu_red_border_up_triangle_unknown_0022858.jpg",
+        "label": "unknown_sign",
+        "x1": 86.48648648648648,
+        "y1": 112.83783783783784,
+        "x2": 210.13513513513513,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "493_eu_red_border_up_triangle_unknown_0022859.jpg",
+        "label": "unknown_sign",
+        "x1": 86.48648648648648,
+        "y1": 112.83783783783784,
+        "x2": 210.13513513513513,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "493_eu_red_border_up_triangle_unknown_0022860.jpg",
+        "label": "unknown_sign",
+        "x1": 83.10810810810811,
+        "y1": 111.48648648648648,
+        "x2": 213.51351351351352,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "493_eu_red_border_up_triangle_unknown_0022861.jpg",
+        "label": "unknown_sign",
+        "x1": 83.10810810810811,
+        "y1": 111.48648648648648,
+        "x2": 213.51351351351352,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "493_eu_red_border_up_triangle_unknown_0022862.jpg",
+        "label": "unknown_sign",
+        "x1": 79.72972972972973,
+        "y1": 110.13513513513513,
+        "x2": 216.2162162162162,
+        "y2": 183.78378378378378
+    },
+    {
+        "image_name": "493_eu_red_border_up_triangle_unknown_0022863.jpg",
+        "label": "unknown_sign",
+        "x1": 79.72972972972973,
+        "y1": 110.13513513513513,
+        "x2": 216.2162162162162,
+        "y2": 183.78378378378378
+    },
+    {
+        "image_name": "493_eu_red_border_up_triangle_unknown_0022864.jpg",
+        "label": "unknown_sign",
+        "x1": 79.72972972972973,
+        "y1": 110.13513513513513,
+        "x2": 216.2162162162162,
+        "y2": 183.78378378378378
+    },
+    {
+        "image_name": "493_eu_red_border_up_triangle_unknown_0022865.jpg",
+        "label": "unknown_sign",
+        "x1": 76.35135135135135,
+        "y1": 106.75675675675676,
+        "x2": 220.94594594594594,
+        "y2": 184.45945945945945
+    },
+    {
+        "image_name": "494_eu_white_ground_rectangle_0022894.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 107.43243243243244,
+        "y1": 100.0,
+        "x2": 190.54054054054055,
+        "y2": 179.05405405405406
+    },
+    {
+        "image_name": "494_eu_white_ground_rectangle_0022895.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 107.43243243243244,
+        "y1": 100.0,
+        "x2": 190.54054054054055,
+        "y2": 179.05405405405406
+    },
+    {
+        "image_name": "494_eu_white_ground_rectangle_0022896.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 107.43243243243244,
+        "y1": 93.91891891891892,
+        "x2": 190.54054054054055,
+        "y2": 181.75675675675674
+    },
+    {
+        "image_name": "494_eu_white_ground_rectangle_0022897.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 104.72972972972973,
+        "y1": 90.54054054054053,
+        "x2": 189.86486486486487,
+        "y2": 182.43243243243242
+    },
+    {
+        "image_name": "494_eu_white_ground_rectangle_0022898.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 104.72972972972973,
+        "y1": 87.83783783783784,
+        "x2": 192.56756756756755,
+        "y2": 184.45945945945945
+    },
+    {
+        "image_name": "494_eu_white_ground_rectangle_0022899.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 102.02702702702702,
+        "y1": 85.13513513513513,
+        "x2": 191.89189189189187,
+        "y2": 185.8108108108108
+    },
+    {
+        "image_name": "494_eu_white_ground_rectangle_0022900.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 102.02702702702702,
+        "y1": 85.13513513513513,
+        "x2": 191.89189189189187,
+        "y2": 185.8108108108108
+    },
+    {
+        "image_name": "494_eu_white_ground_rectangle_0022902.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 91.89189189189189,
+        "y1": 77.02702702702703,
+        "x2": 197.2972972972973,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "494_eu_white_ground_rectangle_0022903.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 91.89189189189189,
+        "y1": 77.02702702702703,
+        "x2": 197.2972972972973,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "495_eu_blue_ground_circle_unknown_0022917.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 104.72972972972973,
+        "y1": 95.27027027027027,
+        "x2": 200.67567567567568,
+        "y2": 182.43243243243242
+    },
+    {
+        "image_name": "495_eu_blue_ground_circle_unknown_0022918.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 104.72972972972973,
+        "y1": 95.27027027027027,
+        "x2": 200.67567567567568,
+        "y2": 182.43243243243242
+    },
+    {
+        "image_name": "495_eu_blue_ground_circle_unknown_0022919.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 99.32432432432432,
+        "y1": 94.5945945945946,
+        "x2": 207.43243243243242,
+        "y2": 183.78378378378378
+    },
+    {
+        "image_name": "495_eu_blue_ground_circle_unknown_0022920.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 99.32432432432432,
+        "y1": 94.5945945945946,
+        "x2": 207.43243243243242,
+        "y2": 183.78378378378378
+    },
+    {
+        "image_name": "496_eu_blue_ground_circle_unknown_0022893.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 98.64864864864865,
+        "x2": 194.59459459459458,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "496_eu_blue_ground_circle_unknown_0022894.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 98.64864864864865,
+        "x2": 194.59459459459458,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "496_eu_blue_ground_circle_unknown_0022895.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 98.64864864864865,
+        "x2": 194.59459459459458,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "496_eu_blue_ground_circle_unknown_0022896.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 98.64864864864865,
+        "x2": 194.59459459459458,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "496_eu_blue_ground_circle_unknown_0022897.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 98.64864864864865,
+        "x2": 194.59459459459458,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "496_eu_blue_ground_circle_unknown_0022898.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 98.64864864864865,
+        "x2": 194.59459459459458,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "496_eu_blue_ground_circle_unknown_0022899.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 98.64864864864865,
+        "x2": 194.59459459459458,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "496_eu_blue_ground_circle_unknown_0022900.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 98.64864864864865,
+        "x2": 194.59459459459458,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "496_eu_blue_ground_circle_unknown_0022901.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 98.64864864864865,
+        "x2": 194.59459459459458,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "496_eu_blue_ground_circle_unknown_0022902.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 98.64864864864865,
+        "x2": 194.59459459459458,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "497_eu_blue_ground_circle_unknown_0022894.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.16216216216216,
+        "y1": 105.4054054054054,
+        "x2": 187.16216216216216,
+        "y2": 197.2972972972973
+    },
+    {
+        "image_name": "497_eu_blue_ground_circle_unknown_0022895.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.16216216216216,
+        "y1": 105.4054054054054,
+        "x2": 187.16216216216216,
+        "y2": 197.2972972972973
+    },
+    {
+        "image_name": "497_eu_blue_ground_circle_unknown_0022896.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.16216216216216,
+        "y1": 105.4054054054054,
+        "x2": 187.16216216216216,
+        "y2": 197.2972972972973
+    },
+    {
+        "image_name": "497_eu_blue_ground_circle_unknown_0022897.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.16216216216216,
+        "y1": 105.4054054054054,
+        "x2": 187.16216216216216,
+        "y2": 197.2972972972973
+    },
+    {
+        "image_name": "497_eu_blue_ground_circle_unknown_0022898.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 100.67567567567568,
+        "x2": 185.13513513513513,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "497_eu_blue_ground_circle_unknown_0022899.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 100.67567567567568,
+        "x2": 185.13513513513513,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "497_eu_blue_ground_circle_unknown_0022900.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 100.67567567567568,
+        "x2": 185.13513513513513,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "497_eu_blue_ground_circle_unknown_0022901.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 100.67567567567568,
+        "x2": 185.13513513513513,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "497_eu_blue_ground_circle_unknown_0022902.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 116.21621621621621,
+        "y1": 103.37837837837837,
+        "x2": 183.78378378378378,
+        "y2": 197.2972972972973
+    },
+    {
+        "image_name": "497_eu_blue_ground_circle_unknown_0022903.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 116.21621621621621,
+        "y1": 103.37837837837837,
+        "x2": 183.78378378378378,
+        "y2": 197.2972972972973
+    },
+    {
+        "image_name": "498_eu_blue_ground_rectangle_unknown_0022898.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 108.1081081081081,
+        "y1": 93.24324324324324,
+        "x2": 192.56756756756755,
+        "y2": 185.13513513513513
+    },
+    {
+        "image_name": "498_eu_blue_ground_rectangle_unknown_0022899.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 108.1081081081081,
+        "y1": 93.24324324324324,
+        "x2": 192.56756756756755,
+        "y2": 185.13513513513513
+    },
+    {
+        "image_name": "498_eu_blue_ground_rectangle_unknown_0022900.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 108.1081081081081,
+        "y1": 93.24324324324324,
+        "x2": 192.56756756756755,
+        "y2": 185.13513513513513
+    },
+    {
+        "image_name": "498_eu_blue_ground_rectangle_unknown_0022901.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 108.1081081081081,
+        "y1": 93.24324324324324,
+        "x2": 192.56756756756755,
+        "y2": 185.13513513513513
+    },
+    {
+        "image_name": "498_eu_blue_ground_rectangle_unknown_0022902.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 108.1081081081081,
+        "y1": 93.24324324324324,
+        "x2": 192.56756756756755,
+        "y2": 185.13513513513513
+    },
+    {
+        "image_name": "498_eu_blue_ground_rectangle_unknown_0022903.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 108.1081081081081,
+        "y1": 93.24324324324324,
+        "x2": 192.56756756756755,
+        "y2": 185.13513513513513
+    },
+    {
+        "image_name": "498_eu_blue_ground_rectangle_unknown_0022904.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 100.0,
+        "y1": 95.27027027027027,
+        "x2": 197.97297297297297,
+        "y2": 185.13513513513513
+    },
+    {
+        "image_name": "498_eu_blue_ground_rectangle_unknown_0022905.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 100.0,
+        "y1": 95.27027027027027,
+        "x2": 197.97297297297297,
+        "y2": 185.13513513513513
+    },
+    {
+        "image_name": "498_eu_blue_ground_rectangle_unknown_0022906.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 100.0,
+        "y1": 95.27027027027027,
+        "x2": 197.97297297297297,
+        "y2": 185.13513513513513
+    },
+    {
+        "image_name": "498_eu_blue_ground_rectangle_unknown_0022907.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 100.0,
+        "y1": 95.27027027027027,
+        "x2": 197.97297297297297,
+        "y2": 185.13513513513513
+    },
+    {
+        "image_name": "499_eu_speedlimit_40_0022917.jpg",
+        "label": "eu_speedlimit_40",
+        "x1": 105.4054054054054,
+        "y1": 104.05405405405405,
+        "x2": 191.89189189189187,
+        "y2": 202.02702702702703
+    },
+    {
+        "image_name": "499_eu_speedlimit_40_0022918.jpg",
+        "label": "eu_speedlimit_40",
+        "x1": 105.4054054054054,
+        "y1": 104.05405405405405,
+        "x2": 191.89189189189187,
+        "y2": 202.02702702702703
+    },
+    {
+        "image_name": "499_eu_speedlimit_40_0022919.jpg",
+        "label": "eu_speedlimit_40",
+        "x1": 110.13513513513513,
+        "y1": 102.7027027027027,
+        "x2": 190.54054054054055,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "499_eu_speedlimit_40_0022920.jpg",
+        "label": "eu_speedlimit_40",
+        "x1": 110.13513513513513,
+        "y1": 102.7027027027027,
+        "x2": 190.54054054054055,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "499_eu_speedlimit_40_0022921.jpg",
+        "label": "eu_speedlimit_40",
+        "x1": 110.13513513513513,
+        "y1": 102.7027027027027,
+        "x2": 190.54054054054055,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "499_eu_speedlimit_40_0022922.jpg",
+        "label": "eu_speedlimit_40",
+        "x1": 110.13513513513513,
+        "y1": 102.7027027027027,
+        "x2": 190.54054054054055,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "499_eu_speedlimit_40_0022923.jpg",
+        "label": "eu_speedlimit_40",
+        "x1": 110.13513513513513,
+        "y1": 102.7027027027027,
+        "x2": 190.54054054054055,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "499_eu_speedlimit_40_0022924.jpg",
+        "label": "eu_speedlimit_40",
+        "x1": 110.13513513513513,
+        "y1": 102.7027027027027,
+        "x2": 190.54054054054055,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "499_eu_speedlimit_40_0022925.jpg",
+        "label": "eu_speedlimit_40",
+        "x1": 110.13513513513513,
+        "y1": 102.7027027027027,
+        "x2": 190.54054054054055,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "499_eu_speedlimit_40_0022926.jpg",
+        "label": "eu_speedlimit_40",
+        "x1": 110.13513513513513,
+        "y1": 102.7027027027027,
+        "x2": 190.54054054054055,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "49_eu_direction_position_indication_unknown_0002707.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 100.0,
+        "y1": 101.35135135135135,
+        "x2": 195.94594594594594,
+        "y2": 200.0
+    },
+    {
+        "image_name": "49_eu_direction_position_indication_unknown_0002708.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 100.0,
+        "y1": 101.35135135135135,
+        "x2": 195.94594594594594,
+        "y2": 200.0
+    },
+    {
+        "image_name": "49_eu_direction_position_indication_unknown_0002709.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 100.0,
+        "y1": 101.35135135135135,
+        "x2": 195.94594594594594,
+        "y2": 200.0
+    },
+    {
+        "image_name": "49_eu_direction_position_indication_unknown_0002710.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 104.05405405405405,
+        "y1": 100.0,
+        "x2": 197.2972972972973,
+        "y2": 203.3783783783784
+    },
+    {
+        "image_name": "49_eu_direction_position_indication_unknown_0002711.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 105.4054054054054,
+        "y1": 92.56756756756756,
+        "x2": 196.6216216216216,
+        "y2": 204.7297297297297
+    },
+    {
+        "image_name": "49_eu_direction_position_indication_unknown_0002712.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 105.4054054054054,
+        "y1": 92.56756756756756,
+        "x2": 196.6216216216216,
+        "y2": 204.7297297297297
+    },
+    {
+        "image_name": "49_eu_direction_position_indication_unknown_0002713.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 104.72972972972973,
+        "y1": 85.13513513513513,
+        "x2": 199.32432432432432,
+        "y2": 210.13513513513513
+    },
+    {
+        "image_name": "49_eu_direction_position_indication_unknown_0002714.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 104.72972972972973,
+        "y1": 85.13513513513513,
+        "x2": 199.32432432432432,
+        "y2": 210.13513513513513
+    },
+    {
+        "image_name": "49_eu_direction_position_indication_unknown_0002715.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 95.94594594594594,
+        "y1": 78.37837837837837,
+        "x2": 203.3783783783784,
+        "y2": 222.2972972972973
+    },
+    {
+        "image_name": "49_eu_direction_position_indication_unknown_0002717.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 104.05405405405405,
+        "y1": 67.56756756756756,
+        "x2": 210.13513513513513,
+        "y2": 228.3783783783784
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001122.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 108.78378378378378,
+        "y1": 102.7027027027027,
+        "x2": 197.2972972972973,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001123.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 108.78378378378378,
+        "y1": 102.7027027027027,
+        "x2": 197.2972972972973,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001124.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 108.78378378378378,
+        "y1": 102.7027027027027,
+        "x2": 197.2972972972973,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001125.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 108.78378378378378,
+        "y1": 102.7027027027027,
+        "x2": 197.2972972972973,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001126.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 108.78378378378378,
+        "y1": 102.7027027027027,
+        "x2": 197.2972972972973,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001127.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 108.78378378378378,
+        "y1": 102.7027027027027,
+        "x2": 197.2972972972973,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001128.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 108.1081081081081,
+        "y1": 100.0,
+        "x2": 196.6216216216216,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001129.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 108.1081081081081,
+        "y1": 100.0,
+        "x2": 196.6216216216216,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001130.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 108.1081081081081,
+        "y1": 100.0,
+        "x2": 196.6216216216216,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001131.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 101.35135135135135,
+        "y1": 99.32432432432432,
+        "x2": 193.9189189189189,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001132.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 101.35135135135135,
+        "y1": 99.32432432432432,
+        "x2": 193.9189189189189,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001133.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 101.35135135135135,
+        "y1": 99.32432432432432,
+        "x2": 193.9189189189189,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001134.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 101.35135135135135,
+        "y1": 99.32432432432432,
+        "x2": 193.9189189189189,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001135.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 95.94594594594594,
+        "y1": 95.94594594594594,
+        "x2": 189.86486486486487,
+        "y2": 201.35135135135135
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001136.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 89.1891891891892,
+        "y1": 93.91891891891892,
+        "x2": 186.48648648648648,
+        "y2": 206.08108108108107
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001137.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 85.8108108108108,
+        "y1": 93.24324324324324,
+        "x2": 185.13513513513513,
+        "y2": 212.16216216216216
+    },
+    {
+        "image_name": "4_eu_nostop_nopark_0001140.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 50.0,
+        "y1": 89.86486486486486,
+        "x2": 168.9189189189189,
+        "y2": 221.6216216216216
+    },
+    {
+        "image_name": "501_eu_blue_ground_circle_unknown_0022891.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 114.1891891891892,
+        "y1": 102.02702702702702,
+        "x2": 185.8108108108108,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "501_eu_blue_ground_circle_unknown_0022892.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 114.1891891891892,
+        "y1": 102.02702702702702,
+        "x2": 185.8108108108108,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "501_eu_blue_ground_circle_unknown_0022893.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 114.1891891891892,
+        "y1": 102.02702702702702,
+        "x2": 185.8108108108108,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "501_eu_blue_ground_circle_unknown_0022894.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 99.32432432432432,
+        "x2": 192.56756756756755,
+        "y2": 200.67567567567568
+    },
+    {
+        "image_name": "501_eu_blue_ground_circle_unknown_0022895.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 99.32432432432432,
+        "x2": 192.56756756756755,
+        "y2": 200.67567567567568
+    },
+    {
+        "image_name": "501_eu_blue_ground_circle_unknown_0022896.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 110.8108108108108,
+        "y1": 100.0,
+        "x2": 189.86486486486487,
+        "y2": 200.67567567567568
+    },
+    {
+        "image_name": "501_eu_blue_ground_circle_unknown_0022897.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 110.8108108108108,
+        "y1": 100.0,
+        "x2": 189.86486486486487,
+        "y2": 200.67567567567568
+    },
+    {
+        "image_name": "501_eu_blue_ground_circle_unknown_0022898.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 100.0,
+        "x2": 193.9189189189189,
+        "y2": 201.35135135135135
+    },
+    {
+        "image_name": "501_eu_blue_ground_circle_unknown_0022899.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 100.0,
+        "x2": 193.9189189189189,
+        "y2": 201.35135135135135
+    },
+    {
+        "image_name": "501_eu_blue_ground_circle_unknown_0022900.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 100.0,
+        "x2": 193.9189189189189,
+        "y2": 201.35135135135135
+    },
+    {
+        "image_name": "502_eu_pedestrian_crossing_0022893.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 114.86486486486486,
+        "y1": 98.64864864864865,
+        "x2": 189.1891891891892,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "502_eu_pedestrian_crossing_0022894.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 100.67567567567568,
+        "x2": 191.21621621621622,
+        "y2": 200.67567567567568
+    },
+    {
+        "image_name": "502_eu_pedestrian_crossing_0022895.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 100.67567567567568,
+        "x2": 191.21621621621622,
+        "y2": 200.67567567567568
+    },
+    {
+        "image_name": "502_eu_pedestrian_crossing_0022896.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 100.67567567567568,
+        "x2": 191.21621621621622,
+        "y2": 200.67567567567568
+    },
+    {
+        "image_name": "502_eu_pedestrian_crossing_0022897.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 103.37837837837837,
+        "x2": 191.21621621621622,
+        "y2": 201.35135135135135
+    },
+    {
+        "image_name": "502_eu_pedestrian_crossing_0022898.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 103.37837837837837,
+        "x2": 191.21621621621622,
+        "y2": 201.35135135135135
+    },
+    {
+        "image_name": "502_eu_pedestrian_crossing_0022899.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 103.37837837837837,
+        "x2": 191.21621621621622,
+        "y2": 201.35135135135135
+    },
+    {
+        "image_name": "502_eu_pedestrian_crossing_0022900.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 103.37837837837837,
+        "x2": 191.21621621621622,
+        "y2": 201.35135135135135
+    },
+    {
+        "image_name": "504_eu_blue_ground_circle_unknown_0022976.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 120.94594594594594,
+        "y1": 118.24324324324324,
+        "x2": 183.1081081081081,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "504_eu_blue_ground_circle_unknown_0022977.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 120.94594594594594,
+        "y1": 118.24324324324324,
+        "x2": 183.1081081081081,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "504_eu_blue_ground_circle_unknown_0022978.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 120.94594594594594,
+        "y1": 118.24324324324324,
+        "x2": 183.1081081081081,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "504_eu_blue_ground_circle_unknown_0022979.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 120.94594594594594,
+        "y1": 118.24324324324324,
+        "x2": 183.1081081081081,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "504_eu_blue_ground_circle_unknown_0022980.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 120.94594594594594,
+        "y1": 118.24324324324324,
+        "x2": 183.1081081081081,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "504_eu_blue_ground_circle_unknown_0022981.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 120.94594594594594,
+        "y1": 118.24324324324324,
+        "x2": 183.1081081081081,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "504_eu_blue_ground_circle_unknown_0022982.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 120.94594594594594,
+        "y1": 118.24324324324324,
+        "x2": 183.1081081081081,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "504_eu_blue_ground_circle_unknown_0022983.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 120.94594594594594,
+        "y1": 118.24324324324324,
+        "x2": 183.1081081081081,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "504_eu_blue_ground_circle_unknown_0022984.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 120.94594594594594,
+        "y1": 118.24324324324324,
+        "x2": 183.1081081081081,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "504_eu_blue_ground_circle_unknown_0022985.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 120.94594594594594,
+        "y1": 114.86486486486486,
+        "x2": 185.13513513513513,
+        "y2": 181.08108108108107
+    },
+    {
+        "image_name": "505_eu_priorityroad_ahead_0023071.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 116.21621621621621,
+        "y1": 120.27027027027027,
+        "x2": 176.35135135135135,
+        "y2": 158.78378378378378
+    },
+    {
+        "image_name": "505_eu_priorityroad_ahead_0023072.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 116.21621621621621,
+        "y1": 120.27027027027027,
+        "x2": 176.35135135135135,
+        "y2": 158.78378378378378
+    },
+    {
+        "image_name": "505_eu_priorityroad_ahead_0023073.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 116.21621621621621,
+        "y1": 120.27027027027027,
+        "x2": 176.35135135135135,
+        "y2": 158.78378378378378
+    },
+    {
+        "image_name": "505_eu_priorityroad_ahead_0023074.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 116.21621621621621,
+        "y1": 120.27027027027027,
+        "x2": 176.35135135135135,
+        "y2": 158.78378378378378
+    },
+    {
+        "image_name": "505_eu_priorityroad_ahead_0023075.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 116.21621621621621,
+        "y1": 120.27027027027027,
+        "x2": 176.35135135135135,
+        "y2": 158.78378378378378
+    },
+    {
+        "image_name": "505_eu_priorityroad_ahead_0023076.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 116.21621621621621,
+        "y1": 120.27027027027027,
+        "x2": 176.35135135135135,
+        "y2": 158.78378378378378
+    },
+    {
+        "image_name": "505_eu_priorityroad_ahead_0023077.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 116.21621621621621,
+        "y1": 120.27027027027027,
+        "x2": 176.35135135135135,
+        "y2": 158.78378378378378
+    },
+    {
+        "image_name": "505_eu_priorityroad_ahead_0023078.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 113.51351351351352,
+        "x2": 173.64864864864865,
+        "y2": 160.13513513513513
+    },
+    {
+        "image_name": "505_eu_priorityroad_ahead_0023079.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 113.51351351351352,
+        "x2": 173.64864864864865,
+        "y2": 160.13513513513513
+    },
+    {
+        "image_name": "505_eu_priorityroad_ahead_0023080.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 113.51351351351352,
+        "x2": 173.64864864864865,
+        "y2": 160.13513513513513
+    },
+    {
+        "image_name": "506_eu_speedlimit_30_0023071.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 104.05405405405405,
+        "y1": 102.7027027027027,
+        "x2": 192.56756756756755,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "506_eu_speedlimit_30_0023072.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 104.05405405405405,
+        "y1": 102.7027027027027,
+        "x2": 192.56756756756755,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "506_eu_speedlimit_30_0023073.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 104.05405405405405,
+        "y1": 102.7027027027027,
+        "x2": 192.56756756756755,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "506_eu_speedlimit_30_0023074.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 104.05405405405405,
+        "y1": 102.7027027027027,
+        "x2": 192.56756756756755,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "506_eu_speedlimit_30_0023075.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 104.05405405405405,
+        "y1": 102.7027027027027,
+        "x2": 192.56756756756755,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "506_eu_speedlimit_30_0023076.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 104.05405405405405,
+        "y1": 102.7027027027027,
+        "x2": 192.56756756756755,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "506_eu_speedlimit_30_0023077.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 104.05405405405405,
+        "y1": 102.7027027027027,
+        "x2": 192.56756756756755,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "506_eu_speedlimit_30_0023078.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 104.05405405405405,
+        "y1": 102.7027027027027,
+        "x2": 192.56756756756755,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "506_eu_speedlimit_30_0023079.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 104.05405405405405,
+        "y1": 102.7027027027027,
+        "x2": 192.56756756756755,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "506_eu_speedlimit_30_0023080.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 105.4054054054054,
+        "y1": 100.0,
+        "x2": 191.89189189189187,
+        "y2": 192.56756756756755
+    },
+    {
+        "image_name": "507_unknown_0023106.jpg",
+        "label": "unknown_sign",
+        "x1": 81.75675675675676,
+        "y1": 101.35135135135135,
+        "x2": 200.0,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "507_unknown_0023107.jpg",
+        "label": "unknown_sign",
+        "x1": 81.75675675675676,
+        "y1": 101.35135135135135,
+        "x2": 200.0,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "507_unknown_0023108.jpg",
+        "label": "unknown_sign",
+        "x1": 77.7027027027027,
+        "y1": 97.29729729729729,
+        "x2": 203.3783783783784,
+        "y2": 192.56756756756755
+    },
+    {
+        "image_name": "507_unknown_0023109.jpg",
+        "label": "unknown_sign",
+        "x1": 77.7027027027027,
+        "y1": 97.29729729729729,
+        "x2": 203.3783783783784,
+        "y2": 192.56756756756755
+    },
+    {
+        "image_name": "507_unknown_0023110.jpg",
+        "label": "unknown_sign",
+        "x1": 60.81081081081081,
+        "y1": 93.24324324324324,
+        "x2": 204.7297297297297,
+        "y2": 192.56756756756755
+    },
+    {
+        "image_name": "507_unknown_0023111.jpg",
+        "label": "unknown_sign",
+        "x1": 54.05405405405405,
+        "y1": 99.32432432432432,
+        "x2": 209.45945945945945,
+        "y2": 192.56756756756755
+    },
+    {
+        "image_name": "507_unknown_0023112.jpg",
+        "label": "unknown_sign",
+        "x1": 54.05405405405405,
+        "y1": 99.32432432432432,
+        "x2": 209.45945945945945,
+        "y2": 192.56756756756755
+    },
+    {
+        "image_name": "507_unknown_0023113.jpg",
+        "label": "unknown_sign",
+        "x1": 51.35135135135135,
+        "y1": 98.64864864864865,
+        "x2": 214.86486486486487,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "507_unknown_0023114.jpg",
+        "label": "unknown_sign",
+        "x1": 51.35135135135135,
+        "y1": 98.64864864864865,
+        "x2": 214.86486486486487,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "507_unknown_0023115.jpg",
+        "label": "unknown_sign",
+        "x1": 43.24324324324324,
+        "y1": 97.97297297297297,
+        "x2": 221.6216216216216,
+        "y2": 192.56756756756755
+    },
+    {
+        "image_name": "508_eu_red_border_up_triangle_unknown_0023071.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 97.97297297297297,
+        "x2": 181.75675675675674,
+        "y2": 171.6216216216216
+    },
+    {
+        "image_name": "508_eu_red_border_up_triangle_unknown_0023072.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 97.97297297297297,
+        "x2": 181.75675675675674,
+        "y2": 171.6216216216216
+    },
+    {
+        "image_name": "508_eu_red_border_up_triangle_unknown_0023073.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 97.97297297297297,
+        "x2": 181.75675675675674,
+        "y2": 171.6216216216216
+    },
+    {
+        "image_name": "508_eu_red_border_up_triangle_unknown_0023074.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 97.97297297297297,
+        "x2": 181.75675675675674,
+        "y2": 171.6216216216216
+    },
+    {
+        "image_name": "508_eu_red_border_up_triangle_unknown_0023075.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 97.97297297297297,
+        "x2": 181.75675675675674,
+        "y2": 171.6216216216216
+    },
+    {
+        "image_name": "508_eu_red_border_up_triangle_unknown_0023076.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 97.97297297297297,
+        "x2": 181.75675675675674,
+        "y2": 171.6216216216216
+    },
+    {
+        "image_name": "508_eu_red_border_up_triangle_unknown_0023077.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 97.97297297297297,
+        "x2": 181.75675675675674,
+        "y2": 171.6216216216216
+    },
+    {
+        "image_name": "508_eu_red_border_up_triangle_unknown_0023078.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 114.86486486486486,
+        "y1": 91.89189189189189,
+        "x2": 182.43243243243242,
+        "y2": 168.9189189189189
+    },
+    {
+        "image_name": "508_eu_red_border_up_triangle_unknown_0023079.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 114.86486486486486,
+        "y1": 91.89189189189189,
+        "x2": 182.43243243243242,
+        "y2": 168.9189189189189
+    },
+    {
+        "image_name": "508_eu_red_border_up_triangle_unknown_0023080.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 114.86486486486486,
+        "y1": 91.89189189189189,
+        "x2": 182.43243243243242,
+        "y2": 168.9189189189189
+    },
+    {
+        "image_name": "509_eu_speedlimit_30_0023093.jpg",
+        "label": "eu_zone_of_speedlimit_30",
+        "x1": 111.48648648648648,
+        "y1": 103.37837837837837,
+        "x2": 188.51351351351352,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "509_eu_speedlimit_30_0023094.jpg",
+        "label": "eu_zone_of_speedlimit_30",
+        "x1": 111.48648648648648,
+        "y1": 103.37837837837837,
+        "x2": 188.51351351351352,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "509_eu_speedlimit_30_0023095.jpg",
+        "label": "eu_zone_of_speedlimit_30",
+        "x1": 106.08108108108108,
+        "y1": 102.7027027027027,
+        "x2": 195.27027027027026,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "509_eu_speedlimit_30_0023096.jpg",
+        "label": "eu_zone_of_speedlimit_30",
+        "x1": 106.08108108108108,
+        "y1": 102.7027027027027,
+        "x2": 195.27027027027026,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "509_eu_speedlimit_30_0023097.jpg",
+        "label": "eu_zone_of_speedlimit_30",
+        "x1": 106.08108108108108,
+        "y1": 102.7027027027027,
+        "x2": 195.27027027027026,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "509_eu_speedlimit_30_0023098.jpg",
+        "label": "eu_zone_of_speedlimit_30",
+        "x1": 106.08108108108108,
+        "y1": 102.7027027027027,
+        "x2": 195.27027027027026,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "509_eu_speedlimit_30_0023099.jpg",
+        "label": "eu_zone_of_speedlimit_30",
+        "x1": 106.08108108108108,
+        "y1": 102.7027027027027,
+        "x2": 195.27027027027026,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "509_eu_speedlimit_30_0023100.jpg",
+        "label": "eu_zone_of_speedlimit_30",
+        "x1": 106.08108108108108,
+        "y1": 102.7027027027027,
+        "x2": 195.27027027027026,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "509_eu_speedlimit_30_0023101.jpg",
+        "label": "eu_zone_of_speedlimit_30",
+        "x1": 104.72972972972973,
+        "y1": 98.64864864864865,
+        "x2": 204.7297297297297,
+        "y2": 185.8108108108108
+    },
+    {
+        "image_name": "509_eu_speedlimit_30_0023102.jpg",
+        "label": "eu_zone_of_speedlimit_30",
+        "x1": 104.72972972972973,
+        "y1": 98.64864864864865,
+        "x2": 204.7297297297297,
+        "y2": 185.8108108108108
+    },
+    {
+        "image_name": "50_eu_direction_position_indication_unknown_0002707.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 103.37837837837837,
+        "y1": 99.32432432432432,
+        "x2": 200.0,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "50_eu_direction_position_indication_unknown_0002708.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 102.7027027027027,
+        "y1": 99.32432432432432,
+        "x2": 198.64864864864865,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "50_eu_direction_position_indication_unknown_0002709.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 102.7027027027027,
+        "y1": 99.32432432432432,
+        "x2": 198.64864864864865,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "50_eu_direction_position_indication_unknown_0002710.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 102.7027027027027,
+        "y1": 99.32432432432432,
+        "x2": 198.64864864864865,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "50_eu_direction_position_indication_unknown_0002711.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 106.75675675675676,
+        "y1": 93.91891891891892,
+        "x2": 193.24324324324323,
+        "y2": 206.75675675675674
+    },
+    {
+        "image_name": "50_eu_direction_position_indication_unknown_0002713.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 108.78378378378378,
+        "y1": 87.16216216216216,
+        "x2": 189.1891891891892,
+        "y2": 209.45945945945945
+    },
+    {
+        "image_name": "50_eu_direction_position_indication_unknown_0002712.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 106.75675675675676,
+        "y1": 93.91891891891892,
+        "x2": 193.24324324324323,
+        "y2": 206.75675675675674
+    },
+    {
+        "image_name": "50_eu_direction_position_indication_unknown_0002714.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 75.0,
+        "y1": 83.10810810810811,
+        "x2": 167.56756756756755,
+        "y2": 214.1891891891892
+    },
+    {
+        "image_name": "50_eu_direction_position_indication_unknown_0002715.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 110.8108108108108,
+        "y1": 80.4054054054054,
+        "x2": 185.8108108108108,
+        "y2": 214.1891891891892
+    },
+    {
+        "image_name": "510_eu_white_ground_rectangle_0023093.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 111.48648648648648,
+        "y1": 102.02702702702702,
+        "x2": 193.24324324324323,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "510_eu_white_ground_rectangle_0023094.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 111.48648648648648,
+        "y1": 102.02702702702702,
+        "x2": 193.24324324324323,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "510_eu_white_ground_rectangle_0023095.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 111.48648648648648,
+        "y1": 102.02702702702702,
+        "x2": 193.24324324324323,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "510_eu_white_ground_rectangle_0023096.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 111.48648648648648,
+        "y1": 102.02702702702702,
+        "x2": 193.24324324324323,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "510_eu_white_ground_rectangle_0023097.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 105.4054054054054,
+        "y1": 101.35135135135135,
+        "x2": 200.67567567567568,
+        "y2": 203.3783783783784
+    },
+    {
+        "image_name": "510_eu_white_ground_rectangle_0023098.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 105.4054054054054,
+        "y1": 101.35135135135135,
+        "x2": 200.67567567567568,
+        "y2": 203.3783783783784
+    },
+    {
+        "image_name": "510_eu_white_ground_rectangle_0023099.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 101.35135135135135,
+        "y1": 102.7027027027027,
+        "x2": 203.3783783783784,
+        "y2": 202.7027027027027
+    },
+    {
+        "image_name": "510_eu_white_ground_rectangle_0023100.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 101.35135135135135,
+        "y1": 102.7027027027027,
+        "x2": 203.3783783783784,
+        "y2": 202.7027027027027
+    },
+    {
+        "image_name": "510_eu_white_ground_rectangle_0023101.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 109.45945945945945,
+        "y1": 89.86486486486486,
+        "x2": 202.7027027027027,
+        "y2": 191.21621621621622
+    },
+    {
+        "image_name": "510_eu_white_ground_rectangle_0023102.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 109.45945945945945,
+        "y1": 89.86486486486486,
+        "x2": 202.7027027027027,
+        "y2": 191.21621621621622
+    },
+    {
+        "image_name": "511_eu_giveway_0023103.jpg",
+        "label": "eu_giveway",
+        "x1": 100.0,
+        "y1": 111.48648648648648,
+        "x2": 202.7027027027027,
+        "y2": 206.75675675675674
+    },
+    {
+        "image_name": "511_eu_giveway_0023104.jpg",
+        "label": "eu_giveway",
+        "x1": 100.0,
+        "y1": 111.48648648648648,
+        "x2": 202.7027027027027,
+        "y2": 206.75675675675674
+    },
+    {
+        "image_name": "511_eu_giveway_0023105.jpg",
+        "label": "eu_giveway",
+        "x1": 100.0,
+        "y1": 111.48648648648648,
+        "x2": 202.7027027027027,
+        "y2": 206.75675675675674
+    },
+    {
+        "image_name": "511_eu_giveway_0023106.jpg",
+        "label": "eu_giveway",
+        "x1": 102.02702702702702,
+        "y1": 110.8108108108108,
+        "x2": 196.6216216216216,
+        "y2": 210.8108108108108
+    },
+    {
+        "image_name": "511_eu_giveway_0023107.jpg",
+        "label": "eu_giveway",
+        "x1": 102.02702702702702,
+        "y1": 110.8108108108108,
+        "x2": 196.6216216216216,
+        "y2": 210.8108108108108
+    },
+    {
+        "image_name": "511_eu_giveway_0023108.jpg",
+        "label": "eu_giveway",
+        "x1": 102.02702702702702,
+        "y1": 110.8108108108108,
+        "x2": 196.6216216216216,
+        "y2": 210.8108108108108
+    },
+    {
+        "image_name": "511_eu_giveway_0023109.jpg",
+        "label": "eu_giveway",
+        "x1": 102.02702702702702,
+        "y1": 110.8108108108108,
+        "x2": 196.6216216216216,
+        "y2": 210.8108108108108
+    },
+    {
+        "image_name": "511_eu_giveway_0023110.jpg",
+        "label": "eu_giveway",
+        "x1": 102.02702702702702,
+        "y1": 110.8108108108108,
+        "x2": 196.6216216216216,
+        "y2": 210.8108108108108
+    },
+    {
+        "image_name": "511_eu_giveway_0023111.jpg",
+        "label": "eu_giveway",
+        "x1": 102.02702702702702,
+        "y1": 110.8108108108108,
+        "x2": 196.6216216216216,
+        "y2": 210.8108108108108
+    },
+    {
+        "image_name": "511_eu_giveway_0023112.jpg",
+        "label": "eu_giveway",
+        "x1": 104.72972972972973,
+        "y1": 108.1081081081081,
+        "x2": 190.54054054054055,
+        "y2": 206.75675675675674
+    },
+    {
+        "image_name": "512_eu_noentry_0023101.jpg",
+        "label": "unknown_sign",
+        "x1": 106.08108108108108,
+        "y1": 68.91891891891892,
+        "x2": 204.7297297297297,
+        "y2": 165.54054054054055
+    },
+    {
+        "image_name": "512_eu_noentry_0023102.jpg",
+        "label": "unknown_sign",
+        "x1": 106.08108108108108,
+        "y1": 68.91891891891892,
+        "x2": 204.7297297297297,
+        "y2": 165.54054054054055
+    },
+    {
+        "image_name": "513_eu_direction_position_indication_unknown_0023141.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 113.51351351351352,
+        "y1": 100.67567567567568,
+        "x2": 187.83783783783784,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "513_eu_direction_position_indication_unknown_0023142.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 113.51351351351352,
+        "y1": 100.67567567567568,
+        "x2": 187.83783783783784,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "513_eu_direction_position_indication_unknown_0023143.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 113.51351351351352,
+        "y1": 100.67567567567568,
+        "x2": 187.83783783783784,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "513_eu_direction_position_indication_unknown_0023144.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 113.51351351351352,
+        "y1": 100.67567567567568,
+        "x2": 187.83783783783784,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "513_eu_direction_position_indication_unknown_0023145.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 113.51351351351352,
+        "y1": 100.67567567567568,
+        "x2": 187.83783783783784,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "513_eu_direction_position_indication_unknown_0023146.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 113.51351351351352,
+        "y1": 100.67567567567568,
+        "x2": 187.83783783783784,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "513_eu_direction_position_indication_unknown_0023147.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 113.51351351351352,
+        "y1": 100.67567567567568,
+        "x2": 187.83783783783784,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "513_eu_direction_position_indication_unknown_0023148.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 111.48648648648648,
+        "y1": 95.27027027027027,
+        "x2": 187.16216216216216,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "513_eu_direction_position_indication_unknown_0023149.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 111.48648648648648,
+        "y1": 95.27027027027027,
+        "x2": 187.16216216216216,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "513_eu_direction_position_indication_unknown_0023150.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 111.48648648648648,
+        "y1": 89.86486486486486,
+        "x2": 186.48648648648648,
+        "y2": 204.05405405405403
+    },
+    {
+        "image_name": "514_eu_blue_border_rectangle_unknown_0023113.jpg",
+        "label": "unknown_sign",
+        "x1": 103.37837837837837,
+        "y1": 97.97297297297297,
+        "x2": 197.97297297297297,
+        "y2": 207.43243243243242
+    },
+    {
+        "image_name": "514_eu_blue_border_rectangle_unknown_0023114.jpg",
+        "label": "unknown_sign",
+        "x1": 103.37837837837837,
+        "y1": 97.97297297297297,
+        "x2": 197.97297297297297,
+        "y2": 207.43243243243242
+    },
+    {
+        "image_name": "514_eu_blue_border_rectangle_unknown_0023115.jpg",
+        "label": "unknown_sign",
+        "x1": 113.51351351351352,
+        "y1": 90.54054054054053,
+        "x2": 212.83783783783784,
+        "y2": 197.2972972972973
+    },
+    {
+        "image_name": "514_eu_blue_border_rectangle_unknown_0023116.jpg",
+        "label": "unknown_sign",
+        "x1": 113.51351351351352,
+        "y1": 90.54054054054053,
+        "x2": 212.83783783783784,
+        "y2": 197.2972972972973
+    },
+    {
+        "image_name": "514_eu_blue_border_rectangle_unknown_0023117.jpg",
+        "label": "unknown_sign",
+        "x1": 113.51351351351352,
+        "y1": 90.54054054054053,
+        "x2": 212.83783783783784,
+        "y2": 197.2972972972973
+    },
+    {
+        "image_name": "515_unknown_0023130.jpg",
+        "label": "unknown_sign",
+        "x1": 103.37837837837837,
+        "y1": 95.94594594594594,
+        "x2": 204.05405405405403,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "516_eu_additional_panel_0023147.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 104.05405405405405,
+        "y1": 102.02702702702702,
+        "x2": 194.59459459459458,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "516_eu_additional_panel_0023148.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 104.05405405405405,
+        "y1": 102.02702702702702,
+        "x2": 194.59459459459458,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "516_eu_additional_panel_0023149.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 104.05405405405405,
+        "y1": 102.02702702702702,
+        "x2": 194.59459459459458,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "516_eu_additional_panel_0023150.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 104.05405405405405,
+        "y1": 102.02702702702702,
+        "x2": 194.59459459459458,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "516_eu_additional_panel_0023151.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 98.64864864864865,
+        "y1": 98.64864864864865,
+        "x2": 195.27027027027026,
+        "y2": 188.51351351351352
+    },
+    {
+        "image_name": "516_eu_additional_panel_0023152.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 98.64864864864865,
+        "y1": 98.64864864864865,
+        "x2": 195.27027027027026,
+        "y2": 188.51351351351352
+    },
+    {
+        "image_name": "516_eu_additional_panel_0023153.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 98.64864864864865,
+        "y1": 98.64864864864865,
+        "x2": 195.27027027027026,
+        "y2": 188.51351351351352
+    },
+    {
+        "image_name": "516_eu_additional_panel_0023154.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 95.27027027027027,
+        "y1": 97.97297297297297,
+        "x2": 195.94594594594594,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "516_eu_additional_panel_0023155.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 95.27027027027027,
+        "y1": 97.97297297297297,
+        "x2": 195.94594594594594,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "516_eu_additional_panel_0023156.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 89.86486486486486,
+        "y1": 95.94594594594594,
+        "x2": 195.27027027027026,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "517_eu_blue_border_rectangle_unknown_0023140.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 106.08108108108108,
+        "y1": 102.02702702702702,
+        "x2": 187.83783783783784,
+        "y2": 191.21621621621622
+    },
+    {
+        "image_name": "517_eu_blue_border_rectangle_unknown_0023141.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 106.08108108108108,
+        "y1": 102.02702702702702,
+        "x2": 187.83783783783784,
+        "y2": 191.21621621621622
+    },
+    {
+        "image_name": "517_eu_blue_border_rectangle_unknown_0023142.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 106.75675675675676,
+        "y1": 104.05405405405405,
+        "x2": 185.8108108108108,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "517_eu_blue_border_rectangle_unknown_0023143.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 106.75675675675676,
+        "y1": 104.05405405405405,
+        "x2": 185.8108108108108,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "517_eu_blue_border_rectangle_unknown_0023144.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 106.75675675675676,
+        "y1": 104.05405405405405,
+        "x2": 185.8108108108108,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "517_eu_blue_border_rectangle_unknown_0023145.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 106.75675675675676,
+        "y1": 104.05405405405405,
+        "x2": 185.8108108108108,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "517_eu_blue_border_rectangle_unknown_0023146.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 106.75675675675676,
+        "y1": 104.05405405405405,
+        "x2": 185.8108108108108,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "517_eu_blue_border_rectangle_unknown_0023147.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 106.75675675675676,
+        "y1": 108.1081081081081,
+        "x2": 185.8108108108108,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "517_eu_blue_border_rectangle_unknown_0023148.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 89.1891891891892,
+        "y1": 110.13513513513513,
+        "x2": 167.56756756756755,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "517_eu_blue_border_rectangle_unknown_0023149.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 113.51351351351352,
+        "y1": 98.64864864864865,
+        "x2": 181.75675675675674,
+        "y2": 187.83783783783784
+    },
+    {
+        "image_name": "518_eu_blue_border_rectangle_unknown_0023176.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 102.02702702702702,
+        "y1": 107.43243243243244,
+        "x2": 200.67567567567568,
+        "y2": 205.4054054054054
+    },
+    {
+        "image_name": "518_eu_blue_border_rectangle_unknown_0023177.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 102.02702702702702,
+        "y1": 107.43243243243244,
+        "x2": 200.67567567567568,
+        "y2": 205.4054054054054
+    },
+    {
+        "image_name": "518_eu_blue_border_rectangle_unknown_0023178.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 102.02702702702702,
+        "y1": 107.43243243243244,
+        "x2": 200.67567567567568,
+        "y2": 205.4054054054054
+    },
+    {
+        "image_name": "518_eu_blue_border_rectangle_unknown_0023179.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 102.02702702702702,
+        "y1": 107.43243243243244,
+        "x2": 200.67567567567568,
+        "y2": 205.4054054054054
+    },
+    {
+        "image_name": "518_eu_blue_border_rectangle_unknown_0023180.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 102.02702702702702,
+        "y1": 107.43243243243244,
+        "x2": 200.67567567567568,
+        "y2": 205.4054054054054
+    },
+    {
+        "image_name": "518_eu_blue_border_rectangle_unknown_0023181.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 102.02702702702702,
+        "y1": 107.43243243243244,
+        "x2": 200.67567567567568,
+        "y2": 205.4054054054054
+    },
+    {
+        "image_name": "518_eu_blue_border_rectangle_unknown_0023182.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 102.7027027027027,
+        "y1": 105.4054054054054,
+        "x2": 202.02702702702703,
+        "y2": 203.3783783783784
+    },
+    {
+        "image_name": "518_eu_blue_border_rectangle_unknown_0023183.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 102.7027027027027,
+        "y1": 105.4054054054054,
+        "x2": 202.02702702702703,
+        "y2": 203.3783783783784
+    },
+    {
+        "image_name": "51_eu_red_border_up_triangle_unknown_0002763.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 105.4054054054054,
+        "y1": 89.1891891891892,
+        "x2": 200.67567567567568,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "51_eu_red_border_up_triangle_unknown_0002764.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 105.4054054054054,
+        "y1": 89.1891891891892,
+        "x2": 200.67567567567568,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "51_eu_red_border_up_triangle_unknown_0002765.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 105.4054054054054,
+        "y1": 89.1891891891892,
+        "x2": 200.67567567567568,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "51_eu_red_border_up_triangle_unknown_0002766.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 105.4054054054054,
+        "y1": 89.1891891891892,
+        "x2": 200.67567567567568,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "51_eu_red_border_up_triangle_unknown_0002767.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 105.4054054054054,
+        "y1": 89.1891891891892,
+        "x2": 200.67567567567568,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "51_eu_red_border_up_triangle_unknown_0002768.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 106.08108108108108,
+        "y1": 83.78378378378378,
+        "x2": 200.67567567567568,
+        "y2": 188.51351351351352
+    },
+    {
+        "image_name": "51_eu_red_border_up_triangle_unknown_0002769.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 106.08108108108108,
+        "y1": 83.78378378378378,
+        "x2": 200.67567567567568,
+        "y2": 188.51351351351352
+    },
+    {
+        "image_name": "51_eu_red_border_up_triangle_unknown_0002770.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 106.08108108108108,
+        "y1": 83.78378378378378,
+        "x2": 200.67567567567568,
+        "y2": 188.51351351351352
+    },
+    {
+        "image_name": "51_eu_red_border_up_triangle_unknown_0002771.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 106.08108108108108,
+        "y1": 83.78378378378378,
+        "x2": 200.67567567567568,
+        "y2": 188.51351351351352
+    },
+    {
+        "image_name": "51_eu_red_border_up_triangle_unknown_0002772.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 106.08108108108108,
+        "y1": 83.78378378378378,
+        "x2": 200.67567567567568,
+        "y2": 188.51351351351352
+    },
+    {
+        "image_name": "52_eu_red_border_up_triangle_unknown_0002763.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 110.8108108108108,
+        "y1": 91.21621621621621,
+        "x2": 191.89189189189187,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "52_eu_red_border_up_triangle_unknown_0002764.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 110.8108108108108,
+        "y1": 91.21621621621621,
+        "x2": 191.89189189189187,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "52_eu_red_border_up_triangle_unknown_0002765.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 110.8108108108108,
+        "y1": 91.21621621621621,
+        "x2": 191.89189189189187,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "52_eu_red_border_up_triangle_unknown_0002766.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 110.8108108108108,
+        "y1": 91.21621621621621,
+        "x2": 191.89189189189187,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "52_eu_red_border_up_triangle_unknown_0002771.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 109.45945945945945,
+        "y1": 91.21621621621621,
+        "x2": 185.13513513513513,
+        "y2": 185.13513513513513
+    },
+    {
+        "image_name": "53_eu_red_border_up_triangle_unknown_0002763.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 106.08108108108108,
+        "y1": 88.51351351351352,
+        "x2": 204.7297297297297,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "53_eu_red_border_up_triangle_unknown_0002764.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 106.08108108108108,
+        "y1": 88.51351351351352,
+        "x2": 204.7297297297297,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "53_eu_red_border_up_triangle_unknown_0002765.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 106.08108108108108,
+        "y1": 88.51351351351352,
+        "x2": 204.7297297297297,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "53_eu_red_border_up_triangle_unknown_0002766.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 106.08108108108108,
+        "y1": 88.51351351351352,
+        "x2": 204.7297297297297,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "53_eu_red_border_up_triangle_unknown_0002767.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 106.08108108108108,
+        "y1": 88.51351351351352,
+        "x2": 204.7297297297297,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "53_eu_red_border_up_triangle_unknown_0002768.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 106.08108108108108,
+        "y1": 88.51351351351352,
+        "x2": 204.7297297297297,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "53_eu_red_border_up_triangle_unknown_0002769.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 106.08108108108108,
+        "y1": 88.51351351351352,
+        "x2": 204.7297297297297,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "53_eu_red_border_up_triangle_unknown_0002770.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 106.08108108108108,
+        "y1": 88.51351351351352,
+        "x2": 204.7297297297297,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "53_eu_red_border_up_triangle_unknown_0002771.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 87.83783783783784,
+        "x2": 195.94594594594594,
+        "y2": 185.8108108108108
+    },
+    {
+        "image_name": "53_eu_red_border_up_triangle_unknown_0002772.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 87.83783783783784,
+        "x2": 195.94594594594594,
+        "y2": 185.8108108108108
+    },
+    {
+        "image_name": "54_eu_red_border_up_triangle_unknown_0002763.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 93.24324324324324,
+        "x2": 201.35135135135135,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "54_eu_red_border_up_triangle_unknown_0002764.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 93.24324324324324,
+        "x2": 201.35135135135135,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "54_eu_red_border_up_triangle_unknown_0002765.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 93.24324324324324,
+        "x2": 201.35135135135135,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "54_eu_red_border_up_triangle_unknown_0002766.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 93.24324324324324,
+        "x2": 201.35135135135135,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "55_eu_red_border_circle_unknown_0002812.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 113.51351351351352,
+        "y1": 97.29729729729729,
+        "x2": 192.56756756756755,
+        "y2": 190.54054054054055
+    },
+    {
+        "image_name": "55_eu_red_border_circle_unknown_0002813.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 113.51351351351352,
+        "y1": 97.29729729729729,
+        "x2": 192.56756756756755,
+        "y2": 190.54054054054055
+    },
+    {
+        "image_name": "55_eu_red_border_circle_unknown_0002814.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 113.51351351351352,
+        "y1": 97.29729729729729,
+        "x2": 192.56756756756755,
+        "y2": 190.54054054054055
+    },
+    {
+        "image_name": "55_eu_red_border_circle_unknown_0002815.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 119.5945945945946,
+        "y1": 98.64864864864865,
+        "x2": 186.48648648648648,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "55_eu_red_border_circle_unknown_0002816.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 119.5945945945946,
+        "y1": 98.64864864864865,
+        "x2": 186.48648648648648,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "55_eu_red_border_circle_unknown_0002817.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 119.5945945945946,
+        "y1": 98.64864864864865,
+        "x2": 186.48648648648648,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "55_eu_red_border_circle_unknown_0002818.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 126.35135135135135,
+        "y1": 100.0,
+        "x2": 185.13513513513513,
+        "y2": 187.16216216216216
+    },
+    {
+        "image_name": "55_eu_red_border_circle_unknown_0002820.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 132.43243243243242,
+        "y1": 101.35135135135135,
+        "x2": 183.78378378378378,
+        "y2": 181.75675675675674
+    },
+    {
+        "image_name": "56_eu_direction_position_indication_unknown_0002829.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 114.86486486486486,
+        "y1": 102.7027027027027,
+        "x2": 187.16216216216216,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "56_eu_direction_position_indication_unknown_0002830.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 114.86486486486486,
+        "y1": 102.7027027027027,
+        "x2": 187.16216216216216,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "56_eu_direction_position_indication_unknown_0002831.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 114.86486486486486,
+        "y1": 102.7027027027027,
+        "x2": 187.16216216216216,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "56_eu_direction_position_indication_unknown_0002832.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 102.02702702702702,
+        "x2": 183.78378378378378,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "56_eu_direction_position_indication_unknown_0002833.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 110.8108108108108,
+        "y1": 100.67567567567568,
+        "x2": 190.54054054054055,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "56_eu_direction_position_indication_unknown_0002834.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 110.8108108108108,
+        "y1": 100.67567567567568,
+        "x2": 190.54054054054055,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "56_eu_direction_position_indication_unknown_0002835.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 110.8108108108108,
+        "y1": 100.67567567567568,
+        "x2": 190.54054054054055,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "56_eu_direction_position_indication_unknown_0002836.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 110.8108108108108,
+        "y1": 100.67567567567568,
+        "x2": 190.54054054054055,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "56_eu_direction_position_indication_unknown_0002837.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 110.8108108108108,
+        "y1": 100.67567567567568,
+        "x2": 190.54054054054055,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "56_eu_direction_position_indication_unknown_0002838.jpg",
+        "label": "eu_blue_ground_rectangle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 103.37837837837837,
+        "x2": 188.51351351351352,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "57_eu_blue_ground_circle_unknown_0002838.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 113.51351351351352,
+        "y1": 97.97297297297297,
+        "x2": 187.16216216216216,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "57_eu_blue_ground_circle_unknown_0002839.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 113.51351351351352,
+        "y1": 97.97297297297297,
+        "x2": 187.16216216216216,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "57_eu_blue_ground_circle_unknown_0002840.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 113.51351351351352,
+        "y1": 97.97297297297297,
+        "x2": 187.16216216216216,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "57_eu_blue_ground_circle_unknown_0002841.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 113.51351351351352,
+        "y1": 97.97297297297297,
+        "x2": 187.16216216216216,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "57_eu_blue_ground_circle_unknown_0002842.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 113.51351351351352,
+        "y1": 97.97297297297297,
+        "x2": 187.16216216216216,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "57_eu_blue_ground_circle_unknown_0002843.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 113.51351351351352,
+        "y1": 97.97297297297297,
+        "x2": 187.16216216216216,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "57_eu_blue_ground_circle_unknown_0002844.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 113.51351351351352,
+        "y1": 97.97297297297297,
+        "x2": 187.16216216216216,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "57_eu_blue_ground_circle_unknown_0002845.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 100.0,
+        "x2": 183.78378378378378,
+        "y2": 190.54054054054055
+    },
+    {
+        "image_name": "57_eu_blue_ground_circle_unknown_0002846.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 102.7027027027027,
+        "x2": 181.75675675675674,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "57_eu_blue_ground_circle_unknown_0002847.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 104.05405405405405,
+        "x2": 181.08108108108107,
+        "y2": 190.54054054054055
+    },
+    {
+        "image_name": "58_eu_blue_ground_circle_unknown_0002843.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 133.1081081081081,
+        "y1": 114.1891891891892,
+        "x2": 164.86486486486487,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "59_eu_speedlimit_70_0002847.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 106.08108108108108,
+        "y1": 98.64864864864865,
+        "x2": 197.97297297297297,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "59_eu_speedlimit_70_0002848.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 106.08108108108108,
+        "y1": 98.64864864864865,
+        "x2": 197.97297297297297,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "59_eu_speedlimit_70_0002849.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 106.08108108108108,
+        "y1": 98.64864864864865,
+        "x2": 197.97297297297297,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "59_eu_speedlimit_70_0002850.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 106.08108108108108,
+        "y1": 98.64864864864865,
+        "x2": 197.97297297297297,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "59_eu_speedlimit_70_0002851.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 106.08108108108108,
+        "y1": 98.64864864864865,
+        "x2": 197.97297297297297,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "59_eu_speedlimit_70_0002852.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 106.08108108108108,
+        "y1": 98.64864864864865,
+        "x2": 197.97297297297297,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "59_eu_speedlimit_70_0002853.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 106.75675675675676,
+        "y1": 97.97297297297297,
+        "x2": 191.89189189189187,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "59_eu_speedlimit_70_0002854.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 106.75675675675676,
+        "y1": 97.97297297297297,
+        "x2": 191.89189189189187,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "59_eu_speedlimit_70_0002855.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 106.75675675675676,
+        "y1": 97.97297297297297,
+        "x2": 191.89189189189187,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "59_eu_speedlimit_70_0002856.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 106.75675675675676,
+        "y1": 97.97297297297297,
+        "x2": 191.89189189189187,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "5_eu_direction_position_indication_unknown_0001189.jpg",
+        "label": "unknown_sign",
+        "x1": 111.48648648648648,
+        "y1": 100.0,
+        "x2": 191.21621621621622,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "5_eu_direction_position_indication_unknown_0001190.jpg",
+        "label": "unknown_sign",
+        "x1": 111.48648648648648,
+        "y1": 100.0,
+        "x2": 191.21621621621622,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "5_eu_direction_position_indication_unknown_0001191.jpg",
+        "label": "unknown_sign",
+        "x1": 111.48648648648648,
+        "y1": 100.0,
+        "x2": 191.21621621621622,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "5_eu_direction_position_indication_unknown_0001192.jpg",
+        "label": "unknown_sign",
+        "x1": 111.48648648648648,
+        "y1": 100.0,
+        "x2": 191.21621621621622,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "5_eu_direction_position_indication_unknown_0001197.jpg",
+        "label": "unknown_sign",
+        "x1": 105.4054054054054,
+        "y1": 97.29729729729729,
+        "x2": 198.64864864864865,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "5_eu_direction_position_indication_unknown_0001198.jpg",
+        "label": "unknown_sign",
+        "x1": 105.4054054054054,
+        "y1": 97.29729729729729,
+        "x2": 198.64864864864865,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "60_eu_noentry_0002850.jpg",
+        "label": "eu_stop",
+        "x1": 113.51351351351352,
+        "y1": 98.64864864864865,
+        "x2": 189.86486486486487,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "60_eu_noentry_0002851.jpg",
+        "label": "eu_stop",
+        "x1": 113.51351351351352,
+        "y1": 98.64864864864865,
+        "x2": 189.86486486486487,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "60_eu_noentry_0002852.jpg",
+        "label": "eu_stop",
+        "x1": 113.51351351351352,
+        "y1": 98.64864864864865,
+        "x2": 189.86486486486487,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "60_eu_noentry_0002854.jpg",
+        "label": "eu_stop",
+        "x1": 113.51351351351352,
+        "y1": 98.64864864864865,
+        "x2": 189.86486486486487,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "61_eu_speedlimit_70_0002844.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 104.72972972972973,
+        "y1": 100.67567567567568,
+        "x2": 193.9189189189189,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "61_eu_speedlimit_70_0002845.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 104.72972972972973,
+        "y1": 100.67567567567568,
+        "x2": 193.9189189189189,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "61_eu_speedlimit_70_0002846.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 104.72972972972973,
+        "y1": 100.67567567567568,
+        "x2": 193.9189189189189,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "61_eu_speedlimit_70_0002847.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 104.72972972972973,
+        "y1": 100.67567567567568,
+        "x2": 193.9189189189189,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "61_eu_speedlimit_70_0002848.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 104.72972972972973,
+        "y1": 100.67567567567568,
+        "x2": 193.9189189189189,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "61_eu_speedlimit_70_0002849.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 104.72972972972973,
+        "y1": 100.67567567567568,
+        "x2": 193.9189189189189,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "61_eu_speedlimit_70_0002850.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 104.72972972972973,
+        "y1": 100.67567567567568,
+        "x2": 193.9189189189189,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "61_eu_speedlimit_70_0002851.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 104.72972972972973,
+        "y1": 100.67567567567568,
+        "x2": 193.9189189189189,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "61_eu_speedlimit_70_0002852.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 111.48648648648648,
+        "y1": 100.0,
+        "x2": 194.59459459459458,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "61_eu_speedlimit_70_0002853.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 111.48648648648648,
+        "y1": 100.0,
+        "x2": 194.59459459459458,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "62_back_of_sign_0002865.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 112.16216216216216,
+        "y1": 102.02702702702702,
+        "x2": 191.89189189189187,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "62_back_of_sign_0002866.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 112.16216216216216,
+        "y1": 102.02702702702702,
+        "x2": 191.89189189189187,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "62_back_of_sign_0002867.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 112.16216216216216,
+        "y1": 102.02702702702702,
+        "x2": 191.89189189189187,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "62_back_of_sign_0002868.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 112.16216216216216,
+        "y1": 102.02702702702702,
+        "x2": 191.89189189189187,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "62_back_of_sign_0002869.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 112.16216216216216,
+        "y1": 102.02702702702702,
+        "x2": 191.89189189189187,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "62_back_of_sign_0002870.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 112.16216216216216,
+        "y1": 102.02702702702702,
+        "x2": 191.89189189189187,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "62_back_of_sign_0002871.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 112.16216216216216,
+        "y1": 102.02702702702702,
+        "x2": 191.89189189189187,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "62_back_of_sign_0002872.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 107.43243243243244,
+        "y1": 103.37837837837837,
+        "x2": 185.13513513513513,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "62_back_of_sign_0002873.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 107.43243243243244,
+        "y1": 103.37837837837837,
+        "x2": 185.13513513513513,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "62_back_of_sign_0002874.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 103.37837837837837,
+        "y1": 106.08108108108108,
+        "x2": 186.48648648648648,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "63_eu_pedestrian_crossing_0002873.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 115.54054054054053,
+        "y1": 104.72972972972973,
+        "x2": 189.86486486486487,
+        "y2": 190.54054054054055
+    },
+    {
+        "image_name": "63_eu_pedestrian_crossing_0002874.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 115.54054054054053,
+        "y1": 104.72972972972973,
+        "x2": 189.86486486486487,
+        "y2": 190.54054054054055
+    },
+    {
+        "image_name": "63_eu_pedestrian_crossing_0002875.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 115.54054054054053,
+        "y1": 104.72972972972973,
+        "x2": 189.86486486486487,
+        "y2": 190.54054054054055
+    },
+    {
+        "image_name": "63_eu_pedestrian_crossing_0002876.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 115.54054054054053,
+        "y1": 104.72972972972973,
+        "x2": 189.86486486486487,
+        "y2": 190.54054054054055
+    },
+    {
+        "image_name": "63_eu_pedestrian_crossing_0002877.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 115.54054054054053,
+        "y1": 103.37837837837837,
+        "x2": 189.86486486486487,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "63_eu_pedestrian_crossing_0002878.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 115.54054054054053,
+        "y1": 103.37837837837837,
+        "x2": 189.86486486486487,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "63_eu_pedestrian_crossing_0002879.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 115.54054054054053,
+        "y1": 103.37837837837837,
+        "x2": 189.86486486486487,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "63_eu_pedestrian_crossing_0002880.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 115.54054054054053,
+        "y1": 103.37837837837837,
+        "x2": 189.86486486486487,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "63_eu_pedestrian_crossing_0002881.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 115.54054054054053,
+        "y1": 103.37837837837837,
+        "x2": 189.86486486486487,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "63_eu_pedestrian_crossing_0002882.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 122.29729729729729,
+        "y1": 105.4054054054054,
+        "x2": 185.13513513513513,
+        "y2": 192.56756756756755
+    },
+    {
+        "image_name": "65_eu_noentry_0002872.jpg",
+        "label": "eu_noentry",
+        "x1": 120.27027027027027,
+        "y1": 103.37837837837837,
+        "x2": 181.75675675675674,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "65_eu_noentry_0002873.jpg",
+        "label": "eu_noentry",
+        "x1": 120.27027027027027,
+        "y1": 103.37837837837837,
+        "x2": 181.75675675675674,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "65_eu_noentry_0002874.jpg",
+        "label": "eu_noentry",
+        "x1": 120.27027027027027,
+        "y1": 103.37837837837837,
+        "x2": 181.75675675675674,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "65_eu_noentry_0002875.jpg",
+        "label": "eu_noentry",
+        "x1": 120.27027027027027,
+        "y1": 103.37837837837837,
+        "x2": 181.75675675675674,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "65_eu_noentry_0002876.jpg",
+        "label": "eu_noentry",
+        "x1": 89.1891891891892,
+        "y1": 104.72972972972973,
+        "x2": 154.7297297297297,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "65_eu_noentry_0002877.jpg",
+        "label": "eu_noentry",
+        "x1": 129.72972972972974,
+        "y1": 100.0,
+        "x2": 180.4054054054054,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "65_eu_noentry_0002878.jpg",
+        "label": "eu_noentry",
+        "x1": 129.72972972972974,
+        "y1": 100.0,
+        "x2": 180.4054054054054,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "66_eu_speedlimit_70_0002909.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 108.1081081081081,
+        "y1": 104.05405405405405,
+        "x2": 190.54054054054055,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "66_eu_speedlimit_70_0002910.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 108.1081081081081,
+        "y1": 104.05405405405405,
+        "x2": 190.54054054054055,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "66_eu_speedlimit_70_0002911.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 108.1081081081081,
+        "y1": 104.05405405405405,
+        "x2": 190.54054054054055,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "66_eu_speedlimit_70_0002912.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 108.1081081081081,
+        "y1": 104.05405405405405,
+        "x2": 190.54054054054055,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "66_eu_speedlimit_70_0002913.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 111.48648648648648,
+        "y1": 102.02702702702702,
+        "x2": 190.54054054054055,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "66_eu_speedlimit_70_0002914.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 111.48648648648648,
+        "y1": 102.02702702702702,
+        "x2": 190.54054054054055,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "66_eu_speedlimit_70_0002915.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 116.21621621621621,
+        "y1": 100.0,
+        "x2": 188.51351351351352,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "66_eu_speedlimit_70_0002916.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 116.21621621621621,
+        "y1": 100.0,
+        "x2": 188.51351351351352,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "66_eu_speedlimit_70_0002917.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 120.94594594594594,
+        "y1": 105.4054054054054,
+        "x2": 187.16216216216216,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "66_eu_speedlimit_70_0002918.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 123.64864864864865,
+        "y1": 101.35135135135135,
+        "x2": 184.45945945945945,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "67_eu_speedlimit_70_0002908.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 110.8108108108108,
+        "y1": 105.4054054054054,
+        "x2": 192.56756756756755,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "67_eu_speedlimit_70_0002909.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 110.8108108108108,
+        "y1": 105.4054054054054,
+        "x2": 192.56756756756755,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "67_eu_speedlimit_70_0002910.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 109.45945945945945,
+        "y1": 102.02702702702702,
+        "x2": 192.56756756756755,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "67_eu_speedlimit_70_0002911.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 109.45945945945945,
+        "y1": 102.02702702702702,
+        "x2": 192.56756756756755,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "67_eu_speedlimit_70_0002912.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 109.45945945945945,
+        "y1": 102.02702702702702,
+        "x2": 192.56756756756755,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "67_eu_speedlimit_70_0002913.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 106.75675675675676,
+        "y1": 99.32432432432432,
+        "x2": 188.51351351351352,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "67_eu_speedlimit_70_0002914.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 106.75675675675676,
+        "y1": 99.32432432432432,
+        "x2": 188.51351351351352,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "67_eu_speedlimit_70_0002915.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 106.75675675675676,
+        "y1": 99.32432432432432,
+        "x2": 188.51351351351352,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "67_eu_speedlimit_70_0002916.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 106.75675675675676,
+        "y1": 99.32432432432432,
+        "x2": 188.51351351351352,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "67_eu_speedlimit_70_0002917.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 104.72972972972973,
+        "y1": 99.32432432432432,
+        "x2": 180.4054054054054,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "68_eu_priorityroad_ahead_0002908.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 104.05405405405405,
+        "y1": 100.0,
+        "x2": 195.94594594594594,
+        "y2": 201.35135135135135
+    },
+    {
+        "image_name": "68_eu_priorityroad_ahead_0002909.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 104.05405405405405,
+        "y1": 100.0,
+        "x2": 195.94594594594594,
+        "y2": 201.35135135135135
+    },
+    {
+        "image_name": "68_eu_priorityroad_ahead_0002910.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 104.05405405405405,
+        "y1": 100.0,
+        "x2": 195.94594594594594,
+        "y2": 201.35135135135135
+    },
+    {
+        "image_name": "68_eu_priorityroad_ahead_0002911.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 104.05405405405405,
+        "y1": 100.0,
+        "x2": 195.94594594594594,
+        "y2": 201.35135135135135
+    },
+    {
+        "image_name": "68_eu_priorityroad_ahead_0002912.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 104.05405405405405,
+        "y1": 100.0,
+        "x2": 195.94594594594594,
+        "y2": 201.35135135135135
+    },
+    {
+        "image_name": "68_eu_priorityroad_ahead_0002913.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 104.05405405405405,
+        "y1": 100.0,
+        "x2": 195.94594594594594,
+        "y2": 201.35135135135135
+    },
+    {
+        "image_name": "68_eu_priorityroad_ahead_0002914.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 104.05405405405405,
+        "y1": 100.0,
+        "x2": 195.94594594594594,
+        "y2": 201.35135135135135
+    },
+    {
+        "image_name": "68_eu_priorityroad_ahead_0002915.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 106.08108108108108,
+        "y1": 95.94594594594594,
+        "x2": 192.56756756756755,
+        "y2": 197.2972972972973
+    },
+    {
+        "image_name": "68_eu_priorityroad_ahead_0002916.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 106.08108108108108,
+        "y1": 95.94594594594594,
+        "x2": 192.56756756756755,
+        "y2": 197.2972972972973
+    },
+    {
+        "image_name": "68_eu_priorityroad_ahead_0002917.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 107.43243243243244,
+        "y1": 98.64864864864865,
+        "x2": 183.1081081081081,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "69_back_of_sign_0003832.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 111.48648648648648,
+        "y1": 102.02702702702702,
+        "x2": 200.0,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "69_back_of_sign_0003833.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 111.48648648648648,
+        "y1": 102.02702702702702,
+        "x2": 200.0,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "69_back_of_sign_0003834.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 111.48648648648648,
+        "y1": 102.02702702702702,
+        "x2": 200.0,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "69_back_of_sign_0003835.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 105.4054054054054,
+        "x2": 202.02702702702703,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "69_back_of_sign_0003836.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 120.94594594594594,
+        "y1": 105.4054054054054,
+        "x2": 200.0,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "69_back_of_sign_0003837.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 123.64864864864865,
+        "y1": 111.48648648648648,
+        "x2": 202.02702702702703,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "6_eu_speedlimit_30_0001184.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 116.21621621621621,
+        "y1": 105.4054054054054,
+        "x2": 189.86486486486487,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "6_eu_speedlimit_30_0001185.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 116.21621621621621,
+        "y1": 105.4054054054054,
+        "x2": 189.86486486486487,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "6_eu_speedlimit_30_0001186.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 116.21621621621621,
+        "y1": 105.4054054054054,
+        "x2": 189.86486486486487,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "6_eu_speedlimit_30_0001187.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 116.21621621621621,
+        "y1": 105.4054054054054,
+        "x2": 189.86486486486487,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "6_eu_speedlimit_30_0001188.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 121.62162162162161,
+        "y1": 102.7027027027027,
+        "x2": 187.83783783783784,
+        "y2": 197.2972972972973
+    },
+    {
+        "image_name": "6_eu_speedlimit_30_0001189.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 123.64864864864865,
+        "y1": 102.02702702702702,
+        "x2": 182.43243243243242,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "6_eu_speedlimit_30_0001190.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 123.64864864864865,
+        "y1": 102.02702702702702,
+        "x2": 182.43243243243242,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "6_eu_speedlimit_30_0001191.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 125.67567567567568,
+        "y1": 103.37837837837837,
+        "x2": 179.05405405405406,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "6_eu_speedlimit_30_0001192.jpg",
+        "label": "eu_speedlimit_30",
+        "x1": 125.67567567567568,
+        "y1": 103.37837837837837,
+        "x2": 179.05405405405406,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "70_back_of_sign_0003837.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 111.48648648648648,
+        "y1": 106.08108108108108,
+        "x2": 193.24324324324323,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "70_back_of_sign_0003838.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 111.48648648648648,
+        "y1": 106.08108108108108,
+        "x2": 193.24324324324323,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "70_back_of_sign_0003839.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 111.48648648648648,
+        "y1": 106.08108108108108,
+        "x2": 193.24324324324323,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "70_back_of_sign_0003840.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 111.48648648648648,
+        "y1": 106.08108108108108,
+        "x2": 193.24324324324323,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "70_back_of_sign_0003841.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 111.48648648648648,
+        "y1": 106.08108108108108,
+        "x2": 193.24324324324323,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "70_back_of_sign_0003842.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 111.48648648648648,
+        "y1": 106.08108108108108,
+        "x2": 193.24324324324323,
+        "y2": 193.24324324324323
+    },
+    {
+        "image_name": "71_eu_red_border_circle_unknown_0003837.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 119.5945945945946,
+        "y1": 116.21621621621621,
+        "x2": 179.05405405405406,
+        "y2": 166.21621621621622
+    },
+    {
+        "image_name": "71_eu_red_border_circle_unknown_0003838.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 119.5945945945946,
+        "y1": 116.21621621621621,
+        "x2": 179.05405405405406,
+        "y2": 166.21621621621622
+    },
+    {
+        "image_name": "71_eu_red_border_circle_unknown_0003839.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 121.62162162162161,
+        "y1": 112.16216216216216,
+        "x2": 179.7297297297297,
+        "y2": 168.9189189189189
+    },
+    {
+        "image_name": "71_eu_red_border_circle_unknown_0003840.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 121.62162162162161,
+        "y1": 112.16216216216216,
+        "x2": 179.7297297297297,
+        "y2": 168.9189189189189
+    },
+    {
+        "image_name": "71_eu_red_border_circle_unknown_0003841.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 121.62162162162161,
+        "y1": 112.16216216216216,
+        "x2": 179.7297297297297,
+        "y2": 168.9189189189189
+    },
+    {
+        "image_name": "71_eu_red_border_circle_unknown_0003842.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 121.62162162162161,
+        "y1": 112.16216216216216,
+        "x2": 179.7297297297297,
+        "y2": 168.9189189189189
+    },
+    {
+        "image_name": "71_eu_red_border_circle_unknown_0003843.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 123.64864864864865,
+        "y1": 111.48648648648648,
+        "x2": 175.67567567567568,
+        "y2": 165.54054054054055
+    },
+    {
+        "image_name": "71_eu_red_border_circle_unknown_0003844.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 123.64864864864865,
+        "y1": 111.48648648648648,
+        "x2": 175.67567567567568,
+        "y2": 165.54054054054055
+    },
+    {
+        "image_name": "72_eu_blue_ground_circle_unknown_0003851.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 122.29729729729729,
+        "y1": 116.21621621621621,
+        "x2": 179.05405405405406,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "72_eu_blue_ground_circle_unknown_0003852.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 122.29729729729729,
+        "y1": 116.21621621621621,
+        "x2": 179.05405405405406,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "72_eu_blue_ground_circle_unknown_0003853.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 122.29729729729729,
+        "y1": 116.21621621621621,
+        "x2": 179.05405405405406,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "72_eu_blue_ground_circle_unknown_0003854.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 122.29729729729729,
+        "y1": 116.21621621621621,
+        "x2": 179.05405405405406,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "72_eu_blue_ground_circle_unknown_0003855.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 122.29729729729729,
+        "y1": 116.21621621621621,
+        "x2": 179.05405405405406,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "72_eu_blue_ground_circle_unknown_0003856.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 122.29729729729729,
+        "y1": 116.21621621621621,
+        "x2": 179.05405405405406,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "72_eu_blue_ground_circle_unknown_0003857.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 122.29729729729729,
+        "y1": 116.21621621621621,
+        "x2": 179.05405405405406,
+        "y2": 183.1081081081081
+    },
+    {
+        "image_name": "72_eu_blue_ground_circle_unknown_0003858.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 122.97297297297297,
+        "y1": 110.13513513513513,
+        "x2": 176.35135135135135,
+        "y2": 179.05405405405406
+    },
+    {
+        "image_name": "72_eu_blue_ground_circle_unknown_0003859.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 122.97297297297297,
+        "y1": 110.13513513513513,
+        "x2": 176.35135135135135,
+        "y2": 179.05405405405406
+    },
+    {
+        "image_name": "72_eu_blue_ground_circle_unknown_0003860.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 122.97297297297297,
+        "y1": 110.13513513513513,
+        "x2": 176.35135135135135,
+        "y2": 179.05405405405406
+    },
+    {
+        "image_name": "73_eu_pedestrian_crossing_0003855.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 108.1081081081081,
+        "y1": 102.02702702702702,
+        "x2": 191.89189189189187,
+        "y2": 200.67567567567568
+    },
+    {
+        "image_name": "73_eu_pedestrian_crossing_0003856.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 108.1081081081081,
+        "y1": 102.02702702702702,
+        "x2": 191.89189189189187,
+        "y2": 200.67567567567568
+    },
+    {
+        "image_name": "73_eu_pedestrian_crossing_0003857.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 108.1081081081081,
+        "y1": 102.02702702702702,
+        "x2": 191.89189189189187,
+        "y2": 200.67567567567568
+    },
+    {
+        "image_name": "73_eu_pedestrian_crossing_0003858.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 108.1081081081081,
+        "y1": 102.02702702702702,
+        "x2": 191.89189189189187,
+        "y2": 200.67567567567568
+    },
+    {
+        "image_name": "73_eu_pedestrian_crossing_0003859.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 110.13513513513513,
+        "y1": 99.32432432432432,
+        "x2": 191.21621621621622,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "73_eu_pedestrian_crossing_0003860.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 110.13513513513513,
+        "y1": 99.32432432432432,
+        "x2": 191.21621621621622,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "73_eu_pedestrian_crossing_0003861.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 110.13513513513513,
+        "y1": 99.32432432432432,
+        "x2": 191.21621621621622,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "73_eu_pedestrian_crossing_0003862.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 110.13513513513513,
+        "y1": 99.32432432432432,
+        "x2": 191.21621621621622,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "73_eu_pedestrian_crossing_0003863.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 110.8108108108108,
+        "y1": 99.32432432432432,
+        "x2": 193.24324324324323,
+        "y2": 190.54054054054055
+    },
+    {
+        "image_name": "73_eu_pedestrian_crossing_0003864.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 110.8108108108108,
+        "y1": 99.32432432432432,
+        "x2": 193.24324324324323,
+        "y2": 190.54054054054055
+    },
+    {
+        "image_name": "74_back_of_sign_0003864.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 112.83783783783784,
+        "y1": 102.7027027027027,
+        "x2": 187.16216216216216,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "74_back_of_sign_0003865.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 112.83783783783784,
+        "y1": 102.7027027027027,
+        "x2": 187.16216216216216,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "74_back_of_sign_0003866.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 112.83783783783784,
+        "y1": 102.7027027027027,
+        "x2": 187.16216216216216,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "74_back_of_sign_0003867.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 112.83783783783784,
+        "y1": 102.7027027027027,
+        "x2": 187.16216216216216,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "74_back_of_sign_0003868.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 112.83783783783784,
+        "y1": 102.7027027027027,
+        "x2": 187.16216216216216,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "74_back_of_sign_0003869.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 111.48648648648648,
+        "y1": 101.35135135135135,
+        "x2": 187.83783783783784,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "74_back_of_sign_0003870.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 111.48648648648648,
+        "y1": 101.35135135135135,
+        "x2": 187.83783783783784,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "74_back_of_sign_0003871.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 111.48648648648648,
+        "y1": 101.35135135135135,
+        "x2": 187.83783783783784,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "74_back_of_sign_0003872.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 131.08108108108107,
+        "y1": 102.02702702702702,
+        "x2": 217.56756756756755,
+        "y2": 192.56756756756755
+    },
+    {
+        "image_name": "74_back_of_sign_0003873.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 116.21621621621621,
+        "y1": 104.72972972972973,
+        "x2": 188.51351351351352,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "75_back_of_sign_0003864.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 112.16216216216216,
+        "y1": 104.72972972972973,
+        "x2": 191.21621621621622,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "75_back_of_sign_0003865.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 112.16216216216216,
+        "y1": 104.72972972972973,
+        "x2": 191.21621621621622,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "75_back_of_sign_0003866.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 112.16216216216216,
+        "y1": 104.72972972972973,
+        "x2": 191.21621621621622,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "75_back_of_sign_0003867.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 112.16216216216216,
+        "y1": 104.72972972972973,
+        "x2": 191.21621621621622,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "75_back_of_sign_0003868.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 112.16216216216216,
+        "y1": 104.72972972972973,
+        "x2": 191.21621621621622,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "75_back_of_sign_0003869.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 112.16216216216216,
+        "y1": 104.72972972972973,
+        "x2": 191.21621621621622,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "75_back_of_sign_0003870.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 112.16216216216216,
+        "y1": 104.72972972972973,
+        "x2": 191.21621621621622,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "75_back_of_sign_0003871.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 113.51351351351352,
+        "y1": 110.13513513513513,
+        "x2": 183.78378378378378,
+        "y2": 188.51351351351352
+    },
+    {
+        "image_name": "75_back_of_sign_0003872.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 118.91891891891892,
+        "y1": 107.43243243243244,
+        "x2": 198.64864864864865,
+        "y2": 183.78378378378378
+    },
+    {
+        "image_name": "75_back_of_sign_0003873.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 118.91891891891892,
+        "y1": 107.43243243243244,
+        "x2": 198.64864864864865,
+        "y2": 183.78378378378378
+    },
+    {
+        "image_name": "76_eu_priorityroad_ahead_0003864.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 106.08108108108108,
+        "y1": 95.94594594594594,
+        "x2": 191.21621621621622,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "76_eu_priorityroad_ahead_0003865.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 106.08108108108108,
+        "y1": 95.94594594594594,
+        "x2": 191.21621621621622,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "76_eu_priorityroad_ahead_0003866.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 106.08108108108108,
+        "y1": 95.94594594594594,
+        "x2": 191.21621621621622,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "76_eu_priorityroad_ahead_0003867.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 106.08108108108108,
+        "y1": 95.94594594594594,
+        "x2": 191.21621621621622,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "76_eu_priorityroad_ahead_0003868.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 106.08108108108108,
+        "y1": 95.94594594594594,
+        "x2": 191.21621621621622,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "76_eu_priorityroad_ahead_0003869.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 106.08108108108108,
+        "y1": 95.94594594594594,
+        "x2": 191.21621621621622,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "76_eu_priorityroad_ahead_0003870.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 110.13513513513513,
+        "y1": 102.7027027027027,
+        "x2": 184.45945945945945,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "76_eu_priorityroad_ahead_0003871.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 110.13513513513513,
+        "y1": 102.7027027027027,
+        "x2": 184.45945945945945,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "76_eu_priorityroad_ahead_0003873.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 107.43243243243244,
+        "y1": 105.4054054054054,
+        "x2": 190.54054054054055,
+        "y2": 191.21621621621622
+    },
+    {
+        "image_name": "76_eu_priorityroad_ahead_0003874.jpg",
+        "label": "eu_priorityroad_ahead",
+        "x1": 107.43243243243244,
+        "y1": 105.4054054054054,
+        "x2": 190.54054054054055,
+        "y2": 191.21621621621622
+    },
+    {
+        "image_name": "77_eu_red_border_up_triangle_unknown_0003863.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 114.1891891891892,
+        "y1": 91.89189189189189,
+        "x2": 199.32432432432432,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "77_eu_red_border_up_triangle_unknown_0003865.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 115.54054054054053,
+        "y1": 75.0,
+        "x2": 213.51351351351352,
+        "y2": 177.02702702702703
+    },
+    {
+        "image_name": "77_eu_red_border_up_triangle_unknown_0003866.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 115.54054054054053,
+        "y1": 75.0,
+        "x2": 213.51351351351352,
+        "y2": 177.02702702702703
+    },
+    {
+        "image_name": "77_eu_red_border_up_triangle_unknown_0003867.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 115.54054054054053,
+        "y1": 75.0,
+        "x2": 213.51351351351352,
+        "y2": 177.02702702702703
+    },
+    {
+        "image_name": "77_eu_red_border_up_triangle_unknown_0003868.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 115.54054054054053,
+        "y1": 75.0,
+        "x2": 213.51351351351352,
+        "y2": 177.02702702702703
+    },
+    {
+        "image_name": "77_eu_red_border_up_triangle_unknown_0003869.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 117.56756756756756,
+        "y1": 82.43243243243244,
+        "x2": 218.24324324324323,
+        "y2": 166.89189189189187
+    },
+    {
+        "image_name": "77_eu_red_border_up_triangle_unknown_0003870.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 117.56756756756756,
+        "y1": 82.43243243243244,
+        "x2": 218.24324324324323,
+        "y2": 166.89189189189187
+    },
+    {
+        "image_name": "77_eu_red_border_up_triangle_unknown_0003871.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 117.56756756756756,
+        "y1": 82.43243243243244,
+        "x2": 218.24324324324323,
+        "y2": 166.89189189189187
+    },
+    {
+        "image_name": "77_eu_red_border_up_triangle_unknown_0003872.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 117.56756756756756,
+        "y1": 82.43243243243244,
+        "x2": 218.24324324324323,
+        "y2": 166.89189189189187
+    },
+    {
+        "image_name": "78_eu_additional_panel_0003865.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 129.72972972972974,
+        "y1": 88.51351351351352,
+        "x2": 211.48648648648648,
+        "y2": 163.51351351351352
+    },
+    {
+        "image_name": "78_eu_additional_panel_0003866.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 129.72972972972974,
+        "y1": 88.51351351351352,
+        "x2": 211.48648648648648,
+        "y2": 163.51351351351352
+    },
+    {
+        "image_name": "78_eu_additional_panel_0003867.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 129.72972972972974,
+        "y1": 88.51351351351352,
+        "x2": 211.48648648648648,
+        "y2": 163.51351351351352
+    },
+    {
+        "image_name": "78_eu_additional_panel_0003868.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 129.72972972972974,
+        "y1": 88.51351351351352,
+        "x2": 211.48648648648648,
+        "y2": 163.51351351351352
+    },
+    {
+        "image_name": "78_eu_additional_panel_0003869.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 129.72972972972974,
+        "y1": 88.51351351351352,
+        "x2": 211.48648648648648,
+        "y2": 163.51351351351352
+    },
+    {
+        "image_name": "78_eu_additional_panel_0003870.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 133.1081081081081,
+        "y1": 89.1891891891892,
+        "x2": 213.51351351351352,
+        "y2": 158.1081081081081
+    },
+    {
+        "image_name": "78_eu_additional_panel_0003871.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 133.1081081081081,
+        "y1": 89.1891891891892,
+        "x2": 213.51351351351352,
+        "y2": 158.1081081081081
+    },
+    {
+        "image_name": "78_eu_additional_panel_0003872.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 132.43243243243242,
+        "y1": 89.1891891891892,
+        "x2": 212.16216216216216,
+        "y2": 158.78378378378378
+    },
+    {
+        "image_name": "79_eu_additional_panel_0003915.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 96.62162162162161,
+        "x2": 177.02702702702703,
+        "y2": 157.43243243243242
+    },
+    {
+        "image_name": "79_eu_additional_panel_0003916.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 96.62162162162161,
+        "x2": 177.02702702702703,
+        "y2": 157.43243243243242
+    },
+    {
+        "image_name": "79_eu_additional_panel_0003917.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 96.62162162162161,
+        "x2": 177.02702702702703,
+        "y2": 157.43243243243242
+    },
+    {
+        "image_name": "79_eu_additional_panel_0003918.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 113.51351351351352,
+        "y1": 97.29729729729729,
+        "x2": 171.6216216216216,
+        "y2": 158.1081081081081
+    },
+    {
+        "image_name": "79_eu_additional_panel_0003919.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 113.51351351351352,
+        "y1": 97.29729729729729,
+        "x2": 171.6216216216216,
+        "y2": 158.1081081081081
+    },
+    {
+        "image_name": "79_eu_additional_panel_0003920.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 112.16216216216216,
+        "y1": 97.97297297297297,
+        "x2": 167.56756756756755,
+        "y2": 158.78378378378378
+    },
+    {
+        "image_name": "79_eu_additional_panel_0003921.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 112.16216216216216,
+        "y1": 97.97297297297297,
+        "x2": 167.56756756756755,
+        "y2": 158.78378378378378
+    },
+    {
+        "image_name": "79_eu_additional_panel_0003923.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 118.91891891891892,
+        "y1": 95.94594594594594,
+        "x2": 168.9189189189189,
+        "y2": 154.7297297297297
+    },
+    {
+        "image_name": "79_eu_additional_panel_0003924.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 114.86486486486486,
+        "y1": 92.56756756756756,
+        "x2": 162.16216216216216,
+        "y2": 154.7297297297297
+    },
+    {
+        "image_name": "7_eu_red_border_up_triangle_unknown_0001185.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 100.0,
+        "y1": 91.89189189189189,
+        "x2": 188.51351351351352,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "7_eu_red_border_up_triangle_unknown_0001186.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 100.0,
+        "y1": 91.89189189189189,
+        "x2": 188.51351351351352,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "7_eu_red_border_up_triangle_unknown_0001187.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 100.0,
+        "y1": 91.89189189189189,
+        "x2": 188.51351351351352,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "7_eu_red_border_up_triangle_unknown_0001188.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 110.8108108108108,
+        "y1": 89.86486486486486,
+        "x2": 184.45945945945945,
+        "y2": 190.54054054054055
+    },
+    {
+        "image_name": "7_eu_red_border_up_triangle_unknown_0001189.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 110.8108108108108,
+        "y1": 89.86486486486486,
+        "x2": 184.45945945945945,
+        "y2": 190.54054054054055
+    },
+    {
+        "image_name": "7_eu_red_border_up_triangle_unknown_0001190.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 117.56756756756756,
+        "y1": 89.86486486486486,
+        "x2": 179.7297297297297,
+        "y2": 188.51351351351352
+    },
+    {
+        "image_name": "80_back_of_sign_0003924.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 104.05405405405405,
+        "y1": 100.0,
+        "x2": 192.56756756756755,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "80_back_of_sign_0003925.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 104.05405405405405,
+        "y1": 100.0,
+        "x2": 192.56756756756755,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "80_back_of_sign_0003926.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 104.05405405405405,
+        "y1": 100.0,
+        "x2": 192.56756756756755,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "80_back_of_sign_0003927.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 104.05405405405405,
+        "y1": 100.0,
+        "x2": 192.56756756756755,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "80_back_of_sign_0003928.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 104.05405405405405,
+        "y1": 100.0,
+        "x2": 192.56756756756755,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "80_back_of_sign_0003929.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 104.05405405405405,
+        "y1": 100.0,
+        "x2": 192.56756756756755,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "80_back_of_sign_0003930.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 102.02702702702702,
+        "y1": 101.35135135135135,
+        "x2": 185.8108108108108,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "80_back_of_sign_0003931.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 102.02702702702702,
+        "y1": 101.35135135135135,
+        "x2": 185.8108108108108,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "80_back_of_sign_0003932.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 102.02702702702702,
+        "y1": 101.35135135135135,
+        "x2": 185.8108108108108,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "80_back_of_sign_0003933.jpg",
+        "label": "eu_speedlimit_70",
+        "x1": 100.0,
+        "y1": 105.4054054054054,
+        "x2": 177.02702702702703,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "81_eu_blue_border_rectangle_unknown_0003915.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 100.67567567567568,
+        "x2": 190.54054054054055,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "81_eu_blue_border_rectangle_unknown_0003916.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 100.67567567567568,
+        "x2": 190.54054054054055,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "81_eu_blue_border_rectangle_unknown_0003917.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 100.67567567567568,
+        "x2": 190.54054054054055,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "81_eu_blue_border_rectangle_unknown_0003918.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 100.67567567567568,
+        "x2": 190.54054054054055,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "81_eu_blue_border_rectangle_unknown_0003919.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 108.78378378378378,
+        "y1": 100.67567567567568,
+        "x2": 190.54054054054055,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "81_eu_blue_border_rectangle_unknown_0003920.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 116.21621621621621,
+        "y1": 99.32432432432432,
+        "x2": 185.8108108108108,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "81_eu_blue_border_rectangle_unknown_0003924.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 128.3783783783784,
+        "y1": 93.91891891891892,
+        "x2": 186.48648648648648,
+        "y2": 190.54054054054055
+    },
+    {
+        "image_name": "84_eu_blue_ground_circle_unknown_0003965.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 118.24324324324324,
+        "y1": 115.54054054054053,
+        "x2": 183.1081081081081,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "84_eu_blue_ground_circle_unknown_0003966.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 118.24324324324324,
+        "y1": 115.54054054054053,
+        "x2": 183.1081081081081,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "84_eu_blue_ground_circle_unknown_0003967.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 118.24324324324324,
+        "y1": 115.54054054054053,
+        "x2": 183.1081081081081,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "84_eu_blue_ground_circle_unknown_0003968.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 118.24324324324324,
+        "y1": 115.54054054054053,
+        "x2": 183.1081081081081,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "84_eu_blue_ground_circle_unknown_0003969.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 118.24324324324324,
+        "y1": 115.54054054054053,
+        "x2": 183.1081081081081,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "84_eu_blue_ground_circle_unknown_0003970.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 118.24324324324324,
+        "y1": 115.54054054054053,
+        "x2": 183.1081081081081,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "84_eu_blue_ground_circle_unknown_0003971.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 118.24324324324324,
+        "y1": 115.54054054054053,
+        "x2": 183.1081081081081,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "84_eu_blue_ground_circle_unknown_0003972.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 112.16216216216216,
+        "x2": 177.02702702702703,
+        "y2": 182.43243243243242
+    },
+    {
+        "image_name": "84_eu_blue_ground_circle_unknown_0003973.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 112.16216216216216,
+        "x2": 177.02702702702703,
+        "y2": 182.43243243243242
+    },
+    {
+        "image_name": "84_eu_blue_ground_circle_unknown_0003974.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 112.16216216216216,
+        "x2": 177.02702702702703,
+        "y2": 182.43243243243242
+    },
+    {
+        "image_name": "85_back_of_sign_0004192.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 103.37837837837837,
+        "x2": 191.21621621621622,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "85_back_of_sign_0004193.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 103.37837837837837,
+        "x2": 191.21621621621622,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "85_back_of_sign_0004194.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 103.37837837837837,
+        "x2": 191.21621621621622,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "85_back_of_sign_0004195.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 103.37837837837837,
+        "x2": 191.21621621621622,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "85_back_of_sign_0004196.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 103.37837837837837,
+        "x2": 191.21621621621622,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "85_back_of_sign_0004197.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 103.37837837837837,
+        "x2": 191.21621621621622,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "85_back_of_sign_0004198.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 103.37837837837837,
+        "x2": 191.21621621621622,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "85_back_of_sign_0004199.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 112.83783783783784,
+        "y1": 102.02702702702702,
+        "x2": 183.1081081081081,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "85_back_of_sign_0004200.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 114.1891891891892,
+        "y1": 104.05405405405405,
+        "x2": 179.05405405405406,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "85_back_of_sign_0004201.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 114.1891891891892,
+        "y1": 105.4054054054054,
+        "x2": 174.32432432432432,
+        "y2": 192.56756756756755
+    },
+    {
+        "image_name": "86_unknown_0004235.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "86_unknown_0004236.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "86_unknown_0004237.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "86_unknown_0004238.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "86_unknown_0004239.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "86_unknown_0004240.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "86_unknown_0004241.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "86_unknown_0004242.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "87_eu_red_border_up_triangle_unknown_0004282.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 103.37837837837837,
+        "y1": 89.1891891891892,
+        "x2": 202.02702702702703,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "87_eu_red_border_up_triangle_unknown_0004283.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 103.37837837837837,
+        "y1": 89.1891891891892,
+        "x2": 202.02702702702703,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "87_eu_red_border_up_triangle_unknown_0004284.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 103.37837837837837,
+        "y1": 89.1891891891892,
+        "x2": 202.02702702702703,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "87_eu_red_border_up_triangle_unknown_0004285.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 103.37837837837837,
+        "y1": 89.1891891891892,
+        "x2": 202.02702702702703,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "87_eu_red_border_up_triangle_unknown_0004286.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 103.37837837837837,
+        "y1": 89.1891891891892,
+        "x2": 202.02702702702703,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "87_eu_red_border_up_triangle_unknown_0004287.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 88.51351351351352,
+        "x2": 198.64864864864865,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "87_eu_red_border_up_triangle_unknown_0004288.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 88.51351351351352,
+        "x2": 198.64864864864865,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "87_eu_red_border_up_triangle_unknown_0004289.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 88.51351351351352,
+        "x2": 198.64864864864865,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "87_eu_red_border_up_triangle_unknown_0004290.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 111.48648648648648,
+        "y1": 91.21621621621621,
+        "x2": 194.59459459459458,
+        "y2": 189.1891891891892
+    },
+    {
+        "image_name": "87_eu_red_border_up_triangle_unknown_0004291.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 116.89189189189189,
+        "y1": 90.54054054054053,
+        "x2": 191.21621621621622,
+        "y2": 187.83783783783784
+    },
+    {
+        "image_name": "88_back_of_sign_0004283.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 104.72972972972973,
+        "x2": 195.27027027027026,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "88_back_of_sign_0004284.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 104.72972972972973,
+        "x2": 195.27027027027026,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "88_back_of_sign_0004285.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 104.72972972972973,
+        "x2": 195.27027027027026,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "88_back_of_sign_0004286.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 104.72972972972973,
+        "x2": 195.27027027027026,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "88_back_of_sign_0004287.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 104.72972972972973,
+        "x2": 195.27027027027026,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "88_back_of_sign_0004288.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 107.43243243243244,
+        "y1": 104.72972972972973,
+        "x2": 195.27027027027026,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "88_back_of_sign_0004293.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 124.32432432432432,
+        "y1": 88.51351351351352,
+        "x2": 195.27027027027026,
+        "y2": 187.83783783783784
+    },
+    {
+        "image_name": "88_back_of_sign_0004294.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 124.32432432432432,
+        "y1": 88.51351351351352,
+        "x2": 195.27027027027026,
+        "y2": 187.83783783783784
+    },
+    {
+        "image_name": "88_back_of_sign_0004295.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 139.86486486486487,
+        "y1": 81.75675675675676,
+        "x2": 187.83783783783784,
+        "y2": 187.83783783783784
+    },
+    {
+        "image_name": "89_eu_direction_position_indication_unknown_0004287.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 129.05405405405406,
+        "y1": 83.78378378378378,
+        "x2": 215.54054054054055,
+        "y2": 182.43243243243242
+    },
+    {
+        "image_name": "89_eu_direction_position_indication_unknown_0004288.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 129.05405405405406,
+        "y1": 83.78378378378378,
+        "x2": 215.54054054054055,
+        "y2": 182.43243243243242
+    },
+    {
+        "image_name": "89_eu_direction_position_indication_unknown_0004289.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 129.05405405405406,
+        "y1": 83.78378378378378,
+        "x2": 215.54054054054055,
+        "y2": 182.43243243243242
+    },
+    {
+        "image_name": "89_eu_direction_position_indication_unknown_0004290.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 139.1891891891892,
+        "y1": 85.8108108108108,
+        "x2": 217.56756756756755,
+        "y2": 178.3783783783784
+    },
+    {
+        "image_name": "89_eu_direction_position_indication_unknown_0004291.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 142.56756756756755,
+        "y1": 81.75675675675676,
+        "x2": 222.2972972972973,
+        "y2": 179.05405405405406
+    },
+    {
+        "image_name": "89_eu_direction_position_indication_unknown_0004292.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 147.2972972972973,
+        "y1": 84.45945945945945,
+        "x2": 227.02702702702703,
+        "y2": 178.3783783783784
+    },
+    {
+        "image_name": "8_eu_nostop_nopark_0001214.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 108.1081081081081,
+        "y1": 87.16216216216216,
+        "x2": 203.3783783783784,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "8_eu_nostop_nopark_0001215.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 109.45945945945945,
+        "y1": 85.13513513513513,
+        "x2": 200.67567567567568,
+        "y2": 197.97297297297297
+    },
+    {
+        "image_name": "8_eu_nostop_nopark_0001216.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 103.37837837837837,
+        "y1": 89.1891891891892,
+        "x2": 197.97297297297297,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "8_eu_nostop_nopark_0001217.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 97.29729729729729,
+        "y1": 87.83783783783784,
+        "x2": 197.2972972972973,
+        "y2": 200.0
+    },
+    {
+        "image_name": "8_eu_nostop_nopark_0001218.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 91.89189189189189,
+        "y1": 85.8108108108108,
+        "x2": 193.9189189189189,
+        "y2": 205.4054054054054
+    },
+    {
+        "image_name": "8_eu_nostop_nopark_0001219.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 87.16216216216216,
+        "y1": 85.13513513513513,
+        "x2": 194.59459459459458,
+        "y2": 208.78378378378378
+    },
+    {
+        "image_name": "8_eu_nostop_nopark_0001221.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 70.94594594594595,
+        "y1": 82.43243243243244,
+        "x2": 177.7027027027027,
+        "y2": 216.89189189189187
+    },
+    {
+        "image_name": "90_eu_red_border_up_triangle_unknown_0004282.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 100.67567567567568,
+        "y1": 93.24324324324324,
+        "x2": 197.2972972972973,
+        "y2": 187.83783783783784
+    },
+    {
+        "image_name": "90_eu_red_border_up_triangle_unknown_0004283.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 100.67567567567568,
+        "y1": 93.24324324324324,
+        "x2": 197.2972972972973,
+        "y2": 187.83783783783784
+    },
+    {
+        "image_name": "90_eu_red_border_up_triangle_unknown_0004284.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 100.67567567567568,
+        "y1": 93.24324324324324,
+        "x2": 197.2972972972973,
+        "y2": 187.83783783783784
+    },
+    {
+        "image_name": "90_eu_red_border_up_triangle_unknown_0004285.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 101.35135135135135,
+        "y1": 89.86486486486486,
+        "x2": 193.9189189189189,
+        "y2": 184.45945945945945
+    },
+    {
+        "image_name": "90_eu_red_border_up_triangle_unknown_0004286.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 101.35135135135135,
+        "y1": 89.86486486486486,
+        "x2": 193.9189189189189,
+        "y2": 184.45945945945945
+    },
+    {
+        "image_name": "90_eu_red_border_up_triangle_unknown_0004287.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 101.35135135135135,
+        "y1": 89.86486486486486,
+        "x2": 193.9189189189189,
+        "y2": 184.45945945945945
+    },
+    {
+        "image_name": "90_eu_red_border_up_triangle_unknown_0004288.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 101.35135135135135,
+        "y1": 89.86486486486486,
+        "x2": 193.9189189189189,
+        "y2": 184.45945945945945
+    },
+    {
+        "image_name": "90_eu_red_border_up_triangle_unknown_0004289.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 105.4054054054054,
+        "y1": 89.86486486486486,
+        "x2": 189.86486486486487,
+        "y2": 185.8108108108108
+    },
+    {
+        "image_name": "90_eu_red_border_up_triangle_unknown_0004290.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 105.4054054054054,
+        "y1": 89.86486486486486,
+        "x2": 189.86486486486487,
+        "y2": 185.8108108108108
+    },
+    {
+        "image_name": "90_eu_red_border_up_triangle_unknown_0004291.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 110.8108108108108,
+        "y1": 93.24324324324324,
+        "x2": 187.83783783783784,
+        "y2": 188.51351351351352
+    },
+    {
+        "image_name": "91_unknown_0004307.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "91_unknown_0004308.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "91_unknown_0004309.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "91_unknown_0004310.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "91_unknown_0004311.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "91_unknown_0004312.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "93_back_of_sign_0004382.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 106.08108108108108,
+        "y1": 102.02702702702702,
+        "x2": 195.27027027027026,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "93_back_of_sign_0004383.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 106.08108108108108,
+        "y1": 102.02702702702702,
+        "x2": 195.27027027027026,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "93_back_of_sign_0004384.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 106.08108108108108,
+        "y1": 102.02702702702702,
+        "x2": 195.27027027027026,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "93_back_of_sign_0004385.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 106.08108108108108,
+        "y1": 102.02702702702702,
+        "x2": 195.27027027027026,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "93_back_of_sign_0004386.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 106.08108108108108,
+        "y1": 102.02702702702702,
+        "x2": 195.27027027027026,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "93_back_of_sign_0004387.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 106.08108108108108,
+        "y1": 102.02702702702702,
+        "x2": 195.27027027027026,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "93_back_of_sign_0004388.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 106.08108108108108,
+        "y1": 102.02702702702702,
+        "x2": 195.27027027027026,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "93_back_of_sign_0004389.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 106.08108108108108,
+        "y1": 102.02702702702702,
+        "x2": 195.27027027027026,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "93_back_of_sign_0004390.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 106.08108108108108,
+        "y1": 102.02702702702702,
+        "x2": 195.27027027027026,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "93_back_of_sign_0004391.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 106.08108108108108,
+        "y1": 102.02702702702702,
+        "x2": 195.27027027027026,
+        "y2": 191.89189189189187
+    },
+    {
+        "image_name": "94_unknown_0004561.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "94_unknown_0004562.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "94_unknown_0004563.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "94_unknown_0004564.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "94_unknown_0004565.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "94_unknown_0004566.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "94_unknown_0004567.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "94_unknown_0004568.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "94_unknown_0004569.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "94_unknown_0004570.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "95_unknown_0004624.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "95_unknown_0004625.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "95_unknown_0004626.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "95_unknown_0004627.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "95_unknown_0004628.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "95_unknown_0004629.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "95_unknown_0004630.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "95_unknown_0004631.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "95_unknown_0004632.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "95_unknown_0004633.jpg",
+        "label": null,
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "96_unknown_0004757.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 81.08108108108108,
+        "y1": 102.02702702702702,
+        "x2": 221.6216216216216,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "96_unknown_0004758.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 81.08108108108108,
+        "y1": 102.02702702702702,
+        "x2": 221.6216216216216,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "96_unknown_0004759.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 75.67567567567568,
+        "y1": 100.67567567567568,
+        "x2": 226.35135135135135,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "96_unknown_0004760.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 75.67567567567568,
+        "y1": 100.67567567567568,
+        "x2": 226.35135135135135,
+        "y2": 195.94594594594594
+    },
+    {
+        "image_name": "96_unknown_0004761.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 72.29729729729729,
+        "y1": 102.02702702702702,
+        "x2": 230.4054054054054,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "96_unknown_0004762.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 72.29729729729729,
+        "y1": 102.02702702702702,
+        "x2": 230.4054054054054,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "96_unknown_0004763.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 66.21621621621621,
+        "y1": 102.7027027027027,
+        "x2": 235.8108108108108,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "96_unknown_0004764.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 66.21621621621621,
+        "y1": 102.7027027027027,
+        "x2": 235.8108108108108,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "96_unknown_0004765.jpg",
+        "label": "eu_direction_position_indication_unknown",
+        "x1": 60.81081081081081,
+        "y1": 91.21621621621621,
+        "x2": 239.86486486486487,
+        "y2": 200.67567567567568
+    },
+    {
+        "image_name": "97_back_of_sign_0004754.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 110.13513513513513,
+        "y1": 83.78378378378378,
+        "x2": 196.6216216216216,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "97_back_of_sign_0004755.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 110.13513513513513,
+        "y1": 83.78378378378378,
+        "x2": 196.6216216216216,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "97_back_of_sign_0004756.jpg",
+        "label": "eu_red_border_up_triangle_unknown",
+        "x1": 115.54054054054053,
+        "y1": 91.89189189189189,
+        "x2": 193.24324324324323,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "98_back_of_sign_0004752.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 108.1081081081081,
+        "y1": 98.64864864864865,
+        "x2": 191.89189189189187,
+        "y2": 204.05405405405403
+    },
+    {
+        "image_name": "98_back_of_sign_0004753.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 108.1081081081081,
+        "y1": 98.64864864864865,
+        "x2": 191.89189189189187,
+        "y2": 204.05405405405403
+    },
+    {
+        "image_name": "98_back_of_sign_0004754.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 108.1081081081081,
+        "y1": 97.29729729729729,
+        "x2": 184.45945945945945,
+        "y2": 202.7027027027027
+    },
+    {
+        "image_name": "98_back_of_sign_0004755.jpg",
+        "label": "eu_blue_border_rectangle_unknown",
+        "x1": 108.1081081081081,
+        "y1": 97.29729729729729,
+        "x2": 184.45945945945945,
+        "y2": 202.7027027027027
+    },
+    {
+        "image_name": "99_back_of_sign_0004875.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 116.89189189189189,
+        "y1": 106.08108108108108,
+        "x2": 186.48648648648648,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "99_back_of_sign_0004876.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 116.89189189189189,
+        "y1": 106.08108108108108,
+        "x2": 186.48648648648648,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "99_back_of_sign_0004877.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 116.89189189189189,
+        "y1": 106.08108108108108,
+        "x2": 186.48648648648648,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "99_back_of_sign_0004878.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 116.89189189189189,
+        "y1": 106.08108108108108,
+        "x2": 186.48648648648648,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "99_back_of_sign_0004879.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 116.89189189189189,
+        "y1": 106.08108108108108,
+        "x2": 186.48648648648648,
+        "y2": 189.86486486486487
+    },
+    {
+        "image_name": "99_back_of_sign_0004880.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 112.83783783783784,
+        "y1": 104.72972972972973,
+        "x2": 181.08108108108107,
+        "y2": 188.51351351351352
+    },
+    {
+        "image_name": "99_back_of_sign_0004883.jpg",
+        "label": "eu_pedestrian_crossing",
+        "x1": 118.91891891891892,
+        "y1": 104.05405405405405,
+        "x2": 180.4054054054054,
+        "y2": 188.51351351351352
+    },
+    {
+        "image_name": "9_eu_noentry_0001359.jpg",
+        "label": "eu_noentry",
+        "x1": 104.05405405405405,
+        "y1": 101.35135135135135,
+        "x2": 193.9189189189189,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "9_eu_noentry_0001360.jpg",
+        "label": "eu_noentry",
+        "x1": 104.05405405405405,
+        "y1": 101.35135135135135,
+        "x2": 193.9189189189189,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "9_eu_noentry_0001361.jpg",
+        "label": "eu_noentry",
+        "x1": 104.05405405405405,
+        "y1": 101.35135135135135,
+        "x2": 193.9189189189189,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "9_eu_noentry_0001362.jpg",
+        "label": "eu_noentry",
+        "x1": 104.05405405405405,
+        "y1": 101.35135135135135,
+        "x2": 193.9189189189189,
+        "y2": 194.59459459459458
+    },
+    {
+        "image_name": "9_eu_noentry_0001363.jpg",
+        "label": "eu_noentry",
+        "x1": 97.97297297297297,
+        "y1": 97.97297297297297,
+        "x2": 196.6216216216216,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "9_eu_noentry_0001364.jpg",
+        "label": "eu_noentry",
+        "x1": 97.97297297297297,
+        "y1": 97.97297297297297,
+        "x2": 196.6216216216216,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "9_eu_noentry_0001365.jpg",
+        "label": "eu_noentry",
+        "x1": 97.97297297297297,
+        "y1": 97.97297297297297,
+        "x2": 196.6216216216216,
+        "y2": 199.32432432432432
+    },
+    {
+        "image_name": "9_eu_noentry_0001366.jpg",
+        "label": "eu_noentry",
+        "x1": 92.56756756756756,
+        "y1": 94.5945945945946,
+        "x2": 199.32432432432432,
+        "y2": 197.2972972972973
+    },
+    {
+        "image_name": "9_eu_noentry_0001367.jpg",
+        "label": "eu_noentry",
+        "x1": 92.56756756756756,
+        "y1": 94.5945945945946,
+        "x2": 199.32432432432432,
+        "y2": 197.2972972972973
+    },
+    {
+        "image_name": "9_eu_noentry_0001368.jpg",
+        "label": "eu_noentry",
+        "x1": 92.56756756756756,
+        "y1": 94.5945945945946,
+        "x2": 199.32432432432432,
+        "y2": 197.2972972972973
+    },
+    {
+        "image_name": "187_eu_blue_ground_circle_unknown_0007701.jpg",
+        "label": "eu_blue_ground_circle_unknown",
+        "x1": 111.48648648648648,
+        "y1": 97.97297297297297,
+        "x2": 191.21621621621622,
+        "y2": 196.6216216216216
+    },
+    {
+        "image_name": "195_eu_direction_position_indication_unknown_0007916.jpg",
+        "label": "eu_additional_panel",
+        "x1": 97.29729729729729,
+        "y1": 110.13513513513513,
+        "x2": 200.0,
+        "y2": 195.27027027027026
+    },
+    {
+        "image_name": "240_eu_nostop_nopark_0009312.jpg",
+        "label": "eu_nostop_nopark",
+        "x1": 114.86486486486486,
+        "y1": 100.67567567567568,
+        "x2": 179.7297297297297,
+        "y2": 193.9189189189189
+    },
+    {
+        "image_name": "299_eu_noparking_0010820.jpg",
+        "label": "eu_noparking",
+        "x1": 108.78378378378378,
+        "y1": 100.67567567567568,
+        "x2": 192.56756756756755,
+        "y2": 198.64864864864865
+    },
+    {
+        "image_name": "494_eu_white_ground_rectangle_0022901.jpg",
+        "label": "eu_white_ground_rectangle",
+        "x1": 95.94594594594594,
+        "y1": 81.75675675675676,
+        "x2": 195.27027027027026,
+        "y2": 188.51351351351352
     }
 ]

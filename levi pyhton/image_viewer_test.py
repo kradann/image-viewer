@@ -454,13 +454,7 @@ class ImageLoader(QtWidgets.QWidget):
 
                 self.load_2d_annot()
 
-                if (self.file_index % len(self.file_list) == 0) and self.first is False:
-                    self.info_label.setText("{} Images loaded!".format(len(self.file_list)))
-
-                elif self.file_index % len(self.file_list) == 0 and self.first :
-                    self.info_label.setText("Image (1/{}) loaded!".format(len(self.file_list)))
-                else:
-                    self.info_label.setText("Image ({}/{}) loaded!".format( self.file_index % len(self.file_list)+1,len(self.file_list)))
+                self.update_image_info_label()
                 #self.pred_annot.setText(self.get_label(os.path.basename(self.current_file_name)))
 
     def next_image(self):
@@ -527,6 +521,7 @@ class ImageLoader(QtWidgets.QWidget):
                 os.remove(original_file_path)
                 print("Original file deleted from source: {}".format(original_file_path))
                 self.info_label.setText("Deleted!")
+                self.update_image_info_label()
             else:
                 self.info_label.setText("Copied!")
         except FileNotFoundError:
@@ -785,8 +780,9 @@ class ImageLoader(QtWidgets.QWidget):
             not_found_text = ""
             print(len(filenames))
             for filename in filenames:
-                if not self.image_name_exists(self.annotation_2d_dict, filename): #if true that means no annotation saved
-                    not_found_text += f"File name: {filename}, Index:{set_index}\n"
+                current_file = self.search_annotation_by_image_name(self.annotation_2d_dict, filename)
+                if current_file is None: #if true that means no annotation saved
+                    not_found_text += f"File name: {filename}, Index:{set_index+1}\n"
                     if first: #to jump to first found image
                         self.load_image_and_set_name()
                         first = False
@@ -878,6 +874,16 @@ class ImageLoader(QtWidgets.QWidget):
 
         # Optionally call the default close event behavior
         super().closeEvent(event)
+
+    def update_image_info_label(self):
+        if (self.file_index % len(self.file_list) == 0) and self.first is False:
+            self.info_label.setText("{} Images loaded!".format(len(self.file_list)))
+
+        elif self.file_index % len(self.file_list) == 0 and self.first:
+            self.info_label.setText("Image (1/{}) loaded!".format(len(self.file_list)))
+        else:
+            self.info_label.setText(
+                "Image ({}/{}) loaded!".format(self.file_index % len(self.file_list) + 1, len(self.file_list)))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
