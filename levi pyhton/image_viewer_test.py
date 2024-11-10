@@ -52,9 +52,9 @@ class ImageLoader(QtWidgets.QWidget):
         # change, so there is no need to set it each time
         self.image.setAlignment(QtCore.Qt.AlignCenter)
 
-        self.pred_annot = QLabel(self.get_label(), self)
-        self.pred_annot.setFixedSize(500, 50)
-        layout.addWidget(self.pred_annot, 1, 0, 1, num_of_columns)
+        # self.pred_annot = QLabel(self.get_label(), self)
+        # self.pred_annot.setFixedSize(500, 50)
+        # layout.addWidget(self.pred_annot, 1, 0, 1, num_of_columns)
 
         # draw rectangle
         self.start_x = None
@@ -461,7 +461,7 @@ class ImageLoader(QtWidgets.QWidget):
                     self.info_label.setText("Image (1/{}) loaded!".format(len(self.file_list)))
                 else:
                     self.info_label.setText("Image ({}/{}) loaded!".format( self.file_index % len(self.file_list)+1,len(self.file_list)))
-                self.pred_annot.setText(self.get_label(os.path.basename(self.current_file_name)))
+                #self.pred_annot.setText(self.get_label(os.path.basename(self.current_file_name)))
 
     def next_image(self):
         # ensure that the file list has not been cleared due to missing files
@@ -670,6 +670,7 @@ class ImageLoader(QtWidgets.QWidget):
             self.y_offset = (label_height - pixmap_height) // 2
             return relative_pos.x() - self.x_offset, relative_pos.y() - self.y_offset
 
+    """
     def get_label(self, file_name: str = None):
         if self.us:
             pred, annot = "-", "-"
@@ -686,6 +687,7 @@ class ImageLoader(QtWidgets.QWidget):
                     print("file name convention error ({})".format(file_name))
                     pred, annot = "-", "-"
                 return "prediction: {}\nannotation: {}".format(pred, annot)
+    """
 
     def set_dark_theme(self):
         palette = QPalette()
