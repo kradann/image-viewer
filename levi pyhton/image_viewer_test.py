@@ -201,7 +201,7 @@ class ImageLoader(QtWidgets.QWidget):
         self.crossPos = None, None  # To store the cross position
         self.right_button_pressed = False
         self.coordinates = None
-        self.annotation_filename = "eu_2_annotation.json"
+        self.annotation_filename = "wrong_annotation.json"
 
         self.shortcut_save = QShortcut(QKeySequence("S"), self)
         self.shortcut_save.activated.connect(self.save_2d)
@@ -290,12 +290,14 @@ class ImageLoader(QtWidgets.QWidget):
 
     def load_2d_annot(self):
         if self.directory_check():
-            if os.path.isfile(os.path.join(self.base_output_dir, "eu_2_annotation.json")):
-                with ((open(os.path.join(self.base_output_dir, "eu_2_annotation.json"), "r"))as stream):
+            if os.path.isfile(os.path.join(self.base_output_dir, "wrong_annotation.json")):
+                with ((open(os.path.join(self.base_output_dir, "wrong_annotation.json"), "r"))as stream):
                     self.annotation_2d_dict = json.load(stream)
                     #filename = self.current_file_name.split('/')[-1]
                     entry = self.search_annotation_by_image_name(self.annotation_2d_dict,self.full_current_file_name)
+                    
                     if entry is not None:
+
                         #print(self.coordinates)
                         if all([entry["x1"] is not None , entry["y1"] is not None, entry["x2"] is not None, entry["y2"] is not None]) :
                             self.saved_check_label.setText("Saved")
@@ -307,6 +309,11 @@ class ImageLoader(QtWidgets.QWidget):
                             self.last_left_y = y1
                             self.last_right_x = x2
                             self.last_right_y = y2
+
+                            self.top_left_x = x1
+                            self.top_left_y = y1
+                            self.bottom_right_x = x2
+                            self.bottom_right_y = y2
                             if entry["label"] == "unknown":
                                 self.current_label = "unknown_sign"
                                 self.button.setText("unknown_sign")
@@ -378,7 +385,7 @@ class ImageLoader(QtWidgets.QWidget):
 
                 self.saved_check_label.setText("Saved")
                 # Load existing annotations if any
-                annotation_file_path = os.path.join(self.base_output_dir, "eu_2_annotation.json")
+                annotation_file_path = os.path.join(self.base_output_dir, "wrong_annotation.json")
 
                 if os.path.exists(annotation_file_path):
                     with open(annotation_file_path, "r") as f:
@@ -697,7 +704,7 @@ class ImageLoader(QtWidgets.QWidget):
 
     def open_annotation_dir(self):
         self.directory_check()
-        if os.path.isfile(os.path.join(self.base_output_dir, "eu_2_annotation.json")):
+        if os.path.isfile(os.path.join(self.base_output_dir, "wrong_annotation.json")):
             if platform.system() == "Windows":
                 subprocess.Popen(f'explorer "{self.base_output_dir}"')
             else:  # Linux
@@ -709,8 +716,8 @@ class ImageLoader(QtWidgets.QWidget):
 
     def not_a_sign(self):
         self.directory_check()
-        if os.path.isfile(os.path.join(self.base_output_dir, "eu_2_annotation.json")):
-            with open(os.path.join(self.base_output_dir, "eu_2_annotation.json"), "r") as f:
+        if os.path.isfile(os.path.join(self.base_output_dir, "wrong_annotation.json")):
+            with open(os.path.join(self.base_output_dir, "wrong_annotation.json"), "r") as f:
                     self.annotation_2d_dict = json.load(f)
 
             annotation_entry = {
@@ -735,7 +742,7 @@ class ImageLoader(QtWidgets.QWidget):
                 # If the entry doesn't exist, append the new annotation entry
                 self.annotation_2d_dict.append(annotation_entry)
 
-            with open(os.path.join(self.base_output_dir, "eu_2_annotation.json"), "w") as f:
+            with open(os.path.join(self.base_output_dir, "wrong_annotation.json"), "w") as f:
                 json.dump(self.annotation_2d_dict, f, indent=4)
 
             self.info_label.setText("Not a sign saved")
@@ -842,7 +849,8 @@ class ImageLoader(QtWidgets.QWidget):
         # Set the button text to the selected label
         self.button.setText(selected_text)
 
-    def search_annotation_by_image_name(self, annotations, image_name):
+    @staticmethod
+    def search_annotation_by_image_name(annotations, image_name):
         for entry in annotations:
             if entry["image_name"] == image_name:
                 return entry  # Return the matching dictionary
