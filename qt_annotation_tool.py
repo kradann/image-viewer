@@ -4,17 +4,20 @@ import argparse
 import json
 import os
 import sys
+from functools import partial
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QShortcut, QInputDialog, QMenu, QAction
-from PyQt5.QtGui import QPainter, QPen, QBrush, QPalette, QColor, QKeySequence
+from PyQt5.QtGui import QKeySequence
 from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtGui import QPainter, QPen, QBrush
 
-
-from utils.utils import close_event, get_dark_palette, search_annotation_by_image_name, get_filenames
-from utils.io_utils import load_image_and_set_name, load_2d_annot, select_input_dir, select_output_dir, save_2d
-from utils.dir_utils import directory_check, move_file
-from sing_types import eu_sign_types, us_sign_types
+from utils.draw_utils import get_image_coordinates
+from utils.utils import close_event, get_dark_palette, search_annotation_by_image_name, get_filenames, \
+    valid_coordinates, out_of_bounds
+from utils.io_utils import load_image_and_set_name, select_input_dir, select_output_dir, save_2d, directory_check
+from utils.dir_utils import move_file, open_annotation_dir
+from utils.sing_types import eu_sign_types, us_sign_types
 
 sign_types = None
 
@@ -30,6 +33,7 @@ class AnnotationTool(QtWidgets.QWidget):
         self.us = us
         num_of_columns = 3
         self.image = QtWidgets.QLabel()
+        print(1212, id(self.image))
         self.pixmap = QtGui.QPixmap(320, 320)
         self.pixmap.fill(Qt.white)  # Fill with white color
         self.image.setPixmap(self.pixmap)
@@ -120,12 +124,12 @@ class AnnotationTool(QtWidgets.QWidget):
         self.nextImageButton.setFixedHeight(button_size * 4)
         layout.addWidget(self.checker, 8, 2, 1, 1)
 
-        self.inputFolderButton.clicked.connect(select_input_dir)
+        self.inputFolderButton.clicked.connect(partial(select_input_dir, self))
         self.outputFolderButton.clicked.connect(select_output_dir)
         self.prevImageButton.clicked.connect(self.prev_image)
         self.nextImageButton.clicked.connect(self.next_image)
         self.save2dButton.clicked.connect(save_2d)
-        self.AnnotdirButton.clicked.connect(self.open_annotation_dir)
+        self.AnnotdirButton.clicked.connect(open_annotation_dir)
         self.JumpTo.clicked.connect(self.jump_to)
         self.checker.clicked.connect(self.checking)
 
@@ -188,7 +192,7 @@ class AnnotationTool(QtWidgets.QWidget):
         self.annotation_filename = "annotation.json"
 
         self.shortcut_save = QShortcut(QKeySequence("S"), self)
-        self.shortcut_save.activated.connect(self.save_2d)
+        self.shortcut_save.activated.connect(save_2d)
 
         self.shortcut_next1 = QShortcut(QKeySequence("N"), self)
         self.shortcut_next1.activated.connect(self.next_image)
@@ -224,6 +228,10 @@ class AnnotationTool(QtWidgets.QWidget):
         self.last_image = None
 
 
+    def set_pixmap(self, pixmap):
+        print(1313)
+        self.image.setPixmap(pixmap)
+
     def next_image(self):
         # ensure that the file list has not been cleared due to missing files
         if self.file_list:
@@ -234,10 +242,7 @@ class AnnotationTool(QtWidgets.QWidget):
             if self.last_image is not None:
                 self.last_label = self.last_image["label"]
 
-            print(self.last_label)
-            print(self.last_batch_index)
             load_image_and_set_name(self)
-
         else:
             self.info_label.setText("No directory loaded!")
 
@@ -386,6 +391,112 @@ class AnnotationTool(QtWidgets.QWidget):
         close_event(self)
         # Optionally call the default close event behavior
         super().closeEvent(event)
+
+
+    # draw rectangle
+    def mousePressEvent(widget, event):
+        if event.button() == Qt.LeftButton:
+            widget.start_x, widget.start_y = get_image_coordinates(widget, event.pos())
+            widget.end_x = widget.start_x
+            widget.end_y = widget.start_y
+
+            widget.start_dx = widget.start_x - event.x()
+            widget.start_dy = widget.start_y - event.y()
+            widget.end_dx = 0
+            widget.end_dy = 0
+
+            widget.update()
+            widget.update_image()
+        if event.button() == Qt.RightButton:
+            widget.crossPos = get_image_coordinates(widget, event.pos())  # Store the position of the right-click
+            widget.right_button_pressed = True
+            widget.update()  # Trigger a repaint to draw the cross
+
+
+    def mouseMoveEvent(widget, event):
+        if widget.right_button_pressed:
+            widget.cursorPos = get_image_coordinates(widget, event.pos())
+            widget.draw_cross(widget.cursorPos[0], widget.cursorPos[1])
+            widget.update()
+        if event.buttons() & Qt.LeftButton:
+            widget.end_x, widget.end_y = get_image_coordinates(widget, event.pos())
+            widget.end_dx = widget.end_x - event.x()
+            widget.end_dy = widget.end_y - event.y()
+            widget.update()
+            widget.update_image()
+
+
+    def mouseReleaseEvent(widget, event):
+        if event.button() == Qt.LeftButton:
+            widget.end_x, widget.end_y = get_image_coordinates(widget, event.pos())
+            widget.end_dx = widget.end_x - event.x()
+            widget.end_dy = widget.end_y - event.y()
+
+            widget.update()
+            widget.update_image()
+
+            if valid_coordinates(widget.start_x, widget.start_y, widget.end_x, widget.end_y):
+                widget.top_left_x = min(widget.start_x, widget.end_x)
+                widget.top_left_y = min(widget.start_y, widget.end_y)
+                widget.bottom_right_x = max(widget.start_x, widget.end_x)
+                widget.bottom_right_y = max(widget.start_y, widget.end_y)
+
+                if out_of_bounds(widget):
+                    widget.coords_label.setText("Coordinates: Invalid coordinates!")
+                    widget.clear_coords()
+                elif widget.top_left_x == widget.bottom_right_x or widget.top_left_y == widget.bottom_right_y:  # check if shape is rectangle
+                    widget.coords_label.setText("Coordinates: Invalid values, shape is not rectangle")
+                    widget.clear_coords()
+                else:
+                    widget.coords_label.setText(
+                        "Coordinates: ({}, {}), ({}, {})".format(widget.top_left_x, widget.top_left_y,
+                                                                 widget.bottom_right_x,
+                                                                 widget.bottom_right_y))
+            else:
+                print("(at least) One of the coordinates is None")
+
+        if event.button() == Qt.RightButton:
+            widget.right_button_pressed = False
+            widget.cursorPos = event.pos()
+            x, y = get_image_coordinates(widget, event.pos())
+            widget.draw_cross(x, y)
+            widget.update()
+
+
+    def update_image(widget):
+        temp_pixmap = widget.pixmap.copy()
+        painter = QPainter(temp_pixmap)
+        painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
+        painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
+
+        if valid_coordinates(widget.start_x, widget.start_y, widget.end_x, widget.end_y):
+            top_left_x = min(widget.start_x, widget.end_x)
+            top_left_y = min(widget.start_y, widget.end_y)
+
+            width = abs(widget.end_x - widget.start_x)
+            height = abs(widget.end_y - widget.start_y)
+
+            painter.drawRect(QRect(top_left_x, top_left_y, width, height))
+
+        painter.end()
+        widget.image.setPixmap(temp_pixmap)
+
+    def draw_cross(widget, x, y):
+        temp_pixmap = widget.pixmap.copy()
+        painter = QPainter(temp_pixmap)
+        if widget.crossPos and widget.right_button_pressed:
+            # widget.drawCross(painter, widget.crossPos)
+            painter.setPen(QPen(Qt.yellow, 2, Qt.SolidLine))
+
+            # Draw horizontal line following the cursor
+            # painter.drawLine(0, widget.cursorPos.y() - 13, widget.width(), widget.cursorPos.y() - 13)
+            # Draw vertical line following the cursor
+            # painter.drawLine(widget.cursorPos.x() - 174, 0, widget.cursorPos.x() - 174, widget.height())
+            painter.drawLine(0, y, widget.width(), y)
+            painter.drawLine(x, 0, x, widget.height())
+
+        painter.end()
+        widget.image.setPixmap(temp_pixmap)
 
 
 if __name__ == '__main__':

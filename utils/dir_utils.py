@@ -3,11 +3,12 @@ import platform
 import shutil
 import subprocess
 
-from utils import update_image_info_label
-from io_utils import select_output_dir, select_input_dir
+from utils.io_utils import directory_check
+from utils.utils import update_image_info_label
+
 
 def open_annotation_dir(widget):
-    widget.directory_check()
+    directory_check(widget)
     if os.path.isfile(os.path.join(widget.base_output_dir, widget.annotation_filename)):
         if platform.system() == "Windows":
             subprocess.Popen("explorer \"{}\"".format(widget.base_output_dir))
@@ -38,12 +39,3 @@ def move_file(widget, file_name: str):
         print("Error during moving file: {}".format(dst))
 
 
-def directory_check(widget):
-    if widget.input_dir is None:
-        select_input_dir(widget)
-    if widget.base_output_dir is None:
-        select_output_dir(widget)
-    if widget.input_dir is not None and widget.base_output_dir is not None:
-        return True
-    else:
-        return False

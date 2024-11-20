@@ -25,9 +25,9 @@ def out_of_bounds(widget):
 
 
 def update_image_info_label(widget):
-    if (widget.file_index % len(widget.file_list) == 0) and widget.first is False:
+    print("uiil")
+    if (widget.file_index % len(widget.file_list) == 0) and not widget.first:
         widget.info_label.setText("{} Images loaded!".format(len(widget.file_list)))
-
     elif widget.file_index % len(widget.file_list) == 0 and widget.first:
         widget.info_label.setText("Image (1/{}) loaded!".format(len(widget.file_list)))
     else:
