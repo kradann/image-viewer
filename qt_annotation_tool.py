@@ -6,18 +6,17 @@ import os
 import sys
 from functools import partial
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QShortcut, QInputDialog, QMenu, QAction
 from PyQt5.QtGui import QKeySequence
-from PyQt5.QtCore import Qt, QRect
-from PyQt5.QtGui import QPainter, QPen, QBrush
+from PyQt5.QtCore import Qt
 
-from utils.image_manager import get_image_coordinates, mouse_press_event, mouse_move_event, mouse_release_event, \
-    ImageManager
+from utils.annotation_manager import AnnotationManager
+from utils.image_manager import ImageManager
 from utils.file_manager import FileManager
-from utils.utils import close_event, get_dark_palette, search_annotation_by_image_name, get_filenames, \
-    valid_coordinates, out_of_bounds
-from utils.io_utils import load_image_and_set_name, select_input_dir, select_output_dir, save_2d, directory_check
+from utils.index_manager import IndexManager
+from utils.utils import get_dark_palette, get_filenames
+from utils.io_utils import load_image_and_set_name, save_2d, directory_check
 from utils.dir_utils import move_file, open_annotation_dir
 from utils.sing_types import eu_sign_types, us_sign_types
 
@@ -36,9 +35,12 @@ class AnnotationTool(QtWidgets.QWidget):
         self.use_batch_idx = use_batch_idx
         num_of_columns = 3
 
-        self.file_manager = FileManager(self)
+        self.annotation_manager = AnnotationManager()
+        self.file_manager = FileManager(self, self.annotation_manager)
         self.image_manager = ImageManager(self, self.file_manager)
         layout.addWidget(self.image_manager.image, 0, 0, 1, 3)
+
+        self.index_manager = IndexManager(self.file_manager, self.image_manager, self.annotation_manager)
 
         # the label alignment property is always maintained even when the contents
         # change, so there is no need to set it each time
@@ -125,10 +127,10 @@ class AnnotationTool(QtWidgets.QWidget):
         self.nextImageButton.setFixedHeight(button_size * 4)
         layout.addWidget(self.checker, 8, 2, 1, 1)
 
-        self.inputFolderButton.clicked.connect(partial(select_input_dir, self))
-        self.outputFolderButton.clicked.connect(select_output_dir)
-        self.prevImageButton.clicked.connect(self.prev_image)
-        self.nextImageButton.clicked.connect(self.next_image)
+        self.inputFolderButton.clicked.connect(self.file_manager.set_input_dir)
+        self.outputFolderButton.clicked.connect(self.file_manager.set_output_dir)
+        self.prevImageButton.clicked.connect(self.index_manager.previous_file)
+        self.nextImageButton.clicked.connect(self.index_manager.next_file)
         self.save2dButton.clicked.connect(save_2d)
         self.AnnotdirButton.clicked.connect(open_annotation_dir)
         self.JumpTo.clicked.connect(self.jump_to)
@@ -173,25 +175,25 @@ class AnnotationTool(QtWidgets.QWidget):
         # self.input_dir = None
         # self.base_output_dir = None
 
-        self.start_dx = 0
-        self.start_dy = 0
-        self.end_dx = 0
-        self.end_dy = 0
-
-        self.x_back_scale = None
-        self.y_back_scale = None
-
-        self.top_left_x = None
-        self.top_left_y = None
-        self.bottom_right_x = None
-        self.bottom_right_y = None
-        self.annotation_2d_dict = None
-
-        self.cursorPos = self.rect().center()  # Initialize cursor position
-        self.crossPos = None, None  # To store the cross position
-        self.right_button_pressed = False
-        self.coordinates = None
-        self.annotation_filename = "annotation.json"
+        # self.start_dx = 0
+        # self.start_dy = 0
+        # self.end_dx = 0
+        # self.end_dy = 0
+        #
+        # self.x_back_scale = None
+        # self.y_back_scale = None
+        #
+        # self.top_left_x = None
+        # self.top_left_y = None
+        # self.bottom_right_x = None
+        # self.bottom_right_y = None
+        # self.annotation_2d_dict = None
+        #
+        # self.cursorPos = self.rect().center()  # Initialize cursor position
+        # self.crossPos = None, None  # To store the cross position
+        # self.right_button_pressed = False
+        # self.coordinates = None
+        # self.annotation_filename = "annotation.json"
 
         self.shortcut_save = QShortcut(QKeySequence("S"), self)
         self.shortcut_save.activated.connect(save_2d)
@@ -211,8 +213,8 @@ class AnnotationTool(QtWidgets.QWidget):
         self.shortcut_to_delete = QShortcut(QKeySequence("D"), self)
         self.shortcut_to_delete.activated.connect(self.move_func_dict["to_delete"])
 
-        self.x_offset = 0
-        self.y_offset = 0
+        # self.x_offset = 0
+        # self.y_offset = 0
 
         self.first = False
         self.current_label = ""
@@ -254,12 +256,6 @@ class AnnotationTool(QtWidgets.QWidget):
         else:
             self.info_label.setText("No directory loaded!")
 
-    def clear_coords(self):
-        self.coords_label.setText("Coordinates: (N/A, N/A)")
-        self.top_left_x = None
-        self.top_left_y = None
-        self.bottom_right_x = None
-        self.bottom_right_y = None
 
     def get_move_func(self, file_name: str):
         def move_func():
@@ -386,15 +382,15 @@ class AnnotationTool(QtWidgets.QWidget):
 
 
     def mousePressEvent(self, event):
-        mouse_press_event(self, event)
+        self.image_manager.mouse_press_event(event)
 
 
     def mouseMoveEvent(self, event):
-        mouse_move_event(self, event)
+        self.image_manager.mouse_move_event(event)
 
 
     def mouseReleaseEvent(self, event):
-        mouse_release_event(self, event)
+        self.image_manager.mouse_release_event(event)
 
 
     def closeEvent(self, event):

@@ -2,13 +2,15 @@ import os
 import json
 
 from collections import defaultdict
-from qt_annotation_tool import AnnotationTool
-from utils.io_utils import select_input_dir, select_output_dir
+
+from utils.annotation_manager import AnnotationManager
+# from qt_annotation_tool import AnnotationTool
 
 
 class FileManager(object):
-    def __init__(self, widget: AnnotationTool):
+    def __init__(self, widget, annotation_manager: AnnotationManager):
         self.widget = widget
+        self.annotation_manager = annotation_manager
         self.input_dir = None
         self.output_dir = None
         self.last_index_file = None
@@ -28,11 +30,14 @@ class FileManager(object):
 
 
     def set_current_file(self, file_index: int):
+        reset = False
         if self.input_dir is None:
-            select_input_dir(self.widget, self)
+            self.set_input_dir()
+            reset = True
+            file_index = 0
 
             if self.output_dir is None:
-                select_output_dir(self.widget, self)
+                self.set_output_dir()
 
         file_path = self.file_list[file_index % len(self.file_list)]
         full_current_file_name = os.path.basename(file_path)
@@ -66,7 +71,7 @@ class FileManager(object):
             # else:
             #     self.current_label = self.last_label
 
-        return file_path, batch_index
+        return file_path, batch_index, reset
 
 
     def remove_file_from_list(self, file_path):
@@ -76,7 +81,9 @@ class FileManager(object):
             print("file path ({}) is not in the list".format(file_path))
 
 
-    def set_input_dir(self, input_dir):
+    def set_input_dir(self):
+        # input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self.widget, "Select Input Directory"))
+        input_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
         self.input_dir = input_dir
         self.file_list = list()
         try:
@@ -85,6 +92,7 @@ class FileManager(object):
                 if os.path.isfile(fpath) and f.endswith(('.png', '.jpg', '.jpeg')):
                     self.file_list.append(fpath)
             # TODO: widget.info_label.setText("Input folder loaded!")
+            print("input folder is set: {}".format(self.input_dir))
         except FileNotFoundError:
             print("Input folder not found ({})".format(input_dir))
             return
@@ -99,7 +107,10 @@ class FileManager(object):
                 self.batch_dict[batch_index].append(file_name)
 
 
-    def set_output_dir(self, output_dir):
+    def set_output_dir(self):
+        # output_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self.widget, "Select Output Directory"))
+        output_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
+        self.annotation_manager.search_for_annotation(output_dir)
         self.output_dir = output_dir
         self.last_index_file = os.path.join(self.output_dir, "last_index.json")
 
@@ -124,7 +135,7 @@ class FileManager(object):
                 # TODO: widget.info_label.setText("Unexpected data structure in the last_index.json file.")
 
         else:
-            print("last_image_index key not found in the JSON file.")
+            print("last_index JSON file does not exist yet")
             # TODO: widget.info_label.setText("No last_index.json file found.")
 
 

@@ -8,54 +8,52 @@ from PyQt5.QtGui import QPainter, QPen, QBrush
 from utils.utils import update_image_info_label
 
 
-def select_input_dir(widget, file_manager):
-    # input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(widget, "Select Input Directory"))
-    input_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
-    file_manager.set_input_dir(input_dir)
-    # widget.file_list = list()
-    # try:
-    #     for f in os.listdir(widget.input_dir):
-    #         fpath = os.path.join(widget.input_dir, f)
-    #         if os.path.isfile(fpath) and f.endswith(('.png', '.jpg', '.jpeg')):
-    #             widget.file_list.append(fpath)
-    #     widget.info_label.setText("Input folder loaded!")
-    # except FileNotFoundError:
-    #     print("Input folder not found ({})".format(widget.input_dir))
-    #     return
-    #
-    # widget.file_list.sort()
-    # widget.file_index = 0
-    load_image_and_set_name(widget)
-    widget.first = False
+# def select_input_dir(widget, file_manager):
+#     # input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(widget, "Select Input Directory"))
+#     input_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
+#     file_manager.set_input_dir(input_dir)
+#     # widget.file_list = list()
+#     # try:
+#     #     for f in os.listdir(widget.input_dir):
+#     #         fpath = os.path.join(widget.input_dir, f)
+#     #         if os.path.isfile(fpath) and f.endswith(('.png', '.jpg', '.jpeg')):
+#     #             widget.file_list.append(fpath)
+#     #     widget.info_label.setText("Input folder loaded!")
+#     # except FileNotFoundError:
+#     #     print("Input folder not found ({})".format(widget.input_dir))
+#     #     return
+#     #
+#     # widget.file_list.sort()
+#     # widget.file_index = 0
+#     load_image_and_set_name(widget)
+#     widget.first = False
 
 
-def select_output_dir(widget, file_manager):
-    # output_dir = str(QtWidgets.QFileDialog.getExistingDirectory(widget, "Select Output Directory"))
-    output_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
-    file_manager.set_output_dir(output_dir)
-    if directory_check(widget):
-        # last_index_file = os.path.join(widget.base_output_dir, "last_index.json")
-        #
-        # if os.path.isfile(last_index_file):
-        #     with open(last_index_file, "r") as stream:
-        #         try:
-        #             widget.state = json.load(stream)
-        #             # Ensure widget.state is a dictionary, not a list or string
-        #             if isinstance(widget.state, dict):
-        #                 # Check if "last_image_index" exists and load it
-        #                 if "last_image_index" in widget.state:
-        #                     widget.file_index = widget.state["last_image_index"]
-        #                 else:
-        #                     widget.info_label.setText("last_image_index key not found in the JSON file.")
-        #             else:
-        #                 widget.info_label.setText("Unexpected data structure in the last_index.json file.")
-        #         except json.JSONDecodeError:
-        #             widget.info_label.setText("Error loading last_index.json, possibly corrupt.")
-        # else:
-        #     widget.info_label.setText("No last_index.json file found.")
-        load_image_and_set_name(widget)
-    else:
-        widget.info_label.setText("No input or output directory")
+# def select_output_dir(widget, file_manager, annotation_manager):
+
+    # if directory_check(widget):
+    #     # last_index_file = os.path.join(widget.base_output_dir, "last_index.json")
+    #     #
+    #     # if os.path.isfile(last_index_file):
+    #     #     with open(last_index_file, "r") as stream:
+    #     #         try:
+    #     #             widget.state = json.load(stream)
+    #     #             # Ensure widget.state is a dictionary, not a list or string
+    #     #             if isinstance(widget.state, dict):
+    #     #                 # Check if "last_image_index" exists and load it
+    #     #                 if "last_image_index" in widget.state:
+    #     #                     widget.file_index = widget.state["last_image_index"]
+    #     #                 else:
+    #     #                     widget.info_label.setText("last_image_index key not found in the JSON file.")
+    #     #             else:
+    #     #                 widget.info_label.setText("Unexpected data structure in the last_index.json file.")
+    #     #         except json.JSONDecodeError:
+    #     #             widget.info_label.setText("Error loading last_index.json, possibly corrupt.")
+    #     # else:
+    #     #     widget.info_label.setText("No last_index.json file found.")
+    #     load_image_and_set_name(widget)
+    # else:
+    #     widget.info_label.setText("No input or output directory")
 
 
 def load_2d_annot(widget):

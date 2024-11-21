@@ -2,16 +2,13 @@ import os
 import json
 
 
-class Annotation(object):
-    def __init__(self, output_dir):
-        self.output_dir = output_dir
+class AnnotationManager(object):
+    def __init__(self):
         self.annotation_filename = "annotation.json"
         self.annotation_list = list()
 
-        self.search_for_annotation()
-
-    def search_for_annotation(self):
-        annotation_path = os.path.join(self.output_dir, self.annotation_filename)
+    def search_for_annotation(self, output_dir):
+        annotation_path = os.path.join(output_dir, self.annotation_filename)
         if os.path.isfile(annotation_path):
             with open(annotation_path, "r") as stream:
                 self.annotation_list = json.load(stream)
