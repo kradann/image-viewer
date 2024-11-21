@@ -9,13 +9,6 @@ def valid_coordinates(a, b, c, d):
     return a is not None and b is not None and c is not None and d is not None
 
 
-def search_annotation_by_image_name(annotations, image_name):
-    for entry in annotations:
-        if entry["image_name"] == image_name:
-            return entry  # Return the matching dictionary
-    return None  # Return None if not found
-
-
 def out_of_bounds(widget):
     return (
                 widget.top_left_x < 0 or widget.top_left_x > widget.pixmap.width() or  # check if top left point is in the pixmap
@@ -40,7 +33,6 @@ def get_filenames(widget):
 
 
 def close_event(widget):
-    # Path to the annotation file
     file_path = os.path.join(widget.base_output_dir, "last_index.json")
 
     # Load the existing JSON file (if it exists)

@@ -12,7 +12,9 @@ from PyQt5.QtGui import QKeySequence
 from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QPainter, QPen, QBrush
 
-from utils.draw_utils import get_image_coordinates
+from utils.image_manager import get_image_coordinates, mouse_press_event, mouse_move_event, mouse_release_event, \
+    ImageManager
+from utils.file_manager import FileManager
 from utils.utils import close_event, get_dark_palette, search_annotation_by_image_name, get_filenames, \
     valid_coordinates, out_of_bounds
 from utils.io_utils import load_image_and_set_name, select_input_dir, select_output_dir, save_2d, directory_check
@@ -23,7 +25,7 @@ sign_types = None
 
 
 class AnnotationTool(QtWidgets.QWidget):
-    def __init__(self, us):
+    def __init__(self, us, use_batch_idx):
         QtWidgets.QWidget.__init__(self)
 
         layout = QtWidgets.QGridLayout(self)
@@ -31,23 +33,22 @@ class AnnotationTool(QtWidgets.QWidget):
         self.setPalette(get_dark_palette())  # set dark theme
 
         self.us = us
+        self.use_batch_idx = use_batch_idx
         num_of_columns = 3
-        self.image = QtWidgets.QLabel()
-        print(1212, id(self.image))
-        self.pixmap = QtGui.QPixmap(320, 320)
-        self.pixmap.fill(Qt.white)  # Fill with white color
-        self.image.setPixmap(self.pixmap)
-        layout.addWidget(self.image, 0, 0, 1, 3)
+
+        self.file_manager = FileManager(self)
+        self.image_manager = ImageManager(self, self.file_manager)
+        layout.addWidget(self.image_manager.image, 0, 0, 1, 3)
 
         # the label alignment property is always maintained even when the contents
         # change, so there is no need to set it each time
-        self.image.setAlignment(QtCore.Qt.AlignCenter)
+        self.image_manager.image.setAlignment(QtCore.Qt.AlignCenter)
 
-        # draw rectangle
-        self.start_x = None
-        self.start_y = None
-        self.end_x = None
-        self.end_y = None
+        # # draw rectangle
+        # self.start_x = None
+        # self.start_y = None
+        # self.end_x = None
+        # self.end_y = None
 
         self.coords_label = QLabel(self)
         self.coords_label.setText("Coordinates: (N/A, N/A)")
@@ -164,12 +165,13 @@ class AnnotationTool(QtWidgets.QWidget):
         # self.AnnotdirButton.clicked.connect(partial(self.get_joker_move_funk, self.combobox))
         # self.Joker2Button.clicked.connect(partial(self.get_joker_move_funk, self.combobox2))
 
+        # into file manager
         # self.dirIterator = None
-        self.file_index = 0
-        self.file_list = list()
-        self.current_file_name = None
-        self.input_dir = None
-        self.base_output_dir = None
+        # self.file_index = 0
+        # self.file_list = list()
+        # self.current_file_name = None
+        # self.input_dir = None
+        # self.base_output_dir = None
 
         self.start_dx = 0
         self.start_dy = 0
@@ -227,10 +229,6 @@ class AnnotationTool(QtWidgets.QWidget):
         self.last_batch_index = None
         self.last_image = None
 
-
-    def set_pixmap(self, pixmap):
-        print(1313)
-        self.image.setPixmap(pixmap)
 
     def next_image(self):
         # ensure that the file list has not been cleared due to missing files
@@ -387,126 +385,32 @@ class AnnotationTool(QtWidgets.QWidget):
         self.button.setText(selected_text)
 
 
+    def mousePressEvent(self, event):
+        mouse_press_event(self, event)
+
+
+    def mouseMoveEvent(self, event):
+        mouse_move_event(self, event)
+
+
+    def mouseReleaseEvent(self, event):
+        mouse_release_event(self, event)
+
+
     def closeEvent(self, event):
-        close_event(self)
         # Optionally call the default close event behavior
         super().closeEvent(event)
-
-
-    # draw rectangle
-    def mousePressEvent(widget, event):
-        if event.button() == Qt.LeftButton:
-            widget.start_x, widget.start_y = get_image_coordinates(widget, event.pos())
-            widget.end_x = widget.start_x
-            widget.end_y = widget.start_y
-
-            widget.start_dx = widget.start_x - event.x()
-            widget.start_dy = widget.start_y - event.y()
-            widget.end_dx = 0
-            widget.end_dy = 0
-
-            widget.update()
-            widget.update_image()
-        if event.button() == Qt.RightButton:
-            widget.crossPos = get_image_coordinates(widget, event.pos())  # Store the position of the right-click
-            widget.right_button_pressed = True
-            widget.update()  # Trigger a repaint to draw the cross
-
-
-    def mouseMoveEvent(widget, event):
-        if widget.right_button_pressed:
-            widget.cursorPos = get_image_coordinates(widget, event.pos())
-            widget.draw_cross(widget.cursorPos[0], widget.cursorPos[1])
-            widget.update()
-        if event.buttons() & Qt.LeftButton:
-            widget.end_x, widget.end_y = get_image_coordinates(widget, event.pos())
-            widget.end_dx = widget.end_x - event.x()
-            widget.end_dy = widget.end_y - event.y()
-            widget.update()
-            widget.update_image()
-
-
-    def mouseReleaseEvent(widget, event):
-        if event.button() == Qt.LeftButton:
-            widget.end_x, widget.end_y = get_image_coordinates(widget, event.pos())
-            widget.end_dx = widget.end_x - event.x()
-            widget.end_dy = widget.end_y - event.y()
-
-            widget.update()
-            widget.update_image()
-
-            if valid_coordinates(widget.start_x, widget.start_y, widget.end_x, widget.end_y):
-                widget.top_left_x = min(widget.start_x, widget.end_x)
-                widget.top_left_y = min(widget.start_y, widget.end_y)
-                widget.bottom_right_x = max(widget.start_x, widget.end_x)
-                widget.bottom_right_y = max(widget.start_y, widget.end_y)
-
-                if out_of_bounds(widget):
-                    widget.coords_label.setText("Coordinates: Invalid coordinates!")
-                    widget.clear_coords()
-                elif widget.top_left_x == widget.bottom_right_x or widget.top_left_y == widget.bottom_right_y:  # check if shape is rectangle
-                    widget.coords_label.setText("Coordinates: Invalid values, shape is not rectangle")
-                    widget.clear_coords()
-                else:
-                    widget.coords_label.setText(
-                        "Coordinates: ({}, {}), ({}, {})".format(widget.top_left_x, widget.top_left_y,
-                                                                 widget.bottom_right_x,
-                                                                 widget.bottom_right_y))
-            else:
-                print("(at least) One of the coordinates is None")
-
-        if event.button() == Qt.RightButton:
-            widget.right_button_pressed = False
-            widget.cursorPos = event.pos()
-            x, y = get_image_coordinates(widget, event.pos())
-            widget.draw_cross(x, y)
-            widget.update()
-
-
-    def update_image(widget):
-        temp_pixmap = widget.pixmap.copy()
-        painter = QPainter(temp_pixmap)
-        painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
-        painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
-
-        if valid_coordinates(widget.start_x, widget.start_y, widget.end_x, widget.end_y):
-            top_left_x = min(widget.start_x, widget.end_x)
-            top_left_y = min(widget.start_y, widget.end_y)
-
-            width = abs(widget.end_x - widget.start_x)
-            height = abs(widget.end_y - widget.start_y)
-
-            painter.drawRect(QRect(top_left_x, top_left_y, width, height))
-
-        painter.end()
-        widget.image.setPixmap(temp_pixmap)
-
-    def draw_cross(widget, x, y):
-        temp_pixmap = widget.pixmap.copy()
-        painter = QPainter(temp_pixmap)
-        if widget.crossPos and widget.right_button_pressed:
-            # widget.drawCross(painter, widget.crossPos)
-            painter.setPen(QPen(Qt.yellow, 2, Qt.SolidLine))
-
-            # Draw horizontal line following the cursor
-            # painter.drawLine(0, widget.cursorPos.y() - 13, widget.width(), widget.cursorPos.y() - 13)
-            # Draw vertical line following the cursor
-            # painter.drawLine(widget.cursorPos.x() - 174, 0, widget.cursorPos.x() - 174, widget.height())
-            painter.drawLine(0, y, widget.width(), y)
-            painter.drawLine(x, 0, x, widget.height())
-
-        painter.end()
-        widget.image.setPixmap(temp_pixmap)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--us", default=False, action="store_true", help="Use US signs instead of EU")
+    parser.add_argument("--use_batch_idx", default=False, action="store_true", help="Use batch index to speed up annotation")
     args = parser.parse_args()
     sign_types = us_sign_types if args.us else eu_sign_types
 
     app = QtWidgets.QApplication(sys.argv)
-    annotation_tool = AnnotationTool(args.us)
+    annotation_tool = AnnotationTool(args.us, args.use_batch_idx)
     # width = imageLoader.frameGeometry().width()
     # height = imageLoader.frameGeometry().height()
 
