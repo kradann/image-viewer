@@ -1,4 +1,4 @@
-import os
+import math
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QRect
@@ -69,6 +69,7 @@ class ImageManager(object):
             self.image.setPixmap(self.pixmap)
             self.valid = True
 
+
     def update_image(self):
         temp_pixmap = self.pixmap.copy()
         painter = QPainter(temp_pixmap)
@@ -76,13 +77,13 @@ class ImageManager(object):
         painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
 
         if valid_coordinates(self.start_x, self.start_y, self.end_x, self.end_y):
-            top_left_x = min(self.start_x, self.end_x)
-            top_left_y = min(self.start_y, self.end_y)
+            tl_x = min(self.start_x, self.end_x)
+            tl_y = min(self.start_y, self.end_y)
 
             width = abs(self.end_x - self.start_x)
             height = abs(self.end_y - self.start_y)
 
-            painter.drawRect(QRect(top_left_x, top_left_y, width, height))
+            painter.drawRect(QRect(tl_x, tl_y, width, height))
 
         painter.end()
         self.image.setPixmap(temp_pixmap)
@@ -137,16 +138,15 @@ class ImageManager(object):
                 self.bottom_right_y = max(self.start_y, self.end_y)
 
                 if out_of_bounds(self):
-                    self.widget.coords_label.setText("Coordinates: Invalid coordinates!")
                     self.clear_coords()
                 elif self.top_left_x == self.bottom_right_x or self.top_left_y == self.bottom_right_y:  # check if shape is rectangle
-                    self.widget.coords_label.setText("Coordinates: Invalid values, shape is not rectangle")
                     self.clear_coords()
                 else:
-                    self.widget.coords_label.setText(
-                        "Coordinates: ({}, {}), ({}, {})".format(self.top_left_x, self.top_left_y,
-                                                                 self.bottom_right_x,
-                                                                 self.bottom_right_y))
+                    self.widget.set_coords_label(self.top_left_x,
+                                                 self.top_left_y,
+                                                 self.bottom_right_x,
+                                                 self.bottom_right_y, "yellow")
+                    self.widget.set_info_label("Not saved yet", "yellow")
             else:
                 print("(at least) One of the coordinates is None")
 
@@ -196,8 +196,40 @@ class ImageManager(object):
             self.y_offset = (label_height - pixmap_height) // 2
             return relative_pos.x() - self.x_offset, relative_pos.y() - self.y_offset
 
+
+    def draw_rect_from_annotation(self, annotation_dict):
+        if all([annotation_dict["x1"] is not None,
+                annotation_dict["y1"] is not None,
+                annotation_dict["x2"] is not None,
+                annotation_dict["y2"] is not None]):
+            x1 = math.floor(annotation_dict["x1"] / self.x_back_scale)
+            y1 = math.floor(annotation_dict["y1"] / self.y_back_scale)
+            x2 = math.floor(annotation_dict["x2"] / self.x_back_scale)
+            y2 = math.floor(annotation_dict["y2"] / self.y_back_scale)
+            # self.last_left_x = x1
+            # self.last_left_y = y1
+            # self.last_right_x = x2
+            # self.last_right_y = y2
+
+            self.top_left_x = x1
+            self.top_left_y = y1
+            self.bottom_right_x = x2
+            self.bottom_right_y = y2
+
+            temp_pixmap = self.pixmap.copy()
+            painter = QPainter(temp_pixmap)
+            painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
+            painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
+
+            painter.drawRect(QRect(x1, y1, x2 - x1, y2 - y1))
+            painter.end()
+            self.image.setPixmap(temp_pixmap)
+            self.widget.set_coords_label(x1, y1, x2, y2, "yellow")
+            self.widget.set_info_label("From annotation", "yellow")
+
     def clear_coords(self):
-        self.widget.coords_label.setText("Coordinates: (N/A, N/A)")
+        self.widget.set_coords_label(-1, -1, -1, -1, "red")
+        self.widget.set_info_label("Wrong coordinates", "red")
         self.top_left_x = None
         self.top_left_y = None
         self.bottom_right_x = None

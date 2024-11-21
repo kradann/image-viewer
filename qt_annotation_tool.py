@@ -54,6 +54,7 @@ class AnnotationTool(QtWidgets.QWidget):
 
         self.coords_label = QLabel(self)
         self.coords_label.setText("Coordinates: (N/A, N/A)")
+        self.coords_label.setStyleSheet("color: red")
         self.coords_label.setFixedSize(500, 50)
         layout.addWidget(self.coords_label, 2, 0, 1, num_of_columns)
 
@@ -62,11 +63,11 @@ class AnnotationTool(QtWidgets.QWidget):
         layout.addWidget(self.info_label, 2, 0, 1, num_of_columns)
         self.info_label.setAlignment(Qt.AlignRight)
 
-        self.saved_check_label = QLabel(self)
-        self.saved_check_label.setText("----------")
-        self.saved_check_label.setStyleSheet(
-            "font-size: 18px; color: white;")  # Set font size to 18px and color to white
-        layout.addWidget(self.saved_check_label, 2, 0, 2, num_of_columns)
+        self.label_label = QLabel(self)
+        self.label_label.setText("----------")
+        self.label_label.setStyleSheet(
+            "font-size: 18px; color: red;")  # Set font size to 18px and color to white
+        layout.addWidget(self.label_label, 2, 0, 2, num_of_columns)
 
         self.move_func_dict = {
             "something_wrong": self.get_move_func("something_wrong"),
@@ -131,7 +132,7 @@ class AnnotationTool(QtWidgets.QWidget):
         self.outputFolderButton.clicked.connect(self.file_manager.set_output_dir)
         self.prevImageButton.clicked.connect(self.index_manager.previous_file)
         self.nextImageButton.clicked.connect(self.index_manager.next_file)
-        self.save2dButton.clicked.connect(save_2d)
+        self.save2dButton.clicked.connect(self.index_manager.save_annotation)
         self.AnnotdirButton.clicked.connect(open_annotation_dir)
         self.JumpTo.clicked.connect(self.jump_to)
         self.checker.clicked.connect(self.checking)
@@ -199,10 +200,10 @@ class AnnotationTool(QtWidgets.QWidget):
         self.shortcut_save.activated.connect(save_2d)
 
         self.shortcut_next1 = QShortcut(QKeySequence("N"), self)
-        self.shortcut_next1.activated.connect(self.next_image)
+        self.shortcut_next1.activated.connect(self.index_manager.next_file)
 
         self.shortcut_next2 = QShortcut(QKeySequence("Right"), self)
-        self.shortcut_next2.activated.connect(self.next_image)
+        self.shortcut_next2.activated.connect(self.index_manager.next_file)
 
         self.shortcut_prev = QShortcut(QKeySequence("P"), self)
         self.shortcut_prev.activated.connect(self.prev_image)
@@ -215,36 +216,51 @@ class AnnotationTool(QtWidgets.QWidget):
 
         # self.x_offset = 0
         # self.y_offset = 0
+        #
+        # self.first = False
+        # self.current_label = ""
+        # self.full_current_file_name = None
+        # self.state = None
+        #
+        # self.last_left_x = None
+        # self.last_left_y = None
+        # self.last_right_x = None
+        # self.last_right_y = None
+        #
+        # self.last_label = None
+        # self.current_batch_index = None
+        # self.last_batch_index = None
+        # self.last_image = None
 
-        self.first = False
-        self.current_label = ""
-        self.full_current_file_name = None
-        self.state = None
 
-        self.last_left_x = None
-        self.last_left_y = None
-        self.last_right_x = None
-        self.last_right_y = None
-
-        self.last_label = None
-        self.current_batch_index = None
-        self.last_batch_index = None
-        self.last_image = None
+    def set_coords_label(self, tl_x, tl_y, br_x, br_y, color="white", added_test=""):
+        self.coords_label.setText("Coordinates: ({}, {}), ({}, {}){}".format(tl_x, tl_y, br_x, br_y, added_test))
+        self.coords_label.setStyleSheet("color: {}".format(color))
 
 
-    def next_image(self):
-        # ensure that the file list has not been cleared due to missing files
-        if self.file_list:
-            self.first = True
-            self.file_index += 1
-            self.last_batch_index = self.full_current_file_name.split('_')[0]
-            self.last_image = search_annotation_by_image_name(self.annotation_2d_dict, self.full_current_file_name)
-            if self.last_image is not None:
-                self.last_label = self.last_image["label"]
+    def set_label_label(self, label, color="white", added_test=""):
+        self.label_label.setText("Label: {}{}".format(label, added_test))
+        self.label_label.setStyleSheet("color: {}".format(color))
 
-            load_image_and_set_name(self)
-        else:
-            self.info_label.setText("No directory loaded!")
+
+    def set_info_label(self, text, color="white"):
+        self.info_label.setText(text)
+        self.info_label.setStyleSheet("color: {}".format(color))
+
+
+    # def next_image(self):
+    #     # ensure that the file list has not been cleared due to missing files
+    #     if self.file_list:
+    #         self.first = True
+    #         self.file_index += 1
+    #         self.last_batch_index = self.full_current_file_name.split('_')[0]
+    #         self.last_image = search_annotation_by_image_name(self.annotation_2d_dict, self.full_current_file_name)
+    #         if self.last_image is not None:
+    #             self.last_label = self.last_image["label"]
+    #
+    #         load_image_and_set_name(self)
+    #     else:
+    #         self.info_label.setText("No directory loaded!")
 
     def prev_image(self):
         # ensure that the file list has not been cleared due to missing files
