@@ -19,26 +19,19 @@ class ImageManager(object):
         self.image.setPixmap(self.pixmap)
 
         # draw rectangle
-        self.start_x = None
-        self.start_y = None
-        self.end_x = None
-        self.end_y = None
+        self.start_x, self.start_y = None, None
+        self.end_x, self.end_y = None, None
 
-        self.start_dx = 0
-        self.start_dy = 0
-        self.end_dx = 0
-        self.end_dy = 0
+        self.start_dx, self.start_dy = 0, 0
+        self.end_dx, self.end_dy = 0, 0
 
-        self.x_back_scale = None
-        self.y_back_scale = None
+        self.x_back_scale, self.y_back_scale = None, None
+        self.x_offset, self.y_offset = 0, 0
 
-        self.x_offset = 0
-        self.y_offset = 0
+        self.corner_to_grab_x, self.corner_to_grab_y = None, None
 
-        self.top_left_x = None
-        self.top_left_y = None
-        self.bottom_right_x = None
-        self.bottom_right_y = None
+        self.top_left_x, self.top_left_y = None, None
+        self.bottom_right_x, self.bottom_right_y = None, None
         self.annotation_2d_dict = None
 
         self.cursor_pos = self.widget.rect().center()  # Initialize cursor position
@@ -91,18 +84,47 @@ class ImageManager(object):
 
     # draw rectangle
     def mouse_press_event(self, event):
+        def get_corner(x, y):
+            center_x = (self.top_left_x + self.bottom_right_x) / 2
+            center_y = (self.top_left_y + self.bottom_right_y) / 2
+
+            if x <= center_x:
+                self.start_x = x
+                self.end_x = self.bottom_right_x
+            else:
+                self.end_x = x
+                self.start_x = self.top_left_x
+
+            if y <= center_y:
+                self.start_y = y
+                self.end_y = self.bottom_right_y
+            else:
+                self.end_y = y
+                self.start_y = self.top_left_y
+
+            corner_x = "sx" if x <= center_x else "ex"
+            corner_y = "sy" if y <= center_y else "ey"
+            return corner_x, corner_y
+
         if event.button() == Qt.LeftButton:
-            self.start_x, self.start_y = self.get_image_coordinates(event.pos())
-            self.end_x = self.start_x
-            self.end_y = self.start_y
+            if self.top_left_x is None:
+                self.start_x, self.start_y = self.get_image_coordinates(event.pos())
+                self.end_x = self.start_x
+                self.end_y = self.start_y
 
-            self.start_dx = self.start_x - event.x()
-            self.start_dy = self.start_y - event.y()
-            self.end_dx = 0
-            self.end_dy = 0
+                self.start_dx = self.start_x - event.x()
+                self.start_dy = self.start_y - event.y()
+                self.end_dx = 0
+                self.end_dy = 0
 
-            self.widget.update()
-            self.update_image()
+                self.widget.update()
+                self.update_image()
+            else:
+                start_x, start_y = self.get_image_coordinates(event.pos())
+                self.corner_to_grab_x, self.corner_to_grab_y = get_corner(start_x, start_y)
+                self.widget.update()
+                self.update_image()
+
         if event.button() == Qt.RightButton:
             self.cross_pos = self.get_image_coordinates(event.pos())  # Store the position of the right-click
             self.right_button_pressed = True
@@ -110,26 +132,44 @@ class ImageManager(object):
 
 
     def mouse_move_event(self, event):
+        if event.buttons() & Qt.LeftButton and not self.right_button_pressed:
+            if self.top_left_x is None:
+                self.end_x, self.end_y = self.get_image_coordinates(event.pos())
+                self.end_dx = self.end_x - event.x()
+                self.end_dy = self.end_y - event.y()
+                self.widget.update()
+                self.update_image()
+            else:
+                x, y = self.get_image_coordinates(event.pos())
+
+                if self.corner_to_grab_x == "sx":
+                    self.start_x = x
+                else:
+                    self.end_x = x
+
+                if self.corner_to_grab_y == "sy":
+                    self.start_y = y
+                else:
+                    self.end_y = y
+
+                self.widget.update()
+                self.update_image()
+
         if self.right_button_pressed:
             self.cross_pos = self.get_image_coordinates(event.pos())
             self.draw_cross(self.cross_pos[0], self.cross_pos[1])
             self.widget.update()
-        if event.buttons() & Qt.LeftButton:
-            self.end_x, self.end_y = self.get_image_coordinates(event.pos())
-            self.end_dx = self.end_x - event.x()
-            self.end_dy = self.end_y - event.y()
-            self.widget.update()
-            self.update_image()
 
 
     def mouse_release_event(self, event):
         if event.button() == Qt.LeftButton:
-            self.end_x, self.end_y = self.get_image_coordinates(event.pos())
-            self.end_dx = self.end_x - event.x()
-            self.end_dy = self.end_y - event.y()
+            if self.top_left_x is None:
+                self.end_x, self.end_y = self.get_image_coordinates(event.pos())
+                self.end_dx = self.end_x - event.x()
+                self.end_dy = self.end_y - event.y()
 
-            self.widget.update()
-            self.update_image()
+                self.widget.update()
+                self.update_image()
 
             if valid_coordinates(self.start_x, self.start_y, self.end_x, self.end_y):
                 self.top_left_x = min(self.start_x, self.end_x)
@@ -149,6 +189,8 @@ class ImageManager(object):
                     self.widget.set_info_label("Not saved yet", "yellow")
             else:
                 print("(at least) One of the coordinates is None")
+
+
 
         if event.button() == Qt.RightButton:
             self.right_button_pressed = False

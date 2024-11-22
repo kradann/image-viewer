@@ -24,8 +24,15 @@ class AnnotationManager(object):
                 return annotation_dict
 
 
-    def add_annotation(self, annotation_dict):
-        self.annotation_list.append(annotation_dict)
+    def add_annotation(self, annotation_dict_to_add):
+        modified = False
+        for annotation_idx in range(len(self.annotation_list)):
+            if self.annotation_list[annotation_idx]["image_name"] == annotation_dict_to_add["image_name"]:
+                self.annotation_list[annotation_idx] = annotation_dict_to_add
+                modified = True
+
+        if not modified:
+            self.annotation_list.append(annotation_dict_to_add)
 
 
     def save_annotation_list(self, output_dir):
