@@ -4,7 +4,6 @@ import argparse
 import json
 import os
 import sys
-from functools import partial
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QShortcut, QInputDialog, QMenu, QAction
@@ -20,8 +19,6 @@ from utils.io_utils import load_image_and_set_name, save_2d, directory_check
 from utils.dir_utils import move_file, open_annotation_dir
 from utils.sing_types import eu_sign_types, us_sign_types
 
-sign_types = None
-
 
 class AnnotationTool(QtWidgets.QWidget):
     def __init__(self, us, use_batch_idx):
@@ -30,6 +27,7 @@ class AnnotationTool(QtWidgets.QWidget):
         layout = QtWidgets.QGridLayout(self)
         layout.setSpacing(10)
         self.setPalette(get_dark_palette())  # set dark theme
+        self.sign_types = us_sign_types if args.us else eu_sign_types
 
         self.us = us
         self.use_batch_idx = use_batch_idx
@@ -150,7 +148,7 @@ class AnnotationTool(QtWidgets.QWidget):
         self.button = QPushButton("No input file", self)
 
         self.menu = QMenu(self)
-        for i in sign_types:
+        for i in self.sign_types:
             action = QAction(i, self)
             action.triggered.connect(self.menu_item_selected)  # Connect to selection handler
             self.menu.addAction(action)
@@ -162,7 +160,7 @@ class AnnotationTool(QtWidgets.QWidget):
         layout.addWidget(self.list, 7, 1)"""
 
         self.combobox2 = QComboBox(self)
-        self.combobox2.addItems(sign_types)
+        self.combobox2.addItems(self.sign_types)
         layout.addWidget(self.combobox2, 8, 1)
 
         # self.AnnotdirButton.clicked.connect(partial(self.get_joker_move_funk, self.combobox))
@@ -197,7 +195,7 @@ class AnnotationTool(QtWidgets.QWidget):
         # self.annotation_filename = "annotation.json"
 
         self.shortcut_save = QShortcut(QKeySequence("S"), self)
-        self.shortcut_save.activated.connect(save_2d)
+        self.shortcut_save.activated.connect(self.index_manager.save_annotation)
 
         self.shortcut_next1 = QShortcut(QKeySequence("N"), self)
         self.shortcut_next1.activated.connect(self.index_manager.next_file)
@@ -206,7 +204,7 @@ class AnnotationTool(QtWidgets.QWidget):
         self.shortcut_next2.activated.connect(self.index_manager.next_file)
 
         self.shortcut_prev = QShortcut(QKeySequence("P"), self)
-        self.shortcut_prev.activated.connect(self.prev_image)
+        self.shortcut_prev.activated.connect(self.index_manager.previous_file)
 
         self.shortcut_not_a_sign = QShortcut(QKeySequence("V"), self)
         self.shortcut_not_a_sign.activated.connect(self.not_a_sign)
@@ -246,31 +244,6 @@ class AnnotationTool(QtWidgets.QWidget):
     def set_info_label(self, text, color="white"):
         self.info_label.setText(text)
         self.info_label.setStyleSheet("color: {}".format(color))
-
-
-    # def next_image(self):
-    #     # ensure that the file list has not been cleared due to missing files
-    #     if self.file_list:
-    #         self.first = True
-    #         self.file_index += 1
-    #         self.last_batch_index = self.full_current_file_name.split('_')[0]
-    #         self.last_image = search_annotation_by_image_name(self.annotation_2d_dict, self.full_current_file_name)
-    #         if self.last_image is not None:
-    #             self.last_label = self.last_image["label"]
-    #
-    #         load_image_and_set_name(self)
-    #     else:
-    #         self.info_label.setText("No directory loaded!")
-
-    def prev_image(self):
-        # ensure that the file list has not been cleared due to missing files
-        if self.file_list:
-            self.first = True
-            self.file_index -= 1
-            self.last_batch_index = self.full_current_file_name.split('_')[0]
-            load_image_and_set_name(self)
-        else:
-            self.info_label.setText("No directory loaded!")
 
 
     def get_move_func(self, file_name: str):
@@ -419,7 +392,6 @@ if __name__ == '__main__':
     parser.add_argument("--us", default=False, action="store_true", help="Use US signs instead of EU")
     parser.add_argument("--use_batch_idx", default=False, action="store_true", help="Use batch index to speed up annotation")
     args = parser.parse_args()
-    sign_types = us_sign_types if args.us else eu_sign_types
 
     app = QtWidgets.QApplication(sys.argv)
     annotation_tool = AnnotationTool(args.us, args.use_batch_idx)
