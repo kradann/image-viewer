@@ -37,5 +37,3 @@ def move_file(widget, file_name: str):
             widget.info_label.setText("Copied!")
     except FileNotFoundError:
         print("Error during moving file: {}".format(dst))
-
-

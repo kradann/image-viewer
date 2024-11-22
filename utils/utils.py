@@ -11,10 +11,10 @@ def valid_coordinates(a, b, c, d):
 
 def out_of_bounds(widget):
     return (
-                widget.top_left_x < 0 or widget.top_left_x > widget.pixmap.width() or  # check if top left point is in the pixmap
-                widget.top_left_y < 0 or widget.top_left_y > widget.pixmap.height() or
-                widget.bottom_right_x < 0 or widget.bottom_right_x > widget.pixmap.width() or  # check if bottom right point is in the pixmap
-                widget.bottom_right_y < 0 or widget.bottom_right_y > widget.pixmap.height())
+            widget.top_left_x < 0 or widget.top_left_x > widget.pixmap.width() or  # check if top left point is in the pixmap
+            widget.top_left_y < 0 or widget.top_left_y > widget.pixmap.height() or
+            widget.bottom_right_x < 0 or widget.bottom_right_x > widget.pixmap.width() or  # check if bottom right point is in the pixmap
+            widget.bottom_right_y < 0 or widget.bottom_right_y > widget.pixmap.height())
 
 
 def update_image_info_label(widget):

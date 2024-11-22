@@ -2,9 +2,7 @@ import os
 import json
 
 from collections import defaultdict
-
 from utils.annotation_manager import AnnotationManager
-# from qt_annotation_tool import AnnotationTool
 
 
 class FileManager(object):
@@ -19,15 +17,8 @@ class FileManager(object):
         self.file_list = list()
         self.batch_dict = defaultdict(list)
 
-        # self.full_current_file_name = None
-        # self.current_file_name = None
-
-        # self.current_batch_index = None
-        # self.last_batch_index = None
-
         self.current_label = None
         self.last_label = None
-
 
     def set_current_file(self, file_index: int):
         reset = False
@@ -42,44 +33,13 @@ class FileManager(object):
         file_path = self.file_list[file_index % len(self.file_list)]
         full_current_file_name = os.path.basename(file_path)
         self.widget.setWindowTitle(os.path.basename(full_current_file_name))
-        # current_file_name = file_name.split('_')[-1]
-
-        if self.widget.use_batch_idx:
-            batch_index = full_current_file_name.split('_')[0]
-        else:
-            batch_index = None
-
-            # # Index of the first underscore
-            # first_underscore_idx = os.path.basename(self.full_current_file_name).find('_')
-            # # Index of the last underscore
-            # last_underscore_idx = os.path.basename(self.full_current_file_name).rfind('_')
-            #
-            # if self.current_batch_index != self.last_batch_index:
-            #     if first_underscore_idx != -1 and last_underscore_idx != -1 and first_underscore_idx < last_underscore_idx:
-            #         # Predicted label is between the first and last underscore
-            #         predicted_label = os.path.basename(self.full_current_file_name)[
-            #                           first_underscore_idx + 1:last_underscore_idx]
-            #         found_label = False
-            #         for action in self.widget.menu.actions():
-            #             if predicted_label == action.text():
-            #                 self.current_label = predicted_label
-            #                 self.widget.button.setText(predicted_label)
-            #                 found_label = True
-            #         if not found_label:
-            #             self.current_label = "unknown_sign"
-            #             self.widget.button.setText("unknown_sign")
-            # else:
-            #     self.current_label = self.last_label
-
-        return file_path, batch_index, reset
-
+        return file_path, reset
 
     def remove_file_from_list(self, file_path):
         if file_path in self.file_list:
             self.file_list.remove(file_path)
         else:
             print("file path ({}) is not in the list".format(file_path))
-
 
     def set_input_dir(self):
         # input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self.widget, "Select Input Directory"))
@@ -106,7 +66,6 @@ class FileManager(object):
                 batch_index = file_name.split('_')[0]
                 self.batch_dict[batch_index].append(file_name)
 
-
     def set_output_dir(self):
         # output_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self.widget, "Select Output Directory"))
         output_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
@@ -127,6 +86,8 @@ class FileManager(object):
                 # Check if "last_image_index" exists and load it
                 if "last_image_index" in last_index_dict:
                     self.last_image_index = last_index_dict["last_image_index"]
+                    self.widget.index_manager.file_index = self.last_image_index - 1
+                    print("last_image_index is loaded: {}".format(self.last_image_index))
                 else:
                     print("last_image_index key not found in the JSON file.")
                     # TODO: widget.info_label.setText("last_image_index key not found in the JSON file.")
@@ -137,5 +98,3 @@ class FileManager(object):
         else:
             print("last_index JSON file does not exist yet")
             # TODO: widget.info_label.setText("No last_index.json file found.")
-
-

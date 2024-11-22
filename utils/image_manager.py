@@ -41,7 +41,6 @@ class ImageManager(object):
 
         self.valid = True
 
-
     def load_image(self, file_path):
         self.pixmap = QtGui.QPixmap(file_path)
         ori_width, ori_height = self.pixmap.width(), self.pixmap.height()
@@ -62,7 +61,6 @@ class ImageManager(object):
             self.image.setPixmap(self.pixmap)
             self.valid = True
 
-
     def update_image(self):
         temp_pixmap = self.pixmap.copy()
         painter = QPainter(temp_pixmap)
@@ -80,7 +78,6 @@ class ImageManager(object):
 
         painter.end()
         self.image.setPixmap(temp_pixmap)
-
 
     # draw rectangle
     def mouse_press_event(self, event):
@@ -130,7 +127,6 @@ class ImageManager(object):
             self.right_button_pressed = True
             self.widget.update()  # Trigger a repaint to draw the cross
 
-
     def mouse_move_event(self, event):
         if event.buttons() & Qt.LeftButton and not self.right_button_pressed:
             if self.top_left_x is None:
@@ -159,7 +155,6 @@ class ImageManager(object):
             self.cross_pos = self.get_image_coordinates(event.pos())
             self.draw_cross(self.cross_pos[0], self.cross_pos[1])
             self.widget.update()
-
 
     def mouse_release_event(self, event):
         if event.button() == Qt.LeftButton:
@@ -190,15 +185,12 @@ class ImageManager(object):
             else:
                 print("(at least) One of the coordinates is None")
 
-
-
         if event.button() == Qt.RightButton:
             self.right_button_pressed = False
             self.cursor_pos = event.pos()
             x, y = self.get_image_coordinates(event.pos())
             self.draw_cross(x, y)
             self.widget.update()
-
 
     def draw_cross(self, x, y):
         temp_pixmap = self.pixmap.copy()
@@ -216,7 +208,6 @@ class ImageManager(object):
 
         painter.end()
         self.image.setPixmap(temp_pixmap)
-
 
     def get_image_coordinates(self, pos):
         # Get the position of the click relative to the QLabel
@@ -237,7 +228,6 @@ class ImageManager(object):
             self.x_offset = (label_width - pixmap_width) // 2
             self.y_offset = (label_height - pixmap_height) // 2
             return relative_pos.x() - self.x_offset, relative_pos.y() - self.y_offset
-
 
     def draw_rect_from_annotation(self, annotation_dict):
         if all([annotation_dict["x1"] is not None,
@@ -267,7 +257,6 @@ class ImageManager(object):
             painter.end()
             self.image.setPixmap(temp_pixmap)
             self.widget.set_coords_label(x1, y1, x2, y2, "yellow")
-            self.widget.set_info_label("From annotation", "yellow")
 
     def clear_coords(self):
         self.widget.set_coords_label(-1, -1, -1, -1, "red")
