@@ -2,7 +2,11 @@ import os
 import json
 
 from collections import defaultdict
+
+from PyQt5 import QtWidgets
+
 from utils.annotation_manager import AnnotationManager
+
 
 
 class FileManager(object):
@@ -42,8 +46,8 @@ class FileManager(object):
             print("file path ({}) is not in the list".format(file_path))
 
     def set_input_dir(self):
-        # input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self.widget, "Select Input Directory"))
-        input_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
+        input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self.widget, "Select Input Directory"))
+        #input_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
         self.input_dir = input_dir
         self.file_list = list()
         try:
@@ -67,8 +71,8 @@ class FileManager(object):
                 self.batch_dict[batch_index].append(file_name)
 
     def set_output_dir(self):
-        # output_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self.widget, "Select Output Directory"))
-        output_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
+        output_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self.widget, "Select Output Directory"))
+        #output_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
         self.annotation_manager.search_for_annotation(output_dir)
         self.output_dir = output_dir
         self.last_index_file = os.path.join(self.output_dir, "last_index.json")

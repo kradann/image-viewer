@@ -1,0 +1,1202 @@
+[
+    {
+        "image_name": "1003_eu_end_of_restrictions_0027655.jpg",
+        "label": "eu_city_limit_exit",
+        "x1": 111.0,
+        "y1": 99.6,
+        "x2": 196.79999999999998,
+        "y2": 199.2
+    },
+    {
+        "image_name": "1067_eu_end_of_restrictions_0063866.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1003_eu_end_of_restrictions_0027656.jpg",
+        "label": "eu_city_limit_exit",
+        "x1": 106.8,
+        "y1": 106.2,
+        "x2": 193.79999999999998,
+        "y2": 196.79999999999998
+    },
+    {
+        "image_name": "1003_eu_end_of_restrictions_0027657.jpg",
+        "label": "eu_city_limit_exit",
+        "x1": 106.8,
+        "y1": 106.2,
+        "x2": 191.4,
+        "y2": 195.0
+    },
+    {
+        "image_name": "1003_eu_end_of_restrictions_0027658.jpg",
+        "label": "eu_city_limit_exit",
+        "x1": 106.8,
+        "y1": 106.2,
+        "x2": 192.0,
+        "y2": 192.6
+    },
+    {
+        "image_name": "1003_eu_end_of_restrictions_0027659.jpg",
+        "label": "eu_city_limit_exit",
+        "x1": 106.8,
+        "y1": 106.2,
+        "x2": 192.0,
+        "y2": 192.0
+    },
+    {
+        "image_name": "1003_eu_end_of_restrictions_0027660.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1003_eu_end_of_restrictions_0027661.jpg",
+        "label": "eu_city_limit_exit",
+        "x1": 106.8,
+        "y1": 106.2,
+        "x2": 192.6,
+        "y2": 192.6
+    },
+    {
+        "image_name": "1003_eu_end_of_restrictions_0027662.jpg",
+        "label": "eu_city_limit_exit",
+        "x1": 106.8,
+        "y1": 106.2,
+        "x2": 193.2,
+        "y2": 193.2
+    },
+    {
+        "image_name": "1003_eu_end_of_restrictions_0027663.jpg",
+        "label": "eu_city_limit_exit",
+        "x1": 106.8,
+        "y1": 106.2,
+        "x2": 193.2,
+        "y2": 192.0
+    },
+    {
+        "image_name": "1003_eu_end_of_restrictions_0027664.jpg",
+        "label": "eu_city_limit_exit",
+        "x1": 106.8,
+        "y1": 106.2,
+        "x2": 192.6,
+        "y2": 196.2
+    },
+    {
+        "image_name": "1005_eu_stop_0027548.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1005_eu_stop_0027549.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1005_eu_stop_0027550.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1005_eu_stop_0027551.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1005_eu_stop_0027552.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1005_eu_stop_0027553.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1005_eu_stop_0027554.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1005_eu_stop_0027555.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1005_eu_stop_0027556.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1006_eu_stop_0027547.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1006_eu_stop_0027548.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1006_eu_stop_0027549.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1006_eu_stop_0027550.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1006_eu_stop_0027551.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1006_eu_stop_0027552.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1006_eu_stop_0027553.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1006_eu_stop_0027554.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1006_eu_stop_0027555.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1006_eu_stop_0027556.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1010_eu_giveway_0027803.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1010_eu_giveway_0027804.jpg",
+        "label": "unknown_sign",
+        "x1": 108.6,
+        "y1": 112.8,
+        "x2": 184.79999999999998,
+        "y2": 196.2
+    },
+    {
+        "image_name": "1010_eu_giveway_0027805.jpg",
+        "label": "unknown_sign",
+        "x1": 108.6,
+        "y1": 112.8,
+        "x2": 186.0,
+        "y2": 192.6
+    },
+    {
+        "image_name": "1010_eu_giveway_0027806.jpg",
+        "label": "unknown_sign",
+        "x1": 108.6,
+        "y1": 112.8,
+        "x2": 182.4,
+        "y2": 195.0
+    },
+    {
+        "image_name": "1010_eu_giveway_0027807.jpg",
+        "label": "unknown_sign",
+        "x1": 108.6,
+        "y1": 112.8,
+        "x2": 186.0,
+        "y2": 197.4
+    },
+    {
+        "image_name": "1010_eu_giveway_0027808.jpg",
+        "label": "unknown_sign",
+        "x1": 111.0,
+        "y1": 108.0,
+        "x2": 184.2,
+        "y2": 192.6
+    },
+    {
+        "image_name": "1010_eu_giveway_0027810.jpg",
+        "label": "unknown_sign",
+        "x1": 111.0,
+        "y1": 108.0,
+        "x2": 190.79999999999998,
+        "y2": 194.4
+    },
+    {
+        "image_name": "1010_eu_giveway_0027809.jpg",
+        "label": "unknown_sign",
+        "x1": 111.0,
+        "y1": 108.0,
+        "x2": 189.0,
+        "y2": 195.0
+    },
+    {
+        "image_name": "1010_eu_giveway_0027811.jpg",
+        "label": "unknown_sign",
+        "x1": 111.0,
+        "y1": 108.0,
+        "x2": 191.4,
+        "y2": 193.2
+    },
+    {
+        "image_name": "1010_eu_giveway_0027812.jpg",
+        "label": "unknown_sign",
+        "x1": 111.0,
+        "y1": 108.0,
+        "x2": 195.0,
+        "y2": 193.2
+    },
+    {
+        "image_name": "1011_eu_end_of_restrictions_0045264.jpg",
+        "label": "eu_end_of_restrictions",
+        "x1": 117.6,
+        "y1": 102.6,
+        "x2": 183.0,
+        "y2": 195.0
+    },
+    {
+        "image_name": "1011_eu_end_of_restrictions_0045265.jpg",
+        "label": "eu_end_of_restrictions",
+        "x1": 117.6,
+        "y1": 102.6,
+        "x2": 184.79999999999998,
+        "y2": 193.79999999999998
+    },
+    {
+        "image_name": "1011_eu_end_of_restrictions_0045266.jpg",
+        "label": "eu_end_of_restrictions",
+        "x1": 117.6,
+        "y1": 102.6,
+        "x2": 182.4,
+        "y2": 193.2
+    },
+    {
+        "image_name": "1011_eu_end_of_restrictions_0045267.jpg",
+        "label": "eu_end_of_restrictions",
+        "x1": 117.6,
+        "y1": 102.6,
+        "x2": 186.0,
+        "y2": 191.4
+    },
+    {
+        "image_name": "1011_eu_end_of_restrictions_0045268.jpg",
+        "label": "eu_end_of_restrictions",
+        "x1": 117.6,
+        "y1": 102.6,
+        "x2": 184.79999999999998,
+        "y2": 192.0
+    },
+    {
+        "image_name": "1011_eu_end_of_restrictions_0045269.jpg",
+        "label": "eu_end_of_restrictions",
+        "x1": 117.6,
+        "y1": 102.6,
+        "x2": 184.79999999999998,
+        "y2": 192.0
+    },
+    {
+        "image_name": "1011_eu_end_of_restrictions_0045270.jpg",
+        "label": "eu_end_of_restrictions",
+        "x1": 117.6,
+        "y1": 102.6,
+        "x2": 181.79999999999998,
+        "y2": 192.6
+    },
+    {
+        "image_name": "1011_eu_end_of_restrictions_0045271.jpg",
+        "label": "eu_end_of_restrictions",
+        "x1": 117.6,
+        "y1": 102.6,
+        "x2": 183.6,
+        "y2": 192.6
+    },
+    {
+        "image_name": "1011_eu_end_of_restrictions_0045272.jpg",
+        "label": "eu_end_of_restrictions",
+        "x1": 117.6,
+        "y1": 102.6,
+        "x2": 181.79999999999998,
+        "y2": 194.4
+    },
+    {
+        "image_name": "1016_eu_end_of_restrictions_0045473.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1016_eu_end_of_restrictions_0045474.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1016_eu_end_of_restrictions_0045475.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1016_eu_end_of_restrictions_0045476.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1016_eu_end_of_restrictions_0045477.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1016_eu_end_of_restrictions_0045478.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1016_eu_end_of_restrictions_0045480.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1019_eu_stop_0032475.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1019_eu_stop_0032476.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1019_eu_stop_0032477.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1019_eu_stop_0032478.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1019_eu_stop_0032479.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1019_eu_stop_0032480.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1019_eu_stop_0032481.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1019_eu_stop_0032482.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1019_eu_stop_0032483.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1019_eu_stop_0032484.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1020_eu_stop_0027546.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1020_eu_stop_0027547.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1020_eu_stop_0027548.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1020_eu_stop_0027549.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1020_eu_stop_0027550.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1020_eu_stop_0027551.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1020_eu_stop_0027552.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1020_eu_stop_0027553.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1020_eu_stop_0027554.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1020_eu_stop_0027555.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1022_eu_end_of_restrictions_0027850.jpg",
+        "label": "unknown_sign",
+        "x1": 105.0,
+        "y1": 104.39999999999999,
+        "x2": 190.2,
+        "y2": 202.79999999999998
+    },
+    {
+        "image_name": "1022_eu_end_of_restrictions_0027851.jpg",
+        "label": "unknown_sign",
+        "x1": 105.0,
+        "y1": 104.39999999999999,
+        "x2": 198.0,
+        "y2": 202.79999999999998
+    },
+    {
+        "image_name": "1022_eu_end_of_restrictions_0027853.jpg",
+        "label": "unknown_sign",
+        "x1": 105.0,
+        "y1": 104.39999999999999,
+        "x2": 190.2,
+        "y2": 201.6
+    },
+    {
+        "image_name": "1022_eu_end_of_restrictions_0027854.jpg",
+        "label": "unknown_sign",
+        "x1": 105.0,
+        "y1": 104.39999999999999,
+        "x2": 195.6,
+        "y2": 198.6
+    },
+    {
+        "image_name": "1022_eu_end_of_restrictions_0027855.jpg",
+        "label": "unknown_sign",
+        "x1": 105.0,
+        "y1": 104.39999999999999,
+        "x2": 196.79999999999998,
+        "y2": 199.79999999999998
+    },
+    {
+        "image_name": "1022_eu_end_of_restrictions_0027856.jpg",
+        "label": "unknown_sign",
+        "x1": 105.0,
+        "y1": 104.39999999999999,
+        "x2": 193.79999999999998,
+        "y2": 198.6
+    },
+    {
+        "image_name": "1022_eu_end_of_restrictions_0027857.jpg",
+        "label": "unknown_sign",
+        "x1": 105.0,
+        "y1": 104.39999999999999,
+        "x2": 195.0,
+        "y2": 199.2
+    },
+    {
+        "image_name": "1022_eu_end_of_restrictions_0027858.jpg",
+        "label": "unknown_sign",
+        "x1": 105.0,
+        "y1": 104.39999999999999,
+        "x2": 190.79999999999998,
+        "y2": 202.79999999999998
+    },
+    {
+        "image_name": "1022_eu_end_of_restrictions_0027859.jpg",
+        "label": "unknown_sign",
+        "x1": 105.0,
+        "y1": 104.39999999999999,
+        "x2": 195.0,
+        "y2": 199.79999999999998
+    },
+    {
+        "image_name": "1022_eu_end_of_restrictions_0027860.jpg",
+        "label": "unknown_sign",
+        "x1": 105.0,
+        "y1": 104.39999999999999,
+        "x2": 192.0,
+        "y2": 199.2
+    },
+    {
+        "image_name": "1024_eu_end_of_restrictions_0027868.jpg",
+        "label": "unknown_sign",
+        "x1": 107.39999999999999,
+        "y1": 105.6,
+        "x2": 190.79999999999998,
+        "y2": 205.79999999999998
+    },
+    {
+        "image_name": "1024_eu_end_of_restrictions_0027869.jpg",
+        "label": "unknown_sign",
+        "x1": 107.39999999999999,
+        "y1": 105.6,
+        "x2": 190.2,
+        "y2": 199.2
+    },
+    {
+        "image_name": "1024_eu_end_of_restrictions_0027870.jpg",
+        "label": "unknown_sign",
+        "x1": 113.39999999999999,
+        "y1": 105.0,
+        "x2": 189.0,
+        "y2": 202.79999999999998
+    },
+    {
+        "image_name": "1024_eu_end_of_restrictions_0027871.jpg",
+        "label": "unknown_sign",
+        "x1": 113.39999999999999,
+        "y1": 105.0,
+        "x2": 187.79999999999998,
+        "y2": 202.79999999999998
+    },
+    {
+        "image_name": "1024_eu_end_of_restrictions_0027872.jpg",
+        "label": "unknown_sign",
+        "x1": 113.39999999999999,
+        "y1": 105.0,
+        "x2": 190.79999999999998,
+        "y2": 203.4
+    },
+    {
+        "image_name": "1024_eu_end_of_restrictions_0027873.jpg",
+        "label": "unknown_sign",
+        "x1": 113.39999999999999,
+        "y1": 105.0,
+        "x2": 189.0,
+        "y2": 199.79999999999998
+    },
+    {
+        "image_name": "1024_eu_end_of_restrictions_0027874.jpg",
+        "label": "unknown_sign",
+        "x1": 113.39999999999999,
+        "y1": 105.0,
+        "x2": 189.6,
+        "y2": 199.79999999999998
+    },
+    {
+        "image_name": "1024_eu_end_of_restrictions_0027875.jpg",
+        "label": "unknown_sign",
+        "x1": 113.39999999999999,
+        "y1": 105.0,
+        "x2": 190.79999999999998,
+        "y2": 201.0
+    },
+    {
+        "image_name": "1024_eu_end_of_restrictions_0027876.jpg",
+        "label": "unknown_sign",
+        "x1": 113.39999999999999,
+        "y1": 105.0,
+        "x2": 190.2,
+        "y2": 201.6
+    },
+    {
+        "image_name": "1024_eu_end_of_restrictions_0027877.jpg",
+        "label": "unknown_sign",
+        "x1": 113.39999999999999,
+        "y1": 105.0,
+        "x2": 187.2,
+        "y2": 198.6
+    },
+    {
+        "image_name": "104_eu_stop_0003720.jpg",
+        "label": "eu_stop",
+        "x1": 116.39999999999999,
+        "y1": 120.0,
+        "x2": 190.2,
+        "y2": 186.6
+    },
+    {
+        "image_name": "104_eu_stop_0003721.jpg",
+        "label": "eu_stop",
+        "x1": 118.8,
+        "y1": 123.6,
+        "x2": 188.4,
+        "y2": 185.4
+    },
+    {
+        "image_name": "104_eu_stop_0003722.jpg",
+        "label": "eu_stop",
+        "x1": 120.0,
+        "y1": 121.8,
+        "x2": 187.79999999999998,
+        "y2": 187.79999999999998
+    },
+    {
+        "image_name": "104_eu_stop_0003723.jpg",
+        "label": "eu_stop",
+        "x1": 120.6,
+        "y1": 123.0,
+        "x2": 186.0,
+        "y2": 186.6
+    },
+    {
+        "image_name": "104_eu_stop_0003724.jpg",
+        "label": "unknown_sign",
+        "x1": 119.39999999999999,
+        "y1": 123.6,
+        "x2": 184.79999999999998,
+        "y2": 186.0
+    },
+    {
+        "image_name": "104_eu_stop_0003725.jpg",
+        "label": "unknown_sign",
+        "x1": 119.39999999999999,
+        "y1": 122.39999999999999,
+        "x2": 187.79999999999998,
+        "y2": 188.4
+    },
+    {
+        "image_name": "104_eu_stop_0003726.jpg",
+        "label": "unknown_sign",
+        "x1": 119.39999999999999,
+        "y1": 121.8,
+        "x2": 185.4,
+        "y2": 187.79999999999998
+    },
+    {
+        "image_name": "104_eu_stop_0003727.jpg",
+        "label": "unknown_sign",
+        "x1": 119.39999999999999,
+        "y1": 121.8,
+        "x2": 185.4,
+        "y2": 191.4
+    },
+    {
+        "image_name": "104_eu_stop_0003728.jpg",
+        "label": "unknown_sign",
+        "x1": 119.39999999999999,
+        "y1": 121.8,
+        "x2": 186.6,
+        "y2": 192.0
+    },
+    {
+        "image_name": "104_eu_stop_0003729.jpg",
+        "label": "unknown_sign",
+        "x1": 119.39999999999999,
+        "y1": 121.8,
+        "x2": 188.4,
+        "y2": 196.2
+    },
+    {
+        "image_name": "1052_eu_end_of_restrictions_0027370.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1052_eu_end_of_restrictions_0027376.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1052_eu_end_of_restrictions_0027380.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1052_eu_end_of_restrictions_0027386.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1052_eu_end_of_restrictions_0027389.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1052_eu_end_of_restrictions_0027390.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1052_eu_end_of_restrictions_0027392.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1052_eu_end_of_restrictions_0027393.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1052_eu_end_of_restrictions_0027394.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1052_eu_end_of_restrictions_0027395.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1052_eu_stop_0020561.jpg",
+        "label": "unknown_sign",
+        "x1": 103.2,
+        "y1": 103.2,
+        "x2": 194.4,
+        "y2": 196.79999999999998
+    },
+    {
+        "image_name": "1052_eu_stop_0020562.jpg",
+        "label": "unknown_sign",
+        "x1": 103.2,
+        "y1": 101.39999999999999,
+        "x2": 192.6,
+        "y2": 197.4
+    },
+    {
+        "image_name": "1052_eu_stop_0020563.jpg",
+        "label": "unknown_sign",
+        "x1": 103.2,
+        "y1": 101.39999999999999,
+        "x2": 194.4,
+        "y2": 198.6
+    },
+    {
+        "image_name": "1052_eu_stop_0020564.jpg",
+        "label": "unknown_sign",
+        "x1": 103.2,
+        "y1": 101.39999999999999,
+        "x2": 196.79999999999998,
+        "y2": 196.79999999999998
+    },
+    {
+        "image_name": "1052_eu_stop_0020565.jpg",
+        "label": "unknown_sign",
+        "x1": 103.2,
+        "y1": 101.39999999999999,
+        "x2": 196.79999999999998,
+        "y2": 198.6
+    },
+    {
+        "image_name": "1052_eu_stop_0020566.jpg",
+        "label": "unknown_sign",
+        "x1": 103.2,
+        "y1": 101.39999999999999,
+        "x2": 194.4,
+        "y2": 197.4
+    },
+    {
+        "image_name": "1052_eu_stop_0020567.jpg",
+        "label": "unknown_sign",
+        "x1": 103.2,
+        "y1": 101.39999999999999,
+        "x2": 193.2,
+        "y2": 195.6
+    },
+    {
+        "image_name": "1052_eu_stop_0020568.jpg",
+        "label": "unknown_sign",
+        "x1": 103.2,
+        "y1": 101.39999999999999,
+        "x2": 198.0,
+        "y2": 197.4
+    },
+    {
+        "image_name": "1052_eu_stop_0020569.jpg",
+        "label": "unknown_sign",
+        "x1": 105.6,
+        "y1": 101.39999999999999,
+        "x2": 196.2,
+        "y2": 195.6
+    },
+    {
+        "image_name": "1052_eu_stop_0020570.jpg",
+        "label": "unknown_sign",
+        "x1": 107.39999999999999,
+        "y1": 101.39999999999999,
+        "x2": 197.4,
+        "y2": 198.0
+    },
+    {
+        "image_name": "1056_eu_end_of_restrictions_0047130.jpg",
+        "label": "eu_speedlimit_100",
+        "x1": 109.2,
+        "y1": 101.39999999999999,
+        "x2": 192.6,
+        "y2": 195.6
+    },
+    {
+        "image_name": "1056_eu_end_of_restrictions_0047131.jpg",
+        "label": "eu_speedlimit_100",
+        "x1": 109.2,
+        "y1": 101.39999999999999,
+        "x2": 190.79999999999998,
+        "y2": 195.0
+    },
+    {
+        "image_name": "1056_eu_end_of_restrictions_0047132.jpg",
+        "label": "eu_speedlimit_100",
+        "x1": 109.2,
+        "y1": 101.39999999999999,
+        "x2": 190.79999999999998,
+        "y2": 198.0
+    },
+    {
+        "image_name": "1056_eu_end_of_restrictions_0047133.jpg",
+        "label": "eu_speedlimit_100",
+        "x1": 109.2,
+        "y1": 101.39999999999999,
+        "x2": 188.4,
+        "y2": 198.0
+    },
+    {
+        "image_name": "1056_eu_end_of_restrictions_0047134.jpg",
+        "label": "eu_speedlimit_100",
+        "x1": 109.2,
+        "y1": 101.39999999999999,
+        "x2": 190.2,
+        "y2": 196.2
+    },
+    {
+        "image_name": "1056_eu_end_of_restrictions_0047135.jpg",
+        "label": "eu_speedlimit_100",
+        "x1": 111.6,
+        "y1": 101.39999999999999,
+        "x2": 189.6,
+        "y2": 195.6
+    },
+    {
+        "image_name": "1056_eu_end_of_restrictions_0047136.jpg",
+        "label": "eu_speedlimit_100",
+        "x1": 111.6,
+        "y1": 101.39999999999999,
+        "x2": 188.4,
+        "y2": 194.4
+    },
+    {
+        "image_name": "1056_eu_end_of_restrictions_0047137.jpg",
+        "label": "eu_speedlimit_100",
+        "x1": 111.6,
+        "y1": 101.39999999999999,
+        "x2": 188.4,
+        "y2": 193.79999999999998
+    },
+    {
+        "image_name": "1056_eu_end_of_restrictions_0047138.jpg",
+        "label": "eu_speedlimit_100",
+        "x1": 111.6,
+        "y1": 101.39999999999999,
+        "x2": 187.79999999999998,
+        "y2": 196.79999999999998
+    },
+    {
+        "image_name": "1056_eu_end_of_restrictions_0047139.jpg",
+        "label": "eu_speedlimit_100",
+        "x1": 111.6,
+        "y1": 101.39999999999999,
+        "x2": 186.0,
+        "y2": 198.6
+    },
+    {
+        "image_name": "1062_eu_stop_0031273.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1062_eu_stop_0031274.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1062_eu_stop_0031275.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1062_eu_stop_0031276.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1062_eu_stop_0031277.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1062_eu_stop_0031278.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1062_eu_stop_0031279.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1062_eu_stop_0031280.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1062_eu_stop_0031281.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1062_eu_stop_0031282.jpg",
+        "label": "not_a_sign",
+        "x1": null,
+        "y1": null,
+        "x2": null,
+        "y2": null
+    },
+    {
+        "image_name": "1065_eu_speedlimit_30_0039775.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 101.39999999999999,
+        "y1": 99.0,
+        "x2": 198.0,
+        "y2": 202.2
+    },
+    {
+        "image_name": "1065_eu_speedlimit_30_0039776.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 101.39999999999999,
+        "y1": 99.0,
+        "x2": 196.79999999999998,
+        "y2": 203.4
+    },
+    {
+        "image_name": "1065_eu_speedlimit_30_0039777.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 101.39999999999999,
+        "y1": 99.0,
+        "x2": 198.6,
+        "y2": 199.79999999999998
+    },
+    {
+        "image_name": "1065_eu_speedlimit_30_0039778.jpg",
+        "label": "eu_red_border_circle_unknown",
+        "x1": 101.39999999999999,
+        "y1": 99.0,
+        "x2": 199.2,
+        "y2": 203.4
+    }
+]

@@ -4,8 +4,10 @@ import math
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QPainter, QPen, QBrush
+#from PyQt5.QtSql import FieldName
 
 from utils.utils import update_image_info_label
+from utils.file_manager import FileManager
 
 
 # def select_input_dir(widget, file_manager):
@@ -254,10 +256,16 @@ def load_image_and_set_name(widget):
 
 def directory_check(widget):
     if widget.input_dir is None:
-        select_input_dir(widget)
+        FileManager.set_input_dir(widget)
     if widget.base_output_dir is None:
-        select_output_dir(widget)
+        FileManager.set_output_dir(widget)
     if widget.input_dir is not None and widget.base_output_dir is not None:
         return True
     else:
         return False
+
+def search_annotation_by_image_name(self, annotation, file_name):
+    for entry in annotation:
+        if entry["image_name"] == file_name:
+            return entry
+    return None

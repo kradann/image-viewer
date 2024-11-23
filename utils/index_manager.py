@@ -86,7 +86,7 @@ class IndexManager(object):
         return batch_index
 
     def set_current_label(self, label):
-        self.not_a_sign = True
+        self.not_a_sign = False
         self.current_label = label
         self.image_manager.widget.set_label_label(self.current_label, "yellow")
         self.batch_label_dict[self.current_batch_index] = label
