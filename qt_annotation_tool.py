@@ -79,7 +79,7 @@ class AnnotationTool(QtWidgets.QWidget):
         # self.add_button("Jump to", button_size, (button_row_offset + 1, 0), self.jump_to)
         self.add_button("Previous image (<-)", button_size, (button_row_offset + 1, 1),
                         self.index_manager.previous_file, "Left")
-        self.add_button("Next image (<-)", button_size, (button_row_offset + 1, 2), self.index_manager.next_file,
+        self.add_button("Next image (->)", button_size, (button_row_offset + 1, 2), self.index_manager.next_file,
                         "Right")
         # self.add_button("To delete (d)", button_size, (button_row_offset + 2, 0), self.file_manager.set_input_dir, "D")
         self.add_button("Not a sign (n)", button_size, (button_row_offset + 1, 0), self.index_manager.set_not_a_sign, "N")

@@ -4,6 +4,8 @@ import json
 from utils.annotation_manager import AnnotationManager
 from utils.image_manager import ImageManager
 from utils.file_manager import FileManager
+from utils.io_utils import load_2d_annot
+
 
 
 class IndexManager(object):
@@ -26,6 +28,8 @@ class IndexManager(object):
         self.file_index += 1
         self.update()
         self.image_manager.widget.set_index_label(self.file_index % len(self.file_manager.file_list), "white")
+
+
 
     def previous_file(self):
         self.file_index -= 1

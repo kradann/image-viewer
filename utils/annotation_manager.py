@@ -20,6 +20,7 @@ class AnnotationManager(object):
         for annotation_dict in self.annotation_list:
             if annotation_dict["image_name"] == image_name:
                 return annotation_dict
+        return None
 
     def add_annotation(self, annotation_dict_to_add):
         modified = False

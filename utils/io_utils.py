@@ -8,6 +8,7 @@ from PyQt5.QtGui import QPainter, QPen, QBrush
 
 from utils.utils import update_image_info_label
 from utils.file_manager import FileManager
+from utils.annotation_manager import AnnotationManager
 
 
 # def select_input_dir(widget, file_manager):
@@ -64,9 +65,10 @@ def load_2d_annot(widget):
         if os.path.isfile(os.path.join(widget.base_output_dir, widget.annotation_filename)):
             with open(os.path.join(widget.base_output_dir, widget.annotation_filename), "r") as stream:
                 widget.annotation_2d_dict = json.load(stream)
-            entry = search_annotation_by_image_name(widget.annotation_2d_dict, widget.full_current_file_name)
-
+            entry = AnnotationManager.get_annotation_by_image_name(widget, widget.full_current_file_name)
+            widget.info_label.setText("asd")
             if entry is not None:
+                widget.info_label.setText("asd1")
                 if all([entry["x1"] is not None, entry["y1"] is not None, entry["x2"] is not None,
                         entry["y2"] is not None]):
                     widget.saved_check_label.setText("Saved")
@@ -112,6 +114,7 @@ def load_2d_annot(widget):
                     widget.info_label.setText("save as Not a sign")
                     widget.saved_check_label.setText("Saved")
             else:
+                widget.info_label.setText("asd2")
                 print(555)
                 widget.saved_check_label.setText("Not saved")
                 if widget.last_left_x is not None and widget.last_left_y is not None and widget.last_right_x is not None and widget.last_right_y is not None:
@@ -264,8 +267,3 @@ def directory_check(widget):
     else:
         return False
 
-def search_annotation_by_image_name(self, annotation, file_name):
-    for entry in annotation:
-        if entry["image_name"] == file_name:
-            return entry
-    return None
