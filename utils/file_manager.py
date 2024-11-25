@@ -24,6 +24,26 @@ class FileManager(object):
         self.current_label = None
         self.last_label = None
 
+    @property
+    def input_dir(self):
+        if self.__input_dir is None:
+            self.set_input_dir()
+        return self.__input_dir
+
+    @input_dir.setter
+    def input_dir(self, input_dir):
+        self.__input_dir = input_dir
+
+    @property
+    def output_dir(self):
+        if self.__output_dir is None:
+            self.set_output_dir()
+        return self.__output_dir
+
+    @output_dir.setter
+    def output_dir(self, output_dir):
+        self.__output_dir = output_dir
+
     def set_current_file(self, file_index: int):
         reset = False
         if self.input_dir is None:
@@ -31,8 +51,8 @@ class FileManager(object):
             reset = True
             file_index = 0
 
-            if self.output_dir is None:
-                self.set_output_dir()
+        if self.output_dir is None:
+            self.set_output_dir()
 
         file_path = self.file_list[file_index % len(self.file_list)]
         full_current_file_name = os.path.basename(file_path)
@@ -47,7 +67,7 @@ class FileManager(object):
 
     def set_input_dir(self):
         input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self.widget, "Select Input Directory"))
-        #input_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
+        # input_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
         self.input_dir = input_dir
         self.file_list = list()
         try:
@@ -72,7 +92,7 @@ class FileManager(object):
 
     def set_output_dir(self):
         output_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self.widget, "Select Output Directory"))
-        #output_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
+        # output_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
         self.annotation_manager.search_for_annotation(output_dir)
         self.output_dir = output_dir
         self.last_index_file = os.path.join(self.output_dir, "last_index.json")

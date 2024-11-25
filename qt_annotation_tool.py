@@ -44,34 +44,38 @@ class AnnotationTool(QtWidgets.QWidget):
         self.coords_label = QLabel(self)
         self.coords_label.setText("Coordinates: (N/A, N/A)")
         self.coords_label.setStyleSheet("color: red")
-        self.coords_label.setFixedSize(500, 60)
+        self.coords_label.setFixedSize(500, 30)
+        # self.coords_label.setAlignment(Qt.AlignRight)
         self.layout.addWidget(self.coords_label, 2, 0, 1, num_of_columns)
-
-        self.info_label = QLabel(self)
-        self.info_label.setText("Welcome!")
-        self.layout.addWidget(self.info_label, 2, 2, 1, num_of_columns)
-        # self.info_label.setAlignment(Qt.AlignRight)
-
-        self.label_label = QLabel(self)
-        self.label_label.setText("----------")
-        self.label_label.setStyleSheet("font-size: 18px; color: red;")
-        self.layout.addWidget(self.label_label, 2, 0, 2, num_of_columns)
 
         self.index_label = QLabel(self)
         self.index_label.setText("----------")
         self.index_label.setStyleSheet("font-size: 18px; color: white;")
-        self.layout.addWidget(self.index_label, 2, 2, 2, num_of_columns)
+        # self.index_label.setFixedSize(500, 60)
         # self.index_label.setAlignment(Qt.AlignRight)
+        self.layout.addWidget(self.index_label, 2, 2, 1, num_of_columns)
 
-        # self.move_func_dict = {
-        #     "something_wrong": self.get_move_func("something_wrong"),
-        #     "to_delete": self.get_move_func("to_delete"),
-        #     "new_ok": self.get_move_func("new_ok"),
-        #     "new_not_a_sign": self.get_move_func("new_not_a_sign"),
-        #     "new_unknown_sign": self.get_move_func("new_unknown_sign"),
-        # }
+        self.old_label_label = QLabel(self)
+        self.old_label_label.setText("old label: ----------")
+        self.old_label_label.setStyleSheet("font-size: 18px; color: red;")
+        self.old_label_label.setFixedSize(500, 30)
+        # self.old_label_label.setAlignment(Qt.AlignRight)
+        self.layout.addWidget(self.old_label_label, 3, 0, 1, num_of_columns)
 
-        button_row_offset = 3
+        self.new_label_label = QLabel(self)
+        self.new_label_label.setText("new label: ----------")
+        self.new_label_label.setStyleSheet("font-size: 18px; color: red;")
+        self.new_label_label.setFixedSize(500, 30)
+        # self.new_label_label.setAlignment(Qt.AlignRight)
+        self.layout.addWidget(self.new_label_label, 4, 0, 1, num_of_columns)
+
+        self.info_label = QLabel(self)
+        self.info_label.setText("Welcome!")
+        # self.info_label.setAlignment(Qt.AlignRight)
+        self.layout.addWidget(self.info_label, 4, 2, 1, num_of_columns)
+
+
+        button_row_offset = 5
         button_size = 40
         self.add_button("Change Input Folder", button_size, (button_row_offset, 0), self.file_manager.set_input_dir)
         self.add_button("Change Output Folder", button_size, (button_row_offset, 1), self.file_manager.set_output_dir)
@@ -94,7 +98,7 @@ class AnnotationTool(QtWidgets.QWidget):
             self.menu.addAction(action)
         self.button.setMenu(self.menu)
         self.button.setFixedHeight(button_size)
-        self.layout.addWidget(self.button, button_row_offset + 2, 0, 1, 3)
+        self.layout.addWidget(self.button, button_row_offset + 2, 0, 1, num_of_columns)
 
     def add_button(self, name: str, size: int, layout: tuple, func, shortcut: str = None):
         button = QtWidgets.QPushButton(name)
@@ -112,9 +116,13 @@ class AnnotationTool(QtWidgets.QWidget):
         self.coords_label.setText("Coordinates: ({}, {}), ({}, {}){}".format(tl_x, tl_y, br_x, br_y, added_test))
         self.coords_label.setStyleSheet("color: {}".format(color))
 
-    def set_label_label(self, label, color="white", added_test=""):
-        self.label_label.setText("Label: {}{}".format(label, added_test))
-        self.label_label.setStyleSheet("color: {}".format(color))
+    def set_old_label_label(self, label, color="white", added_test=""):
+        self.old_label_label.setText("old label: {}{}".format(label, added_test))
+        self.old_label_label.setStyleSheet("color: {}".format(color))
+
+    def set_new_label_label(self, label, color="white", added_test=""):
+        self.new_label_label.setText("new label: {}{}".format(label, added_test))
+        self.new_label_label.setStyleSheet("color: {}".format(color))
 
     def set_info_label(self, text, color="white"):
         self.info_label.setText(text)
@@ -247,10 +255,10 @@ class AnnotationTool(QtWidgets.QWidget):
         if selected_text == "not_a_sign":
             self.index_manager.set_not_a_sign()
         else:
-            self.index_manager.set_current_label(selected_text)
+            self.index_manager.set_new_label(selected_text)
         # Set the button text to the selected label
         self.button.setText(selected_text)
-        self.set_label_label(selected_text)
+        self.set_new_label_label(selected_text, "yellow")
 
     def mousePressEvent(self, event):
         self.image_manager.mouse_press_event(event)

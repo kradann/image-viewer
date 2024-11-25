@@ -32,6 +32,8 @@ class ImageManager(object):
 
         self.top_left_x, self.top_left_y = None, None
         self.bottom_right_x, self.bottom_right_y = None, None
+        self.last_left_x, self.last_left_y = None, None
+        self.last_right_x, self.last_right_y = None, None
         self.annotation_2d_dict = None
 
         self.cursor_pos = self.widget.rect().center()  # Initialize cursor position
@@ -229,7 +231,19 @@ class ImageManager(object):
             self.y_offset = (label_height - pixmap_height) // 2
             return relative_pos.x() - self.x_offset, relative_pos.y() - self.y_offset
 
-    def draw_rect_from_annotation(self, annotation_dict):
+    def get_coords_from_annotation(self, annotation_dict, set_to_current):
+        if annotation_dict is None:
+            x1 = self.last_left_x
+            y1 = self.last_left_y
+            x2 = self.last_right_x
+            y2 = self.last_right_y
+            if set_to_current:
+                self.top_left_x = x1
+                self.top_left_y = y1
+                self.bottom_right_x = x2
+                self.bottom_right_y = y2
+            return x1, y1, x2, y2
+
         if all([annotation_dict["x1"] is not None,
                 annotation_dict["y1"] is not None,
                 annotation_dict["x2"] is not None,
@@ -238,25 +252,50 @@ class ImageManager(object):
             y1 = math.floor(annotation_dict["y1"] / self.y_back_scale)
             x2 = math.floor(annotation_dict["x2"] / self.x_back_scale)
             y2 = math.floor(annotation_dict["y2"] / self.y_back_scale)
-            # self.last_left_x = x1
-            # self.last_left_y = y1
-            # self.last_right_x = x2
-            # self.last_right_y = y2
 
-            self.top_left_x = x1
-            self.top_left_y = y1
-            self.bottom_right_x = x2
-            self.bottom_right_y = y2
+            if set_to_current:
+                self.top_left_x = x1
+                self.top_left_y = y1
+                self.bottom_right_x = x2
+                self.bottom_right_y = y2
+            return x1, y1, x2, y2
+        else:
+            return None, None, None, None
 
-            temp_pixmap = self.pixmap.copy()
+    def draw_rect_from_annotation(self, annotation_dict=None, set_to_current=False, color=Qt.green, copy=True):
+        x1, y1, x2, y2 = self.get_coords_from_annotation(annotation_dict, set_to_current)
+        if x1 is not None:
+            if copy:
+                temp_pixmap = self.pixmap.copy()
+            else:
+                temp_pixmap = self.pixmap
             painter = QPainter(temp_pixmap)
-            painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
+            painter.setPen(QPen(color, 2, Qt.SolidLine))
             painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
 
             painter.drawRect(QRect(x1, y1, x2 - x1, y2 - y1))
             painter.end()
             self.image.setPixmap(temp_pixmap)
-            self.widget.set_coords_label(x1, y1, x2, y2, "yellow")
+        self.widget.set_coords_label(x1, y1, x2, y2, "cyan")
+
+    def set_last_coords(self):
+        self.last_left_x = self.top_left_x
+        self.last_left_y = self.top_left_y
+        self.last_right_x = self.bottom_right_x
+        self.last_right_y = self.bottom_right_y
+
+    def set_last_coords_to_none(self):
+        self.last_left_x = None
+        self.last_left_y = None
+        self.last_right_x = None
+        self.last_right_y = None
+
+    def get_back_scaled_coords(self):
+        x1 = self.top_left_x * self.x_back_scale
+        y1 = self.top_left_y * self.y_back_scale
+        x2 = self.bottom_right_x * self.x_back_scale
+        y2 = self.bottom_right_y * self.y_back_scale
+        return x1, y1, x2, y2
 
     def clear_coords(self):
         self.widget.set_coords_label(-1, -1, -1, -1, "red")

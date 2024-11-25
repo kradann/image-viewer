@@ -1,5 +1,6 @@
 import os
 import json
+from pprint import pprint
 
 
 class AnnotationManager(object):
@@ -23,6 +24,7 @@ class AnnotationManager(object):
         return None
 
     def add_annotation(self, annotation_dict_to_add):
+        pprint(annotation_dict_to_add)
         modified = False
         for annotation_idx in range(len(self.annotation_list)):
             if self.annotation_list[annotation_idx]["image_name"] == annotation_dict_to_add["image_name"]:

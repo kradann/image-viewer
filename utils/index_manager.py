@@ -1,11 +1,12 @@
+import math
 import os
 import json
 
+from PyQt5.QtCore import Qt
 from utils.annotation_manager import AnnotationManager
 from utils.image_manager import ImageManager
 from utils.file_manager import FileManager
 from utils.io_utils import load_2d_annot
-
 
 
 class IndexManager(object):
@@ -20,23 +21,32 @@ class IndexManager(object):
 
         self.current_image_name = None
         self.current_batch_index = None
-        self.current_label = None
+        self.old_label = None
+        self.new_label = None
         self.not_a_sign = False
         self.batch_label_dict = dict()
 
     def next_file(self):
         self.file_index += 1
-        self.update()
+        self.update(draw_previous=True)
         self.image_manager.widget.set_index_label(self.file_index % len(self.file_manager.file_list), "white")
-
-
 
     def previous_file(self):
         self.file_index -= 1
         self.update()
         self.image_manager.widget.set_index_label(self.file_index % len(self.file_manager.file_list), "white")
 
-    def update(self):
+    def update(self, draw_previous=False):
+        def set_old_label(old_label, text="", color="white"):
+            self.old_label = old_label
+            self.image_manager.widget.set_old_label_label(self.old_label, color)
+            self.image_manager.widget.set_info_label(text, "white")
+
+        def set_new_label(new_label, text="", color="white"):
+            self.new_label = new_label
+            self.image_manager.widget.set_new_label_label(self.new_label, color)
+            self.image_manager.widget.set_info_label(text, "white")
+
         self.not_a_sign = False
         file_path, reset = self.file_manager.set_current_file(self.file_index)
         self.image_manager.load_image(file_path)
@@ -44,34 +54,20 @@ class IndexManager(object):
         annotation_dict = self.annotation_manager.get_annotation_by_image_name(self.current_image_name)
 
         if annotation_dict is not None:
-            if self.image_manager.widget.use_batch_idx:
-                self.current_batch_index = self.batch_idx_by_filename()
-                if self.current_batch_index in self.batch_label_dict:
-                    self.current_batch_index = self.batch_idx_by_filename()
-                    self.current_label = self.batch_label_dict[self.current_batch_index]
-                    self.image_manager.widget.set_label_label(self.current_label, "yellow")
-                    self.image_manager.widget.set_info_label("based on batch idx", "yellow")
-                else:
-                    self.current_label = annotation_dict["label"]
-                    self.image_manager.widget.set_label_label(self.current_label, "white")
-                    self.image_manager.widget.set_info_label("from annotation", "white")
-            else:
-                self.current_label = annotation_dict["label"]
-                self.image_manager.widget.set_label_label(self.current_label, "white")
-                self.image_manager.widget.set_info_label("from annotation", "white")
+            set_old_label(annotation_dict["label"])
+            set_new_label(annotation_dict["label"], "based on annotation", "yellow")
+            self.image_manager.draw_rect_from_annotation(annotation_dict, set_to_current=False, color=Qt.cyan, copy=False)
+            self.image_manager.widget.button.setText(self.old_label)
 
-            self.image_manager.draw_rect_from_annotation(annotation_dict)
-            self.image_manager.widget.button.setText(self.current_label)
-        elif self.image_manager.widget.use_batch_idx:
+        if self.image_manager.widget.use_batch_idx:
             self.current_batch_index = self.batch_idx_by_filename()
 
             if self.current_batch_index in self.batch_label_dict:
-                self.current_label = self.batch_label_dict[self.current_batch_index]
-                self.image_manager.widget.set_label_label(self.current_label, "yellow")
-                self.image_manager.widget.set_info_label("based on batch idx", "yellow")
-            else:
-                self.current_label = self.label_by_filename()
-                self.image_manager.widget.set_info_label("based on file name", "white")
+                set_new_label(self.batch_label_dict[self.current_batch_index], "based on batch", "yellow")
+                if self.new_label is "not_a_sign":
+                    self.not_a_sign = True
+                if draw_previous:
+                    self.image_manager.draw_rect_from_annotation(None, set_to_current=True, color=Qt.yellow)
 
         if reset:
             self.file_index = 0
@@ -89,37 +85,37 @@ class IndexManager(object):
         batch_index = self.current_image_name.split('_')[0]
         return batch_index
 
-    def set_current_label(self, label):
+    def set_new_label(self, label):
         self.not_a_sign = False
-        self.current_label = label
-        self.image_manager.widget.set_label_label(self.current_label, "yellow")
-        self.batch_label_dict[self.current_batch_index] = label
+        self.new_label = label
+        self.image_manager.widget.set_new_label_label(self.new_label, "yellow")
 
     def set_not_a_sign(self):
         self.not_a_sign = True
-        self.current_label = "not_a_sign"
+        self.new_label = "not_a_sign"
         self.image_manager.widget.set_coords_label(-1, -1, -1, -1, "yellow")
-        self.image_manager.widget.set_label_label(self.current_label, "yellow")
-        self.batch_label_dict[self.current_batch_index] = self.current_label
+        self.image_manager.widget.set_new_label_label(self.new_label, "yellow")
 
     def save_annotation(self):
+        print(self.not_a_sign)
+        if self.image_manager.top_left_x is None:
+            annotation_dict = self.annotation_manager.get_annotation_by_image_name(self.current_image_name)
+            self.image_manager.draw_rect_from_annotation(annotation_dict, set_to_current=True, color=Qt.green)
+
+        self.batch_label_dict[self.current_batch_index] = self.new_label
         if not self.not_a_sign:
             if all([self.current_image_name is not None,
-                    self.current_label is not None,
+                    self.new_label is not None,
                     self.image_manager.top_left_x is not None,
                     self.image_manager.top_left_y is not None,
                     self.image_manager.bottom_right_x is not None,
                     self.image_manager.bottom_right_y is not None,
                     self.image_manager.bottom_right_y is not None,
                     self.image_manager.y_back_scale is not None]):
-                x1 = self.image_manager.top_left_x * self.image_manager.x_back_scale
-                y1 = self.image_manager.top_left_y * self.image_manager.y_back_scale
-                x2 = self.image_manager.bottom_right_x * self.image_manager.x_back_scale
-                y2 = self.image_manager.bottom_right_y * self.image_manager.y_back_scale
-
+                x1, y1, x2, y2 = self.image_manager.get_back_scaled_coords()
                 annotation_dict = {
                     "image_name": self.current_image_name,
-                    "label": self.current_label,
+                    "label": self.new_label,
                     "x1": x1,
                     "y1": y1,
                     "x2": x2,
@@ -128,11 +124,13 @@ class IndexManager(object):
                 self.annotation_manager.add_annotation(annotation_dict)
                 self.annotation_manager.save_annotation_list(self.file_manager.output_dir)
                 self.image_manager.widget.set_coords_label(int(x1), int(y1), int(x2), int(y2), "green")
-                self.image_manager.widget.set_label_label(self.current_label, "green")
+                self.image_manager.widget.set_new_label_label(self.new_label, "green")
                 self.image_manager.widget.set_info_label("Saved", "green")
+                self.image_manager.set_last_coords()
+                self.image_manager.draw_rect_from_annotation(None, set_to_current=False, color=Qt.green)
             else:
                 print("annotation can't be saved {}".format((self.current_image_name,
-                                                             self.current_label,
+                                                             self.new_label,
                                                              self.image_manager.top_left_x,
                                                              self.image_manager.top_left_y,
                                                              self.image_manager.bottom_right_x,
@@ -151,13 +149,17 @@ class IndexManager(object):
             self.annotation_manager.add_annotation(annotation_dict)
             self.annotation_manager.save_annotation_list(self.file_manager.output_dir)
             self.image_manager.widget.set_coords_label(-1, -1, -1, -1, "green")
-            self.image_manager.widget.set_label_label(self.current_label, "green")
+            self.image_manager.widget.set_new_label_label(self.new_label, "green")
             self.image_manager.widget.set_info_label("Saved", "green")
+            self.image_manager.set_last_coords_to_none()
 
     def save_last_idx(self):
-        index_data = {"last_image_index": self.file_index % len(self.file_manager.file_list)}
-        # Write the updated data back to the JSON file
-        with open(self.file_manager.last_index_file, "w") as f:
-            json.dump(index_data, f, indent=4)
+        if len(self.file_manager.file_list) > 0:
+            index_data = {"last_image_index": self.file_index % len(self.file_manager.file_list)}
+            # Write the updated data back to the JSON file
+            with open(self.file_manager.last_index_file, "w") as f:
+                json.dump(index_data, f, indent=4)
 
-        print("last_image_index is saved: {}".format(index_data["last_image_index"]))
+            print("last_image_index is saved: {}".format(index_data["last_image_index"]))
+        else:
+            print("last_image_index can not be saved")
