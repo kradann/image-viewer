@@ -4,6 +4,7 @@ import argparse
 import json
 import os
 import sys
+from typing import Union
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QShortcut, QInputDialog, QMenu, QAction
@@ -21,7 +22,7 @@ from utils.sing_types import eu_sign_types, us_sign_types
 
 
 class AnnotationTool(QtWidgets.QWidget):
-    def __init__(self, us, use_batch_idx):
+    def __init__(self, us, use_batch_idx, fast_check):
         QtWidgets.QWidget.__init__(self)
 
         self.layout = QtWidgets.QGridLayout(self)
@@ -31,6 +32,7 @@ class AnnotationTool(QtWidgets.QWidget):
 
         self.us = us
         self.use_batch_idx = use_batch_idx
+        self.fast_check = fast_check
         num_of_columns = 3
 
         self.annotation_manager = AnnotationManager()
@@ -41,19 +43,17 @@ class AnnotationTool(QtWidgets.QWidget):
         self.index_manager = IndexManager(self.file_manager, self.image_manager, self.annotation_manager)
         self.image_manager.image.setAlignment(QtCore.Qt.AlignCenter)
 
-        self.coords_label = QLabel(self)
-        self.coords_label.setText("Coordinates: (N/A, N/A)")
-        self.coords_label.setStyleSheet("color: red")
-        self.coords_label.setFixedSize(500, 30)
-        # self.coords_label.setAlignment(Qt.AlignRight)
-        self.layout.addWidget(self.coords_label, 2, 0, 1, num_of_columns)
+        self.new_label_label = QLabel(self)
+        self.new_label_label.setText("new label: ----------")
+        self.new_label_label.setStyleSheet("font-size: 18px; color: red;")
+        self.new_label_label.setFixedSize(500, 30)
+        # self.new_label_label.setAlignment(Qt.AlignRight)
+        self.layout.addWidget(self.new_label_label, 2, 0, 1, num_of_columns)
 
-        self.index_label = QLabel(self)
-        self.index_label.setText("----------")
-        self.index_label.setStyleSheet("font-size: 18px; color: white;")
-        # self.index_label.setFixedSize(500, 60)
-        # self.index_label.setAlignment(Qt.AlignRight)
-        self.layout.addWidget(self.index_label, 2, 2, 1, num_of_columns)
+        self.info_label = QLabel(self)
+        self.info_label.setText("Welcome!")
+        # self.info_label.setAlignment(Qt.AlignRight)
+        self.layout.addWidget(self.info_label, 2, 2, 1, num_of_columns)
 
         self.old_label_label = QLabel(self)
         self.old_label_label.setText("old label: ----------")
@@ -62,34 +62,40 @@ class AnnotationTool(QtWidgets.QWidget):
         # self.old_label_label.setAlignment(Qt.AlignRight)
         self.layout.addWidget(self.old_label_label, 3, 0, 1, num_of_columns)
 
-        self.new_label_label = QLabel(self)
-        self.new_label_label.setText("new label: ----------")
-        self.new_label_label.setStyleSheet("font-size: 18px; color: red;")
-        self.new_label_label.setFixedSize(500, 30)
-        # self.new_label_label.setAlignment(Qt.AlignRight)
-        self.layout.addWidget(self.new_label_label, 4, 0, 1, num_of_columns)
+        self.coords_label = QLabel(self)
+        self.coords_label.setText("Coordinates: (N/A, N/A)")
+        self.coords_label.setStyleSheet("color: red")
+        self.coords_label.setFixedSize(500, 30)
+        # self.coords_label.setAlignment(Qt.AlignRight)
+        self.layout.addWidget(self.coords_label, 4, 0, 1, num_of_columns)
 
-        self.info_label = QLabel(self)
-        self.info_label.setText("Welcome!")
-        # self.info_label.setAlignment(Qt.AlignRight)
-        self.layout.addWidget(self.info_label, 4, 2, 1, num_of_columns)
-
+        self.index_label = QLabel(self)
+        self.index_label.setText("----------")
+        self.index_label.setStyleSheet("font-size: 18px; color: white;")
+        # self.index_label.setFixedSize(500, 60)
+        # self.index_label.setAlignment(Qt.AlignRight)
+        self.layout.addWidget(self.index_label, 4, 2, 1, num_of_columns)
 
         button_row_offset = 5
         button_size = 40
         self.add_button("Change Input Folder", button_size, (button_row_offset, 0), self.file_manager.set_input_dir)
         self.add_button("Change Output Folder", button_size, (button_row_offset, 1), self.file_manager.set_output_dir)
-        self.add_button("Save coords (s)", button_size, (button_row_offset, 2), self.index_manager.save_annotation, "S")
+        self.add_button("Save (s)", button_size, (button_row_offset, 2), self.index_manager.save_annotation, "S")
         # self.add_button("Jump to", button_size, (button_row_offset + 1, 0), self.jump_to)
-        self.add_button("Previous image (<-)", button_size, (button_row_offset + 1, 1),
-                        self.index_manager.previous_file, "Left")
-        self.add_button("Next image (->)", button_size, (button_row_offset + 1, 2), self.index_manager.next_file,
-                        "Right")
+        self.add_button("Previous image (<-, a)", button_size, (button_row_offset + 1, 1),
+                        self.index_manager.previous_file, ("Left", "A"))
+        self.add_button("Next image (->, d)", button_size, (button_row_offset + 1, 2), self.index_manager.next_file,
+                        ("Right", "D"))
         # self.add_button("To delete (d)", button_size, (button_row_offset + 2, 0), self.file_manager.set_input_dir, "D")
-        self.add_button("Not a sign (n)", button_size, (button_row_offset + 1, 0), self.index_manager.set_not_a_sign, "N")
+        self.add_button("Not a sign (n)", button_size, (button_row_offset + 1, 0), self.index_manager.set_not_a_sign,
+                        "N")
         # self.add_button("Open annotation directory", button_size, (button_row_offset + 2, 2), open_annotation_dir)
+        self.add_button("Previous label (w)", button_size, (button_row_offset + 2, 2), self.set_previous_label_to_new,
+                        "W")
 
         self.button = QPushButton("No input file", self)
+        self.button_text = "No input file"
+        self.previous_label = "not_a_sign"
 
         self.menu = QMenu(self)
         for i in self.sign_types:
@@ -98,9 +104,20 @@ class AnnotationTool(QtWidgets.QWidget):
             self.menu.addAction(action)
         self.button.setMenu(self.menu)
         self.button.setFixedHeight(button_size)
-        self.layout.addWidget(self.button, button_row_offset + 2, 0, 1, num_of_columns)
+        self.layout.addWidget(self.button, button_row_offset + 2, 0, 1, 2)
 
-    def add_button(self, name: str, size: int, layout: tuple, func, shortcut: str = None):
+    def set_previous_label(self, label):
+        self.previous_label = label
+
+    def set_previous_label_to_new(self):
+        if self.previous_label == "not_a_sign":
+            self.index_manager.set_not_a_sign()
+        else:
+            self.index_manager.set_new_label(self.previous_label)
+        # Set the button text to the selected label
+        self.set_new_label_label(self.previous_label, "yellow")
+
+    def add_button(self, name: str, size: int, layout: tuple, func, shortcut: Union[str, tuple] = None):
         button = QtWidgets.QPushButton(name)
         button.setFixedHeight(size)
         self.layout.addWidget(button, *layout)
@@ -108,8 +125,13 @@ class AnnotationTool(QtWidgets.QWidget):
 
         q_shortcut = None
         if shortcut is not None:
-            q_shortcut = QShortcut(QKeySequence(shortcut), self)
-            q_shortcut.activated.connect(func)
+            if isinstance(shortcut, tuple):
+                for s in shortcut:
+                    q_shortcut = QShortcut(QKeySequence(s), self)
+                    q_shortcut.activated.connect(func)
+            else:
+                q_shortcut = QShortcut(QKeySequence(shortcut), self)
+                q_shortcut.activated.connect(func)
         return button, q_shortcut
 
     def set_coords_label(self, tl_x, tl_y, br_x, br_y, color="white", added_test=""):
@@ -129,7 +151,7 @@ class AnnotationTool(QtWidgets.QWidget):
         self.info_label.setStyleSheet("color: {}".format(color))
 
     def set_index_label(self, idx, color="white"):
-        self.index_label.setText("idx: {}".format(idx))
+        self.index_label.setText("idx: {}/{}".format(idx, len(self.file_manager.file_list)))
         self.index_label.setStyleSheet("color: {}".format(color))
 
     # def get_move_func(self, file_name: str):
@@ -251,14 +273,15 @@ class AnnotationTool(QtWidgets.QWidget):
     def menu_item_selected(self):
         # Get the action that was triggered
         selected_action = self.sender()
-        selected_text = selected_action.text()
-        if selected_text == "not_a_sign":
+        self.button_text = selected_action.text()
+
+        if self.button_text == "not_a_sign":
             self.index_manager.set_not_a_sign()
         else:
-            self.index_manager.set_new_label(selected_text)
+            self.index_manager.set_new_label(self.button_text)
         # Set the button text to the selected label
-        self.button.setText(selected_text)
-        self.set_new_label_label(selected_text, "yellow")
+        self.button.setText(self.button_text)
+        self.set_new_label_label(self.button_text, "yellow")
 
     def mousePressEvent(self, event):
         self.image_manager.mouse_press_event(event)
@@ -280,10 +303,12 @@ if __name__ == '__main__':
     parser.add_argument("--us", default=False, action="store_true", help="Use US signs instead of EU")
     parser.add_argument("--use_batch_idx", default=False, action="store_true",
                         help="Use batch index to speed up annotation")
+    parser.add_argument("--fast_check", default=False, action="store_true",
+                        help="Print label on image")
     args = parser.parse_args()
 
     app = QtWidgets.QApplication(sys.argv)
-    annotation_tool = AnnotationTool(args.us, args.use_batch_idx)
+    annotation_tool = AnnotationTool(args.us, args.use_batch_idx, args.fast_check)
     # width = imageLoader.frameGeometry().width()
     # height = imageLoader.frameGeometry().height()
 

@@ -67,7 +67,9 @@ class FileManager(object):
 
     def set_input_dir(self):
         input_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self.widget, "Select Input Directory"))
-        # input_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
+        if input_dir == "":
+            return
+        # input_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/annotation_check/rikardo_check"
         self.input_dir = input_dir
         self.file_list = list()
         try:
@@ -92,7 +94,9 @@ class FileManager(object):
 
     def set_output_dir(self):
         output_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self.widget, "Select Output Directory"))
-        # output_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/outputs/AID-5081_vol2_cut_images_padded"
+        if output_dir == "":
+            return
+        # output_dir = "/home/ad.adasworks.com/levente.peto/projects/traffic_sign_classification/annotation_check/rikardo_check"
         self.annotation_manager.search_for_annotation(output_dir)
         self.output_dir = output_dir
         self.last_index_file = os.path.join(self.output_dir, "last_index.json")

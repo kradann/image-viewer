@@ -262,7 +262,7 @@ class ImageManager(object):
         else:
             return None, None, None, None
 
-    def draw_rect_from_annotation(self, annotation_dict=None, set_to_current=False, color=Qt.green, copy=True):
+    def draw_rect_from_annotation(self, annotation_dict=None, set_to_current=False, color=Qt.green, copy=True, text=None):
         x1, y1, x2, y2 = self.get_coords_from_annotation(annotation_dict, set_to_current)
         if x1 is not None:
             if copy:
@@ -274,6 +274,8 @@ class ImageManager(object):
             painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
 
             painter.drawRect(QRect(x1, y1, x2 - x1, y2 - y1))
+            if text is not None:
+                painter.drawText(x1, y2 + 11, text)
             painter.end()
             self.image.setPixmap(temp_pixmap)
         self.widget.set_coords_label(x1, y1, x2, y2, "cyan")

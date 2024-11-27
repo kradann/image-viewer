@@ -24,6 +24,7 @@ class AnnotationManager(object):
         return None
 
     def add_annotation(self, annotation_dict_to_add):
+        print("saved annotation:")
         pprint(annotation_dict_to_add)
         modified = False
         for annotation_idx in range(len(self.annotation_list)):
