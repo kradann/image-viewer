@@ -69,7 +69,12 @@ class IndexManager(object):
                                                          text=self.old_label if self.image_manager.widget.fast_check else None)
             # self.image_manager.widget.button.setText(self.old_label)
         else:
-            self.image_manager.widget.set_info_label("no annotation", "red")
+            if self.image_manager.widget.use_batch_idx:
+                label = self.label_by_filename()
+                set_old_label(label)
+                set_new_label(label, "based on file name", "yellow")
+            else:
+                self.image_manager.widget.set_info_label("no annotation", "red")
 
         if self.image_manager.widget.use_batch_idx:
             self.current_batch_index = self.batch_idx_by_filename()
