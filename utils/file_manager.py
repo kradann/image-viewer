@@ -2,10 +2,11 @@ import os
 import json
 
 from collections import defaultdict
-
 from PyQt5 import QtWidgets
-
+#from utils.index_manager import IndexManager
 from utils.annotation_manager import AnnotationManager
+
+
 
 
 
@@ -126,3 +127,43 @@ class FileManager(object):
         else:
             print("last_index JSON file does not exist yet")
             # TODO: widget.info_label.setText("No last_index.json file found.")
+
+    def checking(self):
+        if self.annotation_manager.annotation_list is not None:
+            #print(self.annotation_manager.annotation_list)
+            #first = True
+            set_index = 0
+            #first_index = 0
+
+            not_found_text = ""
+            #print(len(self.file_list))
+            for filename in self.file_list:
+                    filename_in_annotation = self.annotation_manager.get_annotation_by_image_name(filename.split("/")[-1])
+                    if not filename_in_annotation:  # if true that means no annotation saved
+                        not_found_text += f"File name: {filename}, Index:{set_index + 1}\n"
+                    set_index += 1
+
+            msg = QtWidgets.QMessageBox()
+            msg.setWindowTitle("Checker")
+            msg.setStyleSheet("""
+                    QMessageBox {
+                        background-color: #2e2e2e;  /* Dark background */
+                    }
+                    QLabel {
+                        color: white;  /* White text for labels */
+                    }
+                    QPushButton {
+                        background-color: #555555;  /* Darker buttons */
+                        color: white;  /* White text for buttons */
+                    }
+                """)
+            list_len = len(not_found_text.strip().split("\n"))
+            if not_found_text == "":
+                msg.setText("All files in this directory has annotation")
+            elif list_len > 20:
+                msg.setText("List of files:\n" + "\n".join(
+                    not_found_text.strip().split("\n")[:20]) + f"\n... and {list_len - 20} more")
+            else:
+                msg.setText("List of files:\n" + "\n".join(not_found_text.strip().split("\n")[:20]))
+
+            msg.exec_()

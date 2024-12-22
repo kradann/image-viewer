@@ -2,11 +2,15 @@ import os
 import json
 from pprint import pprint
 
+#from PyQt5 import QtWidgets
+
+
 
 class AnnotationManager(object):
     def __init__(self):
         self.annotation_filename = "annotation.json"
         self.annotation_list = list()
+
 
     def search_for_annotation(self, output_dir):
         annotation_path = os.path.join(output_dir, self.annotation_filename)
@@ -39,3 +43,6 @@ class AnnotationManager(object):
         annotation_path = os.path.join(output_dir, self.annotation_filename)
         with open(annotation_path, "w") as f:
             json.dump(self.annotation_list, f, indent=4)
+
+
+

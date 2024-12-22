@@ -93,6 +93,10 @@ class AnnotationTool(QtWidgets.QWidget):
         self.add_button("Previous label (w)", button_size, (button_row_offset + 2, 2), self.set_previous_label_to_new,
                         "W")
 
+        self.add_button("Annotation check", button_size, ((button_row_offset + 2),3), self.file_manager.checking)
+
+        self.add_button("Jump to", button_size, (button_row_offset + 1,3), self.index_manager.jump_to)
+
         self.button = QPushButton("No input file", self)
         self.button_text = "No input file"
         self.previous_label = "not_a_sign"
@@ -207,68 +211,6 @@ class AnnotationTool(QtWidgets.QWidget):
     #         self.annotation_2d_dict = list()
     #         self.info_label.setText("annotation_2d.json not found!")
 
-    def jump_to(self):
-        print("out of order")
-        return
-        directory_check(self)
-        # check if input number correct
-        num, ok = QInputDialog.getInt(self, "Input Image Number", "Enter image number:")
-        if ok:
-            # Create the image file path based on the entered number
-            if 0 < num < len(self.file_list) + 1:
-                self.file_index = int(num) - 1
-                load_image_and_set_name(self)
-                self.clear_coords()
-            else:
-                self.info_label.setText("Incorrect image number!")
-
-    def checking(self):
-        print("out of order")
-        return
-        if directory_check(self):
-            first = True
-            set_index = 0
-            first_index = 0
-            filenames = get_filenames(self)
-            not_found_text = ""
-            print(len(filenames))
-            for filename in filenames:
-                current_file = search_annotation_by_image_name(self.annotation_2d_dict, filename)
-                if current_file is None:  # if true that means no annotation saved
-                    not_found_text += f"File name: {filename}, Index:{set_index + 1}\n"
-                    if first:  # to jump to first found image
-                        load_image_and_set_name(self)
-                        first = False
-                        first_index = self.file_index  # save first found image index
-                set_index += 1
-            self.file_index = first_index  # to be able to use next image correctly
-
-            msg = QtWidgets.QMessageBox()
-            msg.setWindowTitle("Checker")
-            msg.setStyleSheet("""
-                    QMessageBox {
-                        background-color: #2e2e2e;  /* Dark background */
-                    }
-                    QLabel {
-                        color: white;  /* White text for labels */
-                    }
-                    QPushButton {
-                        background-color: #555555;  /* Darker buttons */
-                        color: white;  /* White text for buttons */
-                    }
-                """)
-            list_len = len(not_found_text.strip().split("\n"))
-            if not_found_text == "":
-                msg.setText("All files in this directory has annotation")
-            elif list_len > 30:
-                msg.setText("List of files:\n" + "\n".join(
-                    not_found_text.strip().split("\n")[:30]) + f"\n... and {list_len - 30} more")
-            else:
-                msg.setText("List of files:\n" + "\n".join(not_found_text.strip().split("\n")[:30]))
-
-            msg.exec_()
-        else:
-            self.info_label.setText("Directory not opened!")
 
     def menu_item_selected(self):
         # Get the action that was triggered

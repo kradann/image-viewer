@@ -4,10 +4,12 @@ import json
 from pprint import pprint
 
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QInputDialog
+
 from utils.annotation_manager import AnnotationManager
 from utils.image_manager import ImageManager
+from utils.io_utils import directory_check , load_image_and_set_name
 from utils.file_manager import FileManager
-from utils.io_utils import load_2d_annot
 
 
 class IndexManager(object):
@@ -180,3 +182,15 @@ class IndexManager(object):
             print("last_image_index is saved: {}".format(index_data["last_image_index"]))
         else:
             print("last_image_index can not be saved")
+
+    def jump_to(self):
+        directory_check(self.file_manager)
+        # check if input number correct
+        num, ok = QInputDialog.getInt( None,"Jump to index", "Enter image number:")
+        if ok:
+            # Create the image file path based on the entered number
+            if 0 <= num < len(self.file_manager.file_list):
+                self.file_index = int(num)
+                self.update(draw_previous=False)
+                self.image_manager.widget.set_index_label(self.file_index % len(self.file_manager.file_list), "white")
+                self.image_manager.clear_coords()

@@ -260,9 +260,9 @@ def load_image_and_set_name(widget):
 def directory_check(widget):
     if widget.input_dir is None:
         FileManager.set_input_dir(widget)
-    if widget.base_output_dir is None:
+    if widget.output_dir is None:
         FileManager.set_output_dir(widget)
-    if widget.input_dir is not None and widget.base_output_dir is not None:
+    if widget.input_dir is not None and widget.output_dir is not None:
         return True
     else:
         return False
