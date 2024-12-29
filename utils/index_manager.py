@@ -10,16 +10,19 @@ from utils.annotation_manager import AnnotationManager
 from utils.image_manager import ImageManager
 from utils.io_utils import directory_check , load_image_and_set_name
 from utils.file_manager import FileManager
+from utils.box_manager import BoxManager
 
 
 class IndexManager(object):
     def __init__(self,
                  file_manager: FileManager,
                  image_manager: ImageManager,
-                 annotation_manager: AnnotationManager):
+                 annotation_manager: AnnotationManager,
+                 box_manager: BoxManager):
         self.file_manager = file_manager
         self.image_manager = image_manager
         self.annotation_manager = annotation_manager
+        self.box_manager = box_manager
         self.file_index = -1
 
         self.current_image_name = None
@@ -28,6 +31,8 @@ class IndexManager(object):
         self.new_label = None
         self.not_a_sign = False
         self.batch_label_dict = dict()
+
+
 
     def next_file(self):
         # self.image_manager.clear_coords()
@@ -57,18 +62,22 @@ class IndexManager(object):
         file_path, reset = self.file_manager.set_current_file(self.file_index)
         self.image_manager.load_image(file_path)
         self.current_image_name = os.path.basename(file_path)
-        annotation_dict = self.annotation_manager.get_annotation_by_image_name(self.current_image_name)
-        print("loaded annotation dict:")
-        pprint(annotation_dict)
+        self.box_manager.coord_list = self.annotation_manager.get_annotation_by_image_name(self.current_image_name)
 
-        if annotation_dict is not None:
-            set_old_label(annotation_dict["label"])
-            set_new_label(annotation_dict["label"], "based on annotation", "yellow")
-            self.image_manager.draw_rect_from_annotation(annotation_dict,
-                                                         set_to_current=not self.image_manager.widget.use_batch_idx or self.image_manager.widget.fast_check,
-                                                         color=Qt.cyan,
-                                                         copy=False,
-                                                         text=self.old_label if self.image_manager.widget.fast_check else None)
+        print("loaded annotation dict:")
+        for box in self.box_manager.coord_list:
+            print(box)
+
+        if self.box_manager.coord_list is not None:
+
+            for annotation in self.box_manager.coord_list:
+                set_old_label(annotation.label)
+                set_new_label(annotation.label, "based on annotation", "yellow")
+                self.image_manager.draw_rect_from_box_list(self.box_manager.coord_list,
+                                                             set_to_current=not self.image_manager.widget.use_batch_idx or self.image_manager.widget.fast_check,
+                                                             color=annotation.color,
+                                                             copy=False,
+                                                             text=self.old_label if self.image_manager.widget.fast_check else None)
             # self.image_manager.widget.button.setText(self.old_label)
         else:
             if self.image_manager.widget.use_batch_idx:

@@ -27,4 +27,4 @@ for annotation in old_electric_data:
 
 with open("/home/krezsnely/PycharmProjects/traffic_sign_annotation.json", "w") as json_file:
 	json.dump(new_data, json_file, indent=4)
-pprint(new_data)
+#pprint(new_data)

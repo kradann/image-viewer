@@ -16,6 +16,7 @@ from utils.image_manager import ImageManager
 from utils.file_manager import FileManager
 from utils.index_manager import IndexManager
 from utils.utils import get_dark_palette, get_filenames
+from utils.box_manager import BoxManager
 from utils.io_utils import load_image_and_set_name, save_2d, directory_check
 from utils.dir_utils import move_file, open_annotation_dir
 from utils.sing_types import eu_sign_types, us_sign_types
@@ -35,12 +36,16 @@ class AnnotationTool(QtWidgets.QWidget):
         self.fast_check = fast_check
         num_of_columns = 3
 
+        self.box_manager = BoxManager(self)
+
         self.annotation_manager = AnnotationManager()
         self.file_manager = FileManager(self, self.annotation_manager)
-        self.image_manager = ImageManager(self, self.file_manager)
-        self.layout.addWidget(self.image_manager.image, 0, 0, 1, 3)
+        self.image_manager = ImageManager(self, self.file_manager, self.box_manager)
+        self.layout.addWidget(self.image_manager.image, 0, 1, 1, 3)
 
-        self.index_manager = IndexManager(self.file_manager, self.image_manager, self.annotation_manager)
+
+
+        self.index_manager = IndexManager(self.file_manager, self.image_manager, self.annotation_manager, self.box_manager)
         self.image_manager.image.setAlignment(QtCore.Qt.AlignCenter)
 
         self.new_label_label = QLabel(self)
@@ -53,7 +58,7 @@ class AnnotationTool(QtWidgets.QWidget):
         self.info_label = QLabel(self)
         self.info_label.setText("Welcome!")
         # self.info_label.setAlignment(Qt.AlignRight)
-        self.layout.addWidget(self.info_label, 2, 2, 1, num_of_columns)
+        self.layout.addWidget(self.info_label, 2, 4, 1, num_of_columns)
 
         self.old_label_label = QLabel(self)
         self.old_label_label.setText("old label: ----------")
@@ -69,12 +74,17 @@ class AnnotationTool(QtWidgets.QWidget):
         # self.coords_label.setAlignment(Qt.AlignRight)
         self.layout.addWidget(self.coords_label, 4, 0, 1, num_of_columns)
 
+        self.is_electric_label = QLabel(self)
+        self.is_electric_label.setText("----------")
+        self.is_electric_label.setStyleSheet("font-size: 18px; color: white;")
+        self.layout.addWidget(self.is_electric_label, 3, 4, 1, num_of_columns)
+
         self.index_label = QLabel(self)
         self.index_label.setText("----------")
         self.index_label.setStyleSheet("font-size: 18px; color: white;")
         # self.index_label.setFixedSize(500, 60)
         # self.index_label.setAlignment(Qt.AlignRight)
-        self.layout.addWidget(self.index_label, 4, 2, 1, num_of_columns)
+        self.layout.addWidget(self.index_label, 4, 4, 1, num_of_columns)
 
         button_row_offset = 5
         button_size = 40
@@ -95,7 +105,17 @@ class AnnotationTool(QtWidgets.QWidget):
 
         self.add_button("Annotation check", button_size, ((button_row_offset + 2),3), self.file_manager.checking)
 
-        self.add_button("Jump to", button_size, (button_row_offset + 1,3), self.index_manager.jump_to)
+        self.add_button("Jump to", button_size, (button_row_offset + 2,4), self.index_manager.jump_to)
+
+        self.add_button("<", button_size , (button_row_offset + 1,3), self.image_manager.previous_box)
+
+        self.add_button(">", button_size , (button_row_offset + 1,4), self.image_manager.next_box)
+
+        self.add_box = QPushButton(self)
+        self.add_box.setText("Add box")
+        self.add_box.setFixedHeight(button_size)
+        self.layout.addWidget(self.add_box, button_row_offset, 3, 1, 2)
+        self.add_box.clicked.connect(self.image_manager.add_box)
 
         self.button = QPushButton("No input file", self)
         self.button_text = "No input file"

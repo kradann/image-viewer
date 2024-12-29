@@ -7,12 +7,14 @@ from PyQt5.QtGui import QPainter, QPen, QBrush
 # from qt_annotation_tool import AnnotationTool
 from utils.file_manager import FileManager
 from utils.utils import valid_coordinates, out_of_bounds
-
+from utils.box_manager import BoxManager
+from utils.box import Box
 
 class ImageManager(object):
-    def __init__(self, widget, file_manager: FileManager):
+    def __init__(self, widget, file_manager: FileManager, box_manager: BoxManager):
         self.widget = widget
         self.file_manager = file_manager
+        self.box_manager = box_manager
         self.image = QtWidgets.QLabel()
         self.pixmap = QtGui.QPixmap(320, 320)
         self.pixmap.fill(Qt.white)  # Fill with white color
@@ -42,6 +44,7 @@ class ImageManager(object):
         self.coordinates = None
 
         self.valid = True
+
 
     def load_image(self, file_path):
         self.pixmap = QtGui.QPixmap(file_path)
@@ -244,14 +247,14 @@ class ImageManager(object):
                 self.bottom_right_y = y2
             return x1, y1, x2, y2
 
-        if all([annotation_dict["x1"] is not None,
-                annotation_dict["y1"] is not None,
-                annotation_dict["x2"] is not None,
-                annotation_dict["y2"] is not None]):
-            x1 = math.floor(annotation_dict["x1"] / self.x_back_scale)
-            y1 = math.floor(annotation_dict["y1"] / self.y_back_scale)
-            x2 = math.floor(annotation_dict["x2"] / self.x_back_scale)
-            y2 = math.floor(annotation_dict["y2"] / self.y_back_scale)
+        if all([annotation_dict.x_1 is not None,
+                annotation_dict.y_1 is not None,
+                annotation_dict.x_2 is not None,
+                annotation_dict.y_2 is not None]):
+            x1 = math.floor(annotation_dict.x_1 / self.x_back_scale)
+            y1 = math.floor(annotation_dict.y_1 / self.y_back_scale)
+            x2 = math.floor(annotation_dict.x_2 / self.x_back_scale)
+            y2 = math.floor(annotation_dict.y_2 / self.y_back_scale)
 
             if set_to_current:
                 self.top_left_x = x1
@@ -262,23 +265,25 @@ class ImageManager(object):
         else:
             return None, None, None, None
 
-    def draw_rect_from_annotation(self, annotation_dict=None, set_to_current=False, color=Qt.green, copy=True, text=None):
-        x1, y1, x2, y2 = self.get_coords_from_annotation(annotation_dict, set_to_current)
-        if x1 is not None:
-            if copy:
-                temp_pixmap = self.pixmap.copy()
-            else:
-                temp_pixmap = self.pixmap
-            painter = QPainter(temp_pixmap)
-            painter.setPen(QPen(color, 2, Qt.SolidLine))
-            painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
+    def draw_rect_from_box_list(self, box_list=None , set_to_current=False, color=Qt.green, copy=True, text=None):
+        for box in box_list:
+            x1, y1, x2, y2 = box.x_1, box.y_1, box.x_2, box.y_2
+            color = box.color
+            if x1 is not None:
+                if copy:
+                    temp_pixmap = self.pixmap.copy()
+                else:
+                    temp_pixmap = self.pixmap
+                painter = QPainter(temp_pixmap)
+                painter.setPen(QPen(color, 2, Qt.SolidLine))
+                painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
 
-            painter.drawRect(QRect(x1, y1, x2 - x1, y2 - y1))
-            if text is not None:
-                painter.drawText(x1, y2 + 11, text)
-            painter.end()
-            self.image.setPixmap(temp_pixmap)
-        self.widget.set_coords_label(x1, y1, x2, y2, "cyan")
+                painter.drawRect(QRect(x1, y1, x2 - x1, y2 - y1))
+                if text is not None:
+                    painter.drawText(x1, y2 + 11, text)
+                painter.end()
+                self.image.setPixmap(temp_pixmap)
+            self.widget.set_coords_label(x1, y1, x2, y2, "cyan")
 
     def set_last_coords(self):
         self.last_left_x = self.top_left_x
@@ -306,3 +311,22 @@ class ImageManager(object):
         self.top_left_y = None
         self.bottom_right_x = None
         self.bottom_right_y = None
+
+    def previous_box(self):
+        self.box_manager.previous()
+        self.draw_rect_from_box_list(self.box_manager.coord_list, False,
+                                               self.box_manager.coord_list[self.box_manager.idx].color, True, None)
+    def next_box(self):
+        self.box_manager.next()
+        for box in self.box_manager.coord_list:
+            print(box)
+        self.draw_rect_from_box_list(self.box_manager.coord_list, False,
+                                               Qt.gray, True, None)
+    def add_box(self):
+        self.start_x = 100
+        self.start_y = 100
+        self.end_x = 200
+        self.end_y= 200
+        temp_box = Box(self.start_x,self.start_y,self.end_x,self.end_y, False, "unknown_sign" , True)
+        self.box_manager.coord_list.append(temp_box)
+        self.update_image()
