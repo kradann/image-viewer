@@ -3,7 +3,7 @@ import json
 from pprint import pprint
 from utils.box import Box
 from PyQt5.QtCore import Qt
-from modify_json import annotation
+#from modify_json import annotation
 
 
 #from PyQt5 import QtWidgets

@@ -63,7 +63,8 @@ class IndexManager(object):
         self.image_manager.load_image(file_path)
         self.current_image_name = os.path.basename(file_path)
         self.box_manager.coord_list = self.annotation_manager.get_annotation_by_image_name(self.current_image_name)
-
+        self.box_manager.coord_list[0].activate()
+        self.box_manager.coord_list[0].color = Qt.cyan
         print("loaded annotation dict:")
         for box in self.box_manager.coord_list:
             print(box)
@@ -75,7 +76,6 @@ class IndexManager(object):
                 set_new_label(annotation.label, "based on annotation", "yellow")
                 self.image_manager.draw_rect_from_box_list(self.box_manager.coord_list,
                                                              set_to_current=not self.image_manager.widget.use_batch_idx or self.image_manager.widget.fast_check,
-                                                             color=annotation.color,
                                                              copy=False,
                                                              text=self.old_label if self.image_manager.widget.fast_check else None)
             # self.image_manager.widget.button.setText(self.old_label)

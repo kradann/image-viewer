@@ -265,10 +265,11 @@ class ImageManager(object):
         else:
             return None, None, None, None
 
-    def draw_rect_from_box_list(self, box_list=None , set_to_current=False, color=Qt.green, copy=True, text=None):
+    def draw_rect_from_box_list(self, box_list=None , set_to_current=False, copy=True, text=None):
         for box in box_list:
             x1, y1, x2, y2 = box.x_1, box.y_1, box.x_2, box.y_2
             color = box.color
+            print(color)
             if x1 is not None:
                 if copy:
                     temp_pixmap = self.pixmap.copy()
@@ -314,14 +315,14 @@ class ImageManager(object):
 
     def previous_box(self):
         self.box_manager.previous()
-        self.draw_rect_from_box_list(self.box_manager.coord_list, False,
-                                               self.box_manager.coord_list[self.box_manager.idx].color, True, None)
+        self.draw_rect_from_box_list(self.box_manager.coord_list, False,True, None)
+
     def next_box(self):
         self.box_manager.next()
         for box in self.box_manager.coord_list:
             print(box)
-        self.draw_rect_from_box_list(self.box_manager.coord_list, False,
-                                               Qt.gray, True, None)
+        self.update_rectangles()
+
     def add_box(self):
         self.start_x = 100
         self.start_y = 100
@@ -330,3 +331,16 @@ class ImageManager(object):
         temp_box = Box(self.start_x,self.start_y,self.end_x,self.end_y, False, "unknown_sign" , True)
         self.box_manager.coord_list.append(temp_box)
         self.update_image()
+
+    def update_rectangles(self):
+        # Clear only the transparent pixmap, not the background image
+        self.rectangles_pixmap.fill(Qt.transparent)
+
+        # Combine the background image with the transparent pixmap for rectangles
+        combined_pixmap = self.image_pixmap.copy()  # Keep the original background
+        painter = QPainter(combined_pixmap)
+        painter.drawPixmap(0, 0, self.rectangles_pixmap)  # Overlay the transparent layer
+        painter.end()
+
+        # Update the QLabel to display the combined pixmap
+        self.image.setPixmap(combined_pixmap)
