@@ -76,7 +76,7 @@ class AnnotationTool(QtWidgets.QWidget):
 
         self.is_electric_label = QLabel(self)
         self.is_electric_label.setText("----------")
-        self.is_electric_label.setStyleSheet("font-size: 18px; color: white;")
+        self.is_electric_label.setStyleSheet("font-size: 16px; color: white;")
         self.layout.addWidget(self.is_electric_label, 3, 4, 1, num_of_columns)
 
         self.index_label = QLabel(self)
@@ -111,11 +111,9 @@ class AnnotationTool(QtWidgets.QWidget):
 
         self.add_button(">", button_size , (button_row_offset + 1,4), self.image_manager.next_box)
 
-        self.add_box = QPushButton(self)
-        self.add_box.setText("Add box")
-        self.add_box.setFixedHeight(button_size)
-        self.layout.addWidget(self.add_box, button_row_offset, 3, 1, 2)
-        self.add_box.clicked.connect(self.image_manager.add_box)
+        self.add_button("Add box", button_size, (button_row_offset,3), self.image_manager.add_box)
+
+        self.add_button("Change electric", button_size, (button_row_offset, 4), self.image_manager.change_box_electric)
 
         self.button = QPushButton("No input file", self)
         self.button_text = "No input file"
@@ -178,6 +176,8 @@ class AnnotationTool(QtWidgets.QWidget):
         self.index_label.setText("idx: {}/{}".format(idx, len(self.file_manager.file_list)))
         self.index_label.setStyleSheet("color: {}".format(color))
 
+    def set_electric_label(self):
+        self.is_electric_label.setText("Sign is electric" if self.box_manager.coord_list[self.box_manager.idx].electric else "Sign is not electric")
     # def get_move_func(self, file_name: str):
     #     def move_func():
     #         if self.base_output_dir is None:

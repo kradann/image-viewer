@@ -44,10 +44,12 @@ class ImageManager(object):
         self.coordinates = None
 
         self.valid = True
+        self.only_image_pixmap = QtGui.QPixmap(320, 320)
 
 
     def load_image(self, file_path):
         self.pixmap = QtGui.QPixmap(file_path)
+        self.only_image_pixmap = QtGui.QPixmap(file_path)
         ori_width, ori_height = self.pixmap.width(), self.pixmap.height()
 
         if self.pixmap.isNull():
@@ -177,6 +179,22 @@ class ImageManager(object):
                 self.bottom_right_x = max(self.start_x, self.end_x)
                 self.bottom_right_y = max(self.start_y, self.end_y)
 
+
+                if self.box_manager.coord_list:
+                    self.box_manager.coord_list[self.box_manager.idx].x_1 = self.top_left_x
+                    self.box_manager.coord_list[self.box_manager.idx].x_2 = self.bottom_right_x
+                    self.box_manager.coord_list[self.box_manager.idx].y_1 = self.top_left_y
+                    self.box_manager.coord_list[self.box_manager.idx].y_2 = self.bottom_right_y
+
+                    self.pixmap = self.only_image_pixmap.copy()
+                    self.image.setPixmap(self.pixmap)
+                    #self.widget.update()
+                    #self.update_image() #need to box stay on pixmap
+                    #self.image.setPixmap(self.only_image_pixmap)
+                    for box in self.box_manager.coord_list:
+                        print(box)
+                    self.draw_rect_from_box_list(box_list=self.box_manager.coord_list, copy=False)
+
                 if out_of_bounds(self):
                     self.clear_coords()
                 elif self.top_left_x == self.bottom_right_x or self.top_left_y == self.bottom_right_y:  # check if shape is rectangle
@@ -269,7 +287,7 @@ class ImageManager(object):
         for box in box_list:
             x1, y1, x2, y2 = box.x_1, box.y_1, box.x_2, box.y_2
             color = box.color
-            print(color)
+            #print(color)
             if x1 is not None:
                 if copy:
                     temp_pixmap = self.pixmap.copy()
@@ -329,6 +347,7 @@ class ImageManager(object):
             if box.active:
                 self.change_active_box_coordinates(box)
 
+
     def add_box(self):
         for box in self.box_manager.coord_list:
             box.deactivate()
@@ -356,5 +375,8 @@ class ImageManager(object):
         self.end_y = box.y_2
         self.bottom_right_y = self.end_y
 
+    def change_box_electric(self):
+        self.box_manager.coord_list[self.box_manager.idx].electric = not self.box_manager.coord_list[self.box_manager.idx].electric
+        self.widget.set_electric_label()
 
 

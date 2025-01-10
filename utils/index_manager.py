@@ -69,6 +69,7 @@ class IndexManager(object):
             print(box)
 
         if self.box_manager.coord_list is not None:
+
             # give coords to be able to edit active box
             self.image_manager.start_x = self.box_manager.coord_list[0].x_1
             self.image_manager.top_left_x = self.box_manager.coord_list[0].x_1
@@ -81,6 +82,8 @@ class IndexManager(object):
 
             self.box_manager.coord_list[0].activate()
             self.box_manager.coord_list[0].color = Qt.cyan
+
+            self.box_manager.set_electric()
 
             for annotation in self.box_manager.coord_list:
                 set_old_label(annotation.label)

@@ -13,6 +13,7 @@ class BoxManager:
 		self.idx -= 1
 		self.idx %= len(self.coord_list)
 		Box.activate(self.coord_list[self.idx])
+		self.set_electric()
 
 
 	def next(self):
@@ -20,9 +21,13 @@ class BoxManager:
 		self.idx += 1
 		self.idx %= len(self.coord_list)
 		self.coord_list[self.idx].activate()
+		self.set_electric()
 
 	def __str__(self):
 		if self.coord_list:
 			return "List empty"
 		box_writer = [str(box) for box in self.coord_list]
 		return "Dobozok:".join(box_writer)
+
+	def set_electric(self):
+		self.widget.set_electric_label()
