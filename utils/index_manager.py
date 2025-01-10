@@ -63,13 +63,24 @@ class IndexManager(object):
         self.image_manager.load_image(file_path)
         self.current_image_name = os.path.basename(file_path)
         self.box_manager.coord_list = self.annotation_manager.get_annotation_by_image_name(self.current_image_name)
-        self.box_manager.coord_list[0].activate()
-        self.box_manager.coord_list[0].color = Qt.cyan
+
         print("loaded annotation dict:")
         for box in self.box_manager.coord_list:
             print(box)
 
         if self.box_manager.coord_list is not None:
+            # give coords to be able to edit active box
+            self.image_manager.start_x = self.box_manager.coord_list[0].x_1
+            self.image_manager.top_left_x = self.box_manager.coord_list[0].x_1
+            self.image_manager.start_y = self.box_manager.coord_list[0].y_1
+            self.image_manager.top_left_y = self.box_manager.coord_list[0].y_1
+            self.image_manager.end_x = self.box_manager.coord_list[0].x_2
+            self.image_manager.bottom_right_x = self.box_manager.coord_list[0].x_2
+            self.image_manager.end_y = self.box_manager.coord_list[0].y_2
+            self.image_manager.bottom_right_y = self.box_manager.coord_list[0].y_2
+
+            self.box_manager.coord_list[0].activate()
+            self.box_manager.coord_list[0].color = Qt.cyan
 
             for annotation in self.box_manager.coord_list:
                 set_old_label(annotation.label)
@@ -155,7 +166,7 @@ class IndexManager(object):
                 self.image_manager.widget.set_new_label_label(self.new_label, "green")
                 self.image_manager.widget.set_info_label("Saved", "green")
                 self.image_manager.set_last_coords()
-                self.image_manager.draw_rect_from_annotation(None, set_to_current=False, color=Qt.green)
+                self.image_manager.draw_rect_from_box_list(None, set_to_current=False)
             else:
                 print("annotation can't be saved {}".format((self.current_image_name,
                                                              self.new_label,

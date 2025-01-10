@@ -3,7 +3,7 @@ from PyQt5.QtCore import Qt
 
 
 class Box:
-	def __init__(self,x_1 : float,y_1 : float,x_2 : float,y_2 : float, electric : bool , label : str , active : bool ) :
+	def __init__(self, x_1 : float,y_1 : float,x_2 : float,y_2 : float, electric : bool , label : str , active : bool ) :
 		self.x_1 = x_1
 		self.y_1 = y_1
 		self.x_2 = x_2

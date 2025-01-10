@@ -66,10 +66,10 @@ class ImageManager(object):
             self.image.setPixmap(self.pixmap)
             self.valid = True
 
-    def update_image(self):
+    def update_image(self, color=Qt.green):
         temp_pixmap = self.pixmap.copy()
         painter = QPainter(temp_pixmap)
-        painter.setPen(QPen(Qt.green, 2, Qt.SolidLine))
+        painter.setPen(QPen(color, 2, Qt.SolidLine))
         painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
 
         if valid_coordinates(self.start_x, self.start_y, self.end_x, self.end_y):
@@ -315,32 +315,46 @@ class ImageManager(object):
 
     def previous_box(self):
         self.box_manager.previous()
-        self.draw_rect_from_box_list(self.box_manager.coord_list, False,True, None)
+        self.draw_rect_from_box_list(box_list= self.box_manager.coord_list, copy=False)
+        for box in self.box_manager.coord_list:
+            if box.active:
+                self.change_active_box_coordinates(box)
 
     def next_box(self):
         self.box_manager.next()
         for box in self.box_manager.coord_list:
             print(box)
-        self.update_rectangles()
+        self.draw_rect_from_box_list(box_list=self.box_manager.coord_list, copy=False)
+        for box in self.box_manager.coord_list:
+            if box.active:
+                self.change_active_box_coordinates(box)
 
     def add_box(self):
+        for box in self.box_manager.coord_list:
+            box.deactivate()
+        self.box_manager.idx = len(self.box_manager.coord_list)
+
         self.start_x = 100
+        self.top_left_x = self.start_x
         self.start_y = 100
+        self.top_left_y = self.start_y
         self.end_x = 200
+        self.bottom_right_x = self.end_x
         self.end_y= 200
-        temp_box = Box(self.start_x,self.start_y,self.end_x,self.end_y, False, "unknown_sign" , True)
-        self.box_manager.coord_list.append(temp_box)
-        self.update_image()
+        self.bottom_right_y = self.end_y
+        self.box_manager.coord_list.append(Box(self.start_x,self.start_y,self.end_x,self.end_y, False, "unknown_sign" , True))
+        self.box_manager.coord_list[len(self.box_manager.coord_list)-1].color = Qt.cyan
+        self.draw_rect_from_box_list(box_list=self.box_manager.coord_list, copy=False)
 
-    def update_rectangles(self):
-        # Clear only the transparent pixmap, not the background image
-        self.rectangles_pixmap.fill(Qt.transparent)
+    def change_active_box_coordinates(self, box):
+        self.start_x = box.x_1
+        self.top_left_x = self.start_x
+        self.start_y = box.y_1
+        self.top_left_y = self.start_y
+        self.end_x = box.x_2
+        self.bottom_right_x = self.end_x
+        self.end_y = box.y_2
+        self.bottom_right_y = self.end_y
 
-        # Combine the background image with the transparent pixmap for rectangles
-        combined_pixmap = self.image_pixmap.copy()  # Keep the original background
-        painter = QPainter(combined_pixmap)
-        painter.drawPixmap(0, 0, self.rectangles_pixmap)  # Overlay the transparent layer
-        painter.end()
 
-        # Update the QLabel to display the combined pixmap
-        self.image.setPixmap(combined_pixmap)
+
