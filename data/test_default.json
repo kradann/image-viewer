@@ -1,0 +1,28 @@
+	{
+    "back_of_sign_0.0005_156_20220323-111344-00.10.00-00.10.15@Jarvis_2159.jpg": [
+        {
+            "label": "back_of_sign",
+            "x1": 26,
+            "x2": 259,
+            "y1": 77,
+            "y2": 275,
+            "electric": false
+        },
+        {
+            "label": "not_a_sign",
+            "x1": 56,
+            "x2": 219,
+            "y1": 87,
+            "y2": 245,
+            "electric": true
+        },
+        {
+            "label": "unknown_sign",
+            "x1": 100,
+            "x2": 160,
+            "y1": 120,
+            "y2": 225,
+            "electric": false
+        }
+    ]
+}

@@ -1,24 +1,19 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import argparse
-import json
-import os
 import sys
 from typing import Union
 
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QShortcut, QInputDialog, QMenu, QAction
-from PyQt5.QtGui import QKeySequence
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QLabel, QPushButton, QShortcut, QMenu, QAction
+from PyQt5.QtGui import QKeySequence, QFont
 
 from utils.annotation_manager import AnnotationManager
 from utils.image_manager import ImageManager
 from utils.file_manager import FileManager
 from utils.index_manager import IndexManager
-from utils.utils import get_dark_palette, get_filenames
+from utils.utils import get_dark_palette
 from utils.box_manager import BoxManager
-from utils.io_utils import load_image_and_set_name, save_2d, directory_check
-from utils.dir_utils import move_file, open_annotation_dir
 from utils.sing_types import eu_sign_types, us_sign_types
 
 
@@ -76,7 +71,7 @@ class AnnotationTool(QtWidgets.QWidget):
 
         self.is_electric_label = QLabel(self)
         self.is_electric_label.setText("----------")
-        self.is_electric_label.setStyleSheet("font-size: 16px; color: white;")
+        self.is_electric_label.setStyleSheet("font-size: 14px; color: white;")
         self.layout.addWidget(self.is_electric_label, 3, 4, 1, num_of_columns)
 
         self.index_label = QLabel(self)
@@ -107,13 +102,33 @@ class AnnotationTool(QtWidgets.QWidget):
 
         self.add_button("Jump to", button_size, (button_row_offset + 2,4), self.index_manager.jump_to)
 
-        self.add_button("<", button_size , (button_row_offset + 1,3), self.image_manager.previous_box)
+        #self.add_button("<", button_size , (button_row_offset + 1,3), self.image_manager.previous_box)
 
-        self.add_button(">", button_size , (button_row_offset + 1,4), self.image_manager.next_box)
+        #self.add_button(">", button_size , (button_row_offset + 1,4), self.image_manager.next_box)
+
+        box_layout = QtWidgets.QHBoxLayout()
+
+        left_button = QtWidgets.QPushButton("<")
+        left_button.setFont(QFont("Arial", 8))
+        left_button.setFixedHeight(button_size)
+        left_button.setFixedWidth(button_size)
+        left_button.clicked.connect(self.image_manager.previous_box)
+        box_layout.addWidget(left_button)
+
+        right_button = QtWidgets.QPushButton(">")
+        right_button.setFont(QFont("Arial", 8))
+        right_button.setFixedHeight(button_size)
+        right_button.setFixedWidth(button_size)
+        right_button.clicked.connect(self.image_manager.next_box)
+        box_layout.addWidget(right_button)
+
+        self.layout.addLayout(box_layout, button_row_offset + 1, 3, 1, 1)
 
         self.add_button("Add box", button_size, (button_row_offset,3), self.image_manager.add_box)
 
-        self.add_button("Change electric", button_size, (button_row_offset, 4), self.image_manager.change_box_electric)
+        self.add_button("Delete box", button_size, (button_row_offset, 4),self.image_manager.delete_box)
+
+        self.add_button("Change electric", button_size, (button_row_offset + 1, 4), self.image_manager.change_box_electric)
 
         self.button = QPushButton("No input file", self)
         self.button_text = "No input file"
@@ -141,6 +156,7 @@ class AnnotationTool(QtWidgets.QWidget):
 
     def add_button(self, name: str, size: int, layout: tuple, func, shortcut: Union[str, tuple] = None):
         button = QtWidgets.QPushButton(name)
+        button.setFont(QFont("Arial", 8))
         button.setFixedHeight(size)
         self.layout.addWidget(button, *layout)
         button.clicked.connect(func)
@@ -157,7 +173,7 @@ class AnnotationTool(QtWidgets.QWidget):
         return button, q_shortcut
 
     def set_coords_label(self, tl_x, tl_y, br_x, br_y, color="white", added_test=""):
-        self.coords_label.setText("Coordinates: ({}, {}), ({}, {}){}".format(tl_x, tl_y, br_x, br_y, added_test))
+        self.coords_label.setText("Coordinates: ({}, {}), ({}, {}){}".format(round(tl_x,2), round(tl_y,2), round(br_x,2), round(br_y,2), added_test))
         self.coords_label.setStyleSheet("color: {}".format(color))
 
     def set_old_label_label(self, label, color="white", added_test=""):
@@ -176,8 +192,9 @@ class AnnotationTool(QtWidgets.QWidget):
         self.index_label.setText("idx: {}/{}".format(idx, len(self.file_manager.file_list)))
         self.index_label.setStyleSheet("color: {}".format(color))
 
-    def set_electric_label(self):
-        self.is_electric_label.setText("Sign is electric" if self.box_manager.coord_list[self.box_manager.idx].electric else "Sign is not electric")
+    def set_electric_label(self, color="white"):
+        self.is_electric_label.setText("Electric" if self.box_manager.coord_list[self.box_manager.idx].electric else "Not electric")
+        self.is_electric_label.setStyleSheet("color: {}".format(color))
     # def get_move_func(self, file_name: str):
     #     def move_func():
     #         if self.base_output_dir is None:

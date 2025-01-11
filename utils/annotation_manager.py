@@ -36,17 +36,23 @@ class AnnotationManager(object):
             return return_list
         return None
 
-    def add_annotation(self, annotation_dict_to_add):
+    def add_annotation(self, annotation_dict_to_add, image_name):
         print("saved annotation:")
         pprint(annotation_dict_to_add)
         modified = False
-        for annotation_idx in range(len(self.annotation_list)):
+        """for annotation_idx in range(len(self.annotation_list)):
             if self.annotation_list[annotation_idx]["image_name"] == annotation_dict_to_add["image_name"]:
                 self.annotation_list[annotation_idx] = annotation_dict_to_add
                 modified = True
 
         if not modified:
-            self.annotation_list.append(annotation_dict_to_add)
+            self.annotation_list.append(annotation_dict_to_add)"""
+        if image_name in self.annotation_list:
+            # If it does, append the new annotation to the list
+            self.annotation_list[image_name].append(annotation_dict_to_add)
+        else:
+            # If no annotations exist for this image, create a new list with the first annotation
+            self.annotation_list[image_name] = [annotation_dict_to_add]
 
     def save_annotation_list(self, output_dir):
         annotation_path = os.path.join(output_dir, self.annotation_filename)
