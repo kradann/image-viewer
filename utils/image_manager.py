@@ -16,7 +16,7 @@ class ImageManager(object):
         self.file_manager = file_manager
         self.box_manager = box_manager
         self.image = QtWidgets.QLabel()
-        self.pixmap = QtGui.QPixmap(320, 320)
+        self.pixmap = QtGui.QPixmap(420, 420)
         self.pixmap.fill(Qt.white)  # Fill with white color
         self.image.setPixmap(self.pixmap)
 
@@ -44,17 +44,17 @@ class ImageManager(object):
         self.coordinates = None
 
         self.valid = True
-        self.only_image_pixmap = QtGui.QPixmap(320, 320)
+        self.only_image_pixmap = QtGui.QPixmap(420, 420)
 
 
     def load_image(self, file_path):
         self.pixmap = QtGui.QPixmap(file_path)
         self.only_image_pixmap = QtGui.QPixmap(file_path)
         ori_width, ori_height = self.pixmap.width(), self.pixmap.height()
-
+        #print("ori_width, ori_height", ori_width, ori_height)
         if self.pixmap.isNull():
             # the file is not a valid image, remove it from the list
-            self.pixmap = QtGui.QPixmap(320, 320)
+            self.pixmap = QtGui.QPixmap(420, 420)
             self.pixmap.fill(Qt.white)  # Fill with white color
             self.image.setPixmap(self.pixmap)
             print("file is removed from the list because it is not valid ({})".format(file_path))
@@ -62,12 +62,18 @@ class ImageManager(object):
             self.valid = False
         else:
             self.pixmap = self.pixmap.scaled(self.image.size(), QtCore.Qt.KeepAspectRatio)
+            self.only_image_pixmap = self.only_image_pixmap.scaled(self.image.size(), QtCore.Qt.KeepAspectRatio)
             current_width, current_height = self.pixmap.width(), self.pixmap.height()
+            print("adatok:",ori_width, current_width)
             self.x_back_scale = ori_width / current_width
+            print(self.x_back_scale)
             self.y_back_scale = ori_height / current_height
             self.image.setPixmap(self.pixmap)
             self.valid = True
-            self.widget.set_coords_label(self.box_manager.coord_list[0].x_1, self.box_manager.coord_list[0].y_1, self.box_manager.coord_list[0].x_1, self.box_manager.coord_list[0].y_2)
+            if self.box_manager.coord_list:
+                self.widget.set_coords_label(self.box_manager.coord_list[0].x_1, self.box_manager.coord_list[0].y_1, self.box_manager.coord_list[0].x_1, self.box_manager.coord_list[0].y_2)
+            else:
+                self.widget.set_coords_label(0, 0, 0, 0)
 
     def update_image(self, color=Qt.green):
         temp_pixmap = self.pixmap.copy()
@@ -188,7 +194,7 @@ class ImageManager(object):
                     self.box_manager.coord_list[self.box_manager.idx].y_2 = self.bottom_right_y
                     #refresh the pixmap
                     self.pixmap = self.only_image_pixmap.copy()
-                    self.image.setPixmap(self.pixmap)
+                    #self.image.setPixmap(self.pixmap)
                     self.draw_rect_from_box_list(box_list=self.box_manager.coord_list, copy=False)
 
                 if out_of_bounds(self):
@@ -313,6 +319,7 @@ class ImageManager(object):
         self.last_right_y = None
 
     def get_back_scaled_coords(self, x1, y1, x2, y2):
+        print(self.x_back_scale, self.y_back_scale)
         x1 = x1* self.x_back_scale
         y1 = y1 * self.y_back_scale
         x2 = x2 * self.x_back_scale
@@ -346,6 +353,8 @@ class ImageManager(object):
                 self.widget.set_coords_label(box.x_1, box.y_1, box.x_2, box.y_2)
 
     def add_box(self):
+        for box in self.box_manager.coord_list:
+            print(box)
         for box in self.box_manager.coord_list:
             box.deactivate()
         self.box_manager.idx = len(self.box_manager.coord_list)

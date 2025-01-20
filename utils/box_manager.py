@@ -24,9 +24,11 @@ class BoxManager:
 		self.set_electric()
 
 	def delete_box(self):
-		self.coord_list.remove(self.coord_list[self.idx])
-		self.idx = 0
-		self.coord_list[0].activate()
+		if self.coord_list:
+			self.coord_list.remove(self.coord_list[self.idx])
+			self.idx = 0
+			if self.coord_list:
+				self.coord_list[0].activate()
 
 	def __str__(self):
 		if self.coord_list:

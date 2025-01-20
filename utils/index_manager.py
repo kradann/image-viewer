@@ -62,13 +62,15 @@ class IndexManager(object):
         file_path, reset = self.file_manager.set_current_file(self.file_index)
         self.current_image_name = os.path.basename(file_path)
         self.box_manager.coord_list = self.annotation_manager.get_annotation_by_image_name(self.current_image_name)
+        if self.box_manager.coord_list:
+            self.box_manager.idx= 0
         self.image_manager.load_image(file_path)
 
         print("loaded annotation dict:")
-        for box in self.box_manager.coord_list:
-            print(box)
-
-        if self.box_manager.coord_list is not None:
+        """for box in self.box_manager.coord_list:
+            print(box)"""
+        print(self.box_manager.coord_list)
+        if self.box_manager.coord_list:
             self.box_manager_setup()
 
             for annotation in self.box_manager.coord_list:

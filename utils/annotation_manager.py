@@ -34,7 +34,7 @@ class AnnotationManager(object):
                 #pprint(box)
                 return_list.append(box)
             return return_list
-        return None
+        return []
 
     def add_annotation(self, annotation_dict_to_add, image_name):
         print("saved annotation:")
