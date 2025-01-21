@@ -1,3 +1,4 @@
+import json
 import logging
 import geopandas
 import os
@@ -6,7 +7,7 @@ import pandas as pd
 from enum import Enum
 from glob import glob
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QMenuBar
 from PyQt5.QtWidgets import QDesktopWidget
 from PyQt5.QtWidgets import QGridLayout
 from PyQt5.QtWidgets import QPushButton
@@ -15,6 +16,7 @@ from PyQt5.QtWidgets import QLabel
 from PyQt5.QtWidgets import QMenu
 from PyQt5.QtWidgets import QAction
 from PyQt5.QtGui import QPixmap
+from PyQt5 import QtWidgets
 
 # from src.traffic_light import Subject, SubType, MaskType
 
@@ -83,57 +85,51 @@ name_attribute_type_dict = {
 class ObjectAnnotator(QWidget):
     def __init__(self, path_to_geojson, path_to_detections, outdir, attribute_name, title='Object Annotator'):
         super().__init__()
+        self.path_to_geojson = path_to_geojson if path_to_detections is not None else None
+        self.path_to_detections = path_to_detections if path_to_detections is not None else None
+        self.outdir = outdir if outdir is not None else None
+        self.attribute_name = attribute_name if attribute_name is not None else None
+        self.attribute_type = name_attribute_type_dict[self.attribute_name]
+        self.title = title
+
         self.pixmap = None
         self.text = None
         self.image = None
         self.layout = None
-        self.title = title
-        self.path_to_geojson = path_to_geojson
-        self.path_to_detections = path_to_detections
-        self.outdir = outdir
-        self.attribute_name = attribute_name
-        self.attribute_type = name_attribute_type_dict[self.attribute_name]
-        self.annotated_csv_path = os.path.join(self.outdir, "annotated_df.csv")
-        self.annotated_map_path = os.path.join(self.outdir, "annotated_map.geojson")
+        self.annotated_csv_path = None
+        self.annotated_map_path = None
+
+        self.init_window()
+
         self.ecef_crs = "urn:ogc:def:crs:EPSG::4328"
         self.annotation_df = None
         self.image_paths = None
         self.image_index = 0
         self.object_ids = None
         self.objects_map = None
-        if os.path.exists(self.annotated_csv_path) and os.path.exists(self.annotated_map_path):
-            self.annotation_df = pd.read_csv(self.annotated_csv_path)
-            self.image_paths = sorted(glob(os.path.join(self.outdir, "montage", "*jpg")))
-            self.objects_map = geopandas.read_file(self.annotated_map_path)
-            self.object_ids = self.objects_map["object_id"].values
-            if self.attribute_name not in self.objects_map.columns:
-                self.objects_map[self.attribute_name] = None
-            else:
-                self.objects_map.loc[ self.objects_map[self.attribute_name].isna(), self.attribute_name ] = None
-            if self.attribute_name not in self.annotation_df.columns:
-                self.annotation_df[self.attribute_name] = None
-        else:
-            NotImplementedError()
-            #self.prepare_data_for_annotation()
+        self.last_index_file = None
+
         self.desktop = QDesktopWidget()
         self.screen = self.desktop.availableGeometry()
-        self.init_window()
+
 
     '''
     def prepare_data_for_annotation(self):
-        from src.training.manual_annotation.json_to_2D_bbox_converter import JsonTo2DBboxConverter
-        self.objects_map = geopandas.read_file(self.path_to_geojson)
+        #from src.training.manual_annotation.json_to_2D_bbox_converter import JsonTo2DBboxConverter
+        self.objects_map = geopandas.read_file(self.annotated_map_path)
         self.objects_map[self.attribute_name] = None
         relevant_sequences = set()
         for i, row in self.objects_map.iterrows():
             views = row["views"]
+
             for key in views.keys():
                 seq_frameid = views[key]
                 if seq_frameid != "":
                     relevant_sequences.add(seq_frameid.split("_")[0])
         relevant_sequences = sorted(list(relevant_sequences))
-        seq_dir_path = os.path.join(self.path_to_geojson.split("/traffic")[0], "daa")
+        seq_dir_path = os.path.join(self.annotated_map_path.split("/traffic")[0], "daa")
         relevant_sequences = list(map(lambda x: os.path.join(seq_dir_path, x), relevant_sequences))
+        
         jsonTo2DBboxConverter = JsonTo2DBboxConverter(relevant_sequences, self.path_to_detections, self.outdir, True)
         jsonTo2DBboxConverter.run()
         self.image_paths = sorted(glob(os.path.join(jsonTo2DBboxConverter.montage_outdir, "*jpg")))
@@ -141,11 +137,14 @@ class ObjectAnnotator(QWidget):
         self.annotation_df = jsonTo2DBboxConverter.detection_df_all.copy()
         self.annotation_df[self.attribute_name] = None
         self.write_out_annotation()
-    '''
+        '''
 
     def init_window(self):
         self.setWindowTitle(self.title)
+        self.setFixedHeight(700)
         self.init_widgets()
+
+
 
     def init_widgets(self):
         self.layout = QGridLayout(self)
@@ -158,20 +157,25 @@ class ObjectAnnotator(QWidget):
         self.layout.addWidget(self.image)
         self.layout.addWidget(self.text)
 
+
         self.init_class_buttons()
 
-        self._render_image()
+        #self._render_image()
 
     def init_class_buttons(self):
         classes_button = QPushButton("Classes", self)
-        prev_button = QPushButton("Previous", self)
-        prev_button.setShortcut("Left")
         next_button = QPushButton("Next", self)
         next_button.setShortcut("Right")
+        prev_button = QPushButton("Previous", self)
+        prev_button.setShortcut("Left")
+        set_output_dir = QPushButton("Set output directory", self)
+
         prev_button.clicked.connect(self.prev_button_selected)
         next_button.clicked.connect(self.next_button_selected)
+        set_output_dir.clicked.connect(self.set_output_dir)
 
         button_size = 40
+        button_width = 1000
         button_row_offset = 5
         menu = QMenu(self)
         for cls in self.attribute_type:
@@ -182,9 +186,15 @@ class ObjectAnnotator(QWidget):
         classes_button.setFixedHeight(button_size)
         prev_button.setFixedHeight(button_size)
         next_button.setFixedHeight(button_size)
-        self.layout.addWidget(prev_button, button_row_offset + 2, 0, 1, 2)
-        self.layout.addWidget(next_button, button_row_offset + 3, 0, 1, 2)
-        self.layout.addWidget(classes_button, button_row_offset + 4, 0, 1, 2)
+        prev_button.setFixedWidth(button_width)
+        next_button.setFixedWidth(button_width)
+        set_output_dir.setFixedWidth(button_width)
+        set_output_dir.setFixedHeight(button_size)
+        classes_button.setFixedWidth(button_width)
+        self.layout.addWidget(prev_button, button_row_offset, 0, 1, 1)
+        self.layout.addWidget(next_button, button_row_offset+1, 0, 1, 1)
+        self.layout.addWidget(set_output_dir, button_row_offset + 2, 0, 1, 2)
+        self.layout.addWidget(classes_button, button_row_offset + 3, 0, 1, 2)
 
     def prev_button_selected(self):
         self.image_index -= 1
@@ -193,6 +203,33 @@ class ObjectAnnotator(QWidget):
     def next_button_selected(self):
         self.image_index += 1
         self._render_image()
+
+    def set_output_dir(self):
+        output_dir = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Output Directory"))
+        if output_dir == "":
+            return
+        self.outdir = output_dir
+        self.annotated_csv_path = os.path.join(self.outdir, "annotated_df.csv")
+        self.annotated_map_path = os.path.join(self.outdir, "annotated_map.geojson")
+        self.setup_data()
+        self.open_last_index_file()
+        self._render_image()
+
+    def setup_data(self):
+        if os.path.exists(self.annotated_csv_path) and os.path.exists(self.annotated_map_path):
+            self.annotation_df = pd.read_csv(self.annotated_csv_path)
+            self.image_paths = sorted(glob(os.path.join(self.outdir, "montage", "*jpg")))
+            self.objects_map = geopandas.read_file(self.annotated_map_path)
+            self.object_ids = self.objects_map["object_id"].values
+            if self.attribute_name not in self.objects_map.columns:
+                self.objects_map[self.attribute_name] = None
+            else:
+                self.objects_map.loc[self.objects_map[self.attribute_name].isna(), self.attribute_name] = None
+            if self.attribute_name not in self.annotation_df.columns:
+                self.annotation_df[self.attribute_name] = None
+        else:
+            NotImplementedError()
+            # self.prepare_data_for_annotation()
 
     def menu_item_selected(self):
         # Get the action that was triggered
@@ -229,7 +266,7 @@ class ObjectAnnotator(QWidget):
         attribute_type = None if attribute_type.isna().iloc[0] else attribute_type.iloc[0]
         attribute_type_str = "not annotated yet" if attribute_type is None else attribute_type
         attribute_type_color = 'color:red;' if attribute_type is None else 'color:green;'
-        self.text.setText(f"<b>Object ID</b>: <p style={attribute_type_color}>{objid}</p> <b>{self.attribute_name}</b>: <p style={attribute_type_color}>{attribute_type_str}</p>")
+        self.text.setText(f"<b>Object ID</b>: <p style={attribute_type_color}>{objid}/{len(self.object_ids)}</p> <b>{self.attribute_name}</b>: <p style={attribute_type_color}>{attribute_type_str}</p>")
 
         resize_width = 1000
         resize_height = int(min(image.height(), self.screen.height()*0.8))
@@ -238,13 +275,43 @@ class ObjectAnnotator(QWidget):
         self.image.resize(resize_width, resize_height)
         self.show()
 
+    def open_last_index_file(self):
+        self.last_index_file = os.path.join(self.outdir, "last_index.json")
+        if os.path.exists(self.last_index_file):
+            try:
+                with open(self.last_index_file, "r") as stream:
+                    last_index_dict = json.load(stream)
+            except json.JSONDecodeError:
+                print("Error loading last_index.json, possibly corrupt.")
+
+            if isinstance(last_index_dict, dict):
+                # Check if "last_image_index" exists and load it
+                if "last_image_index" in last_index_dict:
+                    self.image_index = last_index_dict["last_image_index"]
+                    print("last_image_index is loaded: {}".format(self.image_index))
+                else:
+                    print("last_image_index key not found in the JSON file.")
+            else:
+                print("last_image_index key not found in the JSON file.")
+
+        else:
+            print("last_index JSON file does not exist yet")
+
+    def closeEvent(self, event):
+        if self.image_index != 0:
+            index_data = {"last_image_index": self.image_index}
+            # Write the updated data back to the JSON file
+            with open(self.last_index_file, "w") as f:
+                json.dump(index_data, f, indent=4)
+        super().closeEvent(event)
+
 if __name__ == '__main__':
     import sys
     import argparse
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--path-to-geojson', type=str, required=True, help='Path to the geojson')
-    parser.add_argument('--path-to-detection', type=str, required=True, help='Relative path to the json files')
+    parser.add_argument('--path-to-geojson', type=str, required=False, help='Path to the geojson')
+    parser.add_argument('--path-to-detection', type=str, required=False, help='Relative path to the json files')
     parser.add_argument('--attribute-name', type=str, required=True, help='The name of the attribute that you want to annotate')
     parser.add_argument('--outdir', type=str, required=False, help='Path to the output directory')
 
