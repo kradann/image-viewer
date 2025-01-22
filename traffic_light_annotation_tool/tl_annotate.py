@@ -7,7 +7,7 @@ import pandas as pd
 from enum import Enum
 from glob import glob
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMenuBar
+from PyQt5.QtWidgets import QApplication, QMenuBar, QInputDialog
 from PyQt5.QtWidgets import QDesktopWidget
 from PyQt5.QtWidgets import QGridLayout
 from PyQt5.QtWidgets import QPushButton
@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtWidgets import QMenu
 from PyQt5.QtWidgets import QAction
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QPalette, QColor
 from PyQt5 import QtWidgets
 
 # from src.traffic_light import Subject, SubType, MaskType
@@ -141,6 +141,7 @@ class ObjectAnnotator(QWidget):
 
     def init_window(self):
         self.setWindowTitle(self.title)
+        self.setPalette(self.dark_palette())
         self.setFixedHeight(700)
         self.init_widgets()
 
@@ -169,10 +170,12 @@ class ObjectAnnotator(QWidget):
         prev_button = QPushButton("Previous", self)
         prev_button.setShortcut("Left")
         set_output_dir = QPushButton("Set output directory", self)
+        jump_to_button = QPushButton("Jump to", self)
 
         prev_button.clicked.connect(self.prev_button_selected)
         next_button.clicked.connect(self.next_button_selected)
         set_output_dir.clicked.connect(self.set_output_dir)
+        jump_to_button.clicked.connect(self.jump_to)
 
         button_size = 40
         button_width = 1000
@@ -183,6 +186,7 @@ class ObjectAnnotator(QWidget):
             action.triggered.connect(self.menu_item_selected)  # Connect to selection handler
             menu.addAction(action)
         classes_button.setMenu(menu)
+
         classes_button.setFixedHeight(button_size)
         prev_button.setFixedHeight(button_size)
         next_button.setFixedHeight(button_size)
@@ -191,10 +195,15 @@ class ObjectAnnotator(QWidget):
         set_output_dir.setFixedWidth(button_width)
         set_output_dir.setFixedHeight(button_size)
         classes_button.setFixedWidth(button_width)
+        jump_to_button.setFixedWidth(button_width)
+        jump_to_button.setFixedHeight(button_size)
+
         self.layout.addWidget(prev_button, button_row_offset, 0, 1, 1)
         self.layout.addWidget(next_button, button_row_offset+1, 0, 1, 1)
         self.layout.addWidget(set_output_dir, button_row_offset + 2, 0, 1, 2)
         self.layout.addWidget(classes_button, button_row_offset + 3, 0, 1, 2)
+        self.layout.addWidget(jump_to_button, button_row_offset + 4, 0, 1, 2)
+
 
     def prev_button_selected(self):
         self.image_index -= 1
@@ -265,7 +274,7 @@ class ObjectAnnotator(QWidget):
         attribute_type = self.objects_map.loc[ self.objects_map["object_id"] == objid, self.attribute_name ]
         attribute_type = None if attribute_type.isna().iloc[0] else attribute_type.iloc[0]
         attribute_type_str = "not annotated yet" if attribute_type is None else attribute_type
-        attribute_type_color = 'color:red;' if attribute_type is None else 'color:green;'
+        attribute_type_color = 'color:red;' if attribute_type is None else 'color:lime;'
         self.text.setText(f"<b>Object ID</b>: <p style={attribute_type_color}>{objid}/{len(self.object_ids)}</p> <b>{self.attribute_name}</b>: <p style={attribute_type_color}>{attribute_type_str}</p>")
 
         resize_width = 1000
@@ -296,6 +305,25 @@ class ObjectAnnotator(QWidget):
 
         else:
             print("last_index JSON file does not exist yet")
+
+    def jump_to(self):
+        if self.object_ids is not None:
+            num, ok = QInputDialog.getInt(None, "Jump to index", "Enter image number:")
+            if ok:
+                # Create the image file path based on the entered number
+                if 0 <= num < len(self.object_ids):
+                    self.image_index = int(num)
+                    self._render_image()
+
+    @staticmethod
+    def dark_palette():
+        palette = QPalette()
+        palette.setColor(QPalette.Window, QColor(45, 45, 48))  # Background color
+        palette.setColor(QPalette.WindowText, Qt.white)  # Text color
+
+        # palette.setColor(QPalette.Button, QColor(60,70,80)) #Button color
+        palette.setColor(QPalette.ButtonText, Qt.black)  # Buttontext color
+        return palette
 
     def closeEvent(self, event):
         if self.image_index != 0:
