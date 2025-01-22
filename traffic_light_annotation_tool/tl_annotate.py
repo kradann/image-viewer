@@ -53,13 +53,14 @@ class ColorType(str, Enum):
     UNKNOWN = "UNKNOWN"
 
 class SubType(str, Enum):
-    V_3LINE = "v-3line"
-    H_3LINE = "h-3line"
     V_2LINE = "v-2line"
+    V_3LINE = "v-3line"
     V_4LINE = "v-4line"
     V_5LINE = "v-5line"
-    H_5LINE = "h-5line"
     H_2LINE = "h-2line"
+    H_3LINE = "h-3line"
+    H_5LINE = "h-5line"
+
     DOGHOUSE = "doghouse"
     SINGLE = "single"
     PEDESTRIAN_HYBRID_BEACON = "pedestrian_hybrid_beacon"
