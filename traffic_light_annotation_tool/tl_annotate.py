@@ -1,5 +1,7 @@
 import json
 import logging
+from os import close
+
 import geopandas
 import os
 import pandas as pd
@@ -257,9 +259,6 @@ class ObjectAnnotator(QWidget):
 
     def write_out_annotation(self):
         self.annotation_df.to_csv(self.annotated_csv_path, index=False)
-        print("--------------")
-        print(self.objects_map.columns)
-        print("------------------")
         self.objects_map["relevant_sequences"] = self.objects_map["relevant_sequences"].astype(str)
         self.objects_map["manual_relevance_version"] = self.objects_map["manual_relevance_version"].astype("Int64")
         self.objects_map.set_crs(self.ecef_crs, inplace=True, allow_override=True)
@@ -268,6 +267,8 @@ class ObjectAnnotator(QWidget):
     def _render_image(self):
         if not 0 <= self.image_index < len(self.image_paths):
             print("Annotation ready, exiting...")
+            self.image_index -= 1
+            self.save_data()
             exit(0)
         image = QPixmap(self.image_paths[self.image_index])
         #resize_width = min(image.width(), self.screen.width()*0.8)
@@ -327,12 +328,17 @@ class ObjectAnnotator(QWidget):
         return palette
 
     def closeEvent(self, event):
-        if self.image_index != 0:
+        self.save_data()
+        super().closeEvent(event)
+
+    def save_data(self):
+        if self.image_index != 0 and self.attribute_type is not None:
             index_data = {"last_image_index": self.image_index}
+            #attribute_type = {"last_attribute_type": str(self.attribute_type)}
             # Write the updated data back to the JSON file
             with open(self.last_index_file, "w") as f:
                 json.dump(index_data, f, indent=4)
-        super().closeEvent(event)
+                #json.dump(attribute_type, f, indent=4)
 
 if __name__ == '__main__':
     import sys
