@@ -39,12 +39,14 @@ class IndexManager(object):
         self.image_manager.widget.set_previous_label(self.new_label)
         self.file_index += 1
         self.update(draw_previous=True)
+        self.image_manager.box_changed_update()
         self.image_manager.widget.set_index_label(self.file_index % len(self.file_manager.file_list), "white")
 
     def previous_file(self):
         # self.image_manager.clear_coords()
         self.file_index -= 1
         self.update()
+        self.image_manager.box_changed_update()
         self.image_manager.widget.set_index_label(self.file_index % len(self.file_manager.file_list), "white")
 
     def update(self, draw_previous=False):
@@ -62,24 +64,21 @@ class IndexManager(object):
         file_path, reset = self.file_manager.set_current_file(self.file_index)
         self.current_image_name = os.path.basename(file_path)
         self.box_manager.coord_list = self.annotation_manager.get_annotation_by_image_name(self.current_image_name)
-        if self.box_manager.coord_list:
-            self.box_manager.idx= 0
+
         self.image_manager.load_image(file_path)
 
-        print("loaded annotation dict:")
-        """for box in self.box_manager.coord_list:
-            print(box)"""
-        print(self.box_manager.coord_list)
         if self.box_manager.coord_list:
+            self.image_manager.get_coords_from_annotation()
+            self.box_manager.idx= 0
             self.box_manager_setup()
 
             for annotation in self.box_manager.coord_list:
                 set_old_label(annotation.label)
                 set_new_label(annotation.label, "based on annotation", "yellow")
                 self.image_manager.draw_rect_from_box_list(self.box_manager.coord_list,
-                                                             set_to_current=not self.image_manager.widget.use_batch_idx or self.image_manager.widget.fast_check,
-                                                             copy=False,
-                                                             text=self.old_label if self.image_manager.widget.fast_check else None)
+                                                           set_to_current=not self.image_manager.widget.use_batch_idx or self.image_manager.widget.fast_check,
+                                                           copy=False,
+                                                           text=self.old_label if self.image_manager.widget.fast_check else None)
             # self.image_manager.widget.button.setText(self.old_label)
         else:
             if self.image_manager.widget.use_batch_idx:
@@ -88,6 +87,13 @@ class IndexManager(object):
                 set_new_label(label, "based on file name", "yellow")
             else:
                 self.image_manager.widget.set_info_label("no annotation", "red")
+
+        print("loaded annotation dict:")
+        """for box in self.box_manager.coord_list:
+            print(box)"""
+        print(self.box_manager.coord_list)
+
+
 
         if self.image_manager.widget.use_batch_idx:
             self.current_batch_index = self.batch_idx_by_filename()
@@ -119,6 +125,7 @@ class IndexManager(object):
     def set_new_label(self, label):
         self.not_a_sign = False
         self.new_label = label
+        self.box_manager.coord_list[self.box_manager.idx].label = label
         self.image_manager.widget.set_new_label_label(self.new_label, "yellow")
 
     def set_not_a_sign(self):
@@ -159,6 +166,8 @@ class IndexManager(object):
                     self.image_manager.widget.set_coords_label(int(x1), int(y1), int(x2), int(y2), "green")
                     self.image_manager.widget.set_new_label_label(self.new_label, "green")
                     self.image_manager.widget.set_info_label("Saved", "green")
+                    print("asdasdsad")
+                    self.image_manager.widget.set_electric_label(annotation=True, color="green")
                     self.image_manager.set_last_coords()
                 else:
                     print("annotation can't be saved {}".format((self.current_image_name,
@@ -180,6 +189,7 @@ class IndexManager(object):
                 self.image_manager.widget.set_coords_label(-1, -1, -1, -1, "green")
                 self.image_manager.widget.set_new_label_label(self.new_label, "green")
                 self.image_manager.widget.set_info_label("Saved", "green")
+                self.image_manager.widget.set_electric_label(annotation=True, color="green")
                 self.image_manager.set_last_coords_to_none()
 
             print(annotation_dict)
@@ -194,7 +204,7 @@ class IndexManager(object):
 
         # Save the annotations list to the specified output directory
         self.annotation_manager.save_annotation_list(self.file_manager.output_dir)
-        self.image_manager.widget.set_electric_label(color="green")
+
 
     def save_last_idx(self):
         if len(self.file_manager.file_list) > 0:

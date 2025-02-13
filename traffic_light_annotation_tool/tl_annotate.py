@@ -267,7 +267,6 @@ class ObjectAnnotator(QWidget):
     def _render_image(self):
         if not 0 <= self.image_index < len(self.image_paths):
             print("Annotation ready, exiting...")
-            self.image_index -= 1
             self.save_data()
             exit(0)
         image = QPixmap(self.image_paths[self.image_index])
@@ -333,7 +332,7 @@ class ObjectAnnotator(QWidget):
 
     def save_data(self):
         if self.image_index != 0 and self.attribute_type is not None:
-            index_data = {"last_image_index": self.image_index}
+            index_data = {"last_image_index": self.image_index-1}
             #attribute_type = {"last_attribute_type": str(self.attribute_type)}
             # Write the updated data back to the JSON file
             with open(self.last_index_file, "w") as f:

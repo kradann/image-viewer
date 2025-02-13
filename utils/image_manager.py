@@ -172,20 +172,19 @@ class ImageManager(object):
 
     def mouse_release_event(self, event):
         if event.button() == Qt.LeftButton:
+
             if self.top_left_x is None:
                 self.end_x, self.end_y = self.get_image_coordinates(event.pos())
                 self.end_dx = self.end_x - event.x()
                 self.end_dy = self.end_y - event.y()
 
+            if valid_coordinates(self.start_x, self.start_y, self.end_x, self.end_y) and self.check_release_out_of_bounds():
                 self.widget.update()
                 self.update_image()
-
-            if valid_coordinates(self.start_x, self.start_y, self.end_x, self.end_y):
                 self.top_left_x = min(self.start_x, self.end_x)
                 self.top_left_y = min(self.start_y, self.end_y)
                 self.bottom_right_x = max(self.start_x, self.end_x)
                 self.bottom_right_y = max(self.start_y, self.end_y)
-
 
                 if self.box_manager.coord_list:
                     self.box_manager.coord_list[self.box_manager.idx].x_1 = self.top_left_x
@@ -216,6 +215,13 @@ class ImageManager(object):
             x, y = self.get_image_coordinates(event.pos())
             self.draw_cross(x, y)
             self.widget.update()
+
+    def check_release_out_of_bounds(self):
+        print("end_x: {}".format(self.end_x))
+        print("end_y: {}".format(self.end_y))
+        print("pixmap width: {}".format(self.pixmap.width()))
+        print("pixmap height: {}".format(self.pixmap.height()))
+        return 0 <= self.end_x <= self.pixmap.width() and 0 <= self.end_y <= self.pixmap.height()
 
     def draw_cross(self, x, y):
         temp_pixmap = self.pixmap.copy()
@@ -254,36 +260,20 @@ class ImageManager(object):
             self.y_offset = (label_height - pixmap_height) // 2
             return relative_pos.x() - self.x_offset, relative_pos.y() - self.y_offset
 
-    def get_coords_from_annotation(self, annotation_dict, set_to_current):
-        if annotation_dict is None:
-            x1 = self.last_left_x
-            y1 = self.last_left_y
-            x2 = self.last_right_x
-            y2 = self.last_right_y
-            if set_to_current:
-                self.top_left_x = x1
-                self.top_left_y = y1
-                self.bottom_right_x = x2
-                self.bottom_right_y = y2
-            return x1, y1, x2, y2
+    def get_coords_from_annotation(self):
+        if self.box_manager.coord_list is not None:
+            for box in self.box_manager.coord_list:
+                if all([box.x_1 is not None,
+                        box.y_1 is not None,
+                        box.x_2 is not None,
+                        box.y_2 is not None]):
+                    box.x_1 = math.floor(box.x_1 / self.x_back_scale)
+                    box.y_1 = math.floor(box.y_1 / self.y_back_scale)
+                    box.x_2 = math.floor(box.x_2 / self.x_back_scale)
+                    box.y_2 = math.floor(box.y_2 / self.y_back_scale)
 
-        if all([annotation_dict.x_1 is not None,
-                annotation_dict.y_1 is not None,
-                annotation_dict.x_2 is not None,
-                annotation_dict.y_2 is not None]):
-            x1 = math.floor(annotation_dict.x_1 / self.x_back_scale)
-            y1 = math.floor(annotation_dict.y_1 / self.y_back_scale)
-            x2 = math.floor(annotation_dict.x_2 / self.x_back_scale)
-            y2 = math.floor(annotation_dict.y_2 / self.y_back_scale)
 
-            if set_to_current:
-                self.top_left_x = x1
-                self.top_left_y = y1
-                self.bottom_right_x = x2
-                self.bottom_right_y = y2
-            return x1, y1, x2, y2
-        else:
-            return None, None, None, None
+
 
     def draw_rect_from_box_list(self, box_list=None , set_to_current=False, copy=True, text=None):
         for box in box_list:
@@ -345,12 +335,19 @@ class ImageManager(object):
 
     def box_changed_update(self):
         self.draw_rect_from_box_list(box_list=self.box_manager.coord_list, copy=False)
-        for box in self.box_manager.coord_list:
-            if box.active:
-                self.change_active_box_coordinates(box)
-                if self.box_manager.coord_list[self.box_manager.idx].label is not None:
-                    self.widget.set_old_label_label(self.box_manager.coord_list[self.box_manager.idx].label)
-                self.widget.set_coords_label(box.x_1, box.y_1, box.x_2, box.y_2)
+        print(0)
+        if len(self.box_manager.coord_list) != 0:
+            print(1)
+            for box in self.box_manager.coord_list:
+                if box.active:
+                    self.change_active_box_coordinates(box)
+                    if self.box_manager.coord_list[self.box_manager.idx].label is not None:
+                        self.widget.set_old_label_label(self.box_manager.coord_list[self.box_manager.idx].label)
+                    self.widget.set_coords_label(box.x_1, box.y_1, box.x_2, box.y_2)
+                    self.widget.set_old_label_label(box.label)
+                    self.widget.set_new_label_label(box.label)
+        else:
+            self.widget.set_electric_label(annotation=False)
 
     def add_box(self):
         for box in self.box_manager.coord_list:
@@ -384,7 +381,7 @@ class ImageManager(object):
 
     def change_box_electric(self):
         self.box_manager.coord_list[self.box_manager.idx].electric = not self.box_manager.coord_list[self.box_manager.idx].electric
-        self.widget.set_electric_label(color="yellow")
+        self.widget.set_electric_label(color="yellow", annotation=True)
 
     def delete_box(self):
         self.box_manager.delete_box() #delete box from list

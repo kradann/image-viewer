@@ -37,4 +37,4 @@ class BoxManager:
 		return "Dobozok:".join(box_writer)
 
 	def set_electric(self):
-		self.widget.set_electric_label()
+		self.widget.set_electric_label(annotation=True)

@@ -29,7 +29,7 @@ class AnnotationTool(QtWidgets.QWidget):
         self.us = us
         self.use_batch_idx = use_batch_idx
         self.fast_check = fast_check
-        num_of_columns = 3
+        num_of_columns = 5
 
         self.box_manager = BoxManager(self)
 
@@ -192,9 +192,14 @@ class AnnotationTool(QtWidgets.QWidget):
         self.index_label.setText("idx: {}/{}".format(idx, len(self.file_manager.file_list)))
         self.index_label.setStyleSheet("color: {}".format(color))
 
-    def set_electric_label(self, color="white"):
-        self.is_electric_label.setText("Electric" if self.box_manager.coord_list[self.box_manager.idx].electric else "Not electric")
-        self.is_electric_label.setStyleSheet("color: {}".format(color))
+    def set_electric_label(self, annotation : bool, color="white"):
+        print(annotation)
+        if annotation:
+            self.is_electric_label.setText("Electric" if self.box_manager.coord_list[self.box_manager.idx].electric else "Not electric")
+            self.is_electric_label.setStyleSheet("color: {}".format(color))
+        else:
+            self.is_electric_label.setText("----------")
+            self.is_electric_label.setStyleSheet("color: {}".format("red"))
     # def get_move_func(self, file_name: str):
     #     def move_func():
     #         if self.base_output_dir is None:
