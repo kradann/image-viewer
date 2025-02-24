@@ -1,5 +1,6 @@
 import logging
 
+from enum import Enum
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QInputDialog
 from PyQt5.QtWidgets import QDesktopWidget
@@ -15,20 +16,71 @@ from PyQt5 import QtWidgets
 import geopandas
 import os
 from glob import glob
-from src.traffic_light import Subject, SubType, MaskType
-from src.traffic_sign import SignTypeEU, SignTypeUS
+
 import pandas as pd
 import json
 import numpy as np
 
 LOGGER = logging.getLogger(__name__)
 
+class MaskType(str, Enum):
+    FORWARD_ARROW = "forward_arrow"
+    LEFT_ARROW = "left_arrow"
+    RIGHT_ARROW = "right_arrow"
+    FORWARD_LEFT_ARROW = "forward_left_arrow"
+    FORWARD_RIGHT_ARROW = "forward_right_arrow"
+    SLIGHT_LEFT_ARROW = "slight_left_arrow"
+    SLIGHT_RIGHT_ARROW = "slight_right_arrow"
+    SLIGHT_LEFT_HARD_LEFT_ARROW = "slight_left_hard_left_arrow"
+    SLIGHT_RIGHT_HARD_RIGHT_ARROW = "slight_right_hard_right_arrow"
+    LEFT_RIGHT_ARROW = "left_right_arrow"
+    FORWARD_LEFT_RIGHT_ARROW = "forward_left_right_arrow"
+    U_TURN = "u_turn"
+    PEDESTRIAN = "pedestrian"
+    HAND = "hand"
+    FULL = "full"
+    BUS = "bus"
+    TRAM_LIGHTS_3_DOTS = "tram_lights_3_dots"
+    TRAM_LIGHTS_2_DOTS = "tram_lights_2_dots"
+    TRAM_LIGHTS_1_DOTS = "tram_lights_1_dots"
+    UNKNOWN = "unknown"
+
+class ColorType(str, Enum):
+    RED = "RED"
+    RED_YELLOW = "RED+YELLOW"
+    GREEN = "GREEN"
+    YELLOW = "YELLOW"
+    UNKNOWN = "UNKNOWN"
+
+class SubType(str, Enum):
+    V_2LINE = "v-2line"
+    V_3LINE = "v-3line"
+    V_4LINE = "v-4line"
+    V_5LINE = "v-5line"
+    H_2LINE = "h-2line"
+    H_3LINE = "h-3line"
+    H_5LINE = "h-5line"
+
+    DOGHOUSE = "doghouse"
+    SINGLE = "single"
+    PEDESTRIAN_HYBRID_BEACON = "pedestrian_hybrid_beacon"
+    RAILWAY = "railway"
+    UNKNOWN = "unknown"
+
+class Subject(str, Enum):
+    VEHICLES = "vehicles"
+    PEDESTRIAN = "pedestrian"
+    BUS = "bus"
+    BICYCLE = "bicycle"
+    TRAIN = "train"
+    TRAM = "tram"
+    UNKNOWN = "unknown"
+
+
 name_attribute_type_dict = {
     "subject": Subject,
     "subtype": SubType,
-    "masktype": MaskType,
-    "signtype_eu": SignTypeEU,
-    "signtype_us": SignTypeUS
+    "masktype": MaskType
 }
 
 class ObjectAnnotator(QWidget):
