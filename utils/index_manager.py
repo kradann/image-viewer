@@ -86,6 +86,8 @@ class IndexManager(object):
                 set_old_label(label)
                 set_new_label(label, "based on file name", "yellow")
             else:
+                set_old_label("--------")
+                set_new_label("--------")
                 self.image_manager.widget.set_info_label("no annotation", "red")
 
         print("loaded annotation dict:")
@@ -152,7 +154,6 @@ class IndexManager(object):
                         annotation.x_2 is not None,
                         annotation.y_2 is not None,
                         self.image_manager.y_back_scale is not None]):
-                    print("------------------------------------------")
                     x1, y1, x2, y2 = self.image_manager.get_back_scaled_coords(annotation.x_1, annotation.y_1, annotation.x_2, annotation.y_2)
                     annotation_dict = {
                         "label": annotation.label,
@@ -163,10 +164,8 @@ class IndexManager(object):
                         "electric": annotation.electric
                     }
                     # Set widget labels and update the UI
-                    self.image_manager.widget.set_coords_label(int(x1), int(y1), int(x2), int(y2), "green")
-                    self.image_manager.widget.set_new_label_label(self.new_label, "green")
+
                     self.image_manager.widget.set_info_label("Saved", "green")
-                    print("asdasdsad")
                     self.image_manager.widget.set_electric_label(annotation=True, color="green")
                     self.image_manager.set_last_coords()
                 else:
@@ -188,6 +187,7 @@ class IndexManager(object):
                 }
                 self.image_manager.widget.set_coords_label(-1, -1, -1, -1, "green")
                 self.image_manager.widget.set_new_label_label(self.new_label, "green")
+                self.image_manager.widget.set_old_label_label(self.new_label, "green")
                 self.image_manager.widget.set_info_label("Saved", "green")
                 self.image_manager.widget.set_electric_label(annotation=True, color="green")
                 self.image_manager.set_last_coords_to_none()
@@ -196,9 +196,15 @@ class IndexManager(object):
             # Append the annotation to the list for the current image
             annotation_list.append(annotation_dict)
 
+        self.image_manager.widget.set_coords_label(int(self.box_manager.coord_list[self.box_manager.idx].x_1), int(self.box_manager.coord_list[self.box_manager.idx].y_1), int(self.box_manager.coord_list[self.box_manager.idx].x_2), int(self.box_manager.coord_list[self.box_manager.idx].y_2), "green")
+        self.image_manager.widget.set_new_label_label(self.new_label, "green")
+        self.image_manager.widget.set_old_label_label(self.new_label, "green")
+
         # Now add the annotations to the manager for the current image
-        if self.current_image_name in self.annotation_manager.annotation_list:
-            self.annotation_manager.annotation_list = dict()
+        """if self.current_image_name in self.annotation_manager.annotation_list:
+            self.annotation_manager.annotation_list[] = dict()
+        """
+
         for annotation_dict in annotation_list:
             self.annotation_manager.add_annotation(annotation_dict, self.current_image_name)
 

@@ -12,7 +12,7 @@ from PyQt5.QtCore import Qt
 
 class AnnotationManager(object):
     def __init__(self):
-        self.annotation_filename = "test.json"
+        self.annotation_filename = "annotation.json"
         self.annotation_list = list()
 
 

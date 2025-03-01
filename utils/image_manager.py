@@ -217,10 +217,6 @@ class ImageManager(object):
             self.widget.update()
 
     def check_release_out_of_bounds(self):
-        print("end_x: {}".format(self.end_x))
-        print("end_y: {}".format(self.end_y))
-        print("pixmap width: {}".format(self.pixmap.width()))
-        print("pixmap height: {}".format(self.pixmap.height()))
         return 0 <= self.end_x <= self.pixmap.width() and 0 <= self.end_y <= self.pixmap.height()
 
     def draw_cross(self, x, y):
@@ -309,8 +305,7 @@ class ImageManager(object):
         self.last_right_y = None
 
     def get_back_scaled_coords(self, x1, y1, x2, y2):
-        print(self.x_back_scale, self.y_back_scale)
-        x1 = x1* self.x_back_scale
+        x1 = x1 * self.x_back_scale
         y1 = y1 * self.y_back_scale
         x2 = x2 * self.x_back_scale
         y2 = y2 * self.y_back_scale
