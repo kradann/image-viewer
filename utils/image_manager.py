@@ -382,8 +382,9 @@ class ImageManager(object):
         self.bottom_right_y = self.end_y
 
     def change_box_electric(self):
-        self.box_manager.coord_list[self.box_manager.idx].electric = not self.box_manager.coord_list[self.box_manager.idx].electric
-        self.widget.set_electric_label(color="yellow", annotation=True)
+        if len(self.box_manager.coord_list) > 0:
+            self.box_manager.coord_list[self.box_manager.idx].electric = not self.box_manager.coord_list[self.box_manager.idx].electric
+            self.widget.set_electric_label(color="yellow", annotation=True)
 
     def delete_box(self):
         self.box_manager.delete_box() #delete box from list
