@@ -12,7 +12,7 @@ from PyQt5.QtCore import Qt
 
 class AnnotationManager(object):
     def __init__(self):
-        self.annotation_filename = "test.json"
+        self.annotation_filename = "annotation.json"
         self.annotation_dict = dict()
 
 
@@ -37,8 +37,8 @@ class AnnotationManager(object):
         return []
 
     def add_annotation(self, annotation_dict_to_add, image_name):
-        print("saved annotation:")
-        pprint(annotation_dict_to_add)
+        #print("saved annotation:")
+        #pprint(annotation_dict_to_add)
         modified = False
         """for annotation_idx in range(len(self.annotation_list)):
             if self.annotation_list[annotation_idx]["image_name"] == annotation_dict_to_add["image_name"]:
@@ -47,12 +47,14 @@ class AnnotationManager(object):
 
         if not modified:
             self.annotation_list.append(annotation_dict_to_add)"""
+
+        """
         if image_name in self.annotation_dict:
             # If it does, append the new annotation to the list
             self.annotation_dict[image_name].append(annotation_dict_to_add)
         else:
-            # If no annotations exist for this image, create a new list with the first annotation
-            self.annotation_dict[image_name] = [annotation_dict_to_add]
+            # If no annotations exist for this image, create a new list with the first annotation"""
+        self.annotation_dict[image_name] = annotation_dict_to_add
 
     def save_annotation_list(self, output_dir):
         annotation_path = os.path.join(output_dir, self.annotation_filename)

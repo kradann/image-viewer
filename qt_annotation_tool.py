@@ -193,7 +193,7 @@ class AnnotationTool(QtWidgets.QWidget):
         self.index_label.setStyleSheet("color: {}".format(color))
 
     def set_electric_label(self, annotation : bool, color="white"):
-        print(annotation)
+        #print(annotation)
         if annotation:
             self.is_electric_label.setText("Electric" if self.box_manager.coord_list[self.box_manager.idx].electric else "Not electric")
             self.is_electric_label.setStyleSheet("color: {}".format(color))

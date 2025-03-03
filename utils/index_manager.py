@@ -88,10 +88,10 @@ class IndexManager(object):
             else:
                 self.image_manager.widget.set_info_label("no annotation", "red")
 
-        print("loaded annotation dict:")
+        #print("loaded annotation dict:")
         """for box in self.box_manager.coord_list:
             print(box)"""
-        print(self.box_manager.coord_list)
+        #print(self.box_manager.coord_list)
 
 
 
@@ -143,7 +143,7 @@ class IndexManager(object):
         self.batch_label_dict[self.current_batch_index] = self.new_label
 
         for annotation in self.box_manager.coord_list:
-            print(len(self.box_manager.coord_list))
+            #print(len(self.box_manager.coord_list))
             if not annotation.label == "not_a_sign":
                 if all([self.current_image_name is not None,
                         annotation.label is not None,
@@ -152,7 +152,7 @@ class IndexManager(object):
                         annotation.x_2 is not None,
                         annotation.y_2 is not None,
                         self.image_manager.y_back_scale is not None]):
-                    print("------------------------------------------")
+                    #print("------------------------------------------")
                     x1, y1, x2, y2 = self.image_manager.get_back_scaled_coords(annotation.x_1, annotation.y_1, annotation.x_2, annotation.y_2)
                     annotation_dict = {
                         "label": annotation.label,
@@ -166,7 +166,7 @@ class IndexManager(object):
                     self.image_manager.widget.set_coords_label(int(x1), int(y1), int(x2), int(y2), "green")
                     self.image_manager.widget.set_new_label_label(self.new_label, "green")
                     self.image_manager.widget.set_info_label("Saved", "green")
-                    print("asdasdsad")
+                    #print("asdasdsad")
                     self.image_manager.widget.set_electric_label(annotation=True, color="green")
                     self.image_manager.set_last_coords()
                 else:
@@ -191,15 +191,15 @@ class IndexManager(object):
                 self.image_manager.widget.set_info_label("Saved", "green")
                 self.image_manager.widget.set_electric_label(annotation=True, color="green")
                 self.image_manager.set_last_coords_to_none()
-            print("-----!!!!-----")
-            print(annotation_dict)
+            #print("-----!!!!-----")
+            #print(annotation_dict)
             # Append the annotation to the list for the current image
             annotation_list.append(annotation_dict)
 
         # Now add the annotations to the manager for the current image
 
-        for annotation_dict in annotation_list:
-            self.annotation_manager.add_annotation(annotation_dict, self.current_image_name)
+
+        self.annotation_manager.add_annotation(annotation_list, self.current_image_name)
 
         # Save the annotations list to the specified output directory
         self.annotation_manager.save_annotation_list(self.file_manager.output_dir)

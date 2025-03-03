@@ -64,9 +64,9 @@ class ImageManager(object):
             self.pixmap = self.pixmap.scaled(self.image.size(), QtCore.Qt.KeepAspectRatio)
             self.only_image_pixmap = self.only_image_pixmap.scaled(self.image.size(), QtCore.Qt.KeepAspectRatio)
             current_width, current_height = self.pixmap.width(), self.pixmap.height()
-            print("adatok:",ori_width, current_width)
+            #print("adatok:",ori_width, current_width)
             self.x_back_scale = ori_width / current_width
-            print(self.x_back_scale)
+            #print(self.x_back_scale)
             self.y_back_scale = ori_height / current_height
             self.image.setPixmap(self.pixmap)
             self.valid = True
@@ -332,9 +332,9 @@ class ImageManager(object):
 
     def box_changed_update(self):
         self.draw_rect_from_box_list(box_list=self.box_manager.coord_list, copy=False)
-        print(0)
+        #print(0)
         if len(self.box_manager.coord_list) != 0:
-            print(1)
+            #print(1)
             for box in self.box_manager.coord_list:
                 if box.active:
                     self.change_active_box_coordinates(box)
