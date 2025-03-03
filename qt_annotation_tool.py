@@ -296,7 +296,7 @@ if __name__ == '__main__':
     # width = imageLoader.frameGeometry().width()
     # height = imageLoader.frameGeometry().height()
 
-    annotation_tool.setFixedSize(600, 800)
+    annotation_tool.setFixedSize(800, 800)
     annotation_tool.show()
     sys.exit(app.exec_())
 
