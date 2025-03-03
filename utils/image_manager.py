@@ -325,12 +325,14 @@ class ImageManager(object):
         self.bottom_right_y = None
 
     def previous_box(self):
-        self.box_manager.previous()
-        self.box_changed_update()
+        if len(self.box_manager.coord_list)>0:
+            self.box_manager.previous()
+            self.box_changed_update()
 
     def next_box(self):
-        self.box_manager.next()
-        self.box_changed_update()
+        if len(self.box_manager.coord_list) > 0:
+            self.box_manager.next()
+            self.box_changed_update()
 
 
     def box_changed_update(self):

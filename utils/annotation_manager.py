@@ -13,22 +13,22 @@ from PyQt5.QtCore import Qt
 class AnnotationManager(object):
     def __init__(self):
         self.annotation_filename = "test.json"
-        self.annotation_list = list()
+        self.annotation_dict = dict()
 
 
     def search_for_annotation(self, output_dir):
         annotation_path = os.path.join(output_dir, self.annotation_filename)
         if os.path.isfile(annotation_path):
             with open(annotation_path, "r") as stream:
-                self.annotation_list = json.load(stream)
+                self.annotation_dict = json.load(stream)
             print("already existing annotation.json is loaded with path {}".format(annotation_path))
         else:
             print("new annotation.json is created with path {}".format(annotation_path))
 
     def get_annotation_by_image_name(self, image_name):
-        if image_name in self.annotation_list:
+        if image_name in self.annotation_dict:
             return_list = []
-            for annotation in self.annotation_list[image_name]:
+            for annotation in self.annotation_dict[image_name]:
                 #pprint(annotation)
                 box = Box(annotation["x1"], annotation["y1"], annotation["x2"], annotation["y2"],annotation["electric"], annotation["label"], False)
                 #pprint(box)
@@ -47,17 +47,17 @@ class AnnotationManager(object):
 
         if not modified:
             self.annotation_list.append(annotation_dict_to_add)"""
-        if image_name in self.annotation_list:
+        if image_name in self.annotation_dict:
             # If it does, append the new annotation to the list
-            self.annotation_list[image_name].append(annotation_dict_to_add)
+            self.annotation_dict[image_name].append(annotation_dict_to_add)
         else:
             # If no annotations exist for this image, create a new list with the first annotation
-            self.annotation_list[image_name] = [annotation_dict_to_add]
+            self.annotation_dict[image_name] = [annotation_dict_to_add]
 
     def save_annotation_list(self, output_dir):
         annotation_path = os.path.join(output_dir, self.annotation_filename)
         with open(annotation_path, "w") as f:
-            json.dump(self.annotation_list, f, indent=4)
+            json.dump(self.annotation_dict, f, indent=4)
 
 
 

@@ -129,7 +129,7 @@ class FileManager(object):
             # TODO: widget.info_label.setText("No last_index.json file found.")
 
     def checking(self):
-        if self.annotation_manager.annotation_list is not None:
+        if self.annotation_manager.annotation_dict is not None:
             #print(self.annotation_manager.annotation_list)
             #first = True
             set_index = 0
