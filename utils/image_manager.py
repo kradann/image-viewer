@@ -10,6 +10,7 @@ from utils.utils import valid_coordinates, out_of_bounds
 from utils.box_manager import BoxManager
 from utils.box import Box
 
+
 class ImageManager(object):
     def __init__(self, widget, file_manager: FileManager, box_manager: BoxManager):
         self.widget = widget
@@ -46,12 +47,11 @@ class ImageManager(object):
         self.valid = True
         self.only_image_pixmap = QtGui.QPixmap(420, 420)
 
-
     def load_image(self, file_path):
         self.pixmap = QtGui.QPixmap(file_path)
         self.only_image_pixmap = QtGui.QPixmap(file_path)
         ori_width, ori_height = self.pixmap.width(), self.pixmap.height()
-        #print("ori_width, ori_height", ori_width, ori_height)
+        # print("ori_width, ori_height", ori_width, ori_height)
         if self.pixmap.isNull():
             # the file is not a valid image, remove it from the list
             self.pixmap = QtGui.QPixmap(420, 420)
@@ -64,14 +64,17 @@ class ImageManager(object):
             self.pixmap = self.pixmap.scaled(self.image.size(), QtCore.Qt.KeepAspectRatio)
             self.only_image_pixmap = self.only_image_pixmap.scaled(self.image.size(), QtCore.Qt.KeepAspectRatio)
             current_width, current_height = self.pixmap.width(), self.pixmap.height()
-            #print("adatok:",ori_width, current_width)
+            # print("adatok:",ori_width, current_width)
             self.x_back_scale = ori_width / current_width
-            #print(self.x_back_scale)
+            # print(self.x_back_scale)
             self.y_back_scale = ori_height / current_height
             self.image.setPixmap(self.pixmap)
             self.valid = True
-            if self.box_manager.coord_list:
-                self.widget.set_coords_label(self.box_manager.coord_list[0].x_1, self.box_manager.coord_list[0].y_1, self.box_manager.coord_list[0].x_1, self.box_manager.coord_list[0].y_2)
+            if self.box_manager.coord_list[0].x_1 is None:
+                self.widget.set_coords_label(-1, -1, -1, -1)
+            elif self.box_manager.coord_list:
+                self.widget.set_coords_label(self.box_manager.coord_list[0].x_1, self.box_manager.coord_list[0].y_1,
+                                             self.box_manager.coord_list[0].x_2, self.box_manager.coord_list[0].y_2)
             else:
                 self.widget.set_coords_label(0, 0, 0, 0)
 
@@ -178,7 +181,8 @@ class ImageManager(object):
                 self.end_dx = self.end_x - event.x()
                 self.end_dy = self.end_y - event.y()
 
-            if valid_coordinates(self.start_x, self.start_y, self.end_x, self.end_y) and self.check_release_out_of_bounds():
+            if valid_coordinates(self.start_x, self.start_y, self.end_x,
+                                 self.end_y) and self.check_release_out_of_bounds():
                 self.widget.update()
                 self.update_image()
                 self.top_left_x = min(self.start_x, self.end_x)
@@ -191,9 +195,9 @@ class ImageManager(object):
                     self.box_manager.coord_list[self.box_manager.idx].x_2 = self.bottom_right_x
                     self.box_manager.coord_list[self.box_manager.idx].y_1 = self.top_left_y
                     self.box_manager.coord_list[self.box_manager.idx].y_2 = self.bottom_right_y
-                    #refresh the pixmap
+                    # refresh the pixmap
                     self.pixmap = self.only_image_pixmap.copy()
-                    #self.image.setPixmap(self.pixmap)
+                    # self.image.setPixmap(self.pixmap)
                     self.draw_rect_from_box_list(box_list=self.box_manager.coord_list, copy=False)
 
                 if out_of_bounds(self):
@@ -268,14 +272,11 @@ class ImageManager(object):
                     box.x_2 = math.floor(box.x_2 / self.x_back_scale)
                     box.y_2 = math.floor(box.y_2 / self.y_back_scale)
 
-
-
-
-    def draw_rect_from_box_list(self, box_list=None , set_to_current=False, copy=True, text=None):
+    def draw_rect_from_box_list(self, box_list=None, set_to_current=False, copy=True, text=None):
         for box in box_list:
             x1, y1, x2, y2 = box.x_1, box.y_1, box.x_2, box.y_2
             color = box.color
-            #print(color)
+            # print(color)
             if x1 is not None:
                 if copy:
                     temp_pixmap = self.pixmap.copy()
@@ -290,7 +291,6 @@ class ImageManager(object):
                     painter.drawText(x1, y2 + 11, text)
                 painter.end()
                 self.image.setPixmap(temp_pixmap)
-
 
     def set_last_coords(self):
         self.last_left_x = self.top_left_x
@@ -320,7 +320,7 @@ class ImageManager(object):
         self.bottom_right_y = None
 
     def previous_box(self):
-        if len(self.box_manager.coord_list)>0:
+        if len(self.box_manager.coord_list) > 0:
             self.box_manager.previous()
             self.box_changed_update()
 
@@ -329,18 +329,22 @@ class ImageManager(object):
             self.box_manager.next()
             self.box_changed_update()
 
-
     def box_changed_update(self):
         self.draw_rect_from_box_list(box_list=self.box_manager.coord_list, copy=False)
-        #print(0)
+        # print(0)
         if len(self.box_manager.coord_list) != 0:
-            #print(1)
+            # print(1)
             for box in self.box_manager.coord_list:
                 if box.active:
                     self.change_active_box_coordinates(box)
                     if self.box_manager.coord_list[self.box_manager.idx].label is not None:
                         self.widget.set_old_label_label(self.box_manager.coord_list[self.box_manager.idx].label)
-                    self.widget.set_coords_label(box.x_1, box.y_1, box.x_2, box.y_2)
+
+                    if box.x_1 is None:
+                        self.widget.set_coords_label(-1, -1, -1, -1)
+                    else:
+                        self.widget.set_coords_label(box.x_1, box.y_1, box.x_2, box.y_2)
+
                     self.widget.set_old_label_label(box.label)
                     self.widget.set_new_label_label(box.label)
         else:
@@ -359,10 +363,11 @@ class ImageManager(object):
         self.top_left_y = self.start_y
         self.end_x = 200
         self.bottom_right_x = self.end_x
-        self.end_y= 200
+        self.end_y = 200
         self.bottom_right_y = self.end_y
-        self.box_manager.coord_list.append(Box(self.start_x,self.start_y,self.end_x,self.end_y, False, "unknown_sign" , True))
-        self.box_manager.coord_list[len(self.box_manager.coord_list)-1].color = Qt.cyan
+        self.box_manager.coord_list.append(
+            Box(self.start_x, self.start_y, self.end_x, self.end_y, False, "unknown_sign", True))
+        self.box_manager.coord_list[len(self.box_manager.coord_list) - 1].color = Qt.cyan
         self.draw_rect_from_box_list(box_list=self.box_manager.coord_list, copy=False)
 
     def change_active_box_coordinates(self, box):
@@ -378,14 +383,13 @@ class ImageManager(object):
 
     def change_box_electric(self):
         if len(self.box_manager.coord_list) > 0:
-            self.box_manager.coord_list[self.box_manager.idx].electric = not self.box_manager.coord_list[self.box_manager.idx].electric
+            self.box_manager.coord_list[self.box_manager.idx].electric = not self.box_manager.coord_list[
+                self.box_manager.idx].electric
             self.widget.set_electric_label(color="yellow", annotation=True)
 
     def delete_box(self):
-        self.box_manager.delete_box() #delete box from list
-        #refresh the pixmap
+        self.box_manager.delete_box()  # delete box from list
+        # refresh the pixmap
         self.pixmap = self.only_image_pixmap.copy()
         self.image.setPixmap(self.pixmap)
         self.draw_rect_from_box_list(box_list=self.box_manager.coord_list, copy=False)
-
-
