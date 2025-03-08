@@ -143,8 +143,8 @@ class IndexManager(object):
         self.batch_label_dict[self.current_batch_index] = self.new_label
 
         for annotation in self.box_manager.coord_list:
-            #print(len(self.box_manager.coord_list))
-            if not annotation.label == "not_a_sign":
+                print(len(self.box_manager.coord_list))
+
                 if all([self.current_image_name is not None,
                         annotation.label is not None,
                         annotation.x_1 is not None,
@@ -169,6 +169,7 @@ class IndexManager(object):
                     #print("asdasdsad")
                     self.image_manager.widget.set_electric_label(annotation=True, color="green")
                     self.image_manager.set_last_coords()
+                    annotation_list.append(annotation_dict)
                 else:
                     print("annotation can't be saved {}".format((self.current_image_name,
                                                                  annotation.label,
@@ -177,24 +178,11 @@ class IndexManager(object):
                                                                  annotation.x_2,
                                                                  annotation.y_2,
                                                                  self.image_manager.y_back_scale)))
-            else:
-                annotation_dict = {
-                    "label": "not_a_sign",
-                    "x1": None,
-                    "y1": None,
-                    "x2": None,
-                    "y2": None,
-                    "electric": False
-                }
-                self.image_manager.widget.set_coords_label(-1, -1, -1, -1, "green")
-                self.image_manager.widget.set_new_label_label(self.new_label, "green")
-                self.image_manager.widget.set_info_label("Saved", "green")
-                self.image_manager.widget.set_electric_label(annotation=True, color="green")
-                self.image_manager.set_last_coords_to_none()
+
             #print("-----!!!!-----")
             #print(annotation_dict)
             # Append the annotation to the list for the current image
-            annotation_list.append(annotation_dict)
+
 
         # Now add the annotations to the manager for the current image
 
