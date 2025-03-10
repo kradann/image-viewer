@@ -147,10 +147,10 @@ class AnnotationTool(QtWidgets.QWidget):
         self.previous_label = label
 
     def set_previous_label_to_new(self):
-        if self.previous_label == "not_a_sign":
+        """if self.previous_label == "not_a_sign":
             self.index_manager.set_not_a_sign()
-        else:
-            self.index_manager.set_new_label(self.previous_label)
+        else:"""
+        self.index_manager.set_new_label(self.previous_label)
         # Set the button text to the selected label
         self.set_new_label_label(self.previous_label, "yellow")
 
@@ -259,10 +259,10 @@ class AnnotationTool(QtWidgets.QWidget):
         selected_action = self.sender()
         self.button_text = selected_action.text()
 
-        if self.button_text == "not_a_sign":
+        """if self.button_text == "not_a_sign":
             self.index_manager.set_not_a_sign()
-        else:
-            self.index_manager.set_new_label(self.button_text)
+        else:"""
+        self.index_manager.set_new_label(self.button_text)
         # Set the button text to the selected label
         self.button.setText(self.button_text)
         self.set_new_label_label(self.button_text, "yellow")
