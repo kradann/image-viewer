@@ -8,10 +8,11 @@ from PyQt5.QtWidgets import QInputDialog
 
 from utils.annotation_manager import AnnotationManager
 from utils.image_manager import ImageManager
-from utils.io_utils import directory_check , load_image_and_set_name
+from utils.io_utils import directory_check, load_image_and_set_name
 from utils.file_manager import FileManager
 from utils.box_manager import BoxManager
 from utils.box import Box
+
 
 class IndexManager(object):
     def __init__(self,
@@ -31,8 +32,6 @@ class IndexManager(object):
         self.new_label = None
         self.not_a_sign = False
         self.batch_label_dict = dict()
-
-
 
     def next_file(self):
         # self.image_manager.clear_coords()
@@ -69,16 +68,15 @@ class IndexManager(object):
 
         if self.box_manager.coord_list:
             self.image_manager.get_coords_from_annotation()
-            self.box_manager.idx= 0
+            self.box_manager.idx = 0
             self.box_manager_setup()
 
             for annotation in self.box_manager.coord_list:
                 set_old_label(annotation.label)
                 set_new_label(annotation.label, "based on annotation", "yellow")
                 self.image_manager.draw_rect_from_box_list(self.box_manager.coord_list,
-                                                           set_to_current=not self.image_manager.widget.use_batch_idx or self.image_manager.widget.fast_check,
                                                            copy=False,
-                                                           text=self.old_label if self.image_manager.widget.fast_check else None)
+                                                           write_label=self.image_manager.widget.fast_check)
             # self.image_manager.widget.button.setText(self.old_label)
         else:
             if self.image_manager.widget.use_batch_idx:
@@ -88,13 +86,12 @@ class IndexManager(object):
             else:
                 self.image_manager.widget.set_info_label("no annotation", "red")
 
-        #print("loaded annotation dict:")
+        # print("loaded annotation dict:")
         """for box in self.box_manager.coord_list:
             print(box)"""
-        #print(self.box_manager.coord_list)
+        # print(self.box_manager.coord_list)
 
-
-
+        # TODO
         if self.image_manager.widget.use_batch_idx:
             self.current_batch_index = self.batch_idx_by_filename()
 
@@ -104,7 +101,7 @@ class IndexManager(object):
                     self.not_a_sign = True
                 if draw_previous:
                     self.image_manager.draw_rect_from_annotation(None,
-                                                                 set_to_current= not self.image_manager.widget.fast_check,
+                                                                 set_to_current=not self.image_manager.widget.fast_check,
                                                                  color=Qt.yellow)
         if reset:
             self.file_index = 0
@@ -137,61 +134,59 @@ class IndexManager(object):
     def save_annotation(self):
         if self.box_manager.coord_list is None:
             annotation_dict = self.annotation_manager.get_annotation_by_image_name(self.current_image_name)
-            self.image_manager.draw_rect_from_box_list(annotation_dict, set_to_current=True)
+            self.image_manager.draw_rect_from_box_list(annotation_dict)
         annotation_list = []  # Initialize an empty list for the current image's annotations
 
         self.batch_label_dict[self.current_batch_index] = self.new_label
 
         for annotation in self.box_manager.coord_list:
-                print(len(self.box_manager.coord_list))
+            print(len(self.box_manager.coord_list))
 
-                if all([self.current_image_name is not None,
-                        annotation.label is not None,
-                        annotation.x_1 is not None,
-                        annotation.y_1 is not None,
-                        annotation.x_2 is not None,
-                        annotation.y_2 is not None,
-                        self.image_manager.y_back_scale is not None]):
-                    #print("------------------------------------------")
-                    x1, y1, x2, y2 = self.image_manager.get_back_scaled_coords(annotation.x_1, annotation.y_1, annotation.x_2, annotation.y_2)
-                    annotation_dict = {
-                        "label": annotation.label,
-                        "x1": x1,
-                        "y1": y1,
-                        "x2": x2,
-                        "y2": y2,
-                        "electric": annotation.electric
-                    }
-                    # Set widget labels and update the UI
-                    self.image_manager.widget.set_coords_label(int(x1), int(y1), int(x2), int(y2), "green")
-                    self.image_manager.widget.set_new_label_label(self.new_label, "green")
-                    self.image_manager.widget.set_info_label("Saved", "green")
-                    #print("asdasdsad")
-                    self.image_manager.widget.set_electric_label(annotation=True, color="green")
-                    self.image_manager.set_last_coords()
-                    annotation_list.append(annotation_dict)
-                else:
-                    print("annotation can't be saved {}".format((self.current_image_name,
-                                                                 annotation.label,
-                                                                 annotation.x_1,
-                                                                 annotation.y_1,
-                                                                 annotation.x_2,
-                                                                 annotation.y_2,
-                                                                 self.image_manager.y_back_scale)))
+            if all([self.current_image_name is not None,
+                    annotation.label is not None,
+                    annotation.x_1 is not None,
+                    annotation.y_1 is not None,
+                    annotation.x_2 is not None,
+                    annotation.y_2 is not None,
+                    self.image_manager.y_back_scale is not None]):
+                # print("------------------------------------------")
+                x1, y1, x2, y2 = self.image_manager.get_back_scaled_coords(annotation.x_1, annotation.y_1,
+                                                                           annotation.x_2, annotation.y_2)
+                annotation_dict = {
+                    "label": annotation.label,
+                    "x1": x1,
+                    "y1": y1,
+                    "x2": x2,
+                    "y2": y2,
+                    "electric": annotation.electric
+                }
+                # Set widget labels and update the UI
+                self.image_manager.widget.set_coords_label(int(x1), int(y1), int(x2), int(y2), "green")
+                self.image_manager.widget.set_new_label_label(self.new_label, "green")
+                self.image_manager.widget.set_info_label("Saved", "green")
+                # print("asdasdsad")
+                self.image_manager.widget.set_electric_label(annotation=True, color="green")
+                self.image_manager.set_last_coords()
+                annotation_list.append(annotation_dict)
+            else:
+                print("annotation can't be saved {}".format((self.current_image_name,
+                                                             annotation.label,
+                                                             annotation.x_1,
+                                                             annotation.y_1,
+                                                             annotation.x_2,
+                                                             annotation.y_2,
+                                                             self.image_manager.y_back_scale)))
 
-            #print("-----!!!!-----")
-            #print(annotation_dict)
-            # Append the annotation to the list for the current image
-
+        # print("-----!!!!-----")
+        # print(annotation_dict)
+        # Append the annotation to the list for the current image
 
         # Now add the annotations to the manager for the current image
-
 
         self.annotation_manager.add_annotation(annotation_list, self.current_image_name)
 
         # Save the annotations list to the specified output directory
         self.annotation_manager.save_annotation_list(self.file_manager.output_dir)
-
 
     def save_last_idx(self):
         if len(self.file_manager.file_list) > 0:
@@ -207,7 +202,7 @@ class IndexManager(object):
     def jump_to(self):
         directory_check(self.file_manager)
         # check if input number correct
-        num, ok = QInputDialog.getInt( None,"Jump to index", "Enter image number:")
+        num, ok = QInputDialog.getInt(None, "Jump to index", "Enter image number:")
         if ok:
             # Create the image file path based on the entered number
             if 0 <= num < len(self.file_manager.file_list):

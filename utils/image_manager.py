@@ -70,11 +70,12 @@ class ImageManager(object):
             self.y_back_scale = ori_height / current_height
             self.image.setPixmap(self.pixmap)
             self.valid = True
-            if self.box_manager.coord_list[0].x_1 is None:
-                self.widget.set_coords_label(-1, -1, -1, -1)
-            elif self.box_manager.coord_list:
-                self.widget.set_coords_label(self.box_manager.coord_list[0].x_1, self.box_manager.coord_list[0].y_1,
-                                             self.box_manager.coord_list[0].x_2, self.box_manager.coord_list[0].y_2)
+            if len(self.box_manager.coord_list) > 0:
+                if self.box_manager.coord_list[0].x_1 is None:
+                    self.widget.set_coords_label(-1, -1, -1, -1)
+                else:
+                    self.widget.set_coords_label(self.box_manager.coord_list[0].x_1, self.box_manager.coord_list[0].y_1,
+                                                 self.box_manager.coord_list[0].x_2, self.box_manager.coord_list[0].y_2)
             else:
                 self.widget.set_coords_label(0, 0, 0, 0)
 
@@ -272,7 +273,7 @@ class ImageManager(object):
                     box.x_2 = math.floor(box.x_2 / self.x_back_scale)
                     box.y_2 = math.floor(box.y_2 / self.y_back_scale)
 
-    def draw_rect_from_box_list(self, box_list=None, set_to_current=False, copy=True, text=None):
+    def draw_rect_from_box_list(self, box_list=None, copy=True, write_label=False):
         for box in box_list:
             x1, y1, x2, y2 = box.x_1, box.y_1, box.x_2, box.y_2
             color = box.color
@@ -287,8 +288,11 @@ class ImageManager(object):
                 painter.setBrush(QBrush(Qt.blue, Qt.NoBrush))
 
                 painter.drawRect(QRect(int(x1), int(y1), int(x2 - x1), int(y2 - y1)))
-                if text is not None:
-                    painter.drawText(x1, y2 + 11, text)
+                if write_label and box.label is not None:
+                    label = box.label
+                    if box.electric:
+                        label += " (e)"
+                    painter.drawText(x1, y2 + 11, label)
                 painter.end()
                 self.image.setPixmap(temp_pixmap)
 
@@ -353,17 +357,18 @@ class ImageManager(object):
     def add_box(self):
         for box in self.box_manager.coord_list:
             print(box)
+
         for box in self.box_manager.coord_list:
             box.deactivate()
         self.box_manager.idx = len(self.box_manager.coord_list)
 
-        self.start_x = 100
+        self.start_x = self.last_left_x  # 100
         self.top_left_x = self.start_x
-        self.start_y = 100
+        self.start_y = self.last_left_y  # 100
         self.top_left_y = self.start_y
-        self.end_x = 200
+        self.end_x = self.last_right_x  # 200
         self.bottom_right_x = self.end_x
-        self.end_y = 200
+        self.end_y = self.last_right_y  # 200
         self.bottom_right_y = self.end_y
         self.box_manager.coord_list.append(
             Box(self.start_x, self.start_y, self.end_x, self.end_y, False, "unknown_sign", True))

@@ -6,7 +6,7 @@ from typing import Union
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QLabel, QPushButton, QShortcut, QMenu, QAction
-from PyQt5.QtGui import QKeySequence, QFont
+from PyQt5.QtGui import QKeySequence, QFont, QWheelEvent
 
 from utils.annotation_manager import AnnotationManager
 from utils.image_manager import ImageManager
@@ -92,8 +92,8 @@ class AnnotationTool(QtWidgets.QWidget):
         self.add_button("Next image (->, d)", button_size, (button_row_offset + 1, 2), self.index_manager.next_file,
                         ("Right", "D"))
         # self.add_button("To delete (d)", button_size, (button_row_offset + 2, 0), self.file_manager.set_input_dir, "D")
-        self.add_button("Not a sign (n)", button_size, (button_row_offset + 1, 0), self.index_manager.set_not_a_sign,
-                        "N")
+        self.add_button("Show label (f)", button_size, (button_row_offset + 1, 0), self.switch_fast_check,
+                        "F")
         # self.add_button("Open annotation directory", button_size, (button_row_offset + 2, 2), open_annotation_dir)
         self.add_button("Previous label (w)", button_size, (button_row_offset + 2, 2), self.set_previous_label_to_new,
                         "W")
@@ -114,6 +114,8 @@ class AnnotationTool(QtWidgets.QWidget):
         left_button.setFixedWidth(button_size)
         left_button.clicked.connect(self.image_manager.previous_box)
         box_layout.addWidget(left_button)
+        q_shortcut = QShortcut(QKeySequence("Down"), self)
+        q_shortcut.activated.connect(self.image_manager.previous_box)
 
         right_button = QtWidgets.QPushButton(">")
         right_button.setFont(QFont("Arial", 8))
@@ -121,10 +123,15 @@ class AnnotationTool(QtWidgets.QWidget):
         right_button.setFixedWidth(button_size)
         right_button.clicked.connect(self.image_manager.next_box)
         box_layout.addWidget(right_button)
+        q_shortcut = QShortcut(QKeySequence("Up"), self)
+        q_shortcut.activated.connect(self.image_manager.next_box)
+
+        # q_shortcut = QShortcut(QKeySequence("f"), self)
+        # q_shortcut.activated.connect(self.switch_fast_check)
 
         self.layout.addLayout(box_layout, button_row_offset + 1, 3, 1, 1)
 
-        self.add_button("Add box", button_size, (button_row_offset,3), self.image_manager.add_box)
+        self.add_button("Add box (e)", button_size, (button_row_offset,3), self.image_manager.add_box, "E")
 
         self.add_button("Delete box", button_size, (button_row_offset, 4),self.image_manager.delete_box)
 
@@ -200,6 +207,12 @@ class AnnotationTool(QtWidgets.QWidget):
         else:
             self.is_electric_label.setText("----------")
             self.is_electric_label.setStyleSheet("color: {}".format("red"))
+
+    def wheelEvent(self, event: QWheelEvent):
+        self.image_manager.next_box()
+
+    def switch_fast_check(self):
+        self.fast_check = not self.fast_check
     # def get_move_func(self, file_name: str):
     #     def move_func():
     #         if self.base_output_dir is None:
