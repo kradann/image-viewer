@@ -250,6 +250,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         if self.folder_path:
             self.loader = ImageBatchLoader(self.folder_path, batch_size=self.batch_size)
             self.show_batch()
+            self.setWindowTitle("Image Batch Viewer ({})".format(os.path.basename(self.folder_path)))
 
     def next_folder(self):
         if self.folder_path is None:
@@ -270,6 +271,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         if self.folder_path:
             self.loader = ImageBatchLoader(self.folder_path, batch_size=self.batch_size)
             self.show_batch()
+            self.setWindowTitle("Image Batch Viewer ({})".format(os.path.basename(self.folder_path)))
 
     def load_v_value(self):
         self.scroll_area.verticalScrollBar().setValue(self.vertical_value)
