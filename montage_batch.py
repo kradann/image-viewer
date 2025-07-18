@@ -9,10 +9,10 @@ from typing import Union
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PIL import Image
 from PyQt5.QtCore import QTimer, Qt
-from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtGui import QPixmap, QImage, QPalette, QColor
 from PyQt5.QtWidgets import QLabel, QPushButton, QShortcut, QMenu, QAction
 from PyQt5.QtGui import QKeySequence, QFont, QWheelEvent
-from libdnf.utils import NullLogger
+#from libdnf.utils import NullLogger
 
 global window
 
@@ -65,22 +65,11 @@ class ClickableLabel(QtWidgets.QLabel):
         self.pixmap_backup = None
         self.setMouseTracking(True)
 
-    def mousePressEvent(self, event):
-        if event.button() == QtCore.Qt.LeftButton:
-            if self.cut_mode and self.preview_pos:
-                self.cut_at_position(self.preview_pos)
-            else:
-                self.selected = not self.selected
-                self.add_red_boarder()
-                self.clicked.emit()
-
-        elif event.button() == QtCore.Qt.RightButton:
-            self.show_context_menu(event.pos())
 
     def add_red_boarder(self):
         self.setStyleSheet("border: 3px solid red;" if self.selected else "")
 
-    def mouseMoveEvent(self, event):
+    '''def mouseMoveEvent(self, event):
         if self.cut_mode:
             self.preview_pos = event.pos()
             self.update()
@@ -155,7 +144,7 @@ class ClickableLabel(QtWidgets.QLabel):
             else:  # horizontal
                 painter.drawLine(0, self.preview_pos.y(), self.width(), self.preview_pos.y())
 
-            painter.end()
+            painter.end()'''
 
 
 class ImageBatchLoader(object):
@@ -189,6 +178,154 @@ class ImageBatchLoader(object):
         if self.current_batch_idx > 0:
             self.current_batch_idx -= 1
         print("batch idx: {}".format(self.current_batch_idx))
+
+class ImageGridWidget(QtWidgets.QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setMouseTracking(True)
+        self.rubber_band = QtWidgets.QRubberBand(QtWidgets.QRubberBand.Rectangle, self)
+        self.origin = QtCore.QPoint()
+        self.drag_selecting = False
+        self.parent_app = parent
+        self.clicked_label = None
+        self.cut_mode = None  # 'vertical' or 'horizontal'
+        self.preview_pos = None
+        self.pixmap_backup = None
+
+    def mousePressEvent(self, event):
+        print(1)
+        if event.button() == Qt.LeftButton:
+            print(2)
+            print(self.cut_mode, self.preview_pos)
+            if self.cut_mode and self.preview_pos:
+                self.cut_at_position(self.preview_pos)
+
+            self.origin = event.pos()
+            self.clicked_label = self.label_at(event.pos())  # nézd meg, melyik képre kattintottál
+            self.drag_selecting = True
+            self.rubber_band.setGeometry(QtCore.QRect(self.origin, QtCore.QSize()))
+            self.rubber_band.show()
+        elif event.button() == QtCore.Qt.RightButton:
+            self.show_context_menu(event.pos())
+
+    def mouseMoveEvent(self, event):
+        #print(3)
+        if self.drag_selecting:
+            print(4)
+            rect = QtCore.QRect(self.origin, event.pos()).normalized()
+            self.rubber_band.setGeometry(rect)
+        elif self.cut_mode:
+            self.preview_pos = event.pos()
+            self.update()
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.LeftButton and self.drag_selecting:
+            self.rubber_band.hide()
+            selection_rect = self.rubber_band.geometry()
+            drag_distance = (event.pos() - self.origin).manhattanLength()
+
+            if drag_distance < 5 and self.clicked_label:  # csak kattintottunk, nem húztunk
+                self.clicked_label.selected = not self.clicked_label.selected
+                self.clicked_label.add_red_boarder()
+                if self.clicked_label.selected:
+                    self.parent_app.selected_images.add(self.clicked_label.img_path)
+                else:
+                    self.parent_app.selected_images.discard(self.clicked_label.img_path)
+            else:
+                # rubber band kijelölés
+                for label in self.parent_app.labels:
+                    label_pos = label.mapTo(self, QtCore.QPoint(0, 0))
+                    label_rect = QtCore.QRect(label_pos, label.size())
+                    if selection_rect.intersects(label_rect):
+                        label.selected = True
+                        label.add_red_boarder()
+                        self.parent_app.selected_images.add(label.img_path)
+
+            self.drag_selecting = False
+            self.clicked_label = None
+
+    def label_at(self, pos):
+        for label in self.parent_app.labels:
+            label_pos = label.mapTo(self, QtCore.QPoint(0, 0))
+            label_rect = QtCore.QRect(label_pos, label.size())
+            if label_rect.contains(pos):
+                return label
+        return None
+
+    def show_context_menu(self, pos):
+        menu = QtWidgets.QMenu(self)
+        vertical_cut = menu.addAction("Vertical Cut")
+        horizontal_cut = menu.addAction("Horizontal Cut")
+        action = menu.exec_(self.mapToGlobal(pos))
+
+        if action == vertical_cut:
+            self.cut_mode = 'vertical'
+        elif action == horizontal_cut:
+            self.cut_mode = 'horizontal'
+
+    def cut_at_position(self, pos):
+        print(6)
+        pixmap = self.pixmap()
+        if pixmap is None:
+            print(5)
+            return
+
+        if self.pixmap_backup is None:
+            self.pixmap_backup = pixmap.copy()
+
+        x = pos.x()
+        y = pos.y()
+        width = pixmap.width()
+        height = pixmap.height()
+
+        if self.cut_mode == 'vertical':
+            rect_0 = QtCore.QRect(0, 0, x, height)
+            rect_1 = QtCore.QRect(x, 0, width, height)
+        else:  # horizontal
+            rect_0 = QtCore.QRect(0, 0, width, y)
+            rect_1 = QtCore.QRect(0, y, width, height)
+
+        cropped_0 = pixmap.copy(rect_0)
+        cropped_1 = pixmap.copy(rect_1)
+
+        first_part = ".".join(self.img_path.split(".")[:-1])
+        ext = self.img_path.split(".")[-1]
+
+        name_idx = 2
+        while True:
+            new_path ="{}_{}.{}".format(first_part, name_idx, ext)
+            if not os.path.exists(new_path):
+                break
+            else:
+                name_idx += 1
+
+        # print(self.img_path)
+        # print(new_path)
+
+        cropped_0.save(self.img_path)
+        cropped_1.save(new_path)
+        # cropped_1.save("./mama.png")
+        # self.setPixmap(cropped.scaled(150, 150, QtCore.Qt.KeepAspectRatio))
+
+        self.cut_mode = None
+        self.preview_pos = None
+        self.update()
+        refresh_grid()
+
+    def paintEvent(self, event):
+        super().paintEvent(event)
+        if self.cut_mode and self.preview_pos:
+            painter = QtGui.QPainter(self)
+            pen = QtGui.QPen(QtCore.Qt.red, 2, QtCore.Qt.DashLine)
+            painter.setPen(pen)
+
+            if self.cut_mode == 'vertical':
+                painter.drawLine(self.preview_pos.x(), 0, self.preview_pos.x(), self.height())
+            else:  # horizontal
+                painter.drawLine(0, self.preview_pos.y(), self.width(), self.preview_pos.y())
+
+            painter.end()
+
 
 
 class FolderListWidget(QtWidgets.QListWidget):
@@ -300,6 +437,8 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.batch_size = 1000
         self.thumbnail_size = 150, 150
 
+        self.setPalette(get_dark_palette())
+
         self.loader = None
         self.folder_path = None
         self.main_folder = None # Folder that stores the subfolders
@@ -339,19 +478,53 @@ class ImageMontageApp(QtWidgets.QWidget):
         save_priority_action = QtWidgets.QAction("Save Priority", self)
         save_priority_action.triggered.connect(self.folder_list.save_priority_action)
         priority_menu.addAction(save_priority_action)
+
+        self.menu_bar.setStyleSheet("""
+            QMenuBar {
+                background-color: #181a1b;
+                font-size: 18px;
+            }
+
+            QMenuBar::item {
+                color: #3cfb8b;
+                background-color: #181a1b;
+            }
+
+            QMenuBar::item:selected {
+                background-color: #444444;
+            }
+
+            QMenu {
+                background-color: #181a1b;
+                color: #00ff00;
+                font-size: 16px;
+            }
+
+            QMenu::item:selected {
+                background-color: #444444;
+            }
+        """)
+
         #self.folder_list.left_click_handler = self.folder_clicked
         #self.folder_list.right_click_handler = self.folder_right_clicked
         self.folder_list.setMinimumWidth(400)
         self.folder_list.itemClicked.connect(self.folder_clicked)
+        self.folder_list.setStyleSheet("background-color: #303436; color: white; font-size: 13px;")
 
         # Scroll area (middle panel)
         self.scroll_area = QtWidgets.QScrollArea()
         self.scroll_area.setMinimumWidth(1000)
         self.vertical_value = 0
-        self.image_widget = QtWidgets.QWidget()
+        self.image_widget = ImageGridWidget(self)
+        self.image_widget.setMouseTracking(True)
         self.image_layout = QtWidgets.QGridLayout(self.image_widget)
         self.scroll_area.setWidget(self.image_widget)
         self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setStyleSheet("background-color: white;")
+
+        self.rubber_band = QtWidgets.QRubberBand(QtWidgets.QRubberBand.Rectangle, self.image_widget)
+        self.origin = QtCore.QPoint()
+        self.drag_selecting = False
 
         self.left_panel.addWidget(self.folder_list, stretch=1)
         self.left_panel.addWidget(self.scroll_area, stretch=5)
@@ -385,16 +558,16 @@ class ImageMontageApp(QtWidgets.QWidget):
 
         self.button_layout_wrapper.addWidget(self.batch_info_label)
 
-        self.info_label = QtWidgets.QLabel("Bottom Batch Info")
+        self.info_label = QtWidgets.QLabel("Bottom Info")
         self.info_label.setAlignment(Qt.AlignCenter)
-        self.info_label.setStyleSheet("font-size: 20px;")
+        self.info_label.setStyleSheet("font-size: 20px; color: #3cfb8b")
         self.outer_layout.addWidget(self.info_label)
-
 
     def add_button(self, name: str, func, shortcut: Union[str, tuple] = None):
         button = QtWidgets.QPushButton(name)
         button.setFont(QFont("Arial", 10))
         button.setFixedSize(160, 40)
+        button.setStyleSheet("color: #3cfb8b; background-color: #303436;")
         self.button_panel.addWidget(button)
         button.clicked.connect(func)
 
@@ -584,7 +757,12 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.selected_images = set()
             self.refresh()
 
-
+def get_dark_palette():
+    palette = QPalette()
+    palette.setColor(QPalette.Window, QColor(45, 45, 48))  # Background color
+    palette.setColor(QPalette.WindowText, Qt.white)  # Text color
+    palette.setColor(QPalette.ButtonText, Qt.black)  # Buttontext color
+    return palette
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
