@@ -69,6 +69,8 @@ class ClickableLabel(QtWidgets.QLabel):
         if self.cut_mode:
             self.preview_pos = event.pos()
             self.update()
+        else:
+            event.ignore()
 
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.RightButton:
