@@ -198,18 +198,10 @@ class ImageGridWidget(QtWidgets.QWidget):
         self.drag_selecting = False
         self.parent_app = parent
         self.clicked_label = None
-        self.cut_mode = None  # 'vertical' or 'horizontal'
-        self.preview_pos = None
-        self.pixmap_backup = None
 
     def mousePressEvent(self, event):
         print(1)
         if event.button() == Qt.LeftButton:
-            print(2)
-            print(self.cut_mode, self.preview_pos)
-            #if self.cut_mode and self.preview_pos:
-                #self.cut_at_position(self.preview_pos)
-
             self.origin = event.pos()
             self.clicked_label = self.label_at(event.pos())  # nézd meg, melyik képre kattintottál
             self.drag_selecting = True
@@ -219,14 +211,10 @@ class ImageGridWidget(QtWidgets.QWidget):
             #self.show_context_menu(event.pos())
 
     def mouseMoveEvent(self, event):
-        #print(3)
         if self.drag_selecting:
             print(4)
             rect = QtCore.QRect(self.origin, event.pos()).normalized()
             self.rubber_band.setGeometry(rect)
-        elif self.cut_mode:
-            self.preview_pos = event.pos()
-            self.update()
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton and self.drag_selecting:
@@ -234,7 +222,7 @@ class ImageGridWidget(QtWidgets.QWidget):
             selection_rect = self.rubber_band.geometry()
             drag_distance = (event.pos() - self.origin).manhattanLength()
 
-            if drag_distance < 5 and self.clicked_label:  # csak kattintottunk, nem húztunk
+            if drag_distance < 40 and self.clicked_label:  # no drag, just clicking
                 self.clicked_label.selected = not self.clicked_label.selected
                 self.clicked_label.add_red_boarder()
                 if self.clicked_label.selected:
@@ -262,100 +250,14 @@ class ImageGridWidget(QtWidgets.QWidget):
                 return label
         return None
 
-    '''def show_context_menu(self, pos):
-        menu = QtWidgets.QMenu(self)
-        vertical_cut = menu.addAction("Vertical Cut")
-        horizontal_cut = menu.addAction("Horizontal Cut")
-        action = menu.exec_(self.mapToGlobal(pos))
-
-        if action == vertical_cut:
-            self.cut_mode = 'vertical'
-        elif action == horizontal_cut:
-            self.cut_mode = 'horizontal'
-
-    def cut_at_position(self, pos):
-        print(6)
-        pixmap = self.pixmap()
-        if pixmap is None:
-            print(5)
-            return
-
-        if self.pixmap_backup is None:
-            self.pixmap_backup = pixmap.copy()
-
-        x = pos.x()
-        y = pos.y()
-        width = pixmap.width()
-        height = pixmap.height()
-
-        if self.cut_mode == 'vertical':
-            rect_0 = QtCore.QRect(0, 0, x, height)
-            rect_1 = QtCore.QRect(x, 0, width, height)
-        else:  # horizontal
-            rect_0 = QtCore.QRect(0, 0, width, y)
-            rect_1 = QtCore.QRect(0, y, width, height)
-
-        cropped_0 = pixmap.copy(rect_0)
-        cropped_1 = pixmap.copy(rect_1)
-
-        first_part = ".".join(self.img_path.split(".")[:-1])
-        ext = self.img_path.split(".")[-1]
-
-        name_idx = 2
-        while True:
-            new_path ="{}_{}.{}".format(first_part, name_idx, ext)
-            if not os.path.exists(new_path):
-                break
-            else:
-                name_idx += 1
-
-        # print(self.img_path)
-        # print(new_path)
-
-        cropped_0.save(self.img_path)
-        cropped_1.save(new_path)
-        # cropped_1.save("./mama.png")
-        # self.setPixmap(cropped.scaled(150, 150, QtCore.Qt.KeepAspectRatio))
-
-        self.cut_mode = None
-        self.preview_pos = None
-        self.update()
-        refresh_grid()
-
-    def paintEvent(self, event):
-        super().paintEvent(event)
-        if self.cut_mode and self.preview_pos:
-            painter = QtGui.QPainter(self)
-            pen = QtGui.QPen(QtCore.Qt.red, 2, QtCore.Qt.DashLine)
-            painter.setPen(pen)
-
-            if self.cut_mode == 'vertical':
-                painter.drawLine(self.preview_pos.x(), 0, self.preview_pos.x(), self.height())
-            else:  # horizontal
-                painter.drawLine(0, self.preview_pos.y(), self.width(), self.preview_pos.y())
-
-            painter.end()'''
-
-
-
 class FolderListWidget(QtWidgets.QListWidget):
         def __init__(self, parent=None):
             super().__init__(parent)
             self.setContextMenuPolicy(Qt.CustomContextMenu)
             self.customContextMenuRequested.connect(self.show_context_menu)
-            self.left_click_handler = None
-            self.right_click_handler = None
             self.status_dict = dict()
 
         def mousePressEvent(self, event):
-            item = self.itemAt(event.pos())
-            if item is not None:
-                if event.button() == Qt.LeftButton:
-                    if self.left_click_handler:
-                        self.left_click_handler(item)
-                elif event.button() == Qt.RightButton:
-                    if self.right_click_handler:
-                        self.right_click_handler(item)
             super().mousePressEvent(event)
 
         #handle right click
@@ -388,6 +290,7 @@ class FolderListWidget(QtWidgets.QListWidget):
             elif action == remove:
                 item.setBackground(QtGui.QColor("white"))
                 self.status_dict[item_text.split()[0]] = None
+            self.setCurrentItem(None) #remove select from folder
 
         def load_priority_action(self):
             main_folder = self.window().main_folder
@@ -421,8 +324,6 @@ class FolderListWidget(QtWidgets.QListWidget):
                         item.setBackground(QtGui.QColor("white"))
                 self.window().change_info_label("Priority Loaded!")
 
-
-
         def save_priority_action(self):
             main_folder = self.window().main_folder
             if main_folder is not None:
@@ -435,9 +336,6 @@ class FolderListWidget(QtWidgets.QListWidget):
                 except Exception as e:
                     QtWidgets.QMessageBox.critical(self, "Hiba", f"Nem sikerült menteni:\n{e}")
             self.window().change_info_label("Priority Saved!")
-
-
-
 
 class ImageMontageApp(QtWidgets.QWidget):
     def __init__(self):
@@ -469,7 +367,6 @@ class ImageMontageApp(QtWidgets.QWidget):
         # Main layouts
         self.main_layout = QtWidgets.QHBoxLayout()
         self.outer_layout.addLayout(self.main_layout)
-        #self.button_layout = QtWidgets.QHBoxLayout()
 
         # Left Panel
         self.left_panel = QtWidgets.QHBoxLayout()
