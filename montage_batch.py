@@ -65,14 +65,18 @@ class ClickableLabel(QtWidgets.QLabel):
         self.pixmap_backup = None
         self.setMouseTracking(True)
 
-
-    def add_red_boarder(self):
-        self.setStyleSheet("border: 3px solid red;" if self.selected else "")
-
-    '''def mouseMoveEvent(self, event):
+    def mouseMoveEvent(self, event):
         if self.cut_mode:
             self.preview_pos = event.pos()
             self.update()
+
+    def mousePressEvent(self, event):
+        if event.button() == QtCore.Qt.RightButton:
+            self.show_context_menu(event.pos())
+        elif event.button() == QtCore.Qt.LeftButton and self.cut_mode and self.preview_pos:
+            self.cut_at_position(event.pos())  # csak az adott label pixmap-jét vágjuk
+        else:
+            super().mousePressEvent(event)
 
     def show_context_menu(self, pos):
         menu = QtWidgets.QMenu(self)
@@ -84,6 +88,10 @@ class ClickableLabel(QtWidgets.QLabel):
             self.cut_mode = 'vertical'
         elif action == horizontal_cut:
             self.cut_mode = 'horizontal'
+
+
+    def add_red_boarder(self):
+        self.setStyleSheet("border: 3px solid red;" if self.selected else "")
 
     def cut_at_position(self, pos):
         pixmap = self.pixmap()
@@ -144,7 +152,7 @@ class ClickableLabel(QtWidgets.QLabel):
             else:  # horizontal
                 painter.drawLine(0, self.preview_pos.y(), self.width(), self.preview_pos.y())
 
-            painter.end()'''
+            painter.end()
 
 
 class ImageBatchLoader(object):
@@ -197,16 +205,16 @@ class ImageGridWidget(QtWidgets.QWidget):
         if event.button() == Qt.LeftButton:
             print(2)
             print(self.cut_mode, self.preview_pos)
-            if self.cut_mode and self.preview_pos:
-                self.cut_at_position(self.preview_pos)
+            #if self.cut_mode and self.preview_pos:
+                #self.cut_at_position(self.preview_pos)
 
             self.origin = event.pos()
             self.clicked_label = self.label_at(event.pos())  # nézd meg, melyik képre kattintottál
             self.drag_selecting = True
             self.rubber_band.setGeometry(QtCore.QRect(self.origin, QtCore.QSize()))
             self.rubber_band.show()
-        elif event.button() == QtCore.Qt.RightButton:
-            self.show_context_menu(event.pos())
+        #elif event.button() == QtCore.Qt.RightButton:
+            #self.show_context_menu(event.pos())
 
     def mouseMoveEvent(self, event):
         #print(3)
@@ -252,7 +260,7 @@ class ImageGridWidget(QtWidgets.QWidget):
                 return label
         return None
 
-    def show_context_menu(self, pos):
+    '''def show_context_menu(self, pos):
         menu = QtWidgets.QMenu(self)
         vertical_cut = menu.addAction("Vertical Cut")
         horizontal_cut = menu.addAction("Horizontal Cut")
@@ -324,7 +332,7 @@ class ImageGridWidget(QtWidgets.QWidget):
             else:  # horizontal
                 painter.drawLine(0, self.preview_pos.y(), self.width(), self.preview_pos.y())
 
-            painter.end()
+            painter.end()'''
 
 
 
@@ -381,6 +389,7 @@ class FolderListWidget(QtWidgets.QListWidget):
 
         def load_priority_action(self):
             main_folder = self.window().main_folder
+            loaded_priority_action = None
             if main_folder is not None:
                 load_path = os.path.join(main_folder, main_folder.split('/')[-1] + "_priority_action.json")
                 if not os.path.exists(load_path):
@@ -393,22 +402,22 @@ class FolderListWidget(QtWidgets.QListWidget):
                 except Exception as e:
                     QtWidgets.QMessageBox.critical(self, "Hiba", f"Nem sikerült betölteni:\n{e}")
                     return
-
-            self.status_dict = loaded_priority_action
-            transparency = 125
-            for i in range(self.count()):
-                item = self.item(i)
-                text = item.text().split()[0]
-                status = self.status_dict.get(text, None)
-                if status == "not_done":
-                    item.setBackground(QtGui.QColor(255, 0, 0, transparency))
-                elif status == "in_progress":
-                    item.setBackground(QtGui.QColor(255, 255, 0, transparency))
-                elif status == "done":
-                    item.setBackground(QtGui.QColor(0, 255, 0, transparency))
-                else:
-                    item.setBackground(QtGui.QColor("white"))
-            self.window().change_info_label("Priority Loaded!")
+            if loaded_priority_action is not None:
+                self.status_dict = loaded_priority_action
+                transparency = 125
+                for i in range(self.count()):
+                    item = self.item(i)
+                    text = item.text().split()[0]
+                    status = self.status_dict.get(text, None)
+                    if status == "not_done":
+                        item.setBackground(QtGui.QColor(255, 0, 0, transparency))
+                    elif status == "in_progress":
+                        item.setBackground(QtGui.QColor(255, 255, 0, transparency))
+                    elif status == "done":
+                        item.setBackground(QtGui.QColor(0, 255, 0, transparency))
+                    else:
+                        item.setBackground(QtGui.QColor("white"))
+                self.window().change_info_label("Priority Loaded!")
 
 
 
