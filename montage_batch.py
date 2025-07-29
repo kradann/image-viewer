@@ -13,7 +13,7 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PIL import Image
 from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QPixmap, QImage, QPalette, QColor
-from PyQt5.QtWidgets import QLabel, QPushButton, QShortcut, QMenu, QAction
+from PyQt5.QtWidgets import QLabel, QPushButton, QShortcut, QMenu, QAction, QInputDialog, QDialog
 from PyQt5.QtGui import QKeySequence, QFont, QWheelEvent
 #from libdnf.utils import NullLogger
 
@@ -47,6 +47,17 @@ def generate_thumbnail(image_path: str, thumb_path: str, size=(800, 800)):
     except Exception as e:
         print(f"Thumbnail error for {image_path}: {e}")
 
+def cleanup_thumbs():
+    thumbs_dir = ".thumbs"
+    if os.path.exists(thumbs_dir):
+        for f in os.listdir(thumbs_dir):
+            file_path = os.path.join(thumbs_dir, f)
+            try:
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+            except Exception as e:
+                print(f"Failed to delete {file_path}: {e}")
+
 class ImageLoaderThread(QtCore.QThread):
     image_loaded = QtCore.pyqtSignal(int, QtGui.QPixmap, str)
 
@@ -57,7 +68,7 @@ class ImageLoaderThread(QtCore.QThread):
 
     def run(self):
         for idx, path in enumerate(self.paths):
-            print(f"[LoaderThread] Loading: {path}")
+            #print(f"[LoaderThread] Loading: {path}")
             thumb_path = get_thumb_path(path, cache_dir=self.cache_dir)
 
             if not os.path.exists(thumb_path):
@@ -137,7 +148,7 @@ class ClickableLabel(QtWidgets.QLabel):
         else:  # horizontal
             rect_0 = QtCore.QRect(0, 0, width, y)
             rect_1 = QtCore.QRect(0, y, width, height)
-
+        print(rect_0, rect_1)
         cropped_0 = pixmap.copy(rect_0)
         cropped_1 = pixmap.copy(rect_1)
 
@@ -163,6 +174,9 @@ class ClickableLabel(QtWidgets.QLabel):
         self.cut_mode = None
         self.preview_pos = None
         self.update()
+        thumb_path = get_thumb_path(self.img_path)
+        generate_thumbnail(self.img_path, thumb_path)
+        self.setPixmap(QtGui.QPixmap(thumb_path))
         refresh_grid()
 
     def paintEvent(self, event):
@@ -313,7 +327,7 @@ class FolderListWidget(QtWidgets.QListWidget):
             elif action == remove:
                 item.setBackground(QtGui.QColor("white"))
                 self.status_dict[item_text.split()[0]] = None
-            self.setCurrentItem(None) #remove select from folder
+            self.setCurrentItem(None) #remove selection from folder
 
         def load_priority_action(self):
             main_folder = self.window().main_folder
@@ -356,9 +370,9 @@ class FolderListWidget(QtWidgets.QListWidget):
                     with open(save_path, "w") as f:
                         json.dump(self.status_dict, f, indent=4)
                     QtWidgets.QMessageBox.information(self, "Siker", f"Státuszok elmentve ide:\n{save_path}")
+                    self.window().change_info_label("Priority Saved!")
                 except Exception as e:
                     QtWidgets.QMessageBox.critical(self, "Hiba", f"Nem sikerült menteni:\n{e}")
-            self.window().change_info_label("Priority Saved!")
 
 class ImageMontageApp(QtWidgets.QWidget):
     def __init__(self):
@@ -375,6 +389,8 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.folder_path = None
         self.main_folder = None # Folder that stores the subfolders
         self.thread = None
+        self.isAllSelected = False
+        self.subfolders = None
         self.labels = list()
         self.selected_images = set()
         self.dropped_selected = set()
@@ -483,7 +499,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.add_button("Previous Batch", self.previous_batch)
         self.add_button("Next Batch", self.next_batch)
         self.add_button("Current Batch", self.show_batch)
-        self.add_button("Select all", self.select_all)
+        self.add_button("Unselect/Select all", self.un_select_select_all)
         self.add_button("Selected Check", self.show_only_selected)
         self.add_button("Move Selected Images", self.move_selected)
         self.add_button("Reload scrolling", self.load_v_value)
@@ -515,11 +531,15 @@ class ImageMontageApp(QtWidgets.QWidget):
         return button, q_shortcut
 
     def load_folder(self):
-        self.folder_path = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Folder")
-        print("loaded folder: {}".format(self.folder_path))
-        if self.folder_path:
-            self.main_folder = self.folder_path
-            self.load_subfolders(self.folder_path)
+        self.main_folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Folder")
+
+        self.subfolders = [f for f in os.listdir(self.main_folder)
+                          if os.path.isdir(os.path.join(self.main_folder,f))]
+        self.subfolders.sort()
+        #print("loaded folder: {}".format(self.folder_path))
+        if self.main_folder:
+            self.folder_path = os.path.join(self.main_folder, self.subfolders[0])
+            self.load_subfolders(self.main_folder)
             self.loader = ImageBatchLoader(self.folder_path, batch_size=self.batch_size)
             self.show_batch()
             self.change_info_label("Folder loaded!")
@@ -550,7 +570,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.loader = ImageBatchLoader(self.folder_path, batch_size=self.batch_size)
         self.show_batch()
 
-    def change_info_label(self, text=None, text_color="black"):
+    def change_info_label(self, text=None, text_color="#3cfb8b"):
         label = self.window().info_label
         label.setText(text)
         if text_color:
@@ -585,11 +605,13 @@ class ImageMontageApp(QtWidgets.QWidget):
 
     def refresh(self):
         if self.folder_path:
+            print(self.folder_path)
             self.vertical_value = self.scroll_area.verticalScrollBar().value()
             self.loader = ImageBatchLoader(self.folder_path,
                                            batch_size=self.batch_size,
                                            start_batch_idx=self.loader.current_batch_idx)
             self.show_batch()
+            self.load_subfolders(self.main_folder)
 
     def clear_images(self):
         for label in self.labels:
@@ -639,10 +661,17 @@ class ImageMontageApp(QtWidgets.QWidget):
         else:
             self.selected_images.discard(path)
 
-    def select_all(self):
-        for label in self.labels:
-            label.selected = True
-            self.selected_images.add(label.img_path)
+    def un_select_select_all(self):
+        if not self.isAllSelected:
+            self.isAllSelected = True
+            for label in self.labels:
+                label.selected = True
+                self.selected_images.add(label.img_path)
+        else:
+            self.isAllSelected = False
+            for label in self.labels:
+                label.selected = False
+                self.selected_images.discard(label.img_path)
         self.show_batch()
 
     def next_batch(self):
@@ -670,7 +699,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.thread.start()
 
     def move_selected(self):
-        output_folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Output Folder",
+        '''output_folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Output Folder",
                                                                    directory=self.folder_path)
         if output_folder == "" or output_folder is None:
             return
@@ -687,7 +716,76 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.show_only_selected()
         else:
             self.selected_images = set()
+            self.refresh()'''
+
+        # check if folder laoded
+        if self.main_folder is None:
+            self.change_info_label("Error: No folder selected")
+            return
+
+        #load subfolders
+        '''subfolders = [f for f in os.listdir(self.main_folder) if os.path.isdir(os.path.join(self.main_folder, f))]
+        subfolders.sort()'''
+
+        if not self.subfolders:
+            QtWidgets.QMessageBox.warning(self, "Error", "No subfolders found")
+            return
+
+        #create selection dialog
+        dialog = FolderSelectionDialog(self, folder_list=self.subfolders)
+        if dialog.exec_() != QDialog.Accepted or not dialog.selected_folder:
+            return
+
+        output_folder = os.path.join(self.main_folder, dialog.selected_folder)
+
+        #move images to selected folders
+        if self.selected_images:
+            for img_path in sorted(self.selected_images):
+                self.dropped_selected.discard(img_path)
+                img_name = os.path.basename(img_path)
+                dst_path = os.path.join(output_folder, img_name)
+                self.change_info_label("moved from: {}, to: {}".format(img_path.split('/')[-2], dst_path.split('/')[-2]))
+                #print("moved from: {}, to: {}".format(img_path, dst_path))
+                shutil.move(img_path, dst_path)
+        else:
+            self.change_info_label("No selected images found!")
+
+        #check if images left
+        if len(self.dropped_selected) > 0:
+            self.selected_images = copy.deepcopy(self.dropped_selected)
+            self.show_only_selected()
+        else:
+            self.selected_images = set()
             self.refresh()
+
+    def closeEvent(self, event):
+        cleanup_thumbs()
+        event.accept()
+
+class FolderSelectionDialog(QtWidgets.QDialog):
+    def __init__(self, parent=None, folder_list=None):
+        super().__init__(parent)
+        self.setWindowTitle("Select Subfolder")
+        self.setMinimumSize(400, 500)
+
+        layout = QtWidgets.QVBoxLayout(self)
+
+        self.list_widget = QtWidgets.QListWidget()
+        self.list_widget.addItems(folder_list)
+        layout.addWidget(self.list_widget)
+
+        self.ok_button = QPushButton("OK")
+        self.ok_button.clicked.connect(self.accept)
+        layout.addWidget(self.ok_button)
+
+        self.selected_folder = None
+        self.list_widget.itemDoubleClicked.connect(self.accept)
+
+    def accept(self):
+        selected_item = self.list_widget.currentItem()
+        if selected_item:
+            self.selected_folder = selected_item.text()
+        super().accept()
 
 def get_dark_palette():
     palette = QPalette()
