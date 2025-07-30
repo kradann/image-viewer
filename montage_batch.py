@@ -495,6 +495,7 @@ class ImageMontageApp(QtWidgets.QWidget):
 
         # Buttons
         #self.add_button("Load Folder", self.load_folder)
+        self.add_button("Previous Folder", self.prev_folder)
         self.add_button("Next Folder", self.next_folder)
         self.add_button("Previous Batch", self.previous_batch)
         self.add_button("Next Batch", self.next_batch)
@@ -579,6 +580,26 @@ class ImageMontageApp(QtWidgets.QWidget):
         current_text = text
         # After 5 seconds, clear ONLY IF the text hasn't changed in the meantime
         QTimer.singleShot(5000, lambda: label.setText("") if label.text() == current_text else None)
+
+    def prev_folder(self):
+        if self.main_folder is None:
+            return
+
+        subfolders = sorted([f.path for f in os.scandir(os.path.dirname(self.folder_path)) if f.is_dir()])
+        prev_folder_idx = subfolders.index(self.folder_path) - 1
+        print(prev_folder_idx)
+        if prev_folder_idx > 0:
+            while len(os.listdir(subfolders[prev_folder_idx])) == 0:
+                if prev_folder_idx == len(subfolders) - 1:
+                    break
+                prev_folder_idx -= 1
+
+            self.folder_path = subfolders[prev_folder_idx]
+
+        if self.main_folder:
+            self.loader = ImageBatchLoader(os.path.join(self.main_folder, self.subfolders[prev_folder_idx]), batch_size=self.batch_size)
+            self.show_batch()
+
 
     def next_folder(self):
         if self.folder_path is None:
