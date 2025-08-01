@@ -237,10 +237,10 @@ class ImageGridWidget(QtWidgets.QWidget):
         self.clicked_label = None
 
     def mousePressEvent(self, event):
-        print(1)
+        #print(1)
         if event.button() == Qt.LeftButton:
             self.origin = event.pos()
-            self.clicked_label = self.label_at(event.pos())  # nézd meg, melyik képre kattintottál
+            self.clicked_label = self.label_at(event.pos())  # select which image was clicked
             self.drag_selecting = True
             self.rubber_band.setGeometry(QtCore.QRect(self.origin, QtCore.QSize()))
             self.rubber_band.show()
@@ -249,7 +249,7 @@ class ImageGridWidget(QtWidgets.QWidget):
 
     def mouseMoveEvent(self, event):
         if self.drag_selecting:
-            print(4)
+            #print(4)
             rect = QtCore.QRect(self.origin, event.pos()).normalized()
             self.rubber_band.setGeometry(rect)
 
@@ -497,6 +497,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         #self.add_button("Load Folder", self.load_folder)
         self.add_button("Previous Folder", self.prev_folder)
         self.add_button("Next Folder", self.next_folder)
+        self.add_button("Make new Folder", self.make_new_folder)
         self.add_button("Previous Batch", self.previous_batch)
         self.add_button("Next Batch", self.next_batch)
         self.add_button("Current Batch", self.show_batch)
@@ -570,6 +571,22 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.folder_path = selected_subfolder
         self.loader = ImageBatchLoader(self.folder_path, batch_size=self.batch_size)
         self.show_batch()
+
+    def make_new_folder(self):
+        dialog = NewFolderNameDialog(self)
+        if dialog.exec_() == QDialog.Accepted:
+            new_folder_path = os.path.join(self.main_folder, dialog.user_input)
+
+            try:
+                os.makedirs(new_folder_path, exist_ok=False)
+                self.load_subfolders(self.main_folder)
+                self.change_info_label("New folder created!")
+            except FileExistsError:
+                QtWidgets.QMessageBox.warning(self, "Error", "This folder already exists!")
+            except Exception as e:
+                QtWidgets.QMessageBox.critical(self, "Error", f"Can't create this folder:\n{e}")
+        else:
+            return
 
     def change_info_label(self, text=None, text_color="#3cfb8b"):
         label = self.window().info_label
@@ -782,6 +799,35 @@ class ImageMontageApp(QtWidgets.QWidget):
     def closeEvent(self, event):
         cleanup_thumbs()
         event.accept()
+
+class NewFolderNameDialog(QtWidgets.QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("New Folder Name")
+        self.setMinimumSize(300,120)
+        self.user_input = None
+
+        layout = QtWidgets.QVBoxLayout()
+        self.setLayout(layout)
+
+        self.line_edit = QtWidgets.QLineEdit(self)
+        self.line_edit.setPlaceholderText("Enter folder name...")
+        layout.addWidget(self.line_edit)
+
+        ok_button = QtWidgets.QPushButton("OK", self)
+        ok_button.clicked.connect(self.accept)
+        layout.addWidget(ok_button)
+
+        self.line_edit.setFocus()
+
+    def accept(self):
+        text = self.line_edit.text().strip()
+        if text:
+            self.user_input = text
+            super().accept()
+        else:
+            QtWidgets.QMessageBox.warning(self, "Error", "No text entered")
+
 
 class FolderSelectionDialog(QtWidgets.QDialog):
     def __init__(self, parent=None, folder_list=None):
