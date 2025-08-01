@@ -309,6 +309,7 @@ class FolderListWidget(QtWidgets.QListWidget):
             in_progress = menu.addAction("In Progress")
             done = menu.addAction("Done")
             remove = menu.addAction("Remove priority")
+            delete_folder = menu.addAction("Delete Folder")
 
             action = menu.exec_(self.mapToGlobal(pos))
 
@@ -327,6 +328,24 @@ class FolderListWidget(QtWidgets.QListWidget):
             elif action == remove:
                 item.setBackground(QtGui.QColor("white"))
                 self.status_dict[item_text.split()[0]] = None
+            elif action == delete_folder:
+                reply = QtWidgets.QMessageBox.question(self, "Confirm Deletion",
+                                                       f"Are you sure you want to delete <b>{item_text.split()[0]}</b>?",
+                                                       QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No
+                )
+
+                if reply == QtWidgets.QMessageBox.Yes:
+                    folder_path = os.path.join(self.window().main_folder, item_text.split()[0])
+                    try:
+                        if os.path.isdir(folder_path):
+                            shutil.rmtree(folder_path)
+                            self.takeItem(self.row(item))
+                            QtWidgets.QMessageBox.information(self, "Success", f"Deleted <b>{item_text.split()[0]}</b>.")
+                        else:
+                            QtWidgets.QMessageBox.warning(self, "Error", f"'{folder_path}' is not a folder.")
+                    except Exception as e:
+                        QtWidgets.QMessageBox.critical(self, "Error", f"Failed to delete folder:\n{str(e)}")
+
             self.setCurrentItem(None) #remove selection from folder
 
         def load_priority_action(self):
@@ -814,7 +833,7 @@ class NewFolderNameDialog(QtWidgets.QDialog):
         self.line_edit.setPlaceholderText("Enter folder name...")
         layout.addWidget(self.line_edit)
 
-        ok_button = QtWidgets.QPushButton("OK", self)
+        ok_button = QtWidgets.QPushButton("Make New Folder", self)
         ok_button.clicked.connect(self.accept)
         layout.addWidget(ok_button)
 
