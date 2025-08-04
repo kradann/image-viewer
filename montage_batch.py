@@ -458,7 +458,7 @@ class FolderListWidget(QtWidgets.QListWidget):
             not_done = menu.addAction("Not Done")
             in_progress = menu.addAction("In Progress")
             done = menu.addAction("Done")
-            remove = menu.addAction("Remove priority")
+            remove = menu.addAction("Remove Status")
             delete_folder = menu.addAction("Delete Folder")
 
             action = menu.exec_(self.mapToGlobal(pos))
@@ -476,7 +476,7 @@ class FolderListWidget(QtWidgets.QListWidget):
                 item.setBackground(QtGui.QColor(0,255,0,transparency))
                 self.status_dict[item_text.split()[0]] = "done"
             elif action == remove:
-                item.setBackground(QtGui.QColor("white"))
+                item.setBackground(QtGui.QColor("#303436"))
                 self.status_dict[item_text.split()[0]] = None
             elif action == delete_folder:
                 reply = QtWidgets.QMessageBox.question(self, "Confirm Deletion",
@@ -498,23 +498,23 @@ class FolderListWidget(QtWidgets.QListWidget):
 
             self.setCurrentItem(None) #remove selection from folder
 
-        def load_priority_action(self):
+        def load_status_action(self):
             main_folder = self.window().main_folder
-            loaded_priority_action = None
+            loaded_status_action = None
             if main_folder is not None:
-                load_path = os.path.join(main_folder, main_folder.split('/')[-1] + "_priority_action.json")
+                load_path = os.path.join(main_folder, main_folder.split('/')[-1] + "_status_action.json")
                 if not os.path.exists(load_path):
                     QtWidgets.QMessageBox.warning(self, "Hiba", f"A fájl nem található:\n{load_path}")
                     return
 
                 try:
                     with open(load_path, "r") as f:
-                        loaded_priority_action = json.load(f)
+                        loaded_status_action = json.load(f)
                 except Exception as e:
                     QtWidgets.QMessageBox.critical(self, "Hiba", f"Nem sikerült betölteni:\n{e}")
                     return
-            if loaded_priority_action is not None:
-                self.status_dict = loaded_priority_action
+            if loaded_status_action is not None:
+                self.status_dict = loaded_status_action
                 transparency = 125
                 for i in range(self.count()):
                     item = self.item(i)
@@ -527,19 +527,19 @@ class FolderListWidget(QtWidgets.QListWidget):
                     elif status == "done":
                         item.setBackground(QtGui.QColor(0, 255, 0, transparency))
                     else:
-                        item.setBackground(QtGui.QColor("white"))
-                self.window().change_info_label("Priority Loaded!")
+                        item.setBackground(QtGui.QColor("#303436"))
+                self.window().change_info_label("Status Loaded!")
 
-        def save_priority_action(self):
+        def save_status_action(self):
             main_folder = self.window().main_folder
             if main_folder is not None:
-                save_path = os.path.join(main_folder, main_folder.split('/')[-1] + "_priority_action.json")
+                save_path = os.path.join(main_folder, main_folder.split('/')[-1] + "_status_action.json")
 
                 try:
                     with open(save_path, "w") as f:
                         json.dump(self.status_dict, f, indent=4)
                     QtWidgets.QMessageBox.information(self, "Siker", f"Státuszok elmentve ide:\n{save_path}")
-                    self.window().change_info_label("Priority Saved!")
+                    self.window().change_info_label("Status Saved!")
                 except Exception as e:
                     QtWidgets.QMessageBox.critical(self, "Hiba", f"Nem sikerült menteni:\n{e}")
 
@@ -585,15 +585,15 @@ class ImageMontageApp(QtWidgets.QWidget):
         load_folder_action.triggered.connect(self.load_folder)
         file_menu.addAction(load_folder_action)
 
-        priority_menu = self.menu_bar.addMenu("Priority")
+        status_menu = self.menu_bar.addMenu("Status")
 
-        load_priority_action = QtWidgets.QAction("Load Priority", self)
-        load_priority_action.triggered.connect(self.folder_list.load_priority_action)
-        priority_menu.addAction(load_priority_action)
+        load_status_action = QtWidgets.QAction("Load Status", self)
+        load_status_action.triggered.connect(self.folder_list.load_status_action)
+        status_menu.addAction(load_status_action)
 
-        save_priority_action = QtWidgets.QAction("Save Priority", self)
-        save_priority_action.triggered.connect(self.folder_list.save_priority_action)
-        priority_menu.addAction(save_priority_action)
+        save_status_action = QtWidgets.QAction("Save Status", self)
+        save_status_action.triggered.connect(self.folder_list.save_status_action)
+        status_menu.addAction(save_status_action)
 
         self.menu_bar.setStyleSheet("""
             QMenuBar {
