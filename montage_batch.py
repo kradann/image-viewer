@@ -172,7 +172,7 @@ sign_types = ["eu_speedlimit_100",
 "eu_blue_border_rectangle_unknown",
 "eu_red_border_circle_unknown",
 "eu_red_border_up_triangle_unknown",
-"eu_white_ground_rectangle",]
+"eu_white_ground_rectangle"]
 
 sign_types.sort()
 
