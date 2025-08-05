@@ -12,7 +12,7 @@ import PIL.Image
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PIL import Image
 from PyQt5.QtCore import QTimer, Qt
-from PyQt5.QtGui import QPixmap, QImage, QPalette, QColor
+from PyQt5.QtGui import QPixmap, QImage, QPalette, QColor, QBrush
 from PyQt5.QtWidgets import QLabel, QPushButton, QShortcut, QMenu, QAction, QInputDialog, QDialog
 from PyQt5.QtGui import QKeySequence, QFont, QWheelEvent
 #from libdnf.utils import NullLogger
@@ -741,6 +741,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.loader = ImageBatchLoader(self.folder_path, batch_size=self.batch_size)
         self.show_batch()
 
+
     def make_new_folder(self):
         if self.main_folder:
             dialog = NewFolderNameDialog(self)
@@ -940,7 +941,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             return
 
         #create selection dialog
-        dialog = FolderSelectionDialog(self, folder_list=self.subfolders)
+        dialog = FolderSelectionDialog(self)
         if dialog.exec_() != QDialog.Accepted or not dialog.selected_folder:
             return
 
@@ -1007,7 +1008,7 @@ class NewFolderNameDialog(QtWidgets.QDialog):
 
 
 class FolderSelectionDialog(QtWidgets.QDialog):
-    def __init__(self, parent=None, folder_list=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Select Subfolder")
         self.setMinimumSize(400, 500)
@@ -1015,7 +1016,7 @@ class FolderSelectionDialog(QtWidgets.QDialog):
         layout = QtWidgets.QVBoxLayout(self)
 
         self.list_widget = QtWidgets.QListWidget()
-        self.list_widget.addItems(folder_list)
+        self.list_widget.addItems(sorted([f.path.split('/')[-1] for f in os.scandir(os.path.dirname(window.folder_path)) if f.is_dir()]))
         layout.addWidget(self.list_widget)
 
         self.ok_button = QPushButton("OK")
