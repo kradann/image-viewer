@@ -165,7 +165,14 @@ sign_types = ["eu_speedlimit_100",
 "eu_additional_zone",
 "eu_additional_tree",
 "eu_additional_trucks",
-"eu_additional_other"]
+"eu_additional_other",
+"eu_direction_position_indication_unknown",
+"eu_blue_ground_circle_unknown",
+"eu_blue_ground_rectangle_unknown",
+"eu_blue_border_rectangle_unknown",
+"eu_red_border_circle_unknown",
+"eu_red_border_up_triangle_unknown",
+"eu_white_ground_rectangle",]
 
 sign_types.sort()
 
