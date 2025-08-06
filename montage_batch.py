@@ -684,10 +684,20 @@ class ImageMontageApp(QtWidgets.QWidget):
 
         self.button_layout_wrapper.addWidget(self.batch_info_label)
 
+        self.label_row_layout = QtWidgets.QHBoxLayout()
+
+        self.current_folder_label = QtWidgets.QLabel("Current Folder")
+        self.current_folder_label.setAlignment(Qt.AlignLeft)
+        self.button_layout_wrapper.addWidget(self.current_folder_label)
+        self.current_folder_label.setStyleSheet("font-size: 20px; color: #3cfb8b; padding: 10px;")
+        self.label_row_layout.addWidget(self.current_folder_label)
+
         self.info_label = QtWidgets.QLabel("Bottom Info")
-        self.info_label.setAlignment(Qt.AlignCenter)
+        self.info_label.setAlignment(Qt.AlignLeft)
         self.info_label.setStyleSheet("font-size: 20px; color: #3cfb8b")
-        self.outer_layout.addWidget(self.info_label)
+        self.label_row_layout.addWidget(self.info_label)
+
+        self.outer_layout.addLayout(self.label_row_layout)
 
     def add_button(self, name: str, func, shortcut: Union[str, tuple] = None):
         button = QtWidgets.QPushButton(name)
@@ -846,6 +856,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.thread = ImageLoaderThread(batch)
         self.thread.image_loaded.connect(self.add_image_to_layout)
         self.thread.start()
+        self.window().current_folder_label.setText("Current folder: " + self.window().folder_path.split("/")[-1])
 
     def add_image_to_layout(self, idx, pixmap, _path):
         label = ClickableLabel(_path)
