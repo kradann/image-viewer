@@ -585,12 +585,22 @@ class ImageMontageApp(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Image Batch Viewer")
+        self.setObjectName("MainWindow")
+        self.setStyleSheet("""
+            QWidget#MainWindow {
+                background: qlineargradient(
+                    spread:pad, x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #6fcf9b,
+                    stop:0.2 #4fa67a,
+                    stop:0.4 #2e2e2e,
+                    stop:1 #1a1a1a
+                );
+            }
+        """)
         self.resize(1600, 900)
         self.num_of_col = 6
         self.batch_size = 1000
         self.thumbnail_size = 150, 150
-
-        self.setPalette(get_dark_palette())
 
         self.loader = None
         self.folder_path = None
@@ -602,6 +612,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.selected_images = set()
         self.dropped_selected = set()
         self.batch_info_label = QtWidgets.QLabel("Batch Info")
+        self.batch_info_label.setStyleSheet("background: transparent; color: #3cfb8b; font-size: 20px;")
         self.batch_info_label.setAlignment(Qt.AlignCenter)
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.update_selected_check_button)
@@ -712,8 +723,8 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.add_button("Next Batch", self.next_batch)
         self.add_button("Current Batch", self.show_batch)
         self.add_button("Unselect/Select all", self.un_select_select_all)
-        self.selected_check_button, _ = self.add_button("Selected Check", self.show_only_selected)
-        self.add_button("Move Selected Images", self.move_selected)
+        self.add_button("Selected Check", self.show_only_selected)
+        self.move_selected_button, _ = self.add_button("Move Selected Images", self.move_selected)
         self.add_button("Reload scrolling", self.load_v_value)
 
         self.button_layout_wrapper.addWidget(self.batch_info_label)
@@ -723,12 +734,21 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.current_folder_label = QtWidgets.QLabel("Current Folder")
         self.current_folder_label.setAlignment(Qt.AlignLeft)
         self.button_layout_wrapper.addWidget(self.current_folder_label)
-        self.current_folder_label.setStyleSheet("font-size: 20px; color: #3cfb8b; padding: 10px;")
+        self.current_folder_label.setStyleSheet("""
+            font-size: 20px;
+            color: #3cfb8b;
+            padding: 10px;
+            background: transparent;
+        """)
         self.label_row_layout.addWidget(self.current_folder_label)
 
         self.info_label = QtWidgets.QLabel("Bottom Info")
         self.info_label.setAlignment(Qt.AlignLeft)
-        self.info_label.setStyleSheet("font-size: 20px; color: #3cfb8b")
+        self.info_label.setStyleSheet("""
+            font-size: 20px;
+            color: #3cfb8b;
+            background: transparent;
+        """)
         self.label_row_layout.addWidget(self.info_label)
 
         self.outer_layout.addLayout(self.label_row_layout)
@@ -887,7 +907,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.clear_images()
         batch = self.loader.get_batch()
         self.batch_info_label.setText(
-            f"{self.loader.current_batch_idx + 1} / {self.loader.number_of_batches // 1000 + 1}")
+            f"Batch: {self.loader.current_batch_idx + 1} / {self.loader.number_of_batches // 1000 + 1}")
 
         self.thread = ImageLoaderThread(batch)
         self.thread.image_loaded.connect(self.add_image_to_layout)
@@ -927,11 +947,11 @@ class ImageMontageApp(QtWidgets.QWidget):
     def update_selected_check_button(self):
         if self.main_folder:
             if self.selected_images:
-                self.selected_check_button.setEnabled(True)
-                self.selected_check_button.setStyleSheet("color: black; background-color: green;")
+                self.move_selected_button.setEnabled(True)
+                self.move_selected_button.setStyleSheet("color: black; background-color: green;")
             else:
-                self.selected_check_button.setEnabled(False)
-                self.selected_check_button.setStyleSheet("color: black; background-color: #8B0000;")
+                self.move_selected_button.setEnabled(False)
+                self.move_selected_button.setStyleSheet("color: black; background-color: #8B0000;")
 
     def un_select_select_all(self):
         if not self.isAllSelected:
@@ -950,15 +970,13 @@ class ImageMontageApp(QtWidgets.QWidget):
         if self.loader:
             self.loader.next_batch()
             self.show_batch()
-            self.batch_info_label.setText(
-                f"{self.loader.current_batch_idx + 1} / {self.loader.number_of_batches // 1000 + 1}")
+            #self.batch_info_label.setText( f"Batch: {self.loader.current_batch_idx + 1} / {self.loader.number_of_batches // 1000 + 1}")
 
     def previous_batch(self):
         if self.loader:
             self.loader.previous_batch()
             self.show_batch()
-            self.batch_info_label.setText(
-                f"{self.loader.current_batch_idx + 1} / {self.loader.number_of_batches // 1000 + 1}")
+            #self.batch_info_label.setText( f"Batch: {self.loader.current_batch_idx + 1} / {self.loader.number_of_batches // 1000 + 1}")
 
     def show_only_selected(self):
         if not self.loader:
@@ -1099,12 +1117,7 @@ class FolderSelectionDialog(QtWidgets.QDialog):
         super().accept()
 
 
-def get_dark_palette():
-    palette = QPalette()
-    palette.setColor(QPalette.Window, QColor(45, 45, 48))  # Background color
-    palette.setColor(QPalette.WindowText, Qt.white)  # Text color
-    palette.setColor(QPalette.ButtonText, Qt.black)  # Buttontext color
-    return palette
+
 
 
 if __name__ == "__main__":
