@@ -198,10 +198,12 @@ def pil_to_qpixmap(pil_image):
     return QPixmap.fromImage(qimg)
 
 def cleanup_thumbs():
-    thumbs_dir = "../.thumbs"
+    thumbs_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".thumbs")
+    print(thumbs_dir)
     if os.path.exists(thumbs_dir):
         for f in os.listdir(thumbs_dir):
             file_path = os.path.join(thumbs_dir, f)
+            print(file_path)
             try:
                 if os.path.isfile(file_path):
                     os.remove(file_path)
