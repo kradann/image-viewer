@@ -13,6 +13,11 @@ from PyQt5.QtGui import QKeySequence, QFont
 from PyQt5.QtGui import QPixmap, QImage, QPalette, QColor
 from PyQt5.QtWidgets import QPushButton, QShortcut, QDialog
 
+from NewFolderDialog import NewFolderNameDialog
+from FolderList import FolderListWidget
+from FolderSelectionDialog import FolderSelectionDialog
+from Styles import *
+
 # from libdnf.utils import NullLogger
 
 global window
@@ -171,6 +176,8 @@ sign_types = ["eu_speedlimit_100",
               "eu_red_border_circle_unknown",
               "eu_red_border_up_triangle_unknown",
               "eu_white_ground_rectangle"]
+
+
 
 sign_types.sort()
 
@@ -447,156 +454,12 @@ class ImageGridWidget(QtWidgets.QWidget):
         return None
 
 
-class FolderListWidget(QtWidgets.QListWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.customContextMenuRequested.connect(self.show_context_menu)
-        self.status_dict = {}
-        self.highlight_color = QtGui.QColor(0, 120, 215, 180)
-        self.current_item_name = None  # store name, not the QListWidgetItem
-
-    # --- helper: get item by folder name (basename) ---
-    def _find_item_by_name(self, name):
-        for i in range(self.count()):
-            it = self.item(i)
-            if it.text().split()[0] == name:
-                return it
-        return None
-
-    # --- státusz szerinti alap háttér ---
-    def _apply_status_color(self, item):
-        transparency = 125
-        name = item.text().split()[0]
-        status = self.status_dict.get(name)
-        if status == "not_done":
-            item.setBackground(QtGui.QColor(255, 0, 0, transparency))
-        elif status == "in_progress":
-            item.setBackground(QtGui.QColor(255, 255, 0, transparency))
-        elif status == "done":
-            item.setBackground(QtGui.QColor(0, 255, 0, transparency))
-        else:
-            item.setBackground(QtGui.QColor("#303436"))
-
-    # --- státusz beállítása + visszaállítás rendszere ---
-    def set_status(self, item, status_or_none):
-        name = item.text().split()[0]
-        self.status_dict[name] = status_or_none
-        self._apply_status_color(item)
-        # ha ez a jelenlegi név, tartsuk meg a kiemelést
-        if self.current_item_name == name:
-            item.setBackground(self.highlight_color)
-
-    # --- kiemelés név alapján ---
-    def highlight_by_name(self, name):
-        # először alap státuszok visszaállítása
-        for i in range(self.count()):
-            self._apply_status_color(self.item(i))
-
-        # keres és kiemel
-        it = self._find_item_by_name(name)
-        if it:
-            it.setBackground(self.highlight_color)
-            self.setCurrentItem(it)
-            self.current_item_name = name
-            self.scrollToItem(it)
-        else:
-            # ha nincs ilyen elem, töröljük a current nevet
-            self.current_item_name = None
-            self.setCurrentItem(None)
-
-    # --- kattintás ---
-    def mousePressEvent(self, event):
-        super().mousePressEvent(event)
-        if event.button() == QtCore.Qt.LeftButton:
-            item = self.itemAt(event.pos())
-            if item:
-                self.highlight_by_name(item.text().split()[0])
-
-    # --- jobb klikk menü (rövidítve) ---
-    def show_context_menu(self, pos):
-        item = self.itemAt(pos)
-        if not item:
-            return
-
-        menu = QtWidgets.QMenu(self)
-        not_done = menu.addAction("Not Done")
-        in_progress = menu.addAction("In Progress")
-        done = menu.addAction("Done")
-        remove = menu.addAction("Remove Status")
-        delete_folder = menu.addAction("Delete Folder")
-
-        action = menu.exec_(self.mapToGlobal(pos))
-
-        if action == not_done:
-            self.set_status(item, "not_done")
-        elif action == in_progress:
-            self.set_status(item, "in_progress")
-        elif action == done:
-            self.set_status(item, "done")
-        elif action == remove:
-            self.set_status(item, None)
-        elif action == delete_folder:
-            # ... törlés kód (ugyanaz mint korábban) ...
-            pass
-
-    # --- load_status_action (javított, nem használ érvénytelen item objektumokat) ---
-    def load_status_action(self):
-        main_folder = self.window().main_folder
-        loaded_status_action = None
-        if main_folder is not None:
-            load_path = os.path.join(main_folder, main_folder.split('/')[-1] + "_status_action.json")
-            if not os.path.exists(load_path):
-                QtWidgets.QMessageBox.warning(self, "Hiba", f"A fájl nem található:\n{load_path}")
-                return
-            try:
-                with open(load_path, "r") as f:
-                    loaded_status_action = json.load(f)
-            except Exception as e:
-                QtWidgets.QMessageBox.critical(self, "Hiba", f"Nem sikerült betölteni:\n{e}")
-                return
-
-        if loaded_status_action is not None:
-            self.status_dict = loaded_status_action
-            # állítsuk be minden jelenlegi listaelem színét a státusznak megfelelően
-            for i in range(self.count()):
-                self._apply_status_color(self.item(i))
-
-            # ne használjunk régi item objektumot — használjuk a tárolt nevet és keressük újra
-            if self.current_item_name:
-                self.highlight_by_name(self.current_item_name)
-
-            self.window().change_info_label("Status Loaded!")
-
-    def save_status_action(self):
-        main_folder = self.window().main_folder
-        if main_folder is not None:
-            save_path = os.path.join(main_folder, main_folder.split('/')[-1] + "_status_action.json")
-            try:
-                with open(save_path, "w") as f:
-                    json.dump(self.status_dict, f, indent=4)
-                QtWidgets.QMessageBox.information(self, "Siker", f"Státuszok elmentve ide:\n{save_path}")
-                self.window().change_info_label("Status Saved!")
-            except Exception as e:
-                QtWidgets.QMessageBox.critical(self, "Hiba", f"Nem sikerült menteni:\n{e}")
-
-
 class ImageMontageApp(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Image Batch Viewer")
         self.setObjectName("MainWindow")
-        self.setStyleSheet("""
-            QWidget#MainWindow {
-                background: qlineargradient(
-                    spread:pad, x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #6fcf9b,
-                    stop:0.2 #4fa67a,
-                    stop:0.4 #2e2e2e,
-                    stop:1 #1a1a1a
-                );
-            }
-        """)
+        self.setStyleSheet(MAIN_WINDOW_STYLE)
         self.resize(1600, 900)
         self.num_of_col = 6
         self.batch_size = 1000
@@ -647,32 +510,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         save_status_action.triggered.connect(self.folder_list.save_status_action)
         status_menu.addAction(save_status_action)
 
-        self.menu_bar.setStyleSheet("""
-            QMenuBar {
-                background-color: #181a1b;
-                font-size: 18px;
-                
-            }
-
-            QMenuBar::item {
-                color: #3cfb8b;
-                background-color: #181a1b;
-            }
-
-            QMenuBar::item:selected {
-                background-color: #444444;
-            }
-
-            QMenu {
-                background-color: #181a1b;
-                color: #00ff00;
-                font-size: 16px;
-            }
-
-            QMenu::item:selected {
-                background-color: #444444;
-            }
-        """)
+        self.menu_bar.setStyleSheet(MENU_BAR_STYLE)
 
         # self.folder_list.left_click_handler = self.folder_clicked
         # self.folder_list.right_click_handler = self.folder_right_clicked
@@ -734,21 +572,12 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.current_folder_label = QtWidgets.QLabel("Current Folder")
         self.current_folder_label.setAlignment(Qt.AlignLeft)
         self.button_layout_wrapper.addWidget(self.current_folder_label)
-        self.current_folder_label.setStyleSheet("""
-            font-size: 20px;
-            color: #3cfb8b;
-            padding: 10px;
-            background: transparent;
-        """)
+        self.current_folder_label.setStyleSheet(INFO_LABEL_STYLE)
         self.label_row_layout.addWidget(self.current_folder_label)
 
         self.info_label = QtWidgets.QLabel("Bottom Info")
         self.info_label.setAlignment(Qt.AlignLeft)
-        self.info_label.setStyleSheet("""
-            font-size: 20px;
-            color: #3cfb8b;
-            background: transparent;
-        """)
+        self.info_label.setStyleSheet(INFO_LABEL_STYLE)
         self.label_row_layout.addWidget(self.info_label)
 
         self.outer_layout.addLayout(self.label_row_layout)
@@ -757,7 +586,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         button = QtWidgets.QPushButton(name)
         button.setFont(QFont("Arial", 10))
         button.setFixedSize(160, 40)
-        button.setStyleSheet("color: #3cfb8b; background-color: #303436;")
+        button.setStyleSheet(BUTTON_STYLE)
         self.button_panel.addWidget(button)
         button.clicked.connect(func)
 
@@ -816,6 +645,8 @@ class ImageMontageApp(QtWidgets.QWidget):
     def make_new_folder(self):
         if self.main_folder:
             dialog = NewFolderNameDialog(self)
+            if dialog.list_widget.count() == 0:
+                dialog.list_widget.addItems(sign_types)
             if dialog.exec_() == QDialog.Accepted:
                 new_folder_path = os.path.join(self.main_folder, dialog.user_input.text())
 
@@ -1023,7 +854,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             return
 
         # create selection dialog
-        dialog = FolderSelectionDialog(self)
+        dialog = FolderSelectionDialog(self, self.folder_path)
         if dialog.exec_() != QDialog.Accepted or not dialog.selected_folder:
             return
 
@@ -1051,73 +882,9 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.refresh()
 
     def closeEvent(self, event):
+        print(1)
         cleanup_thumbs()
         event.accept()
-
-
-class NewFolderNameDialog(QtWidgets.QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle("New Folder Name")
-        self.setMinimumSize(300, 800)
-        self.user_input = None
-
-        layout = QtWidgets.QVBoxLayout()
-        self.setLayout(layout)
-
-        self.list_widget = QtWidgets.QListWidget(self)
-        self.list_widget.addItems(sign_types)
-        self.list_widget.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
-        layout.addWidget(self.list_widget)
-
-        button_layout = QtWidgets.QHBoxLayout()
-        ok_button = QtWidgets.QPushButton("OK")
-        cancel_button = QtWidgets.QPushButton("Cancel")
-        button_layout.addWidget(ok_button)
-        button_layout.addWidget(cancel_button)
-        layout.addLayout(button_layout)
-
-        ok_button.clicked.connect(self.accept)
-        cancel_button.clicked.connect(self.reject)
-        self.list_widget.itemDoubleClicked.connect(self.accept)
-
-    def accept(self):
-        selected_folder = self.list_widget.currentItem()
-        if selected_folder:
-            self.user_input = selected_folder
-            super().accept()
-        else:
-            QtWidgets.QMessageBox.warning(self, "Error", "No text entered")
-
-
-class FolderSelectionDialog(QtWidgets.QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle("Select Subfolder")
-        self.setMinimumSize(400, 500)
-
-        layout = QtWidgets.QVBoxLayout(self)
-
-        self.list_widget = QtWidgets.QListWidget()
-        self.list_widget.addItems(
-            sorted([f.path.split('/')[-1] for f in os.scandir(os.path.dirname(window.folder_path)) if f.is_dir()]))
-        layout.addWidget(self.list_widget)
-
-        self.ok_button = QPushButton("OK")
-        self.ok_button.clicked.connect(self.accept)
-        layout.addWidget(self.ok_button)
-
-        self.selected_folder = None
-        self.list_widget.itemDoubleClicked.connect(self.accept)
-
-    def accept(self):
-        selected_item = self.list_widget.currentItem()
-        if selected_item:
-            self.selected_folder = selected_item.text()
-        super().accept()
-
-
-
 
 
 if __name__ == "__main__":
