@@ -4,14 +4,18 @@ import io
 import json
 import os
 import shutil
+import subprocess
+import sys
+from http.client import responses
 from typing import Union
 
+import requests
 from PIL import Image
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QKeySequence, QFont
 from PyQt5.QtGui import QPixmap, QImage, QPalette, QColor
-from PyQt5.QtWidgets import QPushButton, QShortcut, QDialog
+from PyQt5.QtWidgets import QPushButton, QShortcut, QDialog, QMessageBox
 
 from NewFolderDialog import NewFolderNameDialog
 from FolderList import FolderListWidget
@@ -178,10 +182,10 @@ sign_types = ["eu_speedlimit_100",
               "eu_red_border_up_triangle_unknown",
               "eu_white_ground_rectangle"]
 
-
-
 sign_types.sort()
 
+APP_VERSION = "0.1.0"
+GITHUB_RELEASE_LINK = "https://api.github.com/repos/kradann/image-viewer/releases/latest"
 
 def refresh_grid():
     global window
@@ -321,6 +325,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.add_button("Selected Check", self.show_only_selected)
         self.move_selected_button, _ = self.add_button("Move Selected Images", self.move_selected)
         self.add_button("Reload scrolling", self.load_v_value)
+        self.add_button("Check for Update", self.check_for_update)
 
         self.button_layout_wrapper.addWidget(self.batch_info_label)
 
@@ -618,6 +623,45 @@ class ImageMontageApp(QtWidgets.QWidget):
         else:
             self.selected_images = set()
             self.refresh()
+
+    def check_for_update(self):
+        try:
+            response = requests.get(GITHUB_RELEASE_LINK, timeout=10)
+
+            if response.status_code == 404:
+                QMessageBox.information(self, "Update", "No releases found")
+                return
+
+            data = response.json()
+            latest_release = data["tag_name"]
+
+            if latest_release != APP_VERSION:
+                QMessageBox.information(self, "Update", f"New version {latest_release} available!")
+
+                assets = data.get("assets", [])
+                if not assets:
+                    QMessageBox.information(self, "Update", "No release asset found!")
+                    return
+
+                download_url = assets[0]["browser_download_url"]
+                file_name = assets[0]["name"]
+
+                r = requests.get(download_url, stream=True)
+                with open(file_name, "wb") as f:
+                    for chunk in r.iter_content(chunk_size=8192):
+                        if chunk:
+                            f.write(chunk)
+
+                QMessageBox.information(self, "Update", f"Downloaded {file_name} successfully!")
+
+                new_path = os.path.abspath(file_name)
+                subprocess.Popen([new_path])
+                sys.exit(0)
+            else:
+                QMessageBox.information(self, "Update", "Already up to date!")
+        except Exception as e:
+            QMessageBox.information(self, "Update", f"An error occurred: {e}")
+
 
     def closeEvent(self, event):
         print(1)
