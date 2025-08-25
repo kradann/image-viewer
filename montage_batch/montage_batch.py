@@ -10,7 +10,6 @@ from http.client import responses
 from typing import Union
 
 import requests
-from PIL import Image
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QKeySequence, QFont
@@ -20,12 +19,16 @@ from PyQt5.QtWidgets import QPushButton, QShortcut, QDialog, QMessageBox
 from NewFolderDialog import NewFolderNameDialog
 from FolderList import FolderListWidget
 from FolderSelectionDialog import FolderSelectionDialog
-from ImageGrid import ImageGridWidget,ImageBatchLoader, ImageLoaderThread,ClickableLabel
+from ImageGrid import ImageGridWidget,ImageBatchLoader, ImageLoaderThread
 from Styles import *
 
 # from libdnf.utils import NullLogger
 
 global window
+
+def refresh_grid():
+    global window
+    window.refresh()
 
 sign_types = ["eu_speedlimit_100",
               "eu_speedlimit_110",
@@ -187,27 +190,15 @@ sign_types.sort()
 APP_VERSION = "0.1.0"
 GITHUB_RELEASE_LINK = "https://api.github.com/repos/kradann/image-viewer/releases/latest"
 
-def refresh_grid():
-    global window
-    window.refresh()
 
-
-def pil_to_qpixmap(pil_image):
-    """Convert PIL Image to QPixmap"""
-    if pil_image.mode != "RGB":
-        pil_image = pil_image.convert("RGB")
-    buffer = io.BytesIO()
-    pil_image.save(buffer, format="PNG")
-    qimg = QImage.fromData(buffer.getvalue(), "PNG")
-    return QPixmap.fromImage(qimg)
 
 def cleanup_thumbs():
     thumbs_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".thumbs")
-    print(thumbs_dir)
+    #print(thumbs_dir)
     if os.path.exists(thumbs_dir):
         for f in os.listdir(thumbs_dir):
             file_path = os.path.join(thumbs_dir, f)
-            print(file_path)
+            #print(file_path)
             try:
                 if os.path.isfile(file_path):
                     os.remove(file_path)
@@ -663,10 +654,120 @@ class ImageMontageApp(QtWidgets.QWidget):
             QMessageBox.information(self, "Update", f"An error occurred: {e}")
 
 
+
     def closeEvent(self, event):
         print(1)
         cleanup_thumbs()
         event.accept()
+
+
+class ClickableLabel(QtWidgets.QLabel):
+    clicked = QtCore.pyqtSignal()
+
+    def __init__(self, img_path, parent=None):
+        super().__init__(parent)
+        self.img_path = img_path
+        self.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
+        self.setFrameShape(QtWidgets.QFrame.Box)
+        self.selected = False
+        self.cut_mode = None  # 'vertical' or 'horizontal'
+        self.preview_pos = None
+        self.pixmap_backup = None
+        self.setMouseTracking(True)
+
+    def mouseMoveEvent(self, event):
+        if self.cut_mode:
+            self.preview_pos = event.pos()
+            self.update()
+        else:
+            event.ignore()
+
+    def mousePressEvent(self, event):
+        if event.button() == QtCore.Qt.RightButton:
+            self.show_context_menu(event.pos())
+        elif event.button() == QtCore.Qt.LeftButton and self.cut_mode and self.preview_pos:
+            self.cut_at_position(event.pos())  # csak az adott label pixmap-jét vágjuk
+        else:
+            super().mousePressEvent(event)
+
+    def show_context_menu(self, pos):
+        menu = QtWidgets.QMenu(self)
+        vertical_cut = menu.addAction("Vertical Cut")
+        horizontal_cut = menu.addAction("Horizontal Cut")
+        action = menu.exec_(self.mapToGlobal(pos))
+
+        if action == vertical_cut:
+            self.cut_mode = 'vertical'
+        elif action == horizontal_cut:
+            self.cut_mode = 'horizontal'
+
+    def add_red_boarder(self):
+        self.setStyleSheet("border: 3px solid red;" if self.selected else "")
+
+    def cut_at_position(self, pos):
+        pixmap = self.pixmap()
+        # if pixmap is None:
+        # return
+        print("asd")
+        if self.pixmap_backup is None:
+            self.pixmap_backup = pixmap.copy()
+
+        x = pos.x()
+        y = pos.y()
+        width = pixmap.width()
+        height = pixmap.height()
+
+        if self.cut_mode == 'vertical':
+            rect_0 = QtCore.QRect(0, 0, x, height)
+            rect_1 = QtCore.QRect(x, 0, width, height)
+        else:  # horizontal
+            rect_0 = QtCore.QRect(0, 0, width, y)
+            rect_1 = QtCore.QRect(0, y, width, height)
+        #print(rect_0, rect_1)
+        cropped_0 = pixmap.copy(rect_0)
+        cropped_1 = pixmap.copy(rect_1)
+
+        first_part = ".".join(self.img_path.split(".")[:-1])
+        ext = self.img_path.split(".")[-1]
+
+        name_idx = 2
+        while True:
+            new_path = "{}_{}.{}".format(first_part, name_idx, ext)
+            if not os.path.exists(new_path):
+                break
+            else:
+                name_idx += 1
+
+        # print(self.img_path)
+        # print(new_path)
+
+        cropped_0.save(self.img_path)
+        cropped_1.save(new_path)
+        # cropped_1.save("./mama.png")
+        # self.setPixmap(cropped.scaled(150, 150, QtCore.Qt.KeepAspectRatio))
+
+        self.cut_mode = None
+        self.preview_pos = None
+        self.update()
+        thumb_path = ImageLoaderThread.get_thumb_path(self.img_path)
+        ImageLoaderThread.generate_thumbnail(self.img_path, thumb_path)
+        self.setPixmap(QtGui.QPixmap(thumb_path))
+        refresh_grid()
+
+    def paintEvent(self, event):
+        super().paintEvent(event)
+        if self.cut_mode and self.preview_pos:
+            painter = QtGui.QPainter(self)
+            pen = QtGui.QPen(QtCore.Qt.red, 2, QtCore.Qt.DashLine)
+            painter.setPen(pen)
+
+            if self.cut_mode == 'vertical':
+                painter.drawLine(self.preview_pos.x(), 0, self.preview_pos.x(), self.height())
+            else:  # horizontal
+                painter.drawLine(0, self.preview_pos.y(), self.width(), self.preview_pos.y())
+
+            painter.end()
+
 
 
 if __name__ == "__main__":
