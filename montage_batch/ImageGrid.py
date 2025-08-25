@@ -128,9 +128,12 @@ class ImageGridWidget(QtWidgets.QWidget):
                     label_pos = label.mapTo(self, QtCore.QPoint(0, 0))
                     label_rect = QtCore.QRect(label_pos, label.size())
                     if selection_rect.intersects(label_rect):
-                        label.selected = True
+                        label.selected = not label.selected
                         label.add_red_boarder()
-                        self.parent_app.selected_images.add(label.img_path)
+                        if label.selected:
+                            self.parent_app.selected_images.add(label.img_path)
+                        else:
+                            self.parent_app.selected_images.discard(label.img_path)
 
             self.drag_selecting = False
             self.clicked_label = None
