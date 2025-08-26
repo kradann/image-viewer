@@ -57,6 +57,7 @@ class ImageBatchLoader(object):
         self.image_paths = self.collect_image_paths()
         self.current_batch_idx = start_batch_idx
         self.number_of_batches = len(self.image_paths)
+        self.label = None
 
     def collect_image_paths(self):
         image_paths = list()

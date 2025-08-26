@@ -18,7 +18,7 @@ from PyQt5.QtWidgets import QPushButton, QShortcut, QDialog, QMessageBox
 
 from NewFolderDialog import NewFolderNameDialog
 from FolderList import FolderListWidget
-from FolderSelectionDialog import FolderSelectionDialog
+from FolderSelectionDialog import FolderSelectionDialog, sign_types
 from ImageGrid import ImageGridWidget,ImageBatchLoader, ImageLoaderThread
 from Styles import *
 
@@ -30,162 +30,7 @@ def refresh_grid():
     global window
     window.refresh()
 
-sign_types = ["eu_speedlimit_100",
-              "eu_speedlimit_110",
-              "eu_speedlimit_120",
-              "eu_speedlimit_130",
-              "eu_speedlimit_30",
-              "eu_speedlimit_40",
-              "eu_speedlimit_50",
-              "eu_speedlimit_60",
-              "eu_speedlimit_70",
-              "eu_speedlimit_80",
-              "eu_speedlimit_90",
-              "eu_overtaking_not_allowed",
-              "eu_overtaking_not_allowed_by_trucks",
-              "eu_end_of_restrictions",
-              "eu_end_of_overtaking_restriction",
-              "eu_end_of_overtaking_by_trucks_restriction",
-              "eu_end_of_speedlimit_100",
-              "eu_end_of_speedlimit_110",
-              "eu_end_of_speedlimit_120",
-              "eu_end_of_speedlimit_130",
-              "eu_end_of_speedlimit_30",
-              "eu_end_of_speedlimit_40",
-              "eu_end_of_speedlimit_50",
-              "eu_end_of_speedlimit_60",
-              "eu_end_of_speedlimit_70",
-              "eu_end_of_speedlimit_80",
-              "eu_end_of_speedlimit_90",
-              "eu_zone_of_speedlimit_20",
-              "eu_zone_of_speedlimit_30",
-              "eu_zone_of_speedlimit_40",
-              "eu_end_of_zone_of_speedlimit_20",
-              "eu_end_of_zone_of_speedlimit_30",
-              "eu_end_of_zone_of_speedlimit_40",
-              "eu_minimum_speed_100",
-              "eu_minimum_speed_110",
-              "eu_minimum_speed_120",
-              "eu_minimum_speed_130",
-              "eu_minimum_speed_30",
-              "eu_minimum_speed_40",
-              "eu_minimum_speed_50",
-              "eu_minimum_speed_60",
-              "eu_minimum_speed_70",
-              "eu_minimum_speed_80",
-              "eu_minimum_speed_90",
-              "eu_end_of_eu_minimum_speed_100",
-              "eu_end_of_eu_minimum_speed_110",
-              "eu_end_of_eu_minimum_speed_120",
-              "eu_end_of_eu_minimum_speed_130",
-              "eu_end_of_eu_minimum_speed_30",
-              "eu_end_of_eu_minimum_speed_40",
-              "eu_end_of_eu_minimum_speed_50",
-              "eu_end_of_eu_minimum_speed_60",
-              "eu_end_of_eu_minimum_speed_70",
-              "eu_end_of_eu_minimum_speed_80",
-              "eu_end_of_eu_minimum_speed_90",
-              "eu_city_limit_entry",
-              "eu_city_limit_exit",
-              "eu_residential_area",
-              "eu_end_of_residential_area",
-              "eu_no_entry",
-              "eu_road_closed",
-              "eu_axle_weight_restriction",
-              "eu_weight_restriction",
-              "eu_height_restriction",
-              "eu_length_restriction",
-              "eu_width_restriction",
-              "eu_minimal_distance",
-              "eu_minimal_distance_trucks",
-              "eu_no_hazardous_material",
-              "eu_hazardous_material_allowed",
-              "eu_no_water_pollutants",
-              "eu_water_pollutants_allowed",
-              "eu_giveway",
-              "eu_stop",
-              "eu_priority_crossing_ahead",
-              "eu_yield_to_right",
-              "eu_priorityroad_ahead",
-              "eu_priorityroad_ends",
-              "eu_motorway",
-              "eu_end_of_motorway",
-              "eu_highway",
-              "eu_end_of_highway",
-              "eu_dangerous_situation",
-              "eu_warning_of_curve",
-              "eu_warning_of_double_curve",
-              "eu_warning_of_cattle",
-              "eu_warning_of_animals",
-              "eu_road_constriction",
-              "eu_road_bump",
-              "eu_warning_of_wind",
-              "eu_roadworks",
-              "eu_warning_of_skidding",
-              "eu_warning_of_bikes",
-              "eu_warning_of_trains",
-              "eu_warning_of_pedestrian_crossing",
-              "eu_warning_of_pedestrians",
-              "eu_warning_of_children",
-              "eu_pedestrian_crossing",
-              "eu_warning_of_slope",
-              "eu_warning_of_traffic_jam",
-              "eu_warning_of_roundabouts",
-              "eu_warning_of_crossing",
-              "eu_warning_of_ice",
-              "eu_height_restriction",
-              "eu_warning_of_tunnel",
-              "eu_warning_of_two_way",
-              "eu_warning_of_traffic_lights",
-              "eu_warning_of_draw_bridge",
-              "eu_warning_of_frogs",
-              "eu_warning_of_planes",
-              "eu_warning_of_gravel",
-              "eu_warning_of_trees",
-              "eu_rock_slides",
-              "eu_merging_lane",
-              "eu_warning_of_pier",
-              "eu_warning_of_accidents",
-              "eu_dir_sign_diagonal",
-              "eu_roundabout",
-              "eu_dir_sign_side",
-              "eu_dir_sign_curve",
-              "eu_dir_sign_up",
-              "eu_one_way_street",
-              "eu_oncoming_precedence",
-              "eu_precedence_over_oncoming",
-              "eu_no_turning",
-              "eu_additional_vehicle_a",
-              "eu_additional_vehicle_b",
-              "eu_additional_hazardous",
-              "eu_additional_rain",
-              "eu_additional_snow",
-              "eu_additional_rainsnow",
-              "eu_additional_wet_road",
-              "eu_additional_day_night",
-              "eu_additional_arrow_to_exit",
-              "eu_additiona_validity_ends_a",
-              "eu_additiona_validity_ends_b",
-              "eu_additiona_validity_ends_c",
-              "eu_additiona_validity_ends_d",
-              "eu_additional_stop_in_dist",
-              "eu_additional_dist",
-              "eu_additional_timeframe",
-              "eu_additional_weight",
-              "eu_additional_school",
-              "eu_additional_zone",
-              "eu_additional_tree",
-              "eu_additional_trucks",
-              "eu_additional_other",
-              "eu_direction_position_indication_unknown",
-              "eu_blue_ground_circle_unknown",
-              "eu_blue_ground_rectangle_unknown",
-              "eu_blue_border_rectangle_unknown",
-              "eu_red_border_circle_unknown",
-              "eu_red_border_up_triangle_unknown",
-              "eu_white_ground_rectangle"]
 
-sign_types.sort()
 
 APP_VERSION = "0.1.0"
 GITHUB_RELEASE_LINK = "https://api.github.com/repos/kradann/image-viewer/releases/latest"
@@ -220,6 +65,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.loader = None
         self.folder_path = None
         self.main_folder = None  # Folder that stores the subfolders
+        self.base_folder = None # Only use for JSON
         self.thread = None
         self.isAllSelected = False
         self.subfolders = None
@@ -229,6 +75,9 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.batch_info_label = QtWidgets.QLabel("Batch Info")
         self.batch_info_label.setStyleSheet(BATCH_INFO_STYLE)
         self.batch_info_label.setAlignment(Qt.AlignCenter)
+        self.json = None
+        self.json_data = None
+        self.is_JSON_active = False
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.update_selected_check_button)
         self.timer.start(500)
@@ -251,6 +100,9 @@ class ImageMontageApp(QtWidgets.QWidget):
         load_folder_action = QtWidgets.QAction("Load Folder", self)
         load_folder_action.triggered.connect(self.load_folder)
         file_menu.addAction(load_folder_action)
+        load_json_action = QtWidgets.QAction("Load JSON", self)
+        load_json_action.triggered.connect(self.load_json)
+        file_menu.addAction(load_json_action)
 
         status_menu = self.menu_bar.addMenu("Status")
 
@@ -335,6 +187,8 @@ class ImageMontageApp(QtWidgets.QWidget):
 
         self.outer_layout.addLayout(self.label_row_layout)
 
+
+
     def add_button(self, name: str, func, shortcut: Union[str, tuple] = None):
         button = QtWidgets.QPushButton(name)
         button.setFont(QFont("Arial", 10))
@@ -356,7 +210,7 @@ class ImageMontageApp(QtWidgets.QWidget):
 
     def load_folder(self):
         self.main_folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Folder")
-
+        self.is_JSON_active = False
         self.subfolders = [f for f in os.listdir(self.main_folder)
                            if os.path.isdir(os.path.join(self.main_folder, f))]
         self.subfolders.sort()
@@ -388,12 +242,20 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.folder_list.setFont(font)
 
     def folder_clicked(self, item):
-        selected_subfolder = os.path.join(self.main_folder, item.text().split()[0])
-        #self.folder_list.set_item_background(item, "black")
-        print(selected_subfolder)
-        self.folder_path = selected_subfolder
-        self.loader = ImageBatchLoader(self.folder_path, batch_size=self.batch_size)
-        self.show_batch()
+        if not self.is_JSON_active:
+            selected_subfolder = os.path.join(self.main_folder, item.text().split()[0])
+            #self.folder_list.set_item_background(item, "black")
+            print(selected_subfolder)
+            self.folder_path = selected_subfolder
+            self.loader = ImageBatchLoader(self.folder_path, batch_size=self.batch_size)
+            self.show_batch()
+        else:
+            selected_values = item.text()
+
+            self.set_loader_for_json(selected_values)
+
+            self.show_batch()
+
 
     def make_new_folder(self):
         if self.main_folder:
@@ -470,14 +332,19 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.scroll_area.verticalScrollBar().setValue(self.vertical_value)
 
     def refresh(self):
-        if self.folder_path:
-            print(self.folder_path)
+        if not self.is_JSON_active:
+            if self.folder_path:
+                print(self.folder_path)
+                self.vertical_value = self.scroll_area.verticalScrollBar().value()
+                self.loader = ImageBatchLoader(self.folder_path,
+                                               batch_size=self.batch_size,
+                                               start_batch_idx=self.loader.current_batch_idx)
+                self.show_batch()
+                self.load_subfolders(self.main_folder)
+        else:
             self.vertical_value = self.scroll_area.verticalScrollBar().value()
-            self.loader = ImageBatchLoader(self.folder_path,
-                                           batch_size=self.batch_size,
-                                           start_batch_idx=self.loader.current_batch_idx)
+            self.set_loader_for_json(self.folder_list.currentItem().text())
             self.show_batch()
-            self.load_subfolders(self.main_folder)
 
     def clear_images(self):
         for label in self.labels:
@@ -496,7 +363,8 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.thread = ImageLoaderThread(batch)
         self.thread.image_loaded.connect(self.add_image_to_layout)
         self.thread.start()
-        self.window().current_folder_label.setText("Current folder: " + self.window().folder_path.split("/")[-1])
+        if not self.is_JSON_active:
+            self.window().current_folder_label.setText("Current folder: " + self.window().folder_path.split("/")[-1])
 
     def add_image_to_layout(self, idx, pixmap, _path):
         label = ClickableLabel(_path)
@@ -574,46 +442,73 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.thread.start()
 
     def move_selected(self):
-        # check if folder loadded
-        if self.main_folder is None:
-            self.change_info_label("Error: No folder selected")
-            return
+        if not self.is_JSON_active:
+            # check if folder loadded
+            if self.main_folder is None:
+                self.change_info_label("Error: No folder selected")
+                return
 
-        # load subfolders
-        '''subfolders = [f for f in os.listdir(self.main_folder) if os.path.isdir(os.path.join(self.main_folder, f))]
-        subfolders.sort()'''
+            # load subfolders
+            '''subfolders = [f for f in os.listdir(self.main_folder) if os.path.isdir(os.path.join(self.main_folder, f))]
+            subfolders.sort()'''
 
-        if not self.subfolders:
-            QtWidgets.QMessageBox.warning(self, "Error", "No subfolders found")
-            return
+            if not self.subfolders:
+                QtWidgets.QMessageBox.warning(self, "Error", "No subfolders found")
+                return
 
-        # create selection dialog
-        dialog = FolderSelectionDialog(self, self.folder_path)
-        if dialog.exec_() != QDialog.Accepted or not dialog.selected_folder:
-            return
+            # create selection dialog
+            dialog = FolderSelectionDialog(self)
+            if dialog.exec_() != QDialog.Accepted or not dialog.selected_folder:
+                return
 
-        output_folder = os.path.join(self.main_folder, dialog.selected_folder)
+            output_folder = os.path.join(self.main_folder, dialog.selected_folder)
+            if not os.path.exists(output_folder):
+                os.makedirs(output_folder, exist_ok=True)
 
-        # move images to selected folders
-        if self.selected_images:
-            for img_path in sorted(self.selected_images):
-                self.dropped_selected.discard(img_path)
-                img_name = os.path.basename(img_path)
-                dst_path = os.path.join(output_folder, img_name)
-                self.change_info_label(
-                    "moved from: {}, to: {}".format(img_path.split('/')[-2], dst_path.split('/')[-2]))
-                # print("moved from: {}, to: {}".format(img_path, dst_path))
-                shutil.move(img_path, dst_path)
+            # move images to selected folders
+            if self.selected_images:
+                for img_path in sorted(self.selected_images):
+                    self.dropped_selected.discard(img_path)
+                    img_name = os.path.basename(img_path)
+                    dst_path = os.path.join(output_folder, img_name)
+                    self.change_info_label(
+                        "moved from: {}, to: {}".format(img_path.split('/')[-2], dst_path.split('/')[-2]))
+                    # print("moved from: {}, to: {}".format(img_path, dst_path))
+                    shutil.move(img_path, dst_path)
+
+            else:
+                self.change_info_label("No selected images found!")
+
+            # check if images left
+            if len(self.dropped_selected) > 0:
+                self.selected_images = copy.deepcopy(self.dropped_selected)
+                self.show_only_selected()
+            else:
+                self.selected_images = set()
+                self.refresh()
         else:
-            self.change_info_label("No selected images found!")
-
-        # check if images left
-        if len(self.dropped_selected) > 0:
-            self.selected_images = copy.deepcopy(self.dropped_selected)
-            self.show_only_selected()
-        else:
-            self.selected_images = set()
-            self.refresh()
+            dialog = FolderSelectionDialog(self, self.loader.label)
+            if dialog.exec_() != QDialog.Accepted or not dialog.selected_folder:
+                return
+            if self.selected_images:
+                for img_path in sorted(self.selected_images):
+                    self.dropped_selected.discard(img_path)
+                    dst_path = os.path.join(os.path.dirname(os.path.dirname(img_path)),dialog.selected_folder)
+                    if not os.path.exists(dst_path):
+                        os.makedirs(dst_path, exist_ok=True)
+                    self.change_info_label(
+                        "moved from: {}, to: {}".format(img_path.split('/')[-2], dst_path.split('/')[-2]))
+                    shutil.move(img_path, dst_path)
+                    if img_path in self.json_data:
+                        del self.json_data[img_path]
+            else:
+                self.change_info_label("No selected images found!")
+            if len(self.dropped_selected) > 0:
+                self.selected_images = copy.deepcopy(self.dropped_selected)
+                self.show_only_selected()
+            else:
+                self.selected_images = set()
+                self.refresh()
 
     def check_for_update(self):
         try:
@@ -653,10 +548,42 @@ class ImageMontageApp(QtWidgets.QWidget):
         except Exception as e:
             QMessageBox.information(self, "Update", f"An error occurred: {e}")
 
+    def load_json(self):
+        values_set = set()
+        self.json = QtWidgets.QFileDialog.getOpenFileName(self, "Select JSON","","JSON files (*.json);;All files (*)")
+        if self.json:
+            try:
+                with open(self.json[0],"r", encoding="utf-8") as json_file:
+                    self.json_data = json.load(json_file)
+                values_set = sorted(set(self.json_data.values()))
+            except Exception as e:
+                QMessageBox.information(self, "Error", f"Unable to load JSON: {e}")
+        self.is_JSON_active = True
+        self.base_folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Base Folder")
+
+        self.folder_list.clear()
+        for value in values_set:
+            self.folder_list.addItem(value)
+
+
+        print(values_set)
+
+    def set_loader_for_json(self, selected_values):
+        matched_images = [img_path for img_path, label in self.json_data.items() if
+                          label == selected_values and os.path.exists(img_path)]
+        # print(f"Found {len(matched_images)} images with label {selected_values}")
+        self.loader = ImageBatchLoader.__new__(ImageBatchLoader)  # create empty
+        self.loader.image_paths = matched_images
+        self.loader.batch_size = self.batch_size
+        self.loader.current_batch_idx = 0
+        self.loader.number_of_batches = len(matched_images)
+        self.loader.label = selected_values
 
 
     def closeEvent(self, event):
-        print(1)
+        if self.is_JSON_active:
+            with open(self.json[0],"w", encoding="utf-8") as json_file:
+                json.dump(self.json_data, json_file, indent=2, ensure_ascii=False)
         cleanup_thumbs()
         event.accept()
 
