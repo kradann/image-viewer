@@ -19,31 +19,30 @@ from PyQt5.QtWidgets import QPushButton, QShortcut, QDialog, QMessageBox
 from NewFolderDialog import NewFolderNameDialog
 from FolderList import FolderListWidget
 from FolderSelectionDialog import FolderSelectionDialog, sign_types
-from ImageGrid import ImageGridWidget,ImageBatchLoader, ImageLoaderThread
+from ImageGrid import ImageGridWidget, ImageBatchLoader, ImageLoaderThread
 from Styles import *
 
 # from libdnf.utils import NullLogger
 
 global window
 
+
 def refresh_grid():
     global window
     window.refresh()
-
 
 
 APP_VERSION = "0.1.0"
 GITHUB_RELEASE_LINK = "https://api.github.com/repos/kradann/image-viewer/releases/latest"
 
 
-
 def cleanup_thumbs():
     thumbs_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".thumbs")
-    #print(thumbs_dir)
+    # print(thumbs_dir)
     if os.path.exists(thumbs_dir):
         for f in os.listdir(thumbs_dir):
             file_path = os.path.join(thumbs_dir, f)
-            #print(file_path)
+            # print(file_path)
             try:
                 if os.path.isfile(file_path):
                     os.remove(file_path)
@@ -65,7 +64,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.loader = None
         self.folder_path = None
         self.main_folder = None  # Folder that stores the subfolders
-        self.base_folder = None # Only use for JSON
+        self.base_folder = None  # Only use for JSON
         self.thread = None
         self.isAllSelected = False
         self.subfolders = None
@@ -187,8 +186,6 @@ class ImageMontageApp(QtWidgets.QWidget):
 
         self.outer_layout.addLayout(self.label_row_layout)
 
-
-
     def add_button(self, name: str, func, shortcut: Union[str, tuple] = None):
         button = QtWidgets.QPushButton(name)
         button.setFont(QFont("Arial", 10))
@@ -244,7 +241,7 @@ class ImageMontageApp(QtWidgets.QWidget):
     def folder_clicked(self, item):
         if not self.is_JSON_active:
             selected_subfolder = os.path.join(self.main_folder, item.text().split()[0])
-            #self.folder_list.set_item_background(item, "black")
+            # self.folder_list.set_item_background(item, "black")
             print(selected_subfolder)
             self.folder_path = selected_subfolder
             self.loader = ImageBatchLoader(self.folder_path, batch_size=self.batch_size)
@@ -255,7 +252,6 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.set_loader_for_json(selected_values)
 
             self.show_batch()
-
 
     def make_new_folder(self):
         if self.main_folder:
@@ -422,13 +418,13 @@ class ImageMontageApp(QtWidgets.QWidget):
         if self.loader:
             self.loader.next_batch()
             self.show_batch()
-            #self.batch_info_label.setText( f"Batch: {self.loader.current_batch_idx + 1} / {self.loader.number_of_batches // 1000 + 1}")
+            # self.batch_info_label.setText( f"Batch: {self.loader.current_batch_idx + 1} / {self.loader.number_of_batches // 1000 + 1}")
 
     def previous_batch(self):
         if self.loader:
             self.loader.previous_batch()
             self.show_batch()
-            #self.batch_info_label.setText( f"Batch: {self.loader.current_batch_idx + 1} / {self.loader.number_of_batches // 1000 + 1}")
+            # self.batch_info_label.setText( f"Batch: {self.loader.current_batch_idx + 1} / {self.loader.number_of_batches // 1000 + 1}")
 
     def show_only_selected(self):
         if not self.loader:
@@ -493,7 +489,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             if self.selected_images:
                 for img_path in sorted(self.selected_images):
                     self.dropped_selected.discard(img_path)
-                    dst_path = os.path.join(os.path.dirname(os.path.dirname(img_path)),dialog.selected_folder)
+                    dst_path = os.path.join(os.path.dirname(os.path.dirname(img_path)), dialog.selected_folder)
                     if not os.path.exists(dst_path):
                         os.makedirs(dst_path, exist_ok=True)
                     self.change_info_label(
@@ -550,10 +546,10 @@ class ImageMontageApp(QtWidgets.QWidget):
 
     def load_json(self):
         values_set = set()
-        self.json = QtWidgets.QFileDialog.getOpenFileName(self, "Select JSON","","JSON files (*.json);;All files (*)")
+        self.json = QtWidgets.QFileDialog.getOpenFileName(self, "Select JSON", "", "JSON files (*.json);;All files (*)")
         if self.json:
             try:
-                with open(self.json[0],"r", encoding="utf-8") as json_file:
+                with open(self.json[0], "r", encoding="utf-8") as json_file:
                     self.json_data = json.load(json_file)
                 values_set = sorted(set(self.json_data.values()))
             except Exception as e:
@@ -565,13 +561,12 @@ class ImageMontageApp(QtWidgets.QWidget):
         for value in values_set:
             self.folder_list.addItem(value)
 
-
         print(values_set)
 
     def set_loader_for_json(self, selected_values):
-        matched_images = [img_path for img_path, label in self.json_data.items() if
-                          label == selected_values and os.path.exists(img_path)]
-        # print(f"Found {len(matched_images)} images with label {selected_values}")
+        matched_images = [os.path.join(self.base_folder, img_path) for img_path, label in self.json_data.items() if
+                          label == selected_values and os.path.exists(os.path.join(self.base_folder, img_path))]
+        print(f"Found {len(matched_images)} images with label {selected_values}")
         self.loader = ImageBatchLoader.__new__(ImageBatchLoader)  # create empty
         self.loader.image_paths = matched_images
         self.loader.batch_size = self.batch_size
@@ -579,10 +574,9 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.loader.number_of_batches = len(matched_images)
         self.loader.label = selected_values
 
-
     def closeEvent(self, event):
         if self.is_JSON_active:
-            with open(self.json[0],"w", encoding="utf-8") as json_file:
+            with open(self.json[0], "w", encoding="utf-8") as json_file:
                 json.dump(self.json_data, json_file, indent=2, ensure_ascii=False)
         cleanup_thumbs()
         event.accept()
@@ -650,7 +644,7 @@ class ClickableLabel(QtWidgets.QLabel):
         else:  # horizontal
             rect_0 = QtCore.QRect(0, 0, width, y)
             rect_1 = QtCore.QRect(0, y, width, height)
-        #print(rect_0, rect_1)
+        # print(rect_0, rect_1)
         cropped_0 = pixmap.copy(rect_0)
         cropped_1 = pixmap.copy(rect_1)
 
@@ -694,7 +688,6 @@ class ClickableLabel(QtWidgets.QLabel):
                 painter.drawLine(0, self.preview_pos.y(), self.width(), self.preview_pos.y())
 
             painter.end()
-
 
 
 if __name__ == "__main__":
