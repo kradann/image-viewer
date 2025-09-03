@@ -488,13 +488,18 @@ class ImageMontageApp(QtWidgets.QWidget):
                 return
             if self.selected_images:
                 for img_path in sorted(self.selected_images):
+                    image_name = os.path.basename(img_path)
                     self.dropped_selected.discard(img_path)
                     dst_path = os.path.join(os.path.dirname(os.path.dirname(img_path)), dialog.selected_folder)
-                    if not os.path.exists(dst_path):
-                        os.makedirs(dst_path, exist_ok=True)
-                    self.change_info_label(
-                        "moved from: {}, to: {}".format(img_path.split('/')[-2], dst_path.split('/')[-2]))
-                    shutil.move(img_path, dst_path)
+                    os.makedirs(dst_path, exist_ok=True)
+
+                    while os.path.exists(os.path.join(dst_path, image_name)):
+                        base, ext = os.path.splitext(image_name)
+                        image_name = base + "_1" + ext
+
+                    self.change_info_label("moved from: {}, to: {}".format("/".join(img_path.split('/')[-3:-1]),
+                                                                               ("/".join(dst_path.split('/')[-2:]))))
+                    shutil.move(img_path, os.path.join(dst_path, image_name))
                     if img_path in self.json_data:
                         del self.json_data[img_path]
             else:
