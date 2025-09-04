@@ -3,8 +3,6 @@ import os
 from PyQt5.QtWidgets import QPushButton
 
 sign_types = [
-    "delete",
-    "canceled",
     "unknown_sign",
     "eu_speedlimit_5",
     "eu_speedlimit_10",
@@ -85,9 +83,9 @@ sign_types = [
     "eu_highway",
     "eu_end_of_highway",
 
-    "eu_additional_vehicle_a",
-    "eu_additional_vehicle_a_trucks",
-    "eu_additional_vehicle_b",
+    "eu_additional_vehicle_car",
+    "eu_additional_vehicle_truck",
+    "eu_additional_vehicle_other",
     "eu_additional_hazardous",
     "eu_additional_rain",
     "eu_additional_snow",
@@ -107,7 +105,9 @@ sign_types = [
     "eu_additional_zone",
     "eu_additional_zone_end",
     "eu_additional_tree",
-    "eu_additional_trucks",
+    "eu_additional_except_cars",
+    "eu_additional_except_trucks",
+    "eu_additional_except_others",
     "eu_additional_other",
 
     "eu_warning_of_curve",
@@ -157,12 +157,10 @@ sign_types = [
 
     "eu_roadworks",
     "eu_pedestrian_crossing",
-
     "eu_rock_slides",
     "eu_merging_lane",
     "eu_road_constriction",
     "eu_road_bump",
-
     "eu_road_closed",
 
     "eu_minimal_distance",
