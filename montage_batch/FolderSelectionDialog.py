@@ -3,6 +3,8 @@ import os
 from PyQt5.QtWidgets import QPushButton
 
 sign_types = [
+    "delete",
+    "canceled"
     "unknown_sign",
     "eu_speedlimit_5",
     "eu_speedlimit_10",
