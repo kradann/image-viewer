@@ -3,6 +3,7 @@ import hashlib
 import io
 import json
 import os
+import pprint
 import shutil
 import subprocess
 import sys
@@ -159,7 +160,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         # self.add_button("Load Folder", self.load_folder)
         self.add_button("Previous Folder", self.prev_folder)
         self.add_button("Next Folder", self.next_folder)
-        self.add_button("Make new Folder", self.make_new_folder)
+        #self.add_button("Make new Folder", self.make_new_folder)
         self.add_button("Previous Batch", self.previous_batch)
         self.add_button("Next Batch", self.next_batch)
         self.add_button("Current Batch", self.show_batch)
@@ -208,25 +209,52 @@ class ImageMontageApp(QtWidgets.QWidget):
     def load_folder(self):
         self.main_folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Folder")
         self.is_JSON_active = False
+
         self.subfolders = [f for f in os.listdir(self.main_folder)
                            if os.path.isdir(os.path.join(self.main_folder, f))]
         self.subfolders.sort()
+        print(self.subfolders)
         # print("loaded folder: {}".format(self.folder_path))
         if self.main_folder:
-            self.folder_path = os.path.join(self.main_folder, self.subfolders[0])
-            self.load_subfolders(self.main_folder)
-            self.loader = ImageBatchLoader(self.folder_path, batch_size=self.batch_size)
-            self.show_batch()
-            self.change_info_label("Folder loaded!")
+            if any(sub in sign_types for sub in self.subfolders):
+                self.folder_path = os.path.join(self.main_folder, self.subfolders[0])
+                self.load_subfolders(self.main_folder)
+                self.loader = ImageBatchLoader(self.folder_path, batch_size=self.batch_size)
+                self.show_batch()
+                self.change_info_label("Folder loaded!")
+            else:
+                sign_types_in_all_region = self.collect_sign_types()
+                sign_types_in_all_region.sort()
+                pprint.pprint(sign_types_in_all_region)
+
+    def collect_sign_types(self):
+        regions = [os.path.join(self.main_folder,d)
+                   for d in os.listdir(self.main_folder)
+                   if os.path.isdir(os.path.join(self.main_folder,d))]
+
+        all_sign_types = set()
+        for region in regions:
+            for sign_type in os.listdir(region):
+                sign_type_path = os.path.join(region, sign_type)
+                if os.path.isdir(sign_type_path):
+                    all_sign_types.add(sign_type)
+        return list(all_sign_types)
 
     def load_subfolders(self, path):
         self.folder_list.clear()
         folder_infos = []
-        for name in os.listdir(path):
-            full_path = os.path.join(path, name)
-            if os.path.isdir(full_path):
-                num_images = len(os.listdir(full_path))
-                folder_infos.append((name, num_images))
+        wrong_subfolder_name = []
+        for name in self.subfolders:
+            if name in sign_types:
+                full_path = os.path.join(path, name)
+                if os.path.isdir(full_path):
+                    num_images = len(os.listdir(full_path))
+                    folder_infos.append((name, num_images))
+            else:
+                wrong_subfolder_name.append(name)
+        if wrong_subfolder_name:
+            msg = "These are not valid subfolder names:\n" + "\n".join(wrong_subfolder_name)
+            QMessageBox.information(self, "Subfolder name error", msg)
 
         folder_infos.sort()  # order list names to abc
 
@@ -567,10 +595,12 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.folder_list.addItem(value)
 
         print(values_set)
+        print(self.json_data)
 
     def set_loader_for_json(self, selected_values):
         matched_images = [os.path.join(self.base_folder, img_path) for img_path, label in self.json_data.items() if
                           label == selected_values and os.path.exists(os.path.join(self.base_folder, img_path))]
+        print(matched_images)
         print(f"Found {len(matched_images)} images with label {selected_values}")
         self.loader = ImageBatchLoader.__new__(ImageBatchLoader)  # create empty
         self.loader.image_paths = matched_images
