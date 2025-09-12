@@ -1,5 +1,7 @@
 import hashlib
 import os
+import pprint
+
 from PIL import Image
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
@@ -51,20 +53,27 @@ class ImageLoaderThread(QtCore.QThread):
                 print(f"Error loading image {path}: {e}")
 
 class ImageBatchLoader(object):
-    def __init__(self, folder_path, batch_size=20, start_batch_idx=0):
-        self.folder_path = folder_path
+    def __init__(self, source, batch_size=20, start_batch_idx=0):
         self.batch_size = batch_size
-        self.image_paths = self.collect_image_paths()
+        self.image_paths = self.collect_image_paths(source)
+        #pprint.pprint(self.image_paths)
         self.current_batch_idx = start_batch_idx
-        self.number_of_batches = len(self.image_paths)
         self.label = None
+        self.number_of_batches = len(self.image_paths)
 
-    def collect_image_paths(self):
+    def collect_image_paths(self, source):
         image_paths = list()
-        for root, dirs, files in os.walk(self.folder_path):
-            for file in files:
-                if file.lower().endswith((".png", ".jpg", ".jpeg", ".bmp")):
-                    image_paths.append(os.path.join(root, file))
+        if isinstance(source,list):
+            for region in source:
+                for root, dirs, files in os.walk(region):
+                    for file in files:
+                        if file.lower().endswith((".png", ".jpg", ".jpeg", ".bmp")):
+                            image_paths.append(os.path.join(root, file))
+        else:
+            for root, dirs, files in os.walk(source):
+                for file in files:
+                    if file.lower().endswith((".png", ".jpg", ".jpeg", ".bmp")):
+                        image_paths.append(os.path.join(root, file))
         return sorted(image_paths)
 
     def get_batch(self):
