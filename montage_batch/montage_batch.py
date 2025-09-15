@@ -66,6 +66,7 @@ class ImageMontageApp(QtWidgets.QWidget):
 		self.folder_path = None
 		self.main_folder = None  # Folder that stores the subfolders
 		self.is_all_region = False # user load multiple regions
+		self.image_paths = None #used when multiple regions
 		self.regions = None
 		self.base_folder = None  # Only use for JSON
 		self.thread = None
@@ -234,7 +235,8 @@ class ImageMontageApp(QtWidgets.QWidget):
 				sign_types_in_all_region.sort()
 				pprint.pprint(sign_types_in_all_region)
 				self.folder_list.clear()
-				for sign_type in sign_types_in_all_region:
+				self.subfolders = sign_types_in_all_region
+				for sign_type in self.subfolders:
 					self.folder_list.addItem(sign_type)
 				self.is_all_region = True
 
@@ -251,31 +253,36 @@ class ImageMontageApp(QtWidgets.QWidget):
 					all_sign_types.add(sign_type)
 		return list(all_sign_types)
 
-	def load_subfolders(self, path):
+	def load_subfolders(self, path=None):
 		self.folder_list.clear()
-		folder_infos = []
-		wrong_subfolder_name = []
-		for name in self.subfolders:
-			if name in sign_types:
-				full_path = os.path.join(path, name)
-				if os.path.isdir(full_path):
-					num_images = len(os.listdir(full_path))
-					folder_infos.append((name, num_images))
-			else:
-				wrong_subfolder_name.append(name)
-		if wrong_subfolder_name:
-			msg = "These are not valid subfolder names:\n" + "\n".join(wrong_subfolder_name)
-			QMessageBox.information(self, "Subfolder name error", msg)
+		if not self.is_JSON_active and not self.is_all_region:
+			folder_infos = []
+			wrong_subfolder_name = []
+			for name in self.subfolders:
+				if name in sign_types:
+					full_path = os.path.join(path, name)
+					if os.path.isdir(full_path):
+						num_images = len(os.listdir(full_path))
+						folder_infos.append((name, num_images))
+				else:
+					wrong_subfolder_name.append(name)
+			if wrong_subfolder_name:
+				msg = "These are not valid subfolder names:\n" + "\n".join(wrong_subfolder_name)
+				QMessageBox.information(self, "Subfolder name error", msg)
 
-		folder_infos.sort()  # order list names to abc
+			folder_infos.sort()  # order list names to abc
 
-		for name, count in folder_infos:
-			display_text = f"{name:<40} {count:>6}"  # left-align name, right-align number
-			self.folder_list.addItem(display_text)
+			for name, count in folder_infos:
+				display_text = f"{name:<40} {count:>6}"  # left-align name, right-align number
+				self.folder_list.addItem(display_text)
 
-		# Set monospaced font for alignment
-		font = QFont("Courier New", 10)
-		self.folder_list.setFont(font)
+			# Set monospaced font for alignment
+			font = QFont("Courier New", 10)
+			self.folder_list.setFont(font)
+		elif not self.is_JSON_active and self.is_all_region:
+			print(15)
+			for sign_type in self.subfolders:
+				self.folder_list.addItem(sign_type)
 
 	def folder_clicked(self, item):
 		print(self.is_all_region, self.is_JSON_active)
@@ -288,8 +295,8 @@ class ImageMontageApp(QtWidgets.QWidget):
 			self.show_batch()
 		elif self.is_all_region and not self.is_JSON_active:
 			selected_subfolder_name = item.text()
-			image_paths = [os.path.join(region, selected_subfolder_name) for region in self.regions]
-			self.loader = ImageBatchLoader(image_paths, batch_size=self.batch_size)
+			self.image_paths = [os.path.join(region, selected_subfolder_name) for region in self.regions]
+			self.loader = ImageBatchLoader(self.image_paths, batch_size=self.batch_size)
 			self.show_batch()
 
 		elif self.is_JSON_active and not self.is_all_region:
@@ -373,7 +380,7 @@ class ImageMontageApp(QtWidgets.QWidget):
 
 	def refresh(self):
 		if not self.is_JSON_active:
-			if self.folder_path:
+			if self.folder_path and not self.is_all_region:
 				print(self.folder_path)
 				self.vertical_value = self.scroll_area.verticalScrollBar().value()
 				self.loader = ImageBatchLoader(self.folder_path,
@@ -381,6 +388,11 @@ class ImageMontageApp(QtWidgets.QWidget):
 											   start_batch_idx=self.loader.current_batch_idx)
 				self.show_batch()
 				self.load_subfolders(self.main_folder)
+			elif self.is_all_region:
+				self.vertical_value = self.scroll_area.verticalScrollBar().value()
+				self.loader = ImageBatchLoader(self.image_paths,batch_size=self.batch_size,start_batch_idx=self.loader.current_batch_idx)
+				self.show_batch()
+				self.load_subfolders()
 		else:
 			self.vertical_value = self.scroll_area.verticalScrollBar().value()
 			self.set_loader_for_json(self.folder_list.currentItem().text())
@@ -537,11 +549,23 @@ class ImageMontageApp(QtWidgets.QWidget):
 					img_name = os.path.basename(img_path)
 
 					output_folder = os.path.join(os.path.dirname(os.path.dirname(img_path)), dialog.selected_folder)
+					if not os.path.exists(output_folder):
+						os.makedirs(output_folder, exist_ok=True)
 					dst_path = os.path.join(output_folder, img_name)
 					print(f"dst_path: {dst_path}")
 					self.change_info_label(
 						"moved from: {}, to: {}".format(img_path.split('/')[-2], dst_path.split('/')[-2]))
 					shutil.move(img_path, dst_path)
+			else:
+				self.change_info_label("No selected images found!")
+			if len(self.dropped_selected) > 0:
+				print(12)
+				self.selected_images = copy.deepcopy(self.dropped_selected)
+				self.show_only_selected()
+			else:
+				print(13)
+				self.selected_images = set()
+				self.refresh()
 
 
 		elif self.is_JSON_active and not self.is_all_region:
@@ -572,6 +596,7 @@ class ImageMontageApp(QtWidgets.QWidget):
 			else:
 				self.selected_images = set()
 				self.refresh()
+		self.load_subfolders()
 
 	def check_for_update(self):
 		try:
