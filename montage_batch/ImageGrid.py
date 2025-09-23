@@ -1,6 +1,7 @@
 import hashlib
 import os
 import pprint
+from pathlib import Path
 
 from PIL import Image
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -16,7 +17,7 @@ class ImageLoaderThread(QtCore.QThread):
     @staticmethod
     def get_thumb_path(image_path: str, cache_dir=".thumbs") -> str:
         os.makedirs(cache_dir, exist_ok=True)
-        hash_name = hashlib.md5(image_path.encode("utf-8")).hexdigest()
+        hash_name = hashlib.md5(str(image_path).encode("utf-8")).hexdigest()
         return os.path.join(cache_dir, f"{hash_name}.jpg")
     @staticmethod
     def generate_thumbnail(image_path: str, thumb_path: str, size=(800, 800)):
@@ -48,8 +49,9 @@ class ImageLoaderThread(QtCore.QThread):
                 pixmap = QtGui.QPixmap(thumb_path)
                 # qimage = ImageQt(img)
                 # pixmap = QtGui.QPixmap.fromImage(qimage)
-                self.image_loaded.emit(idx, pixmap, path)
+                self.image_loaded.emit(idx, pixmap, str(path))
             except Exception as e:
+                print(f"Thumb path: {thumb_path}, Exists? {Path(thumb_path).exists()}")
                 print(f"Error loading image {path}: {e}")
 
 class ImageBatchLoader(object):
@@ -62,18 +64,18 @@ class ImageBatchLoader(object):
         self.number_of_batches = len(self.image_paths)
 
     def collect_image_paths(self, source):
-        image_paths = list()
-        if isinstance(source,list):
+        image_paths = []
+        if isinstance(source, list):
             for region in source:
-                for root, dirs, files in os.walk(region):
-                    for file in files:
-                        if file.lower().endswith((".png", ".jpg", ".jpeg", ".bmp")):
-                            image_paths.append(os.path.join(root, file))
+                region_path = Path(region)
+                for file in region_path.rglob("*"):
+                    if file.suffix.lower() in (".png", ".jpg", ".jpeg", ".bmp"):
+                        image_paths.append(file)
         else:
-            for root, dirs, files in os.walk(source):
-                for file in files:
-                    if file.lower().endswith((".png", ".jpg", ".jpeg", ".bmp")):
-                        image_paths.append(os.path.join(root, file))
+            source_path = Path(source)
+            for file in source_path.rglob("*"):
+                if file.suffix.lower() in (".png", ".jpg", ".jpeg", ".bmp"):
+                    image_paths.append(file)
         return sorted(image_paths)
 
     def get_batch(self):

@@ -209,7 +209,7 @@ class ImageMontageApp(QtWidgets.QWidget):
 
             if any(sub in sign_types for sub in self.subfolders):
                 self.is_all_region = False
-                self.folder_path = str(Path(self.main_folder) / self.subfolders[0])
+                self.folder_path = Path(self.main_folder) / self.subfolders[0]
                 self.load_subfolders(self.main_folder)
                 self.loader = ImageBatchLoader(self.folder_path, batch_size=self.batch_size)
                 self.show_batch()
@@ -227,7 +227,6 @@ class ImageMontageApp(QtWidgets.QWidget):
     def collect_sign_types(self):
         main = Path(self.main_folder)
         self.regions = [d for d in main.iterdir() if d.is_dir()]
-
 
         all_sign_types = set()
         for region in self.regions:
@@ -274,7 +273,7 @@ class ImageMontageApp(QtWidgets.QWidget):
 
     def folder_clicked(self, item):
         if not self.is_JSON_active and not self.is_all_region:
-            selected_subfolder = str(Path(self.main_folder) / item.text().split()[0])
+            selected_subfolder = Path(self.main_folder) / item.text().split()[0]
             # self.folder_list.set_item_background(item, "black")
             print(selected_subfolder)
             self.folder_path = selected_subfolder
@@ -282,7 +281,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.show_batch()
         elif self.is_all_region and not self.is_JSON_active:
             selected_subfolder_name = item.text()
-            self.image_paths = [str(Path(region, selected_subfolder_name)) for region in self.regions]
+            self.image_paths = [Path(region, selected_subfolder_name) for region in self.regions]
             self.loader = ImageBatchLoader(self.image_paths, batch_size=self.batch_size)
             self.show_batch()
 
@@ -305,7 +304,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         if self.main_folder is None:
             return
 
-        subfolders = sorted([str(f) for f in Path(self.folder_path).parent.iterdir() if f.is_dir()])
+        subfolders = sorted([f.name for f in Path(self.folder_path).parent.iterdir() if f.is_dir()])
         prev_folder_idx = subfolders.index(self.folder_path) - 1
         print(prev_folder_idx)
         if prev_folder_idx > 0:
@@ -317,7 +316,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.folder_path = subfolders[prev_folder_idx]
 
         if self.main_folder:
-            self.loader = ImageBatchLoader(str(Path(self.main_folder) / self.subfolders[prev_folder_idx]),
+            self.loader = ImageBatchLoader(Path(self.main_folder) / self.subfolders[prev_folder_idx],
                                            batch_size=self.batch_size)
             self.show_batch()
             self.folder_list.highlight_by_name(self.folder_path.split('/')[-1])
@@ -326,7 +325,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         if self.folder_path is None:
             return
 
-        subfolders = sorted([str(f) for f in Path(self.folder_path).parent.iterdir() if f.is_dir()])
+        subfolders = sorted([f.name for f in Path(self.folder_path).parent.iterdir() if f.is_dir()])
         next_folder_idx = subfolders.index(self.folder_path) + 1
 
         if next_folder_idx <= len(subfolders) - 1:
@@ -385,7 +384,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.thread.image_loaded.connect(self.add_image_to_layout)
         self.thread.start()
         if not self.is_JSON_active and self.window().folder_path:
-            self.window().current_folder_label.setText("Current folder: " + self.window().folder_path.split("/")[-1])
+            self.window().current_folder_label.setText("Current folder: " + str(self.window().folder_path).split("/")[-1])
 
     def add_image_to_layout(self, idx, pixmap, _path):
         label = ClickableLabel(_path)
@@ -491,6 +490,13 @@ class ImageMontageApp(QtWidgets.QWidget):
                     self.dropped_selected.discard(img_path)
                     img_path = Path(img_path)
                     dst_path = output_folder / img_path.name
+                    base, ext = Path(img_path.name).stem, Path(img_path.name).suffix
+
+                    counter = 1
+                    while dst_path.exists():
+                        dst_path = dst_path.parent / f"{base}_{counter}{ext}"
+                        counter += 1
+
                     self.change_info_label(
                         "moved from: {}, to: {}".format(img_path.parent.name, dst_path.parent.name))
                     # print("moved from: {}, to: {}".format(img_path, dst_path))
@@ -517,10 +523,19 @@ class ImageMontageApp(QtWidgets.QWidget):
                     print(f"image path: {img_path}")
                     img_path = Path(img_path)
 
-                    output_folder = img_path.parent.name / dialog.selected_folder
+                    output_folder = Path(img_path.parent.parent) / dialog.selected_folder
+                    print(output_folder)
+
                     output_folder.mkdir(parents=True, exist_ok=True)
                     dst_path = output_folder / img_path.name
-                    print(f"dst_path: {dst_path}")
+                    base, ext = Path(img_path.name).stem, Path(img_path.name).suffix
+
+                    counter = 1
+                    while dst_path.exists():
+                        dst_path = dst_path.parent / f"{base}_{counter}{ext}"
+                        counter += 1
+
+                    print(f"dst_path: {dst_path}\n base: {base}\n ext: {ext}")
                     self.change_info_label(
                         "moved from: {}, to: {}".format(img_path.parent.name, dst_path.parent.name))
                     shutil.move(str(img_path), str(dst_path))
@@ -548,10 +563,12 @@ class ImageMontageApp(QtWidgets.QWidget):
                     dst_path.mkdir(parents=True, exist_ok=True)
 
                     final_path = dst_path / image_name
+                    base, ext = Path(image_name).stem, Path(image_name).suffix
 
+                    counter = 1
                     while final_path.exists():
-                        base, ext = final_path.stem, final_path.suffix
-                        image_name = dst_path / f"{base}_1{ext}"
+                        final_path = dst_path / f"{base}_{counter}{ext}"
+                        counter += 1
 
                     self.change_info_label(
                         f"moved from: {img_path.parent.parent.name}/{img_path.parent.name}, "
