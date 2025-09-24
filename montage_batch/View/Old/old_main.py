@@ -5,7 +5,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
-from typing import Union, final
+from typing import Union
 
 import requests
 from PyQt5 import QtWidgets, QtGui, QtCore
@@ -16,8 +16,7 @@ from PyQt5.QtWidgets import QShortcut, QDialog, QMessageBox
 from FolderList import FolderListWidget
 from FolderSelectionDialog import FolderSelectionDialog, sign_types
 from ImageGrid import ImageGridWidget, ImageBatchLoader, ImageLoaderThread
-from NewFolderDialog import NewFolderNameDialog
-from Styles import *
+from montage_batch.View.Styles import *
 
 global window
 
