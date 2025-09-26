@@ -4,50 +4,30 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QKeySequence
 from PyQt5.QtWidgets import QShortcut
+
+from Model.mainmodel import Mainmodel
 from View.Old.FolderList import FolderListWidget
 from View.Old.ImageGrid import ImageGridWidget
 from View.Styles import *
 
 
 class ImageMontageApp(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, viewmodel):
         super().__init__()
         self.setWindowTitle("Image Batch Viewer")
         self.setObjectName("MainWindow")
-        self.setStyleSheet(MAIN_WINDOW_STYLE)
         self.resize(1600, 900)
         self.num_of_col = 6
         self.batch_size = 1000
         self.thumbnail_size = 150, 150
+        self.main_model = Mainmodel()
+        #UI setup
 
-        self.loader = None
-        self.folder_path = None
-        self.main_folder = None  # Folder that stores the subfolders
-        self.first_check = True
-        self.is_all_region = False  # user load multiple regions
-        self.image_paths = None  # used when multiple regions
-        self.regions = None # list regions in folder
-        self.base_folder = None  # Only use for JSON
-        self.thread = None
-        self.isAllSelected = False
-        self.subfolders = None # list of subfolders
-        self.labels = list()
-        self.selected_images = set()
-        self.dropped_selected = set()
-        self.batch_info_label = QtWidgets.QLabel("Batch Info")
-        self.json = None
-        self.json_data = None
-        self.is_JSON_active = False
-        self.timer = QtCore.QTimer(self)
-        #self.timer.timeout.connect(self.update_selected_check_button)
-        self.timer.start(500)
-
-        self.batch_info_label.setStyleSheet(BATCH_INFO_STYLE)
-        self.batch_info_label.setAlignment(Qt.AlignCenter)
+        self.main_model.batch_info_label.setAlignment(Qt.AlignCenter)
 
         self.outer_layout = QtWidgets.QVBoxLayout(self)
         self.setLayout(self.outer_layout)
-
+        # Menu bar
         self.menu_bar = QtWidgets.QMenuBar(self)
         self.outer_layout.setMenuBar(self.menu_bar)
 
@@ -57,7 +37,7 @@ class ImageMontageApp(QtWidgets.QWidget):
 
         # Left Panel
         self.left_panel = QtWidgets.QHBoxLayout()
-
+        # folder list
         self.folder_list = FolderListWidget()
         file_menu = self.menu_bar.addMenu("File")
         load_folder_action = QtWidgets.QAction("Load Folder", self)
@@ -66,9 +46,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         load_json_action = QtWidgets.QAction("Load JSON", self)
         #load_json_action.triggered.connect(self.load_json)
         file_menu.addAction(load_json_action)
-
         status_menu = self.menu_bar.addMenu("Status")
-
         load_status_action = QtWidgets.QAction("Load Status", self)
         #load_status_action.triggered.connect(self.folder_list.load_status_action)
         status_menu.addAction(load_status_action)
@@ -77,11 +55,10 @@ class ImageMontageApp(QtWidgets.QWidget):
         #save_status_action.triggered.connect(self.folder_list.save_status_action)
         status_menu.addAction(save_status_action)
 
-        self.menu_bar.setStyleSheet(MENU_BAR_STYLE)
 
         self.folder_list.setMinimumWidth(400)
         #self.folder_list.itemClicked.connect(self.folder_clicked)
-        self.folder_list.setStyleSheet("background-color: #303436; color: white; font-size: 13px;")
+
 
         # Scroll area (middle panel)
         self.scroll_area = QtWidgets.QScrollArea()
@@ -92,7 +69,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.image_layout = QtWidgets.QGridLayout(self.image_widget)
         self.scroll_area.setWidget(self.image_widget)
         self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setStyleSheet("background-color: white;")
+
 
         self.rubber_band = QtWidgets.QRubberBand(QtWidgets.QRubberBand.Rectangle, self.image_widget)
         self.origin = QtCore.QPoint()
@@ -121,31 +98,41 @@ class ImageMontageApp(QtWidgets.QWidget):
         # Buttons
         self.add_button("Previous Folder", self.prev_folder)
         self.add_button("Next Folder", self.next_folder)
-        '''self.add_button("Previous Batch", self.previous_batch)
+        self.add_button("Previous Batch", self.previous_batch)
         self.add_button("Next Batch", self.next_batch)
         self.add_button("Current Batch", self.show_batch)
         self.add_button("Unselect/Select all", self.un_select_select_all)
         self.add_button("Selected Check", self.show_only_selected)
         self.move_selected_button, _ = self.add_button("Move Selected Images", self.move_selected)
         self.add_button("Reload scrolling", self.load_v_value)
-        self.add_button("Check for Update", self.check_for_update)'''
+        self.add_button("Check for Update", self.check_for_update)
 
-        self.button_layout_wrapper.addWidget(self.batch_info_label)
+        viewmodel.button_state_changed.connect(self.button_state_changed)
 
         self.label_row_layout = QtWidgets.QHBoxLayout()
-
         self.current_folder_label = QtWidgets.QLabel("Current Folder")
         self.current_folder_label.setAlignment(Qt.AlignLeft)
-        self.button_layout_wrapper.addWidget(self.current_folder_label)
-        self.current_folder_label.setStyleSheet(INFO_LABEL_STYLE)
-        self.label_row_layout.addWidget(self.current_folder_label)
 
         self.info_label = QtWidgets.QLabel("Bottom Info")
         self.info_label.setAlignment(Qt.AlignLeft)
-        self.info_label.setStyleSheet(INFO_LABEL_STYLE)
+
+        self.button_layout_wrapper.addWidget(self.batch_info_label)
+        self.button_layout_wrapper.addWidget(self.current_folder_label)
+        self.label_row_layout.addWidget(self.current_folder_label)
         self.label_row_layout.addWidget(self.info_label)
 
         self.outer_layout.addLayout(self.label_row_layout)
+
+        #set styles for each sections
+        self.setStyleSheet(MAIN_WINDOW_STYLE)
+        self.menu_bar.setStyleSheet(MENU_BAR_STYLE)
+        self.folder_list.setStyleSheet("background-color: #303436; color: white; font-size: 13px;")
+        self.scroll_area.setStyleSheet("background-color: white;")
+        self.current_folder_label.setStyleSheet(INFO_LABEL_STYLE)
+        self.info_label.setStyleSheet(INFO_LABEL_STYLE)
+        self.batch_info_label.setStyleSheet(BATCH_INFO_STYLE)
+
+
 
     def add_button(self, name: str, func, shortcut: Union[str, tuple] = None):
         button = QtWidgets.QPushButton(name)
@@ -166,8 +153,32 @@ class ImageMontageApp(QtWidgets.QWidget):
                 q_shortcut.activated.connect(func)
         return button, q_shortcut
 
+    def update_button_state(self, enabled: bool):
+        if enabled:
+            self.move_selected_button.setEnabled(True)
+            self.move_selected_button.setStyleSheet("color: black; background-color: green;")
+        else:
+            self.move_selected_button.setEnabled(False)
+            self.move_selected_button.setStyleSheet("color: black; background-color: #8B0000;")
+
     def prev_folder(self):
         pass
 
     def next_folder(self):
+        pass
+    def previous_batch(self):
+        pass
+    def next_batch(self):
+        pass
+    def show_batch(self):
+        pass
+    def un_select_select_all(self):
+        pass
+    def show_only_selected(self):
+        pass
+    def move_selected(self):
+        pass
+    def load_v_value(self):
+        pass
+    def check_for_update(self):
         pass

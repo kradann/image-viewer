@@ -1,0 +1,50 @@
+import hashlib
+from pathlib import Path
+
+from PIL import Image
+from PyQt5 import QtCore, QtGui
+
+
+class ImageLoaderThread(QtCore.QThread):
+    image_loaded = QtCore.pyqtSignal(int, QtGui.QPixmap, str)
+    @staticmethod
+    def get_thumb_path(image_path: str, cache_dir: str = ".thumbs") -> Path:
+        cache_path = Path(cache_dir)
+        cache_path.mkdir(parents=True, exist_ok=True)
+
+        hash_name = hashlib.md5(str(image_path).encode("utf-8")).hexdigest()
+        return cache_path / f"{hash_name}.jpg"
+    @staticmethod
+    def generate_thumbnail(image_path: str, thumb_path: str, size=(800, 800)):
+        try:
+            with Image.open(image_path) as img:
+                img = img.convert("RGB")
+                img.thumbnail(size, Image.LANCZOS)
+                img.save(thumb_path, "JPEG")
+        except Exception as e:
+            print(f"Thumbnail error for {image_path}: {e}")
+
+    def __init__(self, paths, cache_dir=".thumbs"):
+        super().__init__()
+
+        self.paths = paths
+        self.cache_dir = cache_dir
+
+    def run(self):
+        for idx, path in enumerate(self.paths):
+            # print(f"[LoaderThread] Loading: {path}")
+            thumb_path = self.get_thumb_path(path, cache_dir=self.cache_dir)
+
+            if not os.path.exists(thumb_path):
+                self.generate_thumbnail(path, thumb_path)
+
+            try:
+                # img = Image.open(path)
+                # img.thumbnail((128, 128))
+                pixmap = QtGui.QPixmap(thumb_path)
+                # qimage = ImageQt(img)
+                # pixmap = QtGui.QPixmap.fromImage(qimage)
+                self.image_loaded.emit(idx, pixmap, str(path))
+            except Exception as e:
+                print(f"Thumb path: {thumb_path}, Exists? {Path(thumb_path).exists()}")
+                print(f"Error loading image {path}: {e}")
