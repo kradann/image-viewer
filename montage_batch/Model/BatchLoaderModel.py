@@ -1,4 +1,9 @@
+import hashlib
+import os
 from pathlib import Path
+
+from PIL import Image
+from PyQt5 import QtCore, QtGui
 
 
 class ImageBatchLoader(object):
