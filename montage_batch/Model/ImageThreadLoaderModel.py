@@ -1,12 +1,27 @@
 import hashlib
+import os
 from pathlib import Path
 
 from PIL import Image
 from PyQt5 import QtCore, QtGui
 
 
+
+
 class ImageLoaderThread(QtCore.QThread):
     image_loaded = QtCore.pyqtSignal(int, QtGui.QPixmap, str)
+    @staticmethod
+    def cleanup_thumbs():
+        print(13)
+        thumbs_dir = Path(__file__).resolve().parent.parent / ".thumbs"
+        if thumbs_dir.exists() and thumbs_dir.is_dir():
+            for f in thumbs_dir.iterdir():
+                try:
+                    if f.is_file():
+                        f.unlink()
+                except Exception as e:
+                    print(f"Failed to delete {f}: {e}")
+
     @staticmethod
     def get_thumb_path(image_path: str, cache_dir: str = ".thumbs") -> Path:
         cache_path = Path(cache_dir)
@@ -14,6 +29,7 @@ class ImageLoaderThread(QtCore.QThread):
 
         hash_name = hashlib.md5(str(image_path).encode("utf-8")).hexdigest()
         return cache_path / f"{hash_name}.jpg"
+
     @staticmethod
     def generate_thumbnail(image_path: str, thumb_path: str, size=(800, 800)):
         try:
@@ -33,15 +49,13 @@ class ImageLoaderThread(QtCore.QThread):
     def run(self):
         for idx, path in enumerate(self.paths):
             # print(f"[LoaderThread] Loading: {path}")
-            thumb_path = self.get_thumb_path(path, cache_dir=self.cache_dir)
-
+            thumb_path = str(self.get_thumb_path(path, cache_dir=self.cache_dir))
             if not os.path.exists(thumb_path):
                 self.generate_thumbnail(path, thumb_path)
-
             try:
                 # img = Image.open(path)
                 # img.thumbnail((128, 128))
-                pixmap = QtGui.QPixmap(thumb_path)
+                pixmap = QtGui.QPixmap(str(thumb_path))
                 # qimage = ImageQt(img)
                 # pixmap = QtGui.QPixmap.fromImage(qimage)
                 self.image_loaded.emit(idx, pixmap, str(path))

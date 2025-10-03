@@ -1,22 +1,22 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5.QtCore import pyqtSignal
 
 
 class ClickableLabel(QtWidgets.QLabel):
-    clicked = QtCore.pyqtSignal()
-    cutRequested = QtCore.pyqtSignal(object, str, object)
+    clicked = pyqtSignal()
+    imageCut = pyqtSignal(str, str, str)
+    imagePathChanged = pyqtSignal(str)
     # (pixmap, mode, pos)
 
-    def __init__(self, img_path, vm=None, parent=None):
+    def __init__(self, img_path, mainmodel=None, parent=None):
         super().__init__(parent)
         self.img_path = img_path
         self.selected = False
         self.cut_mode = None
         self.preview_pos = None
-        self.vm = vm
+        self.mainmodel = mainmodel
+        self.setFrameShape(QtWidgets.QFrame.Box)
 
-        if self.vm:
-            self.cutRequested.connect(self.vm.cut_image)
-            self.vm.imageCut.connect(self.on_image_cut)
 
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.RightButton:
@@ -41,3 +41,6 @@ class ClickableLabel(QtWidgets.QLabel):
         self.preview_pos = None
         self.setPixmap(QtGui.QPixmap(thumb_path))
         self.update()
+
+    def add_red_boarder(self):
+        self.setStyleSheet("border: 3px solid red;" if self.selected else "")

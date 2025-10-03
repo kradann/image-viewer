@@ -6,8 +6,9 @@ class ClickableLabel(QtWidgets.QLabel):
     cutRequested = QtCore.pyqtSignal(object, str, object)
     # (pixmap, mode, pos)
 
-    def __init__(self, img_path, vm=None, parent=None):
+    def __init__(self, model , img_path, vm=None, parent=None):
         super().__init__(parent)
+        self.model = model
         self.img_path = img_path
         self.selected = False
         self.cut_mode = None
