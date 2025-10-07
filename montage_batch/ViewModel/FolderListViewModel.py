@@ -11,6 +11,7 @@ class FolderListViewModel(QObject):
     statusChanged = pyqtSignal()
     statusesLoaded = pyqtSignal()
     infoMessage = pyqtSignal(str)
+    updateInfo = pyqtSignal()
 
     def __init__(self, mainmodel):
         super().__init__()
@@ -37,3 +38,4 @@ class FolderListViewModel(QObject):
 
     def folder_clicked(self, folder_name):
         self.mainModel.load_folder(folder_name.text().split()[0])
+        self.updateInfo.emit()

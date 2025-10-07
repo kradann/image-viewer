@@ -1,7 +1,7 @@
 from typing import Union
 
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QFont, QKeySequence
 from PyQt5.QtWidgets import QShortcut
 
@@ -28,12 +28,13 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.setWindowTitle("Image Batch Viewer")
         self.setObjectName("MainWindow")
         self.resize(1600, 900)
-        self.thumbnail_size = 150, 150
         self.mainModel = MainModel()
         self.FolderListViewModel = FolderListViewModel(self.mainModel)
-        self.GridViewModel = ImageGridViewModel(self.mainModel, self.FolderListViewModel)
+        self.GridViewModel = ImageGridViewModel(self.mainModel)
         self.GridView = ImageGridView(parent=self, mainmodel=self.mainModel, GridViewModel=self.GridViewModel)
 
+
+        self.FolderListViewModel.updateInfo.connect(self.update_info_after_list_clicked)
 
         #UI setup
         self.batch_info_label = QtWidgets.QLabel("Batch Info", self)
@@ -57,7 +58,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.folder_list.itemClicked.connect(self.FolderListViewModel.folder_clicked)
         file_menu = self.menu_bar.addMenu("File")
         load_folder_action = QtWidgets.QAction("Load Folder", self)
-        load_folder_action.triggered.connect(self.GridView.on_load_folder)
+        load_folder_action.triggered.connect(self.on_load_folder)
         file_menu.addAction(load_folder_action)
         load_json_action = QtWidgets.QAction("Load JSON", self)
         #load_json_action.triggered.connect(self.load_json)
@@ -81,10 +82,11 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.vertical_value = 0
         self.GridView.setMouseTracking(True)
         self.image_layout = QtWidgets.QGridLayout(self.GridView)
+        self.image_layout.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
         self.GridViewModel.AddImage.connect(self.on_add_image)
         self.scroll_area.setWidget(self.GridView)
         self.scroll_area.setWidgetResizable(True)
-
+        self.scroll_area.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
 
         self.rubber_band = QtWidgets.QRubberBand(QtWidgets.QRubberBand.Rectangle, self.GridView)
         self.origin = QtCore.QPoint()
@@ -180,26 +182,61 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.image_layout.addWidget(click, row, col)
 
     def prev_folder(self):
-        pass
+        self.GridViewModel.on_prev_folder()
+        self.change_info_label("Previous Folder Loaded")
+        self.update_batch_info()
 
     def next_folder(self):
-        pass
+        self.GridViewModel.on_next_folder()
+        self.change_info_label("Next Folder Loaded")
+        self.update_batch_info()
+
     def previous_batch(self):
-        pass
+        self.GridViewModel.on_prev_batch()
+        self.change_info_label("Previous Batch Loaded")
+        self.update_batch_info()
+
     def next_batch(self):
-        pass
+        self.GridViewModel.on_next_batch()
+        self.change_info_label("Next Batch Loaded")
+        self.update_batch_info()
+
     def show_batch(self):
-        pass
+        self.GridView.show_batch()
+
     def un_select_select_all(self):
-        pass
+        self.GridViewModel.on_unselect_select_all()
     def show_only_selected(self):
-        pass
+        self.GridViewModel.on_show_only_selected()
     def move_selected(self):
-        pass
+        self.GridViewModel.on_move_selected()
     def load_v_value(self):
         pass
     def check_for_update(self):
         pass
+
+    def on_load_folder(self):
+        self.GridView.on_load_folder()
+        self.change_info_label("Folder Loaded")
+        self.update_batch_info()
+
+
+    def update_info_after_list_clicked(self):
+        self.update_batch_info()
+        self.change_info_label("Folder Loaded")
+
+    def update_batch_info(self):
+        self.batch_info_label.setText(f"Batch: {self.mainModel.loader.current_batch_idx + 1} / {self.mainModel.loader.number_of_batches // 1000 + 1}")
+
+    def change_info_label(self, text=None, text_color="#3cfb8b"):
+        label = self.info_label
+        label.setText(text)
+        if text_color:
+            label.setStyleSheet(f"color: {text_color}; font-size: 20px;")
+        # Save the current text
+        current_text = text
+        # After 5 seconds, clear ONLY IF the text hasn't changed in the meantime
+        QTimer.singleShot(5000, lambda: label.setText("") if label.text() == current_text else None)
 
     def closeEvent(self, event):
         print(11)

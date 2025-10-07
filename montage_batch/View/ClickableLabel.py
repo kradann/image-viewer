@@ -14,6 +14,7 @@ class ClickableLabel(QtWidgets.QLabel):
         self.cut_mode = None
         self.preview_pos = None
         self.vm = vm
+        self.setScaledContents(False)
 
         if self.vm:
             self.cutRequested.connect(self.vm.cut_image)

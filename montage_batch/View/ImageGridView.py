@@ -94,7 +94,12 @@ class ImageGridView(QtWidgets.QWidget):
     def add_image_to_layout(self, row, col, path, pixmap, is_selected):
         #print(path, row, col)
         label = ClickableLabel(img_path=path, mainmodel=self.mainModel)
-        label.setPixmap(pixmap.scaled(*self.mainModel.thumbnail_size, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
+        label.setFixedSize(*self.mainModel.thumbnail_size)
+        label.setPixmap(
+            pixmap.scaled(*self.mainModel.thumbnail_size, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
+        label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
+        label.setScaledContents(False)
+
         label.clicked.connect(lambda: self.vm.toggle_selection(path))
 
         if is_selected:
@@ -111,6 +116,5 @@ class ImageGridView(QtWidgets.QWidget):
             self.GridViewModel.load_main_folder(selected_folder_path)
 
     def show_batch(self):
-        self.GridViewModel.clear_images()
         self.GridViewModel.load_batch()
 

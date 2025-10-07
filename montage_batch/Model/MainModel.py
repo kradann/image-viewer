@@ -1,3 +1,5 @@
+import copy
+import shutil
 from pathlib import Path
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSignal
@@ -15,6 +17,8 @@ from Model.ClickableModel import Clickable
 class MainModel(QtWidgets.QMainWindow):
     LoadSubfolders = pyqtSignal(list)
     LoadFolder= pyqtSignal(str, dict)
+    ClearImages =  pyqtSignal()
+    LoadSelectedImages = pyqtSignal(set)
 
     def __init__(self, loader=None):
         super().__init__()
@@ -82,7 +86,6 @@ class MainModel(QtWidgets.QMainWindow):
         else:
             sign_types_in_all_region = self.collect_sign_types()
             self.subfolders = sorted(sign_types_in_all_region)
-            self.is_all_region = True
             self.mode = "multi_region"
             return self.mode, self.subfolders
 
@@ -143,13 +146,17 @@ class MainModel(QtWidgets.QMainWindow):
     def current_folder_name(self):
         return Path(self.folder_path).name
 
-    def clear_images(self):
-        for label in self.labels:
-            label.deleteLater()
-        self.labels = list()
+    def clear_selected_images(self):
+        self.selected_images = set()
 
     def is_selected(self, path):
         return path in self.selected_images
+
+    def add_image_to_selected(self, img_path):
+        self.selected_images.add(img_path)
+
+    def discard_image_from_selected(self, img_path):
+        self.selected_images.discard(img_path)
 
     def toggle_selection(self, path):
         if path in self.selected_images:
@@ -167,4 +174,95 @@ class MainModel(QtWidgets.QMainWindow):
         if not self.loader:
             return "No Batch"
         return f"Batch: {self.loader.current_batch_idx + 1} / {self.loader.number_of_batches // 1000 + 1}"
+
+    def load_prev_folder(self):
+        if self.main_folder is None:
+            return
+        subfolders = sorted([f for f in Path(self.folder_path).parent.iterdir() if f.is_dir()])
+
+        prev_folder_idx = subfolders.index(self.folder_path)-1
+        if prev_folder_idx > 0:
+            while not any(f.is_file() for f in Path(subfolders[prev_folder_idx]).iterdir()):
+                if prev_folder_idx == len(subfolders) - 1:
+                    break
+                prev_folder_idx -= 1
+
+            self.folder_path = subfolders[prev_folder_idx]
+            self.LoadFolder.emit(self.mode, self.subfolders)
+            #TODO: Move blue highlight when changing folder
+
+    def load_next_folder(self):
+        if self.main_folder is None:
+            return
+        subfolders = sorted([f for f in Path(self.folder_path).parent.iterdir() if f.is_dir()])
+
+        next_folder_idx = subfolders.index(self.folder_path)+1
+        if next_folder_idx <= len(subfolders) - 1:
+            while not any(f.is_file() for f in Path(subfolders[next_folder_idx]).iterdir()):
+                if next_folder_idx == len(subfolders) - 1:
+                    break
+                next_folder_idx += 1
+
+            self.folder_path = subfolders[next_folder_idx]
+            self.LoadFolder.emit(self.mode, self.subfolders)
+            #TODO: Move blue highlight when changing folder
+
+    def load_prev_batch(self):
+        if self.loader:
+            self.loader.previous_batch()
+
+    def load_next_batch(self):
+        if self.loader:
+            self.loader.next_batch()
+
+    def move_selected(self, selected_folder):
+        if self.mode == "single_region":
+            output_folder = Path(self.main_folder) / selected_folder
+            output_folder.mkdir(parents=True, exist_ok=True)
+
+            if self.selected_images:
+                for img_path in self.selected_images:
+                    self.dropped_selected.discard(img_path)
+                    img_path = Path(img_path.img_path)
+                    dst_path = self.check_image_name(img_path, output_folder)
+                    #TODO: Check self.check_image_name modified version
+                    #TODO: change info label
+
+                    shutil.move(img_path, str(dst_path))
+            else:
+                pass
+                #TODO: change info label
+
+            if len(self.dropped_selected) > 0:
+                self.selected_images = copy.deepcopy(self.dropped_selected)
+                #TODO: show only selected
+            else:
+                self.selected_images = set()
+                #TODO: refresh
+
+    def check_image_name(self, img_path, output_folder):
+        dst_path = output_folder / img_path.name
+        base, ext = Path(img_path.name).stem, Path(img_path.name).suffix
+
+        counter = 1
+        while dst_path.exists():
+            dst_path = dst_path.parent / f"{base}{counter}{ext}"
+            counter += 1
+
+        return dst_path
+
+    def show_only_selected(self):
+        if not self.loader:
+            return
+
+        self.ClearImages.emit()
+        self.dropped_selected = {img.img_path for img in self.selected_images}
+        self.LoadSelectedImages.emit(self.dropped_selected)
+
+
+
+
+
+
+
 
