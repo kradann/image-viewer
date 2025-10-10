@@ -12,7 +12,6 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QKeySequence, QFont
 from PyQt5.QtWidgets import QShortcut, QDialog, QMessageBox
-from dateparser.data.date_translation_data import eu
 
 from FolderList import FolderListWidget
 from FolderSelectionDialog import FolderSelectionDialog
