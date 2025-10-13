@@ -138,6 +138,9 @@ class ImageGridViewModel(QObject):
         self.thread.image_loaded.connect(self.on_image_loaded)
         self.thread.start()
 
+    def on_check_for_update(self):
+        self.main_model.check_for_update()
+
 
 
     @staticmethod

@@ -9,7 +9,7 @@ from Model.ClickableModel import Clickable
 class ImageGridView(QtWidgets.QWidget):
     AddImage = pyqtSignal(Clickable, int, int)
 
-    def __init__(self,parent=None, mainmodel=None, GridViewModel=None):
+    def __init__(self, parent=None, mainmodel=None, gridviewmodel=None):
         super().__init__()
         self.setMouseTracking(True)
         self.rubber_band = QtWidgets.QRubberBand(QtWidgets.QRubberBand.Rectangle, self)
@@ -18,7 +18,7 @@ class ImageGridView(QtWidgets.QWidget):
         self.parent_app = parent
         self.clicked_label = None
         self.mainModel = mainmodel
-        self.GridViewModel = GridViewModel
+        self.GridViewModel = gridviewmodel
         self.ClickableModel = Clickable
         self.GridViewModel.imageReady.connect(self.add_image_to_layout)
         self.GridViewModel.batchLoaded.connect(self.update_folder_label)

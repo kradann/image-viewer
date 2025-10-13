@@ -13,6 +13,9 @@ from Model.ImageThreadLoaderModel import ImageLoaderThread
 from Model.ClickableModel import Clickable
 
 
+APP_VERSION = "0.1.0"
+GITHUB_RELEASE_LINK = "https://api.github.com/repos/kradann/image-viewer/releases/latest"
+
 
 class MainModel(QtWidgets.QMainWindow):
     LoadSubfolders = pyqtSignal(list)
@@ -259,7 +262,44 @@ class MainModel(QtWidgets.QMainWindow):
         self.dropped_selected = {img.img_path for img in self.selected_images}
         self.LoadSelectedImages.emit(self.dropped_selected)
 
+    #TODO: check if function works
+    def check_for_update(self):
+        try:
+            response = requests.get(GITHUB_RELEASE_LINK, timeout=10)
 
+            if response.status_code == 404:
+                QMessageBox.information(self, "Update", "No releases found")
+                return
+
+            data = response.json()
+            latest_release = data["tag_name"]
+
+            if latest_release != APP_VERSION:
+                QMessageBox.information(self, "Update", f"New version {latest_release} available!")
+
+                assets = data.get("assets", [])
+                if not assets:
+                    QMessageBox.information(self, "Update", "No release asset found!")
+                    return
+
+                download_url = assets[0]["browser_download_url"]
+                file_name = assets[0]["name"]
+
+                r = requests.get(download_url, stream=True)
+                with open(file_name, "wb") as f:
+                    for chunk in r.iter_content(chunk_size=8192):
+                        if chunk:
+                            f.write(chunk)
+
+                QMessageBox.information(self, "Update", f"Downloaded {file_name} successfully!")
+
+                new_path = Path(file_name).resolve()
+                subprocess.Popen([new_path])
+                sys.exit(0)
+            else:
+                QMessageBox.information(self, "Update", "Already up to date!")
+        except Exception as e:
+            QMessageBox.information(self, "Update", f"An error occurred: {e}")
 
 
 

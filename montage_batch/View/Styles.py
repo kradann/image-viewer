@@ -7,6 +7,7 @@ INFO_LABEL_STYLE = f"""
             color: #3cfb8b;
             padding: 10px;
             background: transparent;
+            border: 2px solid white;
         """
 MENU_BAR_STYLE = f"""
             QMenuBar {{

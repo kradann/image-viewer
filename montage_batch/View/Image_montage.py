@@ -5,9 +5,6 @@ from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QFont, QKeySequence
 from PyQt5.QtWidgets import QShortcut
 
-
-from View.Old.FolderList import FolderListWidget
-
 from View.Styles import *
 from View.ImageGridView import ImageGridView
 from View.FolderListView import FolderListWidget
@@ -25,92 +22,70 @@ from Model.BatchLoaderModel import ImageBatchLoader
 class ImageMontageApp(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
+        #Customizing main window
         self.setWindowTitle("Image Batch Viewer")
         self.setObjectName("MainWindow")
         self.resize(1600, 900)
+
+        #init main model
         self.mainModel = MainModel()
+
+        #init ViewModels and Views
         self.FolderListViewModel = FolderListViewModel(self.mainModel)
         self.GridViewModel = ImageGridViewModel(self.mainModel)
         self.GridView = ImageGridView(parent=self, mainmodel=self.mainModel, GridViewModel=self.GridViewModel)
+        self.GridView.setMouseTracking(True)
 
-
-        self.FolderListViewModel.updateInfo.connect(self.update_info_after_list_clicked)
-
-        #UI setup
-        self.batch_info_label = QtWidgets.QLabel("Batch Info", self)
-
-        self.batch_info_label.setAlignment(Qt.AlignCenter)
+        #init layout
+        self.main_layout = QtWidgets.QHBoxLayout()
 
         self.outer_layout = QtWidgets.QVBoxLayout(self)
         self.setLayout(self.outer_layout)
-        # Menu bar
-        self.menu_bar = QtWidgets.QMenuBar(self)
-        self.outer_layout.setMenuBar(self.menu_bar)
 
-        # Main layouts
-        self.main_layout = QtWidgets.QHBoxLayout()
-        self.outer_layout.addLayout(self.main_layout)
-
-        # Left Panel
+        # Left panel (folder list)
         self.left_panel = QtWidgets.QHBoxLayout()
-        # folder list
-        self.folder_list = FolderListWidget(self.mainModel, self.GridViewModel)
-        self.folder_list.itemClicked.connect(self.FolderListViewModel.folder_clicked)
-        file_menu = self.menu_bar.addMenu("File")
-        load_folder_action = QtWidgets.QAction("Load Folder", self)
-        load_folder_action.triggered.connect(self.on_load_folder)
-        file_menu.addAction(load_folder_action)
-        load_json_action = QtWidgets.QAction("Load JSON", self)
-        #load_json_action.triggered.connect(self.load_json)
-        file_menu.addAction(load_json_action)
-        status_menu = self.menu_bar.addMenu("Status")
-        load_status_action = QtWidgets.QAction("Load Status", self)
-        #load_status_action.triggered.connect(self.folder_list.load_status_action)
-        status_menu.addAction(load_status_action)
 
-        save_status_action = QtWidgets.QAction("Save Status", self)
-        #save_status_action.triggered.connect(self.folder_list.save_status_action)
-        status_menu.addAction(save_status_action)
-
-
-        #self.folder_list.itemClicked.connect(self.folder_clicked)
-
-
-        # Scroll area (middle panel)
-        self.scroll_area = QtWidgets.QScrollArea()
-        self.scroll_area.setMinimumWidth(1000)
-        self.vertical_value = 0
-        self.GridView.setMouseTracking(True)
-        self.image_layout = QtWidgets.QGridLayout(self.GridView)
-        self.image_layout.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
-        self.GridViewModel.AddImage.connect(self.on_add_image)
-        self.scroll_area.setWidget(self.GridView)
-        self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
-
-        self.rubber_band = QtWidgets.QRubberBand(QtWidgets.QRubberBand.Rectangle, self.GridView)
-        self.origin = QtCore.QPoint()
-        self.drag_selecting = False
-
-        #left panel (contains list of sign types)
-        self.left_panel.addWidget(self.folder_list, stretch=1)
-        self.left_panel.addWidget(self.scroll_area, stretch=5)
+        # Contains folder list and current folder label
+        self.label_row_layout = QtWidgets.QHBoxLayout()
 
         self.left_widget = QtWidgets.QWidget()
         self.left_widget.setLayout(self.left_panel)
-        self.main_layout.addWidget(self.left_widget, stretch=5)
 
-        # Right panel
+        # Middle panel
+        self.scroll_area = QtWidgets.QScrollArea()
+
+        # Grid that displays images
+        self.image_layout = QtWidgets.QGridLayout(self.GridView)
+
+        # Init folder list
+        self.folder_list = FolderListWidget(self.mainModel, self.GridViewModel)
+
+
+        #Button container
         self.button_container = QtWidgets.QWidget()
         self.button_layout_wrapper = QtWidgets.QVBoxLayout(self.button_container)
         self.button_panel = QtWidgets.QVBoxLayout()
 
-        # Add stretch before and after the buttons to center vertically
-        self.button_layout_wrapper.addStretch(1)
-        self.button_layout_wrapper.addLayout(self.button_panel)
-        self.button_layout_wrapper.addStretch(1)
+        #Labels
+        self.current_folder_label = QtWidgets.QLabel("Current Folder")
 
-        self.main_layout.addWidget(self.button_container, stretch=1)
+        self.batch_info_label = QtWidgets.QLabel("Batch Info", self)
+        self.info_label = QtWidgets.QLabel("Bottom Info")
+
+
+        # Menu bar
+        self.menu_bar = QtWidgets.QMenuBar(self)
+        self.outer_layout.setMenuBar(self.menu_bar)
+
+        # Connect menu items to functions
+        self.setup_menubar()
+
+        # Scroll area
+        self.scroll_area.setMinimumWidth(1000)
+        self.vertical_value = 0
+
+        self.scroll_area.setWidget(self.GridView)
+        self.scroll_area.setWidgetResizable(True)
 
         # Buttons
         self.add_button("Previous Folder", self.prev_folder)
@@ -124,23 +99,31 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.add_button("Reload scrolling", self.load_v_value)
         self.add_button("Check for Update", self.check_for_update)
 
+        # set alignments
+        self.image_layout.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
+        self.scroll_area.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
+        self.batch_info_label.setAlignment(Qt.AlignCenter | Qt.AlignBottom)
+        self.label_row_layout.setAlignment(Qt.AlignLeft)
+        self.info_label.setAlignment(Qt.AlignCenter)
+        self.current_folder_label.setFixedWidth(400)
+        self.info_label.setFixedWidth(self.GridView.width())
+
+
+        self.main_layout.addWidget(self.left_widget, stretch=5)
+        self.main_layout.addWidget(self.button_container, stretch=1)
+
+        # left panel (contains list of sign types)
+        self.left_panel.addWidget(self.folder_list, stretch=1)
+        self.left_panel.addWidget(self.scroll_area, stretch=5)
+
+
+        # connect signals
+        self.FolderListViewModel.updateInfo.connect(self.update_info_after_list_clicked)
+        self.folder_list.itemClicked.connect(self.FolderListViewModel.folder_clicked)
+        self.GridViewModel.AddImage.connect(self.on_add_image)
         self.GridViewModel.button_state_changed.connect(self.update_button_state)
 
-        self.label_row_layout = QtWidgets.QHBoxLayout()
-        self.current_folder_label = QtWidgets.QLabel("Current Folder")
-        self.current_folder_label.setAlignment(Qt.AlignLeft)
-
-        self.info_label = QtWidgets.QLabel("Bottom Info")
-        self.info_label.setAlignment(Qt.AlignLeft)
-
-        self.button_layout_wrapper.addWidget(self.batch_info_label)
-        self.button_layout_wrapper.addWidget(self.current_folder_label)
-        self.label_row_layout.addWidget(self.current_folder_label)
-        self.label_row_layout.addWidget(self.info_label)
-
-        self.outer_layout.addLayout(self.label_row_layout)
-
-        #set styles for each sections
+        # set styles for each sections
         self.setStyleSheet(MAIN_WINDOW_STYLE)
         self.menu_bar.setStyleSheet(MENU_BAR_STYLE)
         self.folder_list.setStyleSheet("background-color: #303436; color: white; font-size: 13px;")
@@ -148,6 +131,18 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.current_folder_label.setStyleSheet(INFO_LABEL_STYLE)
         self.info_label.setStyleSheet(INFO_LABEL_STYLE)
         self.batch_info_label.setStyleSheet(BATCH_INFO_STYLE)
+
+
+        self.button_layout_wrapper.addStretch(1)
+        self.button_layout_wrapper.addLayout(self.button_panel)
+        self.button_layout_wrapper.addStretch(1)
+        self.outer_layout.addLayout(self.main_layout)
+        self.outer_layout.addLayout(self.label_row_layout)
+
+        self.label_row_layout.addWidget(self.current_folder_label)
+        self.label_row_layout.addWidget(self.info_label)
+        self.button_layout_wrapper.addWidget(self.batch_info_label)
+
 
 
 
@@ -169,6 +164,24 @@ class ImageMontageApp(QtWidgets.QWidget):
                 q_shortcut = QShortcut(QKeySequence(shortcut), self)
                 q_shortcut.activated.connect(func)
         return button, q_shortcut
+
+    def setup_menubar(self):
+        file_menu = self.menu_bar.addMenu("File")
+
+        load_folder_action = QtWidgets.QAction("Load Folder", self)
+        load_folder_action.triggered.connect(self.on_load_folder)
+        file_menu.addAction(load_folder_action)
+
+        load_json_action = QtWidgets.QAction("Load JSON", self)
+        file_menu.addAction(load_json_action)
+
+        status_menu = self.menu_bar.addMenu("Status")
+
+        load_status_action = QtWidgets.QAction("Load Status", self)
+        status_menu.addAction(load_status_action)
+
+        save_status_action = QtWidgets.QAction("Save Status", self)
+        status_menu.addAction(save_status_action)
 
     def update_button_state(self, enabled: bool):
         if enabled:
@@ -211,9 +224,9 @@ class ImageMontageApp(QtWidgets.QWidget):
     def move_selected(self):
         self.GridViewModel.on_move_selected()
     def load_v_value(self):
-        pass
+        self.scroll_area.verticalScrollBar().setValue(self.vertical_value)
     def check_for_update(self):
-        pass
+        self.GridViewModel.on_check_for_update()
 
     def on_load_folder(self):
         self.GridView.on_load_folder()
