@@ -31,6 +31,7 @@ class MainModel(QtWidgets.QMainWindow):
         self.mode = None #possible modes: single_region, multiple_region, json
         self.first_check = True
         self.image_paths = None  # used when multiple regions
+        self.all_sign_types = None # used to store sign type when multiple regions
         self.regions = None  # list regions in folder
         self.base_folder = None  # Only use for JSON
         self.thread = None
@@ -42,7 +43,7 @@ class MainModel(QtWidgets.QMainWindow):
         self.json_data = None
         self.num_of_col = 6
         self.batch_size = 1000
-        self.thumbnail_size = 150, 150
+
 
     def set_loader(self, new_loader):
         self.loader = new_loader
@@ -87,25 +88,27 @@ class MainModel(QtWidgets.QMainWindow):
             print(1)
             return self.mode, self.subfolders
         else:
-            sign_types_in_all_region = self.collect_sign_types()
-            self.subfolders = sorted(sign_types_in_all_region)
+            self.all_sign_types = self.collect_sign_types()
             self.mode = "multi_region"
-            return self.mode, self.subfolders
+            return self.mode, self.regions
 
     def load_folder(self, folder_name : str):
         if self.mode == "single_region":
             self.folder_path = self.main_folder / folder_name
             self.LoadFolder.emit(self.mode, self.subfolders)
+        elif self.mode == 'multi_region':
+            self.image_paths = [Path(region, folder_name) for region in self.regions]
+            self.LoadFolder.emit(self.mode, self.image_paths)
+
 
     def collect_sign_types(self):
-        regions = [d for d in Path(self.main_folder).iterdir() if d.is_dir()]
-        all_sign_types = {}
-        for region in regions:
+        self.regions = sorted([d for d in Path(self.main_folder).iterdir() if d.is_dir()])
+        all_sign_types = set()
+        for region in self.regions:
             for sign_type in region.iterdir():
                 if sign_type.is_dir():
-                    # Count items in the sign_type folder
-                    all_sign_types[sign_type.name] = len(list(sign_type.iterdir()))
-        return all_sign_types
+                    all_sign_types.add(sign_type.name)
+        return sorted(all_sign_types)
 
 
     def load_subfolders(self, path=None):
@@ -147,7 +150,9 @@ class MainModel(QtWidgets.QMainWindow):
         return self.loader.get_batch()
 
     def current_folder_name(self):
-        return Path(self.folder_path).name
+        if self.mode == 'single_region':
+            return Path(self.folder_path).name
+
 
     def clear_selected_images(self):
         self.selected_images = set()
@@ -172,6 +177,27 @@ class MainModel(QtWidgets.QMainWindow):
 
     def get_batch(self):
         return self.loader.get_batch() if self.loader else []
+
+    def change_num_of_columns(self, columns):
+        self.num_of_col = columns
+
+    def get_num_of_columns(self):
+        return self.num_of_col
+
+    def get_mode(self):
+        return self.mode
+
+    def get_folder_path(self):
+        return self.folder_path
+
+    def get_subfolders(self):
+        return self.subfolders
+
+    def get_regions(self):
+        return self.regions
+
+    def get_all_sign_type(self):
+        return self.all_sign_types
 
     def batch_info(self):
         if not self.loader:

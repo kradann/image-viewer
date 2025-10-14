@@ -7,7 +7,6 @@ INFO_LABEL_STYLE = f"""
             color: #3cfb8b;
             padding: 10px;
             background: transparent;
-            border: 2px solid white;
         """
 MENU_BAR_STYLE = f"""
             QMenuBar {{
@@ -40,6 +39,7 @@ BATCH_INFO_STYLE = f"""
                     background: transparent; 
                     color: #3cfb8b; 
                     font-size: 20px;
+                    border: 2px white solid;
                 """
 
 MAIN_WINDOW_STYLE = f"""

@@ -22,8 +22,10 @@ class ImageGridViewModel(QObject):
     folderLoaded = pyqtSignal(dict) #subfolders
     batchShouldBeShown = pyqtSignal()
     infoMessage = pyqtSignal(str)
+    changeCurrentFolder = pyqtSignal(str)
     AddImage = pyqtSignal(object, int,int)
-    loadSubfoldersList = pyqtSignal(dict)
+    loadSubfoldersListOnSingle = pyqtSignal(dict)
+    loadSubfoldersListOnMultiple = pyqtSignal(list)
 
     def __init__(self, mainmodel):
         super(ImageGridViewModel, self).__init__()
@@ -49,13 +51,16 @@ class ImageGridViewModel(QObject):
         row, col = self.main_model.get_position(idx)
         selected = self.main_model.is_selected(path)
         self.imageAdded.emit(row, col, path, pixmap, selected)
+        self.startResizeTimer.emit()
 
     def toggle_selection(self, path):
         self.main_model.toggle_selection(path)
 
     def load_batch(self):
+        print(6)
         self.clear_images()
         batch = self.main_model.get_current_batch()
+        print(batch)
         self.thread = ImageLoaderThread(batch)
         self.thread.image_loaded.connect(self.on_image_loaded)
         self.thread.start()
@@ -66,10 +71,9 @@ class ImageGridViewModel(QObject):
 
     def on_image_loaded(self, idx, pixmap, path):
         # Compute row/col and selection state here
-        row, col = divmod(idx, 6)  # or self.model.num_of_col
+        row, col = divmod(idx, self.main_model.get_num_of_columns())  # or self.model.num_of_col
         is_selected = self.main_model.is_selected(path)  # ask model if selected
         self.imageReady.emit(row, col, path, pixmap, is_selected)
-
 
 
     def load_main_folder(self, path):
@@ -82,11 +86,18 @@ class ImageGridViewModel(QObject):
         self.main_model.clear_selected_images()
         if mode == "single_region":
             self.main_model.set_loader(ImageBatchLoader(self.main_model.folder_path, batch_size=1000))
-            self.batchShouldBeShown.emit()
+            self.load_batch()
             self.infoMessage.emit("Folder loaded!")
+            self.changeCurrentFolder.emit(self.main_model.folder_path.name)
+            self.loadSubfoldersListOnSingle.emit(subfolders)
         elif mode == "multi_region":
-            self.folderLoaded.emit(subfolders)
-        self.loadSubfoldersList.emit(subfolders)
+            print(type(self.main_model.get_regions()))
+            print(self.main_model.get_regions())
+
+            self.main_model.set_loader(ImageBatchLoader(source=subfolders, batch_size=1000))
+            self.load_batch()
+            self.infoMessage.emit("Folder loaded!")
+            self.loadSubfoldersListOnMultiple.emit(self.main_model.get_all_sign_type())
 
     def clear_images(self):
         for label in self.labels:
@@ -142,10 +153,8 @@ class ImageGridViewModel(QObject):
         self.main_model.check_for_update()
 
 
-
     @staticmethod
     def cleanup_thumbs():
-        print(12)
         ImageLoaderThread.cleanup_thumbs()
 
 

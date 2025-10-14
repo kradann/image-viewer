@@ -33,61 +33,55 @@ class ImageMontageApp(QtWidgets.QWidget):
         #init ViewModels and Views
         self.FolderListViewModel = FolderListViewModel(self.mainModel)
         self.GridViewModel = ImageGridViewModel(self.mainModel)
-        self.GridView = ImageGridView(parent=self, mainmodel=self.mainModel, GridViewModel=self.GridViewModel)
+        self.GridView = ImageGridView(parent=self, mainmodel=self.mainModel, gridviewmodel=self.GridViewModel)
         self.GridView.setMouseTracking(True)
 
-        #init layout
-        self.main_layout = QtWidgets.QHBoxLayout()
-
+        # === Main Layout ===
         self.outer_layout = QtWidgets.QVBoxLayout(self)
         self.setLayout(self.outer_layout)
+        self.main_layout = QtWidgets.QHBoxLayout() # left | middle | right
+        self.outer_layout.addLayout(self.main_layout)
 
-        # Left panel (folder list)
-        self.left_panel = QtWidgets.QHBoxLayout()
-
-        # Contains folder list and current folder label
-        self.label_row_layout = QtWidgets.QHBoxLayout()
-
+        # === Left Panel ===
+        self.left_panel = QtWidgets.QVBoxLayout()
         self.left_widget = QtWidgets.QWidget()
+        self.left_widget.setMaximumWidth(430)
         self.left_widget.setLayout(self.left_panel)
-
-        # Middle panel
-        self.scroll_area = QtWidgets.QScrollArea()
-
-        # Grid that displays images
-        self.image_layout = QtWidgets.QGridLayout(self.GridView)
 
         # Init folder list
         self.folder_list = FolderListWidget(self.mainModel, self.GridViewModel)
 
+        # Current folder label (below folder list)
+        self.current_folder_label = QtWidgets.QLabel("Current Folder")
 
-        #Button container
+        # Add to left panel
+        self.left_panel.addWidget(self.folder_list, stretch=9)
+        self.left_panel.addWidget(self.current_folder_label, stretch=1)
+
+        # === Middle Panel ===
+        self.middle_panel = QtWidgets.QVBoxLayout()
+        self.image_layout = QtWidgets.QGridLayout(self.GridView)
+        self.scroll_area = QtWidgets.QScrollArea()
+        self.scroll_area.setMinimumWidth(1000)
+        self.scroll_area.setWidget(self.GridView)
+        self.scroll_area.setWidgetResizable(True)
+        self.image_layout.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignCenter)
+
+        # Info Label (below grid)
+        self.info_label = QtWidgets.QLabel("Bottom Info")
+        self.info_label.setAlignment(Qt.AlignCenter)
+
+        # Add scroll_area and info label to middle panel
+        self.middle_panel.addWidget(self.scroll_area, stretch=8)
+        self.middle_panel.addWidget(self.info_label, stretch=1)
+
+        # === Right Panel ===
+        self.right_panel = QtWidgets.QVBoxLayout()
         self.button_container = QtWidgets.QWidget()
         self.button_layout_wrapper = QtWidgets.QVBoxLayout(self.button_container)
         self.button_panel = QtWidgets.QVBoxLayout()
 
-        #Labels
-        self.current_folder_label = QtWidgets.QLabel("Current Folder")
-
-        self.batch_info_label = QtWidgets.QLabel("Batch Info", self)
-        self.info_label = QtWidgets.QLabel("Bottom Info")
-
-
-        # Menu bar
-        self.menu_bar = QtWidgets.QMenuBar(self)
-        self.outer_layout.setMenuBar(self.menu_bar)
-
-        # Connect menu items to functions
-        self.setup_menubar()
-
-        # Scroll area
-        self.scroll_area.setMinimumWidth(1000)
-        self.vertical_value = 0
-
-        self.scroll_area.setWidget(self.GridView)
-        self.scroll_area.setWidgetResizable(True)
-
-        # Buttons
+        # Add buttons
         self.add_button("Previous Folder", self.prev_folder)
         self.add_button("Next Folder", self.next_folder)
         self.add_button("Previous Batch", self.previous_batch)
@@ -99,51 +93,46 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.add_button("Reload scrolling", self.load_v_value)
         self.add_button("Check for Update", self.check_for_update)
 
-        # set alignments
-        self.image_layout.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
-        self.scroll_area.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
-        self.batch_info_label.setAlignment(Qt.AlignCenter | Qt.AlignBottom)
-        self.label_row_layout.setAlignment(Qt.AlignLeft)
-        self.info_label.setAlignment(Qt.AlignCenter)
-        self.current_folder_label.setFixedWidth(400)
-        self.info_label.setFixedWidth(self.GridView.width())
 
 
-        self.main_layout.addWidget(self.left_widget, stretch=5)
-        self.main_layout.addWidget(self.button_container, stretch=1)
+        # Arrange right side vertically
+        self.button_layout_wrapper.addStretch(1)
+        self.button_layout_wrapper.addLayout(self.button_panel)
+        self.button_layout_wrapper.addStretch(1)
+        self.button_layout_wrapper.setAlignment(Qt.AlignCenter)
 
-        # left panel (contains list of sign types)
-        self.left_panel.addWidget(self.folder_list, stretch=1)
-        self.left_panel.addWidget(self.scroll_area, stretch=5)
+        # Batch info label
+        self.batch_info_label = QtWidgets.QLabel("Batch Info", self)
+        self.batch_info_label.setAlignment(Qt.AlignCenter)
 
+        #Add buttons and batch info label to right side panel
+        self.right_panel.addWidget(self.button_container, stretch=8)
+        self.right_panel.addWidget(self.batch_info_label, stretch=1)
+
+        # === Combine Panels ===
+        self.main_layout.addWidget(self.left_widget, stretch=2)
+        self.main_layout.addLayout(self.middle_panel, stretch=6)
+        self.main_layout.addLayout(self.right_panel, stretch=1)
+
+        # === Menu Bar ===
+        self.menu_bar = QtWidgets.QMenuBar(self)
+        self.outer_layout.setMenuBar(self.menu_bar)
+        self.setup_menubar()
+
+        # === Styling ===
+        self.setStyleSheet(MAIN_WINDOW_STYLE)
+        self.menu_bar.setStyleSheet(MENU_BAR_STYLE)
+        self.folder_list.setStyleSheet("background-color: #303436; color: white; font-size: 13px;")
+        self.current_folder_label.setStyleSheet(INFO_LABEL_STYLE)
+        self.info_label.setStyleSheet(INFO_LABEL_STYLE)
+        self.batch_info_label.setStyleSheet(BATCH_INFO_STYLE)
 
         # connect signals
         self.FolderListViewModel.updateInfo.connect(self.update_info_after_list_clicked)
         self.folder_list.itemClicked.connect(self.FolderListViewModel.folder_clicked)
         self.GridViewModel.AddImage.connect(self.on_add_image)
         self.GridViewModel.button_state_changed.connect(self.update_button_state)
-
-        # set styles for each sections
-        self.setStyleSheet(MAIN_WINDOW_STYLE)
-        self.menu_bar.setStyleSheet(MENU_BAR_STYLE)
-        self.folder_list.setStyleSheet("background-color: #303436; color: white; font-size: 13px;")
-        self.scroll_area.setStyleSheet("background-color: white;")
-        self.current_folder_label.setStyleSheet(INFO_LABEL_STYLE)
-        self.info_label.setStyleSheet(INFO_LABEL_STYLE)
-        self.batch_info_label.setStyleSheet(BATCH_INFO_STYLE)
-
-
-        self.button_layout_wrapper.addStretch(1)
-        self.button_layout_wrapper.addLayout(self.button_panel)
-        self.button_layout_wrapper.addStretch(1)
-        self.outer_layout.addLayout(self.main_layout)
-        self.outer_layout.addLayout(self.label_row_layout)
-
-        self.label_row_layout.addWidget(self.current_folder_label)
-        self.label_row_layout.addWidget(self.info_label)
-        self.button_layout_wrapper.addWidget(self.batch_info_label)
-
-
+        self.GridViewModel.changeCurrentFolder.connect(self.change_current_folder_label)
 
 
     def add_button(self, name: str, func, shortcut: Union[str, tuple] = None):
@@ -232,6 +221,21 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.GridView.on_load_folder()
         self.change_info_label("Folder Loaded")
         self.update_batch_info()
+        #commented because it's easier to debug
+        '''
+        try:
+            self.GridView.on_load_folder()
+            self.change_info_label("Folder Loaded")
+            self.update_batch_info()
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Folder Load Error",
+                f"An error occurred while loading the folder: \n\n{e} \n\nMake sure you are selecting the correct folder!",
+            )
+
+            self.change_info_label("Folder load failed")
+        '''
 
 
     def update_info_after_list_clicked(self):
@@ -239,17 +243,19 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.change_info_label("Folder Loaded")
 
     def update_batch_info(self):
-        self.batch_info_label.setText(f"Batch: {self.mainModel.loader.current_batch_idx + 1} / {self.mainModel.loader.number_of_batches // 1000 + 1}")
+        if self.mainModel.loader:
+            self.batch_info_label.setText(f"Batch: {self.mainModel.loader.current_batch_idx + 1} / {self.mainModel.loader.number_of_batches // 1000 + 1}")
 
     def change_info_label(self, text=None, text_color="#3cfb8b"):
         label = self.info_label
         label.setText(text)
-        if text_color:
-            label.setStyleSheet(f"color: {text_color}; font-size: 20px;")
         # Save the current text
         current_text = text
         # After 5 seconds, clear ONLY IF the text hasn't changed in the meantime
         QTimer.singleShot(5000, lambda: label.setText("") if label.text() == current_text else None)
+
+    def change_current_folder_label(self, folder_name):
+        self.current_folder_label.setText("Current folder: " + folder_name)
 
     def closeEvent(self, event):
         print(11)

@@ -17,11 +17,12 @@ class ImageGridView(QtWidgets.QWidget):
         self.drag_selecting = False
         self.parent_app = parent
         self.clicked_label = None
+        self.thumbnail_size = 150, 150
+        self.last_width = None
         self.mainModel = mainmodel
         self.GridViewModel = gridviewmodel
         self.ClickableModel = Clickable
         self.GridViewModel.imageReady.connect(self.add_image_to_layout)
-        self.GridViewModel.batchLoaded.connect(self.update_folder_label)
         self.GridViewModel.batchShouldBeShown.connect(self.show_batch)
         #self.viewmodel.infoMessage.connect(self.change_info_label)
 
@@ -74,29 +75,13 @@ class ImageGridView(QtWidgets.QWidget):
                 return label
         return None
 
-    '''def on_image_added(self, row, col, path, pixmap, is_selected):
-        label = ClickableLabel(self.ClickableModel, path)
-        label.setPixmap(pixmap.scaled(*self.thumbnail_size, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
-        label.clicked.connect(lambda: self.vm.toggle_selection(path))
-
-        if is_selected:
-            label.selected = True
-            label.add_red_boarder()
-
-        self.image_layout.addWidget(label, row, col)
-        self.labels.append(label)'''
-
-    def update_folder_label(self, folder_name):
-        pass
-        #self.current_folder_label.setText(f"Current folder: {folder_name}")
-        #TODO: update current folder label
 
     def add_image_to_layout(self, row, col, path, pixmap, is_selected):
         #print(path, row, col)
         label = ClickableLabel(img_path=path, mainmodel=self.mainModel)
-        label.setFixedSize(*self.mainModel.thumbnail_size)
+        label.setFixedSize(*self.thumbnail_size)
         label.setPixmap(
-            pixmap.scaled(*self.mainModel.thumbnail_size, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
+            pixmap.scaled(*self.thumbnail_size, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
         label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         label.setScaledContents(False)
 
@@ -117,4 +102,6 @@ class ImageGridView(QtWidgets.QWidget):
 
     def show_batch(self):
         self.GridViewModel.load_batch()
+
+
 

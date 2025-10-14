@@ -30,12 +30,13 @@ class FolderListWidget(QtWidgets.QListWidget):
 
         self.FolderListViewModel.statusChanged.connect(self.on_status_changed)
         self.FolderListViewModel.statusesLoaded.connect(self.apply_loaded_statuses)
-        self.gridviewmodel.loadSubfoldersList.connect(self.load_list)
+        self.gridviewmodel.loadSubfoldersListOnSingle.connect(self.load_list)
+        self.gridviewmodel.loadSubfoldersListOnMultiple.connect(self.load_list)
         font = QtGui.QFont("Courier New")
         font.setPointSize(10)
         self.setFont(font)
 
-        self.setMinimumWidth(400)
+        self.setMinimumWidth(430)
 
     def on_status_changed(self, folder_name, status):
         item = self._find_item_by_name(folder_name)
@@ -80,6 +81,12 @@ class FolderListWidget(QtWidgets.QListWidget):
 
     def load_list(self, subfolders):
         print(4)
-        for folder in subfolders:
-            display_text = f"{folder:<40} {subfolders[folder]:>6}"  # left-align name, right-align number
-            self.addItem(display_text)
+        if self.mainmodel.get_mode() == 'single_region':
+            for folder in subfolders:
+                display_text = f"{folder:<45} {subfolders[folder]:>6}"  # left-align name, right-align number
+                self.addItem(display_text)
+        elif self.mainmodel.get_mode() == 'multi_region':
+            print(5)
+            for folder in subfolders:
+                display_text = f"{folder:<45}"  # left-align name
+                self.addItem(display_text)
