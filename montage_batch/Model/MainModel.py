@@ -1,6 +1,11 @@
 import copy
 import shutil
+import subprocess
+import sys
+from enum import Enum
 from pathlib import Path
+
+import requests
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QFont
@@ -16,12 +21,17 @@ from Model.ClickableModel import Clickable
 APP_VERSION = "0.1.0"
 GITHUB_RELEASE_LINK = "https://api.github.com/repos/kradann/image-viewer/releases/latest"
 
+class Mode(Enum):
+    SINGLE = 1
+    MULTIPLE = 2
+    JSON = 3
 
 class MainModel(QtWidgets.QMainWindow):
-    LoadSubfolders = pyqtSignal(list)
-    LoadFolder= pyqtSignal(str, dict)
-    ClearImages =  pyqtSignal()
-    LoadSelectedImages = pyqtSignal(set)
+    load_subfolders = pyqtSignal(list)
+    load_folder_single= pyqtSignal(Mode, dict,int)
+    load_folder_multiple = pyqtSignal(Mode, list,int)
+    clear_images =  pyqtSignal()
+    load_selected_images = pyqtSignal(set)
 
     def __init__(self, loader=None):
         super().__init__()
@@ -44,10 +54,39 @@ class MainModel(QtWidgets.QMainWindow):
         self.num_of_col = 6
         self.batch_size = 1000
 
+    # === Setters ===
 
     def set_loader(self, new_loader):
         self.loader = new_loader
 
+    # === Getters ===
+
+    def get_current_batch(self):
+        return self.loader.get_batch()
+
+    def get_position(self, idx):
+        return idx // self.num_of_col, idx % self.num_of_col
+
+    def get_batch(self):
+        return self.loader.get_batch() if self.loader else []
+
+    def get_num_of_columns(self):
+        return self.num_of_col
+
+    def get_mode(self):
+        return self.mode
+
+    def get_folder_path(self):
+        return self.folder_path
+
+    def get_subfolders(self):
+        return self.subfolders
+
+    def get_regions(self):
+        return self.regions
+
+    def get_all_sign_type(self):
+        return self.all_sign_types
 
     '''def load_folder(self):
         #self.folderListView.clear()
@@ -84,30 +123,34 @@ class MainModel(QtWidgets.QMainWindow):
 
         if any(sub in SIGN_TYPES for sub in self.subfolders):
             self.folder_path = self.main_folder / list(self.subfolders.keys())[0]
-            self.mode = "single_region"
-            print(1)
+            self.mode = Mode.SINGLE
             return self.mode, self.subfolders
         else:
             self.all_sign_types = self.collect_sign_types()
-            self.mode = "multi_region"
+            self.mode = Mode.MULTIPLE
             return self.mode, self.regions
 
     def load_folder(self, folder_name : str):
-        if self.mode == "single_region":
+        if self.mode == Mode.SINGLE:
             self.folder_path = self.main_folder / folder_name
-            self.LoadFolder.emit(self.mode, self.subfolders)
-        elif self.mode == 'multi_region':
+            self.load_folder_single.emit(self.mode, self.subfolders,0)
+        elif self.mode == Mode.MULTIPLE:
             self.image_paths = [Path(region, folder_name) for region in self.regions]
-            self.LoadFolder.emit(self.mode, self.image_paths)
+            self.load_folder_multiple.emit(self.mode, self.image_paths,0)
 
 
     def collect_sign_types(self):
-        self.regions = sorted([d for d in Path(self.main_folder).iterdir() if d.is_dir()])
-        all_sign_types = set()
-        for region in self.regions:
-            for sign_type in region.iterdir():
-                if sign_type.is_dir():
-                    all_sign_types.add(sign_type.name)
+        main_path = Path(self.main_folder)
+        if not main_path.exists() or not main_path.is_dir():
+            return []
+
+        self.regions = sorted([d for d in self.main_folder.iterdir() if d.is_dir()])
+        all_sign_types = {
+            st.name
+            for region in self.regions
+            for st in region.iterdir()
+            if st.is_dir()
+        }
         return sorted(all_sign_types)
 
 
@@ -115,23 +158,11 @@ class MainModel(QtWidgets.QMainWindow):
         self.folderListView.clear()
         if not self.is_JSON_active and not self.is_all_region:
             folder_infos = []
-            wrong_subfolder_name = []
+            if self.first_check:
+                folder_infos = self.check_for_invalid_folder_names(path)
 
-            for name in self.subfolders.keys():
-                if name in SIGN_TYPES:
-                    full_path = Path(path) / name
-                    if full_path.is_dir():
-                        num_images = len(list(Path(full_path).iterdir()))
-                        folder_infos.append((name, num_images))
-                else:
-                        wrong_subfolder_name.append(name)
-
-            if wrong_subfolder_name and self.first_check:
-                self.first_check = False
-                msg = "These are not valid subfolder names:\n" + "\n".join(wrong_subfolder_name)
-                QMessageBox.information(self, "Subfolder name error", msg)
-
-            folder_infos.sort()  # order list names to abc
+            if folder_infos:
+                folder_infos.sort()
             self.subfolders = dict()
             for name, count in folder_infos:
                 self.subfolders.append(name)
@@ -142,15 +173,29 @@ class MainModel(QtWidgets.QMainWindow):
             font = QFont("Courier New", 10)
             self.folderListView.setFont(font)
         elif not self.is_JSON_active and self.is_all_region:
-            print(15)
             for sign_type in self.subfolders.keys():
                 self.folderListView.addItem(sign_type)
 
-    def get_current_batch(self):
-        return self.loader.get_batch()
+    def check_for_invalid_folder_names(self, path):
+        folder_infos = []
+        wrong_subfolder_name = []
+        for name in self.subfolders.keys():
+            if name in SIGN_TYPES:
+                full_path = Path(path) / name
+                if full_path.is_dir():
+                    num_images = len(list(Path(full_path).iterdir()))
+                    folder_infos.append((name, num_images))
+            else:
+                wrong_subfolder_name.append(name)
+
+        if wrong_subfolder_name and self.first_check:
+            self.first_check = False
+            msg = "These are not valid subfolder names:\n" + "\n".join(wrong_subfolder_name)
+            QMessageBox.information(self, "Subfolder name error", msg)
+        return folder_infos
 
     def current_folder_name(self):
-        if self.mode == 'single_region':
+        if self.mode == Mode.SINGLE:
             return Path(self.folder_path).name
 
 
@@ -158,7 +203,10 @@ class MainModel(QtWidgets.QMainWindow):
         self.selected_images = set()
 
     def is_selected(self, path):
-        return path in self.selected_images
+        for img in self.selected_images:
+            if img == path:
+                return True
+        return False
 
     def add_image_to_selected(self, img_path):
         self.selected_images.add(img_path)
@@ -172,32 +220,7 @@ class MainModel(QtWidgets.QMainWindow):
         else:
             self.selected_images.add(path)
 
-    def get_position(self, idx):
-        return idx // self.num_of_col, idx % self.num_of_col
 
-    def get_batch(self):
-        return self.loader.get_batch() if self.loader else []
-
-    def change_num_of_columns(self, columns):
-        self.num_of_col = columns
-
-    def get_num_of_columns(self):
-        return self.num_of_col
-
-    def get_mode(self):
-        return self.mode
-
-    def get_folder_path(self):
-        return self.folder_path
-
-    def get_subfolders(self):
-        return self.subfolders
-
-    def get_regions(self):
-        return self.regions
-
-    def get_all_sign_type(self):
-        return self.all_sign_types
 
     def batch_info(self):
         if not self.loader:
@@ -217,7 +240,11 @@ class MainModel(QtWidgets.QMainWindow):
                 prev_folder_idx -= 1
 
             self.folder_path = subfolders[prev_folder_idx]
-            self.LoadFolder.emit(self.mode, self.subfolders)
+
+            if self.mode == Mode.SINGLE:
+                self.load_folder_single.emit(self.mode, self.subfolders,0)
+            elif self.mode == Mode.MULTIPLE:
+                self.load_folder_multiple.emit(self.mode, self.image_paths, 0)
             #TODO: Move blue highlight when changing folder
 
     def load_next_folder(self):
@@ -233,7 +260,10 @@ class MainModel(QtWidgets.QMainWindow):
                 next_folder_idx += 1
 
             self.folder_path = subfolders[next_folder_idx]
-            self.LoadFolder.emit(self.mode, self.subfolders)
+            if self.mode == Mode.SINGLE:
+                self.load_folder_single.emit(self.mode, self.subfolders,0)
+            elif self.mode == Mode.MULTIPLE:
+                self.load_folder_multiple.emit(self.mode, self.image_paths,0)
             #TODO: Move blue highlight when changing folder
 
     def load_prev_batch(self):
@@ -245,7 +275,7 @@ class MainModel(QtWidgets.QMainWindow):
             self.loader.next_batch()
 
     def move_selected(self, selected_folder):
-        if self.mode == "single_region":
+        if self.mode == Mode.SINGLE:
             output_folder = Path(self.main_folder) / selected_folder
             output_folder.mkdir(parents=True, exist_ok=True)
 
@@ -262,12 +292,32 @@ class MainModel(QtWidgets.QMainWindow):
                 pass
                 #TODO: change info label
 
-            if len(self.dropped_selected) > 0:
-                self.selected_images = copy.deepcopy(self.dropped_selected)
-                #TODO: show only selected
-            else:
-                self.selected_images = set()
-                #TODO: refresh
+        elif self.mode == Mode.MULTIPLE:
+            if self.selected_images:
+                for img_path in self.selected_images:
+                    self.dropped_selected.discard(img_path.img_path)
+                    img_path = Path(img_path.img_path)
+
+                    output_folder = Path(img_path.parent.parent) / selected_folder
+
+                    output_folder.mkdir(exist_ok=True)
+                    dst_path = output_folder / img_path.name
+
+                    #TODO: Check file name
+
+                    shutil.move(img_path, str(dst_path))
+
+        # Check if any selected images left
+        if len(self.dropped_selected) > 0:
+            self.selected_images = copy.deepcopy(self.dropped_selected)
+            self.show_only_selected()
+        else:
+            self.selected_images = set()
+            if self.mode == Mode.SINGLE:
+                self.load_folder_single.emit(self.mode, self.subfolders, self.loader.current_batch_idx)
+            elif self.mode == Mode.MULTIPLE:
+                self.load_folder_multiple.emit(self.mode, self.image_paths, self.loader.current_batch_idx)
+
 
     def check_image_name(self, img_path, output_folder):
         dst_path = output_folder / img_path.name
@@ -284,9 +334,9 @@ class MainModel(QtWidgets.QMainWindow):
         if not self.loader:
             return
 
-        self.ClearImages.emit()
-        self.dropped_selected = {img.img_path for img in self.selected_images}
-        self.LoadSelectedImages.emit(self.dropped_selected)
+        self.clear_images.emit()
+        self.dropped_selected = {img for img in self.selected_images}
+        self.load_selected_images.emit(self.dropped_selected)
 
     #TODO: check if function works
     def check_for_update(self):

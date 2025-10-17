@@ -1,3 +1,4 @@
+import time
 from typing import Union
 
 from PyQt5 import QtWidgets, QtCore
@@ -28,13 +29,13 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.resize(1600, 900)
 
         #init main model
-        self.mainModel = MainModel()
+        self.main_model = MainModel()
 
         #init ViewModels and Views
-        self.FolderListViewModel = FolderListViewModel(self.mainModel)
-        self.GridViewModel = ImageGridViewModel(self.mainModel)
-        self.GridView = ImageGridView(parent=self, mainmodel=self.mainModel, gridviewmodel=self.GridViewModel)
-        self.GridView.setMouseTracking(True)
+        self.folder_list_view_model = FolderListViewModel(self.main_model)
+        self.grid_view_model = ImageGridViewModel(self.main_model)
+        self.grid_view = ImageGridView(parent=self, main_model=self.main_model, grid_view_model=self.grid_view_model)
+        self.grid_view.setMouseTracking(True)
 
         # === Main Layout ===
         self.outer_layout = QtWidgets.QVBoxLayout(self)
@@ -49,7 +50,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.left_widget.setLayout(self.left_panel)
 
         # Init folder list
-        self.folder_list = FolderListWidget(self.mainModel, self.GridViewModel)
+        self.folder_list = FolderListWidget(self.main_model, self.grid_view_model)
 
         # Current folder label (below folder list)
         self.current_folder_label = QtWidgets.QLabel("Current Folder")
@@ -60,11 +61,12 @@ class ImageMontageApp(QtWidgets.QWidget):
 
         # === Middle Panel ===
         self.middle_panel = QtWidgets.QVBoxLayout()
-        self.image_layout = QtWidgets.QGridLayout(self.GridView)
+        self.image_layout = QtWidgets.QGridLayout(self.grid_view)
         self.scroll_area = QtWidgets.QScrollArea()
         self.scroll_area.setMinimumWidth(1000)
-        self.scroll_area.setWidget(self.GridView)
+        self.scroll_area.setWidget(self.grid_view)
         self.scroll_area.setWidgetResizable(True)
+        self.vertical_value = 0 # Position on vertical axes
         self.image_layout.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignCenter)
 
         # Info Label (below grid)
@@ -128,12 +130,11 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.batch_info_label.setStyleSheet(BATCH_INFO_STYLE)
 
         # connect signals
-        self.FolderListViewModel.updateInfo.connect(self.update_info_after_list_clicked)
-        self.folder_list.itemClicked.connect(self.FolderListViewModel.folder_clicked)
-        self.GridViewModel.AddImage.connect(self.on_add_image)
-        self.GridViewModel.button_state_changed.connect(self.update_button_state)
-        self.GridViewModel.changeCurrentFolder.connect(self.change_current_folder_label)
-
+        self.folder_list_view_model.update_info.connect(self.update_info_after_list_clicked)
+        self.folder_list.itemClicked.connect(self.folder_list_view_model.folder_clicked)
+        self.grid_view_model.add_image_to_grid_action.connect(self.on_add_image)
+        self.grid_view_model.button_state_changed.connect(self.update_button_state)
+        self.grid_view_model.change_current_folder.connect(self.change_current_folder_label)
 
     def add_button(self, name: str, func, shortcut: Union[str, tuple] = None):
         button = QtWidgets.QPushButton(name)
@@ -184,46 +185,54 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.image_layout.addWidget(click, row, col)
 
     def prev_folder(self):
-        self.GridViewModel.on_prev_folder()
+        self.grid_view_model.on_prev_folder()
         self.change_info_label("Previous Folder Loaded")
         self.update_batch_info()
 
     def next_folder(self):
-        self.GridViewModel.on_next_folder()
+        self.grid_view_model.on_next_folder()
         self.change_info_label("Next Folder Loaded")
         self.update_batch_info()
 
     def previous_batch(self):
-        self.GridViewModel.on_prev_batch()
+        self.grid_view_model.on_prev_batch()
         self.change_info_label("Previous Batch Loaded")
         self.update_batch_info()
 
     def next_batch(self):
-        self.GridViewModel.on_next_batch()
+        self.grid_view_model.on_next_batch()
         self.change_info_label("Next Batch Loaded")
         self.update_batch_info()
 
     def show_batch(self):
-        self.GridView.show_batch()
+        self.grid_view.show_batch()
 
     def un_select_select_all(self):
-        self.GridViewModel.on_unselect_select_all()
+        self.grid_view_model.on_unselect_select_all()
+
     def show_only_selected(self):
-        self.GridViewModel.on_show_only_selected()
+        self.grid_view_model.on_show_only_selected()
+
     def move_selected(self):
-        self.GridViewModel.on_move_selected()
+        self.vertical_value = self.scroll_area.verticalScrollBar().value()
+        print("vertical",self.vertical_value)
+        self.grid_view_model.on_move_selected()
+
     def load_v_value(self):
         self.scroll_area.verticalScrollBar().setValue(self.vertical_value)
+
     def check_for_update(self):
-        self.GridViewModel.on_check_for_update()
+        self.grid_view_model.on_check_for_update()
 
     def on_load_folder(self):
-        self.GridView.on_load_folder()
-        self.change_info_label("Folder Loaded")
+        self.change_info_label("Loading Folders...", time=0)
+        self.grid_view.on_load_folder()
+        self.change_info_label("Folders Loaded")
         self.update_batch_info()
         #commented because it's easier to debug
         '''
         try:
+            self.change_info_label("Loading Folders...", time=0)
             self.GridView.on_load_folder()
             self.change_info_label("Folder Loaded")
             self.update_batch_info()
@@ -243,22 +252,23 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.change_info_label("Folder Loaded")
 
     def update_batch_info(self):
-        if self.mainModel.loader:
-            self.batch_info_label.setText(f"Batch: {self.mainModel.loader.current_batch_idx + 1} / {self.mainModel.loader.number_of_batches // 1000 + 1}")
+        if self.main_model.loader:
+            self.batch_info_label.setText(f"Batch: {self.main_model.loader.current_batch_idx + 1} / {self.main_model.loader.number_of_batches // 1000 + 1}")
 
-    def change_info_label(self, text=None, text_color="#3cfb8b"):
+    def change_info_label(self, text=None, text_color="#3cfb8b", time=5000):
         label = self.info_label
         label.setText(text)
         # Save the current text
         current_text = text
-        # After 5 seconds, clear ONLY IF the text hasn't changed in the meantime
-        QTimer.singleShot(5000, lambda: label.setText("") if label.text() == current_text else None)
+        if time and time > 0:
+            # After 5 seconds, clear ONLY IF the text hasn't changed in the meantime
+            QTimer.singleShot(time, lambda: label.setText("") if label.text() == current_text else None)
 
     def change_current_folder_label(self, folder_name):
         self.current_folder_label.setText("Current folder: " + folder_name)
 
     def closeEvent(self, event):
         print(11)
-        self.GridViewModel.cleanup_thumbs()
+        self.grid_view_model.cleanup_thumbs()
         event.accept()
 

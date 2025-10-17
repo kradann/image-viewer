@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QDialog
 from View.FolderSelectionDialog import FolderSelectionDialog
 from Model.BatchLoaderModel import ImageBatchLoader
 from Model.ImageThreadLoaderModel import ImageLoaderThread
-from Model.ClickableModel import Clickable
+from Model.MainModel import Mode
 
 
 def clear_images(labels):
@@ -16,16 +16,16 @@ def clear_images(labels):
 
 class ImageGridViewModel(QObject):
     button_state_changed = pyqtSignal(bool)
-    imageAdded = pyqtSignal(int,int, str, object,bool)
-    imageReady = pyqtSignal(int,int, str, object,bool)
-    batchLoaded = pyqtSignal(str)
-    folderLoaded = pyqtSignal(dict) #subfolders
-    batchShouldBeShown = pyqtSignal()
-    infoMessage = pyqtSignal(str)
-    changeCurrentFolder = pyqtSignal(str)
-    AddImage = pyqtSignal(object, int,int)
-    loadSubfoldersListOnSingle = pyqtSignal(dict)
-    loadSubfoldersListOnMultiple = pyqtSignal(list)
+    image_added = pyqtSignal(int,int, str, object,bool)
+    image_ready = pyqtSignal(int,int, str, object,bool)
+    batch_loaded = pyqtSignal(str)
+    folder_loaded = pyqtSignal(dict) #subfolders
+    batch_should_be_shown = pyqtSignal()
+    info_message = pyqtSignal(str)
+    change_current_folder = pyqtSignal(str)
+    add_image_to_grid_action = pyqtSignal(object, int,int)
+    load_subfolders_list_on_single = pyqtSignal(dict)
+    load_subfolders_list_on_multiple = pyqtSignal(list)
 
     def __init__(self, mainmodel):
         super(ImageGridViewModel, self).__init__()
@@ -37,9 +37,10 @@ class ImageGridViewModel(QObject):
         self.labels = list()
         self.isAllSelected = False
 
-        self.main_model.LoadFolder.connect(self.load_images)
-        self.main_model.LoadSelectedImages.connect(self.load_selected_images)
-        self.main_model.ClearImages.connect(self.clear_images)
+        self.main_model.load_folder_single.connect(self.load_images)
+        self.main_model.load_folder_multiple.connect(self.load_images)
+        self.main_model.load_selected_images.connect(self.load_selected_images)
+        self.main_model.clear_images.connect(self.clear_images)
 
     def _check_button_state(self):
         if not self.main_model:
@@ -50,8 +51,7 @@ class ImageGridViewModel(QObject):
     def add_image(self, idx, pixmap, path):
         row, col = self.main_model.get_position(idx)
         selected = self.main_model.is_selected(path)
-        self.imageAdded.emit(row, col, path, pixmap, selected)
-        self.startResizeTimer.emit()
+        self.image_added.emit(row, col, path, pixmap, selected)
 
     def toggle_selection(self, path):
         self.main_model.toggle_selection(path)
@@ -60,44 +60,39 @@ class ImageGridViewModel(QObject):
         print(6)
         self.clear_images()
         batch = self.main_model.get_current_batch()
-        print(batch)
         self.thread = ImageLoaderThread(batch)
         self.thread.image_loaded.connect(self.on_image_loaded)
         self.thread.start()
 
         folder_name = self.main_model.current_folder_name()
         if folder_name:
-            self.batchLoaded.emit(folder_name)
+            self.batch_loaded.emit(folder_name)
 
     def on_image_loaded(self, idx, pixmap, path):
         # Compute row/col and selection state here
         row, col = divmod(idx, self.main_model.get_num_of_columns())  # or self.model.num_of_col
         is_selected = self.main_model.is_selected(path)  # ask model if selected
-        self.imageReady.emit(row, col, path, pixmap, is_selected)
+        self.image_ready.emit(row, col, path, pixmap, is_selected)
 
 
     def load_main_folder(self, path):
-        print(path)
         mode, subfolders = self.main_model.load_main_folder(path)
         print(2)
-        self.load_images(mode, subfolders)
+        self.load_images(mode, subfolders,0)
 
-    def load_images(self, mode, subfolders):
+    def load_images(self, mode, subfolders, batch_idx):
         self.main_model.clear_selected_images()
-        if mode == "single_region":
-            self.main_model.set_loader(ImageBatchLoader(self.main_model.folder_path, batch_size=1000))
+        if mode == Mode.SINGLE :
+            self.main_model.set_loader(ImageBatchLoader(self.main_model.folder_path, batch_size=1000, start_batch_idx=batch_idx))
             self.load_batch()
-            self.infoMessage.emit("Folder loaded!")
-            self.changeCurrentFolder.emit(self.main_model.folder_path.name)
-            self.loadSubfoldersListOnSingle.emit(subfolders)
-        elif mode == "multi_region":
-            print(type(self.main_model.get_regions()))
-            print(self.main_model.get_regions())
-
-            self.main_model.set_loader(ImageBatchLoader(source=subfolders, batch_size=1000))
+            self.info_message.emit("Folder loaded!")
+            self.change_current_folder.emit(self.main_model.folder_path.name)
+            self.load_subfolders_list_on_single.emit(subfolders)
+        elif mode == Mode.MULTIPLE:
+            self.main_model.set_loader(ImageBatchLoader(source=subfolders, batch_size=1000, start_batch_idx=batch_idx))
             self.load_batch()
-            self.infoMessage.emit("Folder loaded!")
-            self.loadSubfoldersListOnMultiple.emit(self.main_model.get_all_sign_type())
+            self.info_message.emit("Folder loaded!")
+            self.load_subfolders_list_on_multiple.emit(self.main_model.get_all_sign_type())
 
     def clear_images(self):
         for label in self.labels:
@@ -105,7 +100,7 @@ class ImageGridViewModel(QObject):
         self.labels = list()
 
     def add_image_to_grid(self, click, row, col):
-        self.AddImage.emit(click, row, col)
+        self.add_image_to_grid_action.emit(click, row, col)
         self.labels.append(click)
 
     def on_prev_folder(self):
@@ -116,11 +111,11 @@ class ImageGridViewModel(QObject):
 
     def on_prev_batch(self):
         self.main_model.load_prev_batch()
-        self.batchShouldBeShown.emit()
+        self.batch_should_be_shown.emit()
 
     def on_next_batch(self):
         self.main_model.load_next_batch()
-        self.batchShouldBeShown.emit()
+        self.batch_should_be_shown.emit()
 
     def on_move_selected(self):
         dialog = FolderSelectionDialog()

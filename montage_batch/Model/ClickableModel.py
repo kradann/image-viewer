@@ -6,8 +6,8 @@ from PyQt5.QtGui import QPixmap, QImage
 from Model.ImageThreadLoaderModel import ImageLoaderThread  # assuming you keep it
 
 class Clickable:
-    imagePathChanged = pyqtSignal(str)
-    cutDone = pyqtSignal(str, str, str) # (original, new, thumb_path)
+    image_path_changed = pyqtSignal(str)
+    cut_done = pyqtSignal(str, str, str) # (original, new, thumb_path)
 
     def __init__(self, img_path):
         self.img_path = Path(img_path)
@@ -19,7 +19,7 @@ class Clickable:
     def set_path(self, new_path):
         if self.img_path != new_path:
             self.img_path = new_path
-            self.imagePathChanged.emit(str(new_path))
+            self.image_path_changed.emit(str(new_path))
 
     def cut_image(self, pixmap: QPixmap, mode: str, pos):
         """Cut pixmap at position pos (QPoint) into two images, save them to disk."""
@@ -52,7 +52,7 @@ class Clickable:
         thumb_path = ImageLoaderThread.get_thumb_path(str(self.img_path))
         ImageLoaderThread.generate_thumbnail(str(self.img_path), thumb_path)
 
-        self.cutDone.emit(str(self.img_path), str(new_path), str(thumb_path))
+        self.cut_done.emit(str(self.img_path), str(new_path), str(thumb_path))
         self.set_path(self.img_path)
 
         return str(self.img_path), str(new_path), str(thumb_path)

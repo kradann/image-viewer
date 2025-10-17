@@ -1,4 +1,4 @@
-import json, os
+from Model.MainModel import Mode
 
 from PyQt5 import QtWidgets, QtCore, QtGui
 from ViewModel.FolderListViewModel import FolderListViewModel
@@ -16,22 +16,22 @@ def _apply_status_color(item, status):
 
 
 class FolderListWidget(QtWidgets.QListWidget):
-    def __init__(self, mainmodel,gridviewmodel, parent=None):
+    def __init__(self, main_model,grid_view_model, parent=None):
         super().__init__(parent)
-        self.mainmodel = mainmodel
-        self.gridviewmodel = gridviewmodel
+        self.main_model = main_model
+        self.grid_view_model = grid_view_model
         self.highlight_color = QtGui.QColor(0, 120, 215, 180)
         self.current_item_name = None  # store name, not the QListWidgetItem
 
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.show_context_menu)
 
-        self.FolderListViewModel = FolderListViewModel(self.mainmodel)
+        self.folder_list_view_model = FolderListViewModel(self.main_model)
 
-        self.FolderListViewModel.statusChanged.connect(self.on_status_changed)
-        self.FolderListViewModel.statusesLoaded.connect(self.apply_loaded_statuses)
-        self.gridviewmodel.loadSubfoldersListOnSingle.connect(self.load_list)
-        self.gridviewmodel.loadSubfoldersListOnMultiple.connect(self.load_list)
+        self.folder_list_view_model.status_changed.connect(self.on_status_changed)
+        self.folder_list_view_model.statuses_loaded.connect(self.apply_loaded_statuses)
+        self.grid_view_model.load_subfolders_list_on_single.connect(self.load_list)
+        self.grid_view_model.load_subfolders_list_on_multiple.connect(self.load_list)
         font = QtGui.QFont("Courier New")
         font.setPointSize(10)
         self.setFont(font)
@@ -81,11 +81,11 @@ class FolderListWidget(QtWidgets.QListWidget):
 
     def load_list(self, subfolders):
         print(4)
-        if self.mainmodel.get_mode() == 'single_region':
+        if self.main_model.get_mode() == Mode.SINGLE:
             for folder in subfolders:
                 display_text = f"{folder:<45} {subfolders[folder]:>6}"  # left-align name, right-align number
                 self.addItem(display_text)
-        elif self.mainmodel.get_mode() == 'multi_region':
+        elif self.main_model.get_mode() == Mode.MULTIPLE:
             print(5)
             for folder in subfolders:
                 display_text = f"{folder:<45}"  # left-align name

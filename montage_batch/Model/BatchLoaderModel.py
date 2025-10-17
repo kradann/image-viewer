@@ -29,7 +29,6 @@ class ImageBatchLoader(object):
             for file in source_path.rglob("*"):
                 if file.suffix.lower() in (".png", ".jpg", ".jpeg", ".bmp"):
                     image_paths.append(file)
-        print(image_paths[:10])
         return sorted(image_paths)
 
     def get_batch(self):
