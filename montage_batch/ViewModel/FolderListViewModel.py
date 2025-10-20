@@ -12,10 +12,12 @@ class FolderListViewModel(QObject):
     statuses_loaded = pyqtSignal()
     info_message = pyqtSignal(str)
     update_info = pyqtSignal()
+    highlight_current_folder_name = pyqtSignal(str)
 
     def __init__(self, mainmodel):
         super().__init__()
         self.main_model = mainmodel
+        self.main_model.load_folder_with_click.connect(self.folder_clicked)
 
     def set_status(self, folder_name, status):
         self.main_model.set_status(folder_name, status)
@@ -37,6 +39,8 @@ class FolderListViewModel(QObject):
             self.info_message.emit(f"Failed to save: {e}")
 
     def folder_clicked(self, folder_name):
-        print(folder_name.text().split()[0])
-        self.main_model.load_folder(folder_name.text().split()[0])
+        if not isinstance(folder_name, str):
+            folder_name = folder_name.text().split()[0]
+        self.main_model.load_folder(folder_name)
+        #self.highlight_current_folder_name.emit(str(self.main_model.get_folder_path().name))
         self.update_info.emit()

@@ -135,6 +135,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.grid_view_model.add_image_to_grid_action.connect(self.on_add_image)
         self.grid_view_model.button_state_changed.connect(self.update_button_state)
         self.grid_view_model.change_current_folder.connect(self.change_current_folder_label)
+        self.grid_view_model.info_message.connect(self.change_info_label)
 
     def add_button(self, name: str, func, shortcut: Union[str, tuple] = None):
         button = QtWidgets.QPushButton(name)
@@ -215,7 +216,6 @@ class ImageMontageApp(QtWidgets.QWidget):
 
     def move_selected(self):
         self.vertical_value = self.scroll_area.verticalScrollBar().value()
-        print("vertical",self.vertical_value)
         self.grid_view_model.on_move_selected()
 
     def load_v_value(self):
@@ -256,6 +256,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.batch_info_label.setText(f"Batch: {self.main_model.loader.current_batch_idx + 1} / {self.main_model.loader.number_of_batches // 1000 + 1}")
 
     def change_info_label(self, text=None, text_color="#3cfb8b", time=5000):
+
         label = self.info_label
         label.setText(text)
         # Save the current text

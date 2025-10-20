@@ -2,6 +2,7 @@ from Model.MainModel import Mode
 
 from PyQt5 import QtWidgets, QtCore, QtGui
 from ViewModel.FolderListViewModel import FolderListViewModel
+from View.Styles import FOLDER_LIST_STYLE
 
 def _apply_status_color(item, status):
     transparency = 125
@@ -21,15 +22,25 @@ class FolderListWidget(QtWidgets.QListWidget):
         self.main_model = main_model
         self.grid_view_model = grid_view_model
         self.highlight_color = QtGui.QColor(0, 120, 215, 180)
-        self.current_item_name = None  # store name, not the QListWidgetItem
+        self.current_item_name = None
 
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.show_context_menu)
+
+        #self.setStyleSheet(FOLDER_LIST_STYLE)
+        self.setStyleSheet("""
+            QListWidget::item:selected {
+                background-color: rgba(0, 120, 215, 180);
+                color: white;
+            }
+        """)
 
         self.folder_list_view_model = FolderListViewModel(self.main_model)
 
         self.folder_list_view_model.status_changed.connect(self.on_status_changed)
         self.folder_list_view_model.statuses_loaded.connect(self.apply_loaded_statuses)
+        self.folder_list_view_model.highlight_current_folder_name.connect(self.highlight_by_name)
+        self.main_model.highlight_current_folder_name.connect(self.highlight_by_name)
         self.grid_view_model.load_subfolders_list_on_single.connect(self.load_list)
         self.grid_view_model.load_subfolders_list_on_multiple.connect(self.load_list)
         font = QtGui.QFont("Courier New")
@@ -74,13 +85,20 @@ class FolderListWidget(QtWidgets.QListWidget):
             else:
                 self.vm.set_status(name, chosen.text().lower().replace(" ", "_"))
 
-    def update_folder_list(self, subfolders):
-        self.clear()
-        for folder in subfolders:
-            self.addItem(folder)
+    def highlight_by_name(self, name):
+        item = self._find_item_by_name(name)
+        if item:
+            item.setBackground(QtGui.QColor(0, 120, 215, 180))
+            self.setCurrentItem(item)
+            self.current_item_name = name
+            self.scrollToItem(item)
+        else:
+            self.current_item_name = None
+            self.setCurrentItem(None)
+
 
     def load_list(self, subfolders):
-        print(4)
+        self.clear()
         if self.main_model.get_mode() == Mode.SINGLE:
             for folder in subfolders:
                 display_text = f"{folder:<45} {subfolders[folder]:>6}"  # left-align name, right-align number
@@ -90,3 +108,6 @@ class FolderListWidget(QtWidgets.QListWidget):
             for folder in subfolders:
                 display_text = f"{folder:<45}"  # left-align name
                 self.addItem(display_text)
+
+        if hasattr(self, "current_item_name") and self.current_item_name:
+            self.highlight_by_name(self.current_item_name)

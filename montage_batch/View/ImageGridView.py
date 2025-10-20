@@ -3,6 +3,7 @@ import time
 from PyQt5 import Qt, QtCore, QtWidgets
 from PyQt5.QtCore import pyqtSignal
 
+from View.Styles import GRID_PATH_STYLE
 from ViewModel.ClickableViewModel import ClickableLabel
 from ViewModel.ImageGridViewModel import  ImageGridViewModel
 from Model.ClickableModel import Clickable
@@ -53,13 +54,16 @@ class ImageGridView(QtWidgets.QWidget):
             drag_distance = (event.pos() - self.origin).manhattanLength()
 
             if drag_distance < 40 and self.clicked_label:  # no drag, just clicking
+                if hasattr(self.clicked_label, 'image_label'):
+                    self.clicked_label = self.clicked_label.image_label
                 self.clicked_label.selected = not self.clicked_label.selected
                 self.clicked_label.add_red_boarder()
-                print(self.clicked_label.img_path)
                 self.grid_view_model.toggle_selection(self.clicked_label.img_path)
             else:
                 # rubber band kijelölés
                 for label in self.grid_view_model.labels:
+                    if hasattr(label, 'image_label'):
+                        label = label.image_label
                     label_pos = label.mapTo(self, QtCore.QPoint(0, 0))
                     label_rect = QtCore.QRect(label_pos, label.size())
                     if selection_rect.intersects(label_rect):
@@ -80,21 +84,38 @@ class ImageGridView(QtWidgets.QWidget):
 
 
     def add_image_to_layout(self, row, col, path, pixmap, is_selected):
-        #print(path, row, col)
+        container = QtWidgets.QWidget()
+
+        vbox = QtWidgets.QVBoxLayout(container)
+        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setSpacing(2)
+        vbox.setAlignment(QtCore.Qt.AlignTop)
+
+        path_label = QtWidgets.QLabel(str(path).split('/')[-2].replace('_','_\u200b')) #Added white space to be able to cut it into 2 lines
+        path_label.setAlignment(QtCore.Qt.AlignCenter)
+        path_label.setWordWrap(True)
+        path_label.setFixedWidth(self.thumbnail_size[0])
+        path_label.setMaximumHeight(30)
+        path_label.setStyleSheet(GRID_PATH_STYLE)
+
         label = ClickableLabel(img_path=path, mainmodel=self.main_model)
         label.setFixedSize(*self.thumbnail_size)
         label.setPixmap(
             pixmap.scaled(*self.thumbnail_size, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
         label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         label.setScaledContents(False)
-
         label.clicked.connect(lambda: self.vm.toggle_selection(path.img_path))
+
+        container.image_label = label
 
         if is_selected:
             label.selected = True
             label.add_red_boarder()
 
-        self.grid_view_model.add_image_to_grid(label, row, col)
+        vbox.addWidget(path_label)
+        vbox.addWidget(label)
+
+        self.grid_view_model.add_image_to_grid(container, row, col)
 
     def on_load_folder(self, parent=None):
         if parent is None:

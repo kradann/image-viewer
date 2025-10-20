@@ -18,9 +18,9 @@ class ImageBatchLoader(object):
     def collect_image_paths(self, source):
         image_paths = []
         if isinstance(source, list):
-            for region in source:
-                print(region)
-                region_path = Path(region)
+            for sign_type in source:
+                print(sign_type)
+                region_path = Path(sign_type)
                 for file in region_path.rglob("*"):
                     if file.suffix.lower() in (".png", ".jpg", ".jpeg", ".bmp"):
                         image_paths.append(file)

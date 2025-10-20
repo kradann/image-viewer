@@ -26,6 +26,7 @@ class ImageGridViewModel(QObject):
     add_image_to_grid_action = pyqtSignal(object, int,int)
     load_subfolders_list_on_single = pyqtSignal(dict)
     load_subfolders_list_on_multiple = pyqtSignal(list)
+    update_folder_list_signal = pyqtSignal(str,int)
 
     def __init__(self, mainmodel):
         super(ImageGridViewModel, self).__init__()
@@ -41,6 +42,8 @@ class ImageGridViewModel(QObject):
         self.main_model.load_folder_multiple.connect(self.load_images)
         self.main_model.load_selected_images.connect(self.load_selected_images)
         self.main_model.clear_images.connect(self.clear_images)
+        self.main_model.update_folder_list_label.connect(self.update_folder_list)
+        self.main_model.change_info_label.connect(self.update_info_label)
 
     def _check_button_state(self):
         if not self.main_model:
@@ -64,9 +67,6 @@ class ImageGridViewModel(QObject):
         self.thread.image_loaded.connect(self.on_image_loaded)
         self.thread.start()
 
-        folder_name = self.main_model.current_folder_name()
-        if folder_name:
-            self.batch_loaded.emit(folder_name)
 
     def on_image_loaded(self, idx, pixmap, path):
         # Compute row/col and selection state here
@@ -80,13 +80,22 @@ class ImageGridViewModel(QObject):
         print(2)
         self.load_images(mode, subfolders,0)
 
+    def update_info_label(self,str):
+        self.info_message.emit(str)
+
+    def update_folder_list(self):
+        if self.main_model.get_mode() == Mode.SINGLE:
+            self.load_subfolders_list_on_single.emit(self.main_model.collect_subfolders())
+
+
     def load_images(self, mode, subfolders, batch_idx):
         self.main_model.clear_selected_images()
         if mode == Mode.SINGLE :
+            print("folder path", self.main_model.folder_path)
             self.main_model.set_loader(ImageBatchLoader(self.main_model.folder_path, batch_size=1000, start_batch_idx=batch_idx))
             self.load_batch()
             self.info_message.emit("Folder loaded!")
-            self.change_current_folder.emit(self.main_model.folder_path.name)
+            self.change_current_folder.emit(str(self.main_model.folder_path))
             self.load_subfolders_list_on_single.emit(subfolders)
         elif mode == Mode.MULTIPLE:
             self.main_model.set_loader(ImageBatchLoader(source=subfolders, batch_size=1000, start_batch_idx=batch_idx))

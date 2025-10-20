@@ -12,10 +12,6 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QMessageBox
 
 from Model.sign_types import SIGN_TYPES
-from Model.BatchLoaderModel import ImageBatchLoader
-from Model.FolderListModel import FolderListModel
-from Model.ImageThreadLoaderModel import ImageLoaderThread
-from Model.ClickableModel import Clickable
 
 
 APP_VERSION = "0.1.0"
@@ -26,17 +22,34 @@ class Mode(Enum):
     MULTIPLE = 2
     JSON = 3
 
+
+def check_image_name(img_path, output_folder):
+    dst_path = output_folder / img_path.name
+    base, ext = Path(img_path.name).stem, Path(img_path.name).suffix
+
+    counter = 1
+    while dst_path.exists():
+        dst_path = dst_path.parent / f"{base}_{counter}{ext}"
+        counter += 1
+
+    return dst_path
+
+
 class MainModel(QtWidgets.QMainWindow):
     load_subfolders = pyqtSignal(list)
     load_folder_single= pyqtSignal(Mode, dict,int)
     load_folder_multiple = pyqtSignal(Mode, list,int)
     clear_images =  pyqtSignal()
     load_selected_images = pyqtSignal(set)
+    change_info_label = pyqtSignal(str)
+    update_folder_list_label = pyqtSignal()
+    highlight_current_folder_name = pyqtSignal(str)
+    load_folder_with_click = pyqtSignal(str)
 
     def __init__(self, loader=None):
         super().__init__()
         self.loader = loader
-        self.folder_path = None
+        self.folder_path = None #when single contains all path, when multiple only the folder name
         self.main_folder = None  # Folder that stores the subfolders / Folder that stored the folders of the regions
         self.mode = None #possible modes: single_region, multiple_region, json
         self.first_check = True
@@ -118,8 +131,8 @@ class MainModel(QtWidgets.QMainWindow):
         if not path:
             return None, []
         self.main_folder = Path(path)
-        self.subfolders = {f.name: len(list(f.iterdir())) for f in self.main_folder.iterdir() if f.is_dir()}
-        self.subfolders = {k: self.subfolders[k] for k in sorted(self.subfolders.keys())}
+
+        self.collect_subfolders()
 
         if any(sub in SIGN_TYPES for sub in self.subfolders):
             self.folder_path = self.main_folder / list(self.subfolders.keys())[0]
@@ -127,6 +140,7 @@ class MainModel(QtWidgets.QMainWindow):
             return self.mode, self.subfolders
         else:
             self.all_sign_types = self.collect_sign_types()
+            self.subfolders = {sign_type : 0 for sign_type in self.all_sign_types}
             self.mode = Mode.MULTIPLE
             return self.mode, self.regions
 
@@ -135,6 +149,7 @@ class MainModel(QtWidgets.QMainWindow):
             self.folder_path = self.main_folder / folder_name
             self.load_folder_single.emit(self.mode, self.subfolders,0)
         elif self.mode == Mode.MULTIPLE:
+            self.folder_path = folder_name
             self.image_paths = [Path(region, folder_name) for region in self.regions]
             self.load_folder_multiple.emit(self.mode, self.image_paths,0)
 
@@ -152,6 +167,11 @@ class MainModel(QtWidgets.QMainWindow):
             if st.is_dir()
         }
         return sorted(all_sign_types)
+
+    def collect_subfolders(self):
+        self.subfolders = {f.name: len(list(f.iterdir())) for f in self.main_folder.iterdir() if f.is_dir()}
+        self.subfolders = {k: self.subfolders[k] for k in sorted(self.subfolders.keys())}
+        return self.subfolders
 
 
     def load_subfolders(self, path=None):
@@ -227,44 +247,64 @@ class MainModel(QtWidgets.QMainWindow):
             return "No Batch"
         return f"Batch: {self.loader.current_batch_idx + 1} / {self.loader.number_of_batches // 1000 + 1}"
 
+
+    #TODO: Test these 2 function below
     def load_prev_folder(self):
         if self.main_folder is None:
             return
-        subfolders = sorted([f for f in Path(self.folder_path).parent.iterdir() if f.is_dir()])
+        subfolders = list(self.subfolders.keys())
 
-        prev_folder_idx = subfolders.index(self.folder_path)-1
-        if prev_folder_idx > 0:
-            while not any(f.is_file() for f in Path(subfolders[prev_folder_idx]).iterdir()):
-                if prev_folder_idx == len(subfolders) - 1:
-                    break
+        prev_folder_idx = subfolders.index(str(self.folder_path).split('/')[-1])-1
+        print(prev_folder_idx)
+        if self.mode == Mode.SINGLE:
+            if prev_folder_idx > 0:
+                while not any(f.is_file() for f in Path(subfolders[prev_folder_idx]).iterdir()):
+                    if prev_folder_idx == len(subfolders) - 1:
+                        break
+                    prev_folder_idx -= 1
+        elif self.mode == Mode.MULTIPLE:
+            print(prev_folder_idx)
+            if prev_folder_idx != 0:
                 prev_folder_idx -= 1
+            print(prev_folder_idx)
 
-            self.folder_path = subfolders[prev_folder_idx]
+        self.folder_path = self.main_folder / subfolders[prev_folder_idx]
 
-            if self.mode == Mode.SINGLE:
-                self.load_folder_single.emit(self.mode, self.subfolders,0)
-            elif self.mode == Mode.MULTIPLE:
-                self.load_folder_multiple.emit(self.mode, self.image_paths, 0)
-            #TODO: Move blue highlight when changing folder
+        if self.mode == Mode.SINGLE:
+            self.load_folder_single.emit(self.mode, self.subfolders,0)
+        elif self.mode == Mode.MULTIPLE:
+            self.load_folder_with_click.emit(self.folder_path.name)
+        #TODO: Move blue highlight when changing folder
 
     def load_next_folder(self):
         if self.main_folder is None:
             return
-        subfolders = sorted([f for f in Path(self.folder_path).parent.iterdir() if f.is_dir()])
 
-        next_folder_idx = subfolders.index(self.folder_path)+1
-        if next_folder_idx <= len(subfolders) - 1:
-            while not any(f.is_file() for f in Path(subfolders[next_folder_idx]).iterdir()):
-                if next_folder_idx == len(subfolders) - 1:
-                    break
-                next_folder_idx += 1
+        #subfolders = sorted([f for f in Path(self.folder_path).parent.iterdir() if f.is_dir()])
 
-            self.folder_path = subfolders[next_folder_idx]
-            if self.mode == Mode.SINGLE:
-                self.load_folder_single.emit(self.mode, self.subfolders,0)
-            elif self.mode == Mode.MULTIPLE:
-                self.load_folder_multiple.emit(self.mode, self.image_paths,0)
-            #TODO: Move blue highlight when changing folder
+        subfolders = list(self.subfolders.keys())
+        print(subfolders)
+
+        next_folder_idx = subfolders.index(str(self.folder_path).split('/')[-1])+1
+        print(next_folder_idx)
+        print(len(subfolders))
+        if self.mode == Mode.SINGLE:
+            if next_folder_idx <= len(subfolders) - 1:
+                while not any(f.is_file() for f in Path(self.main_folder / subfolders[next_folder_idx]).iterdir()):
+                    if next_folder_idx == len(subfolders) - 1:
+                        break
+                    next_folder_idx += 1
+        elif self.mode == Mode.MULTIPLE:
+            if next_folder_idx == len(subfolders)-1:
+                next_folder_idx -= 1
+
+        self.folder_path = self.main_folder / subfolders[next_folder_idx]
+        print(self.folder_path)
+        if self.mode == Mode.SINGLE:
+            self.load_folder_single.emit(self.mode, self.subfolders,0)
+        elif self.mode == Mode.MULTIPLE:
+            self.load_folder_with_click.emit(self.folder_path.name)
+        #TODO: Move blue highlight when changing folder
 
     def load_prev_batch(self):
         if self.loader:
@@ -278,34 +318,38 @@ class MainModel(QtWidgets.QMainWindow):
         if self.mode == Mode.SINGLE:
             output_folder = Path(self.main_folder) / selected_folder
             output_folder.mkdir(parents=True, exist_ok=True)
+            folder_where_image_moved_from = ''
 
             if self.selected_images:
                 for img_path in self.selected_images:
                     self.dropped_selected.discard(img_path)
-                    img_path = Path(img_path.img_path)
-                    dst_path = self.check_image_name(img_path, output_folder)
-                    #TODO: Check self.check_image_name modified version
-                    #TODO: change info label
-
+                    img_path = Path(img_path)
+                    folder_where_image_moved_from = img_path.parent.name
+                    # check if destination folder contains file that has same name
+                    dst_path = check_image_name(img_path, output_folder)
                     shutil.move(img_path, str(dst_path))
+                self.change_info_label.emit(f"Selected images move successfully to {selected_folder}")
+                self.update_folder_list_label.emit()
+                self.highlight_current_folder_name.emit(str(self.folder_path.name))
+
             else:
-                pass
-                #TODO: change info label
+                self.change_info_label.emit("No selected image found!")
 
         elif self.mode == Mode.MULTIPLE:
             if self.selected_images:
                 for img_path in self.selected_images:
-                    self.dropped_selected.discard(img_path.img_path)
-                    img_path = Path(img_path.img_path)
+                    self.dropped_selected.discard(img_path)
+                    img_path = Path(img_path)
 
                     output_folder = Path(img_path.parent.parent) / selected_folder
 
                     output_folder.mkdir(exist_ok=True)
-                    dst_path = output_folder / img_path.name
-
-                    #TODO: Check file name
+                    # check if destination folder contains file that has same name
+                    dst_path = check_image_name(img_path, output_folder)
 
                     shutil.move(img_path, str(dst_path))
+            else:
+                self.change_info_label.emit("No selected image found!")
 
         # Check if any selected images left
         if len(self.dropped_selected) > 0:
@@ -317,18 +361,6 @@ class MainModel(QtWidgets.QMainWindow):
                 self.load_folder_single.emit(self.mode, self.subfolders, self.loader.current_batch_idx)
             elif self.mode == Mode.MULTIPLE:
                 self.load_folder_multiple.emit(self.mode, self.image_paths, self.loader.current_batch_idx)
-
-
-    def check_image_name(self, img_path, output_folder):
-        dst_path = output_folder / img_path.name
-        base, ext = Path(img_path.name).stem, Path(img_path.name).suffix
-
-        counter = 1
-        while dst_path.exists():
-            dst_path = dst_path.parent / f"{base}{counter}{ext}"
-            counter += 1
-
-        return dst_path
 
     def show_only_selected(self):
         if not self.loader:
