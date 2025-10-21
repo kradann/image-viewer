@@ -50,7 +50,7 @@ class Clickable:
 
         # Regenerate thumbnail
         thumb_path = ImageLoaderThread.get_thumb_path(str(self.img_path))
-        ImageLoaderThread.generate_thumbnail(str(self.img_path), thumb_path)
+        ImageLoaderThread.generate_thumbnail(str(self.img_path), str(thumb_path))
 
         self.cut_done.emit(str(self.img_path), str(new_path), str(thumb_path))
         self.set_path(self.img_path)

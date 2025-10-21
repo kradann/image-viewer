@@ -35,11 +35,7 @@ class FolderListWidget(QtWidgets.QListWidget):
             }
         """)
 
-        self.folder_list_view_model = FolderListViewModel(self.main_model)
 
-        self.folder_list_view_model.status_changed.connect(self.on_status_changed)
-        self.folder_list_view_model.statuses_loaded.connect(self.apply_loaded_statuses)
-        self.folder_list_view_model.highlight_current_folder_name.connect(self.highlight_by_name)
         self.main_model.highlight_current_folder_name.connect(self.highlight_by_name)
         self.grid_view_model.load_subfolders_list_on_single.connect(self.load_list)
         self.grid_view_model.load_subfolders_list_on_multiple.connect(self.load_list)
@@ -104,7 +100,6 @@ class FolderListWidget(QtWidgets.QListWidget):
                 display_text = f"{folder:<45} {subfolders[folder]:>6}"  # left-align name, right-align number
                 self.addItem(display_text)
         elif self.main_model.get_mode() == Mode.MULTIPLE:
-            print(5)
             for folder in subfolders:
                 display_text = f"{folder:<45}"  # left-align name
                 self.addItem(display_text)

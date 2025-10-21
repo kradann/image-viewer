@@ -4,7 +4,7 @@ from typing import Union
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QFont, QKeySequence
-from PyQt5.QtWidgets import QShortcut
+from PyQt5.QtWidgets import QShortcut, QMessageBox, QLabel
 
 from View.Styles import *
 from View.ImageGridView import ImageGridView
@@ -32,8 +32,8 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.main_model = MainModel()
 
         #init ViewModels and Views
-        self.folder_list_view_model = FolderListViewModel(self.main_model)
         self.grid_view_model = ImageGridViewModel(self.main_model)
+        self.folder_list_view_model = FolderListViewModel(self.main_model, self.grid_view_model)
         self.grid_view = ImageGridView(parent=self, main_model=self.main_model, grid_view_model=self.grid_view_model)
         self.grid_view.setMouseTracking(True)
 
@@ -103,6 +103,25 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.button_layout_wrapper.addStretch(1)
         self.button_layout_wrapper.setAlignment(Qt.AlignCenter)
 
+        # Column spinbox
+        self.column_control_layout = QtWidgets.QHBoxLayout()
+        self.column_control_layout.setAlignment(Qt.AlignCenter)
+
+        self.column_label = QLabel("Columns: ")
+        self.column_label.setStyleSheet(INFO_LABEL_STYLE)
+
+        self.column_spinbox = QtWidgets.QSpinBox()
+        self.column_spinbox.setAlignment(Qt.AlignRight)
+        self.column_spinbox.setRange(3,10)
+        self.column_spinbox.setValue(6)
+        self.column_spinbox.valueChanged.connect(lambda value : self.grid_view_model.spinbox_value_changed(value, self.scroll_area.width(), self.grid_view.thumbnail_size[0]))
+
+        self.column_control_layout.addWidget(self.column_label)
+        self.column_control_layout.addWidget(self.column_spinbox)
+        self.column_control_layout.addStretch(1)
+
+        self.button_layout_wrapper.insertLayout(3, self.column_control_layout)
+
         # Batch info label
         self.batch_info_label = QtWidgets.QLabel("Batch Info", self)
         self.batch_info_label.setAlignment(Qt.AlignCenter)
@@ -136,6 +155,8 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.grid_view_model.button_state_changed.connect(self.update_button_state)
         self.grid_view_model.change_current_folder.connect(self.change_current_folder_label)
         self.grid_view_model.info_message.connect(self.change_info_label)
+        self.grid_view_model.show_wrong_folder_names_window.connect(self.show_wrong_folder_names)
+        self.grid_view_model.not_enough_space.connect(self.show_not_enough_space_message)
 
     def add_button(self, name: str, func, shortcut: Union[str, tuple] = None):
         button = QtWidgets.QPushButton(name)
@@ -268,8 +289,16 @@ class ImageMontageApp(QtWidgets.QWidget):
     def change_current_folder_label(self, folder_name):
         self.current_folder_label.setText("Current folder: " + folder_name)
 
+    def show_wrong_folder_names(self, wrong_folder_names):
+        msg = "These are not valid subfolder names:\n" + "\n".join(wrong_folder_names)
+        QMessageBox.information(self, "Subfolder name error", msg)
+
+    def show_not_enough_space_message(self, value):
+        msg = f"There are not enough space for {value} columns"
+        QMessageBox.information(self, "Changing columns warning", msg)
+        self.column_spinbox.setValue(value-1)
+
     def closeEvent(self, event):
-        print(11)
         self.grid_view_model.cleanup_thumbs()
         event.accept()
 

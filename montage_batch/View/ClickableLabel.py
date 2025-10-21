@@ -20,6 +20,14 @@ class ClickableLabel(QtWidgets.QLabel):
             self.cutRequested.connect(self.vm.cut_image)
             self.vm.imageCut.connect(self.on_image_cut)
 
+    def mouseMoveEvent(self, event):
+        print("asd2")
+        if self.cut_mode:
+            self.preview_pos = event.pos()
+            self.update()
+        else:
+            event.ignore()
+
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.RightButton:
             self.show_context_menu(event.pos())
@@ -43,3 +51,5 @@ class ClickableLabel(QtWidgets.QLabel):
         self.preview_pos = None
         self.setPixmap(QtGui.QPixmap(thumb_path))
         self.update()
+
+

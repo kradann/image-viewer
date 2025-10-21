@@ -45,9 +45,15 @@ class ImageLoaderThread(QtCore.QThread):
 
         self.paths = paths
         self.cache_dir = cache_dir
+        self._is_running = True
+
+    def stop(self):
+        self._is_running = False
 
     def run(self):
         for idx, path in enumerate(self.paths):
+            if not self._is_running:
+                break
             # print(f"[LoaderThread] Loading: {path}")
             thumb_path = str(self.get_thumb_path(path, cache_dir=self.cache_dir))
             if not os.path.exists(thumb_path):
@@ -58,7 +64,8 @@ class ImageLoaderThread(QtCore.QThread):
                 pixmap = QtGui.QPixmap(str(thumb_path))
                 # qimage = ImageQt(img)
                 # pixmap = QtGui.QPixmap.fromImage(qimage)
-                self.image_loaded.emit(idx, pixmap, str(path))
+                if self._is_running:
+                    self.image_loaded.emit(idx, pixmap, str(path))
             except Exception as e:
                 print(f"Thumb path: {thumb_path}, Exists? {Path(thumb_path).exists()}")
                 print(f"Error loading image {path}: {e}")

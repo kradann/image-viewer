@@ -15,6 +15,7 @@ def clear_images(labels):
 
 
 class ImageGridViewModel(QObject):
+    #TODO: Check which signal do i actually use :)
     button_state_changed = pyqtSignal(bool)
     image_added = pyqtSignal(int,int, str, object,bool)
     image_ready = pyqtSignal(int,int, str, object,bool)
@@ -27,6 +28,10 @@ class ImageGridViewModel(QObject):
     load_subfolders_list_on_single = pyqtSignal(dict)
     load_subfolders_list_on_multiple = pyqtSignal(list)
     update_folder_list_signal = pyqtSignal(str,int)
+    show_wrong_folder_names_window = pyqtSignal(list)
+    not_enough_space = pyqtSignal(int)
+
+
 
     def __init__(self, mainmodel):
         super(ImageGridViewModel, self).__init__()
@@ -37,6 +42,7 @@ class ImageGridViewModel(QObject):
         self.thread = None
         self.labels = list()
         self.isAllSelected = False
+        self._load_generation = 0
 
         self.main_model.load_folder_single.connect(self.load_images)
         self.main_model.load_folder_multiple.connect(self.load_images)
@@ -44,6 +50,14 @@ class ImageGridViewModel(QObject):
         self.main_model.clear_images.connect(self.clear_images)
         self.main_model.update_folder_list_label.connect(self.update_folder_list)
         self.main_model.change_info_label.connect(self.update_info_label)
+        self.main_model.show_wrong_folder_names.connect(self.show_wrong_folder_names)
+
+    def spinbox_value_changed(self, value, scroll_area_width, thumb_width):
+        if (scroll_area_width - (value+2)*6) // thumb_width >= value: # space between thumbs
+            self.main_model.set_num_of_col(value)
+            self.load_batch()
+        else:
+            self.not_enough_space.emit(value)
 
     def _check_button_state(self):
         if not self.main_model:
@@ -60,13 +74,26 @@ class ImageGridViewModel(QObject):
         self.main_model.toggle_selection(path)
 
     def load_batch(self):
-        print(6)
         self.clear_images()
+
+        if hasattr(self, 'thread') and self.thread is not None:
+            self.thread.stop()
+            self.thread.wait()
+
+        self._load_generation += 1
+        generation = self._load_generation
+
         batch = self.main_model.get_current_batch()
         self.thread = ImageLoaderThread(batch)
-        self.thread.image_loaded.connect(self.on_image_loaded)
+        self.thread.image_loaded.connect(lambda idx, pixmap, path: self._on_image_loaded(idx,pixmap, path, generation))
+
         self.thread.start()
 
+    def _on_image_loaded(self, idx, pixmap, path, generation):
+        if generation != self._load_generation:
+            return
+
+        self.on_image_loaded(idx,pixmap,path)
 
     def on_image_loaded(self, idx, pixmap, path):
         # Compute row/col and selection state here
@@ -77,8 +104,8 @@ class ImageGridViewModel(QObject):
 
     def load_main_folder(self, path):
         mode, subfolders = self.main_model.load_main_folder(path)
-        print(2)
         self.load_images(mode, subfolders,0)
+
 
     def update_info_label(self,str):
         self.info_message.emit(str)
@@ -90,6 +117,7 @@ class ImageGridViewModel(QObject):
 
     def load_images(self, mode, subfolders, batch_idx):
         self.main_model.clear_selected_images()
+
         if mode == Mode.SINGLE :
             print("folder path", self.main_model.folder_path)
             self.main_model.set_loader(ImageBatchLoader(self.main_model.folder_path, batch_size=1000, start_batch_idx=batch_idx))
@@ -155,6 +183,9 @@ class ImageGridViewModel(QObject):
 
     def on_check_for_update(self):
         self.main_model.check_for_update()
+
+    def show_wrong_folder_names(self, wrong_folder_names):
+        self.show_wrong_folder_names_window.emit(wrong_folder_names)
 
 
     @staticmethod

@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal
 
+from Model.ClickableModel import Clickable
 
 class ClickableLabel(QtWidgets.QLabel):
     clicked = pyqtSignal()
@@ -14,15 +15,23 @@ class ClickableLabel(QtWidgets.QLabel):
         self.selected = False
         self.cut_mode = None
         self.preview_pos = None
-        self.mainmodel = mainmodel
+        self.main_model = mainmodel
         self.setFrameShape(QtWidgets.QFrame.Box)
+        self.clickable_model = Clickable
 
+    def mouseMoveEvent(self, event):
+        print("asd1")
+        if self.cut_mode:
+            self.preview_pos = event.pos()
+            self.update()
+        else:
+            event.ignore()
 
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.RightButton:
             self.show_context_menu(event.pos())
         elif event.button() == QtCore.Qt.LeftButton and self.cut_mode and self.preview_pos:
-            self.cutRequested.emit(self.pixmap(), self.cut_mode, event.pos())
+            self.clickable_model.cut_image(self,pixmap=self.pixmap(), mode=self.cut_mode, pos=event.pos())
         else:
             super().mousePressEvent(event)
 
@@ -30,6 +39,7 @@ class ClickableLabel(QtWidgets.QLabel):
         menu = QtWidgets.QMenu(self)
         vertical_cut = menu.addAction("Vertical Cut")
         horizontal_cut = menu.addAction("Horizontal Cut")
+        info = menu.addAction("Info")
         action = menu.exec_(self.mapToGlobal(pos))
         if action == vertical_cut:
             self.cut_mode = 'vertical'
@@ -44,3 +54,17 @@ class ClickableLabel(QtWidgets.QLabel):
 
     def add_red_boarder(self):
         self.setStyleSheet("border: 3px solid red;" if self.selected else "")
+
+    def paintEvent(self, event):
+        super().paintEvent(event)
+        if self.cut_mode and self.preview_pos:
+            painter = QtGui.QPainter(self)
+            pen = QtGui.QPen(QtCore.Qt.red, 2, QtCore.Qt.DashLine)
+            painter.setPen(pen)
+
+            if self.cut_mode == 'vertical':
+                painter.drawLine(self.preview_pos.x(), 0, self.preview_pos.x(), self.height())
+            else:  # horizontal
+                painter.drawLine(0, self.preview_pos.y(), self.width(), self.preview_pos.y())
+
+            painter.end()

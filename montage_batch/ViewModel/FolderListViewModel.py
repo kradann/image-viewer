@@ -14,9 +14,11 @@ class FolderListViewModel(QObject):
     update_info = pyqtSignal()
     highlight_current_folder_name = pyqtSignal(str)
 
-    def __init__(self, mainmodel):
+    def __init__(self, mainmodel, gridviewmodel):
         super().__init__()
         self.main_model = mainmodel
+        self.grid_viewmodel = gridviewmodel
+
         self.main_model.load_folder_with_click.connect(self.folder_clicked)
 
     def set_status(self, folder_name, status):

@@ -45,6 +45,7 @@ class MainModel(QtWidgets.QMainWindow):
     update_folder_list_label = pyqtSignal()
     highlight_current_folder_name = pyqtSignal(str)
     load_folder_with_click = pyqtSignal(str)
+    show_wrong_folder_names = pyqtSignal(list)
 
     def __init__(self, loader=None):
         super().__init__()
@@ -53,6 +54,7 @@ class MainModel(QtWidgets.QMainWindow):
         self.main_folder = None  # Folder that stores the subfolders / Folder that stored the folders of the regions
         self.mode = None #possible modes: single_region, multiple_region, json
         self.first_check = True
+        self.wrong_folder_names = list()
         self.image_paths = None  # used when multiple regions
         self.all_sign_types = None # used to store sign type when multiple regions
         self.regions = None  # list regions in folder
@@ -71,6 +73,9 @@ class MainModel(QtWidgets.QMainWindow):
 
     def set_loader(self, new_loader):
         self.loader = new_loader
+
+    def set_num_of_col(self, number):
+        self.num_of_col = number
 
     # === Getters ===
 
@@ -135,6 +140,8 @@ class MainModel(QtWidgets.QMainWindow):
         self.collect_subfolders()
 
         if any(sub in SIGN_TYPES for sub in self.subfolders):
+            if self.wrong_folder_names:
+                self.show_wrong_folder_names.emit(self.wrong_folder_names)
             self.folder_path = self.main_folder / list(self.subfolders.keys())[0]
             self.mode = Mode.SINGLE
             return self.mode, self.subfolders
@@ -142,9 +149,11 @@ class MainModel(QtWidgets.QMainWindow):
             self.all_sign_types = self.collect_sign_types()
             self.subfolders = {sign_type : 0 for sign_type in self.all_sign_types}
             self.mode = Mode.MULTIPLE
-            return self.mode, self.regions
+            self.image_paths = [Path(region, self.all_sign_types[0]) for region in self.regions] #load first TS type
+            return self.mode, self.image_paths
 
     def load_folder(self, folder_name : str):
+
         if self.mode == Mode.SINGLE:
             self.folder_path = self.main_folder / folder_name
             self.load_folder_single.emit(self.mode, self.subfolders,0)
@@ -171,48 +180,20 @@ class MainModel(QtWidgets.QMainWindow):
     def collect_subfolders(self):
         self.subfolders = {f.name: len(list(f.iterdir())) for f in self.main_folder.iterdir() if f.is_dir()}
         self.subfolders = {k: self.subfolders[k] for k in sorted(self.subfolders.keys())}
+
+        wrong_folders_names = []
+        if self.first_check:
+            self.wrong_folder_names = self.check_for_invalid_folder_names()
+
         return self.subfolders
 
 
-    def load_subfolders(self, path=None):
-        self.folderListView.clear()
-        if not self.is_JSON_active and not self.is_all_region:
-            folder_infos = []
-            if self.first_check:
-                folder_infos = self.check_for_invalid_folder_names(path)
-
-            if folder_infos:
-                folder_infos.sort()
-            self.subfolders = dict()
-            for name, count in folder_infos:
-                self.subfolders.append(name)
-                display_text = f"{name:<40} {count:>6}"  # left-align name, right-align number
-                self.folderListView.addItem(display_text)
-
-            # Set monospaced font for alignment
-            font = QFont("Courier New", 10)
-            self.folderListView.setFont(font)
-        elif not self.is_JSON_active and self.is_all_region:
-            for sign_type in self.subfolders.keys():
-                self.folderListView.addItem(sign_type)
-
-    def check_for_invalid_folder_names(self, path):
-        folder_infos = []
+    def check_for_invalid_folder_names(self):
         wrong_subfolder_name = []
         for name in self.subfolders.keys():
-            if name in SIGN_TYPES:
-                full_path = Path(path) / name
-                if full_path.is_dir():
-                    num_images = len(list(Path(full_path).iterdir()))
-                    folder_infos.append((name, num_images))
-            else:
+            if name not in SIGN_TYPES:
                 wrong_subfolder_name.append(name)
-
-        if wrong_subfolder_name and self.first_check:
-            self.first_check = False
-            msg = "These are not valid subfolder names:\n" + "\n".join(wrong_subfolder_name)
-            QMessageBox.information(self, "Subfolder name error", msg)
-        return folder_infos
+        return wrong_subfolder_name
 
     def current_folder_name(self):
         if self.mode == Mode.SINGLE:
@@ -258,14 +239,14 @@ class MainModel(QtWidgets.QMainWindow):
         print(prev_folder_idx)
         if self.mode == Mode.SINGLE:
             if prev_folder_idx > 0:
-                while not any(f.is_file() for f in Path(subfolders[prev_folder_idx]).iterdir()):
+                while not any(f.is_file() for f in Path(self.main_folder / subfolders[prev_folder_idx]).iterdir()):
                     if prev_folder_idx == len(subfolders) - 1:
                         break
                     prev_folder_idx -= 1
         elif self.mode == Mode.MULTIPLE:
             print(prev_folder_idx)
-            if prev_folder_idx != 0:
-                prev_folder_idx -= 1
+            if prev_folder_idx == -1:
+                prev_folder_idx += 1
             print(prev_folder_idx)
 
         self.folder_path = self.main_folder / subfolders[prev_folder_idx]
