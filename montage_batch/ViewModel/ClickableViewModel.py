@@ -1,70 +1,56 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, QObject
 
-from Model.ClickableModel import Clickable
+from PyQt5.QtGui import QPixmap
+from Model.ImageThreadLoaderModel import *
 
-class ClickableLabel(QtWidgets.QLabel):
+
+class ClickableViewModel(QtCore.QObject):
     clicked = pyqtSignal()
     imageCut = pyqtSignal(str, str, str)
     imagePathChanged = pyqtSignal(str)
     # (pixmap, mode, pos)
 
-    def __init__(self, img_path, mainmodel=None, parent=None):
+    def __init__(self,model, img_path, main_model=None, parent=None):
         super().__init__(parent)
+        self.model = model
         self.img_path = img_path
         self.selected = False
-        self.cut_mode = None
         self.preview_pos = None
-        self.main_model = mainmodel
-        self.setFrameShape(QtWidgets.QFrame.Box)
-        self.clickable_model = Clickable
+        self.main_model = main_model
 
-    def mouseMoveEvent(self, event):
-        print("asd1")
-        if self.cut_mode:
-            self.preview_pos = event.pos()
-            self.update()
-        else:
-            event.ignore()
 
-    def mousePressEvent(self, event):
-        if event.button() == QtCore.Qt.RightButton:
-            self.show_context_menu(event.pos())
-        elif event.button() == QtCore.Qt.LeftButton and self.cut_mode and self.preview_pos:
-            self.clickable_model.cut_image(self,pixmap=self.pixmap(), mode=self.cut_mode, pos=event.pos())
-        else:
-            super().mousePressEvent(event)
 
-    def show_context_menu(self, pos):
-        menu = QtWidgets.QMenu(self)
-        vertical_cut = menu.addAction("Vertical Cut")
-        horizontal_cut = menu.addAction("Horizontal Cut")
-        info = menu.addAction("Info")
-        action = menu.exec_(self.mapToGlobal(pos))
-        if action == vertical_cut:
-            self.cut_mode = 'vertical'
-        elif action == horizontal_cut:
-            self.cut_mode = 'horizontal'
+    def cut_image(self, pixmap: QPixmap, mode: str, pos):
+        """Cut pixmap at position pos (QPoint) into two images, save them to disk."""
+        x, y = pos.x(), pos.y()
+        width, height = pixmap.width(), pixmap.height()
 
-    def on_image_cut(self, original, new, thumb_path):
-        self.cut_mode = None
-        self.preview_pos = None
-        self.setPixmap(QtGui.QPixmap(thumb_path))
-        self.update()
+        if mode == 'vertical':
+            rect_0 = (0, 0, x, height)
+            rect_1 = (x, 0, width - x, height)
+        else:  # horizontal
+            rect_0 = (0, 0, width, y)
+            rect_1 = (0, y, width, height - y)
 
-    def add_red_boarder(self):
-        self.setStyleSheet("border: 3px solid red;" if self.selected else "")
+        cropped_0 = pixmap.copy(*rect_0)
+        cropped_1 = pixmap.copy(*rect_1)
 
-    def paintEvent(self, event):
-        super().paintEvent(event)
-        if self.cut_mode and self.preview_pos:
-            painter = QtGui.QPainter(self)
-            pen = QtGui.QPen(QtCore.Qt.red, 2, QtCore.Qt.DashLine)
-            painter.setPen(pen)
+        # Generate new path for second piece
+        name_idx = 1
+        while True:
+            new_path = self.img_path.with_stem(f"{self.img_path.stem}_{name_idx}")
+            if not new_path.exists():
+                break
+            name_idx += 1
 
-            if self.cut_mode == 'vertical':
-                painter.drawLine(self.preview_pos.x(), 0, self.preview_pos.x(), self.height())
-            else:  # horizontal
-                painter.drawLine(0, self.preview_pos.y(), self.width(), self.preview_pos.y())
+        # Save to disk
+        cropped_0.save(str(self.img_path))
+        cropped_1.save(str(new_path))
 
-            painter.end()
+        # Regenerate thumbnail
+        thumb_path = ImageLoaderThread.get_thumb_path(str(self.img_path))
+        ImageLoaderThread.generate_thumbnail(str(self.img_path), str(thumb_path))
+
+
+

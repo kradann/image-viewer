@@ -13,7 +13,7 @@ from View.ClickableLabel import ClickableLabel
 
 from ViewModel.FolderListViewModel import FolderListViewModel
 from ViewModel.ImageGridViewModel import ImageGridViewModel
-from ViewModel.ClickableViewModel import ClickableLabel
+from ViewModel.ClickableViewModel import ClickableViewModel
 
 from Model.MainModel import MainModel
 from Model.BatchLoaderModel import ImageBatchLoader
