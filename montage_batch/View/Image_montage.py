@@ -246,7 +246,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.grid_view_model.on_check_for_update()
 
     def on_load_folder(self):
-        self.change_info_label("Loading Folders...", time=0)
+        self.change_info_label("Loading Folders...", display_time=0)
         self.grid_view.on_load_folder()
         self.change_info_label("Folders Loaded")
         self.update_batch_info()
@@ -276,15 +276,14 @@ class ImageMontageApp(QtWidgets.QWidget):
         if self.main_model.loader:
             self.batch_info_label.setText(f"Batch: {self.main_model.loader.current_batch_idx + 1} / {self.main_model.loader.number_of_batches // 1000 + 1}")
 
-    def change_info_label(self, text=None, text_color="#3cfb8b", time=5000):
-
+    def change_info_label(self, text=None, text_color="#3cfb8b", display_time=5000):
         label = self.info_label
         label.setText(text)
         # Save the current text
         current_text = text
-        if time and time > 0:
+        if display_time and display_time > 0:
             # After 5 seconds, clear ONLY IF the text hasn't changed in the meantime
-            QTimer.singleShot(time, lambda: label.setText("") if label.text() == current_text else None)
+            QTimer.singleShot(display_time, lambda: label.setText("") if label.text() == current_text else None)
 
     def change_current_folder_label(self, folder_name):
         self.current_folder_label.setText("Current folder: " + folder_name)

@@ -1,4 +1,3 @@
-
 from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QDialog
@@ -6,7 +5,7 @@ from PyQt5.QtWidgets import QDialog
 from View.FolderSelectionDialog import FolderSelectionDialog
 from Model.BatchLoaderModel import ImageBatchLoader
 from Model.ImageThreadLoaderModel import ImageLoaderThread
-from Model.MainModel import Mode
+
 
 
 def clear_images(labels):
@@ -25,8 +24,7 @@ class ImageGridViewModel(QObject):
     info_message = pyqtSignal(str)
     change_current_folder = pyqtSignal(str)
     add_image_to_grid_action = pyqtSignal(object, int,int)
-    load_subfolders_list_on_single = pyqtSignal(dict)
-    load_subfolders_list_on_multiple = pyqtSignal(list)
+    load_subfolders_list = pyqtSignal(dict)
     update_folder_list_signal = pyqtSignal(str,int)
     show_wrong_folder_names_window = pyqtSignal(list)
     not_enough_space = pyqtSignal(int)
@@ -44,8 +42,7 @@ class ImageGridViewModel(QObject):
         self.isAllSelected = False
         self._load_generation = 0
 
-        self.main_model.load_folder_single.connect(self.load_images)
-        self.main_model.load_folder_multiple.connect(self.load_images)
+        self.main_model.load_folder.connect(self.load_images)
         self.main_model.load_selected_images.connect(self.load_selected_images)
         self.main_model.clear_images.connect(self.clear_images)
         self.main_model.update_folder_list_label.connect(self.update_folder_list)
@@ -83,7 +80,7 @@ class ImageGridViewModel(QObject):
         self._load_generation += 1
         generation = self._load_generation
 
-        batch = self.main_model.get_current_batch()
+        batch = self.main_model.get_current_batch
         self.thread = ImageLoaderThread(batch)
         self.thread.image_loaded.connect(lambda idx, pixmap, path: self._on_image_loaded(idx,pixmap, path, generation))
 
@@ -97,39 +94,32 @@ class ImageGridViewModel(QObject):
 
     def on_image_loaded(self, idx, pixmap, path):
         # Compute row/col and selection state here
-        row, col = divmod(idx, self.main_model.get_num_of_columns())  # or self.model.num_of_col
+        row, col = divmod(idx, self.main_model.get_num_of_columns)  # or self.model.num_of_col
         is_selected = self.main_model.is_selected(path)  # ask model if selected
         self.image_ready.emit(row, col, path, pixmap, is_selected)
 
 
     def load_main_folder(self, path):
-        mode, subfolders = self.main_model.load_main_folder(path)
-        self.load_images(mode, subfolders,0)
+        subfolders = self.main_model.load_main_folder(path)
+        self.load_images(subfolders,0)
 
 
-    def update_info_label(self,str):
-        self.info_message.emit(str)
+    def update_info_label(self, text):
+        self.info_message.emit(text)
 
     def update_folder_list(self):
-        if self.main_model.get_mode() == Mode.SINGLE:
-            self.load_subfolders_list_on_single.emit(self.main_model.collect_subfolders())
+        self.main_model.collect_subfolders()
+        self.load_subfolders_list.emit(self.main_model.get_subfolders)
 
 
-    def load_images(self, mode, subfolders, batch_idx):
+    def load_images(self, subfolders, batch_idx):
         self.main_model.clear_selected_images()
 
-        if mode == Mode.SINGLE :
-            print("folder path", self.main_model.folder_path)
-            self.main_model.set_loader(ImageBatchLoader(self.main_model.folder_path, batch_size=1000, start_batch_idx=batch_idx))
-            self.load_batch()
-            self.info_message.emit("Folder loaded!")
-            self.change_current_folder.emit(str(self.main_model.folder_path))
-            self.load_subfolders_list_on_single.emit(subfolders)
-        elif mode == Mode.MULTIPLE:
-            self.main_model.set_loader(ImageBatchLoader(source=subfolders, batch_size=1000, start_batch_idx=batch_idx))
-            self.load_batch()
-            self.info_message.emit("Folder loaded!")
-            self.load_subfolders_list_on_multiple.emit(self.main_model.get_all_sign_type())
+        self.main_model.set_loader(ImageBatchLoader(self.main_model.current_label_folder_paths, batch_size=1000, start_batch_idx=batch_idx))
+        self.load_batch()
+        self.info_message.emit("Folder loaded!")
+        self.change_current_folder.emit(str(self.main_model.get_current_label))
+        self.load_subfolders_list.emit(subfolders)
 
     def clear_images(self):
         for label in self.labels:
@@ -161,17 +151,26 @@ class ImageGridViewModel(QObject):
         self.main_model.move_selected(dialog.selected_folder)
 
     def on_unselect_select_all(self):
+
         if not self.isAllSelected:
             self.isAllSelected = True
-            for label in self.labels:
-                label.selected = True
-                self.main_model.add_image_to_selected(label.img_path)
+            for container in self.labels:
+                if hasattr(container, "image_label"):
+                    label = container.image_label
+                    label.selected = True
+                    self.main_model.add_image_to_selected(label.img_path)
+                    label.add_red_boarder()
+
         else:
             self.isAllSelected = False
-            for label in self.labels:
-                label.selected = False
-                self.main_model.discard_image_from_selected(label.img_path)
-        self.load_batch()
+            for container in self.labels:
+                if hasattr(container, "image_label"):
+                    label = container.image_label
+                    label.selected = False
+                    self.main_model.discard_image_from_selected(label.img_path)
+                    label.add_red_boarder()
+
+        #self.load_batch()
 
     def on_show_only_selected(self):
         self.main_model.show_only_selected()

@@ -34,12 +34,14 @@ class ClickableLabel(QtWidgets.QLabel):
             self.show_context_menu(event.pos())
         elif event.button() == QtCore.Qt.LeftButton and self.cut_mode and self.preview_pos:
             self.vm.cut_image(self,self.pixmap(), self.cut_mode, event.pos())
-            self.main_model.load_folder(self.img_path.parent.name)
+            self.main_model.load_folder_by_folder_name(self.img_path.parent.name)
         else:
             super().mousePressEvent(event)
 
     def add_red_boarder(self):
         self.setStyleSheet("border: 3px solid red;" if self.selected else "")
+        self.repaint()
+        self.update()
 
 
     def paintEvent(self, event):
@@ -67,11 +69,6 @@ class ClickableLabel(QtWidgets.QLabel):
         elif action == horizontal_cut:
             self.cut_mode = 'horizontal'
 
-    def on_image_cut(self, original, new, thumb_path):
-        self.cut_mode = None
-        self.preview_pos = None
-        self.setPixmap(QtGui.QPixmap(thumb_path))
-        self.update()
 
 
 

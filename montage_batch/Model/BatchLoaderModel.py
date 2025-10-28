@@ -7,18 +7,13 @@ from PyQt5 import QtCore, QtGui
 
 def collect_image_paths(source):
     image_paths = []
+    print("source", source)
     if isinstance(source, list):
         for region in source:
             region_path = Path(region)
             for file in region_path.rglob("*"):
                 if file.suffix.lower() in (".png", ".jpg", ".jpeg", ".bmp"):
                     image_paths.append(file)
-
-    else:
-        source_path = Path(source)
-        for file in source_path.rglob("*"):
-            if file.suffix.lower() in (".png", ".jpg", ".jpeg", ".bmp"):
-                image_paths.append(file)
     return sorted(image_paths)
 
 

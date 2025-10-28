@@ -1,5 +1,3 @@
-from Model.MainModel import Mode
-
 from PyQt5 import QtWidgets, QtCore, QtGui
 from ViewModel.FolderListViewModel import FolderListViewModel
 from View.Styles import FOLDER_LIST_STYLE
@@ -37,8 +35,7 @@ class FolderListWidget(QtWidgets.QListWidget):
 
 
         self.main_model.highlight_current_folder_name.connect(self.highlight_by_name)
-        self.grid_view_model.load_subfolders_list_on_single.connect(self.load_list)
-        self.grid_view_model.load_subfolders_list_on_multiple.connect(self.load_list)
+        self.grid_view_model.load_subfolders_list.connect(self.load_list)
         font = QtGui.QFont("Courier New")
         font.setPointSize(10)
         self.setFont(font)
@@ -95,14 +92,10 @@ class FolderListWidget(QtWidgets.QListWidget):
 
     def load_list(self, subfolders):
         self.clear()
-        if self.main_model.get_mode() == Mode.SINGLE:
-            for folder in subfolders:
-                display_text = f"{folder:<45} {subfolders[folder]:>6}"  # left-align name, right-align number
-                self.addItem(display_text)
-        elif self.main_model.get_mode() == Mode.MULTIPLE:
-            for folder in subfolders:
-                display_text = f"{folder:<45}"  # left-align name
-                self.addItem(display_text)
+
+        for folder in subfolders:
+            display_text = f"{folder:<45} {subfolders[folder]:>6}"  # left-align name, right-align number
+            self.addItem(display_text)
 
         if hasattr(self, "current_item_name") and self.current_item_name:
             self.highlight_by_name(self.current_item_name)

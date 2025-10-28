@@ -45,7 +45,6 @@ class ImageGridView(QtWidgets.QWidget):
 
     def mouseMoveEvent(self, event):
         if self.drag_selecting:
-            # print(4)
             rect = QtCore.QRect(self.origin, event.pos()).normalized()
             self.rubber_band.setGeometry(rect)
 
@@ -111,6 +110,7 @@ class ImageGridView(QtWidgets.QWidget):
 
         container.image_label = label
 
+
         if is_selected:
             label.selected = True
             label.add_red_boarder()
@@ -120,9 +120,7 @@ class ImageGridView(QtWidgets.QWidget):
 
         self.grid_view_model.add_image_to_grid(container, row, col)
 
-    def on_load_folder(self, parent=None):
-        if parent is None:
-            parent = self
+    def on_load_folder(self):
         selected_folder_path = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Folder")
         if selected_folder_path:
             self.grid_view_model.load_main_folder(selected_folder_path)
