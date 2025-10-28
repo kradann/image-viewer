@@ -29,6 +29,7 @@ class ImageGridViewModel(QObject):
     update_folder_list_signal = pyqtSignal(str,int)
     show_wrong_folder_names_window = pyqtSignal(list)
     not_enough_space = pyqtSignal(int)
+    show_base_folder_dialog = pyqtSignal()
 
 
 
@@ -49,6 +50,7 @@ class ImageGridViewModel(QObject):
         self.main_model.update_folder_list_label.connect(self.update_folder_list)
         self.main_model.change_info_label.connect(self.update_info_label)
         self.main_model.show_wrong_folder_names.connect(self.show_wrong_folder_names)
+        self.main_model.set_base_folder.connect(self.show_dialog_for_base_folder)
 
     def spinbox_value_changed(self, value, scroll_area_width, thumb_width):
         if (scroll_area_width - (value+2)*value) // thumb_width >= value: # space between thumbs
@@ -102,7 +104,8 @@ class ImageGridViewModel(QObject):
             is_selected = self.main_model.is_selected(path)  # ask model if selected
             self.image_ready.emit(row, col, path, pixmap, is_selected)
 
-
+    def load_json(self, json_data):
+        self.main_model.load_json(json_data)
 
     def load_main_folder(self, path):
         subfolders = self.main_model.load_main_folder(path)
@@ -191,6 +194,8 @@ class ImageGridViewModel(QObject):
     def show_wrong_folder_names(self, wrong_folder_names):
         self.show_wrong_folder_names_window.emit(wrong_folder_names)
 
+    def show_dialog_for_base_folder(self):
+        return self.show_base_folder_dialog.emit()
 
     @staticmethod
     def cleanup_thumbs():

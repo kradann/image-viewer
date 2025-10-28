@@ -179,6 +179,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         file_menu.addAction(load_folder_action)
 
         load_json_action = QtWidgets.QAction("Load JSON", self)
+        load_json_action.triggered.connect(self.on_load_json)
         file_menu.addAction(load_json_action)
 
         status_menu = self.menu_bar.addMenu("Status")
@@ -263,6 +264,8 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.change_info_label("Folder load failed")
         '''
 
+    def on_load_json(self):
+        self.grid_view.on_load_json()
 
     def update_info_after_list_clicked(self):
         self.update_batch_info()

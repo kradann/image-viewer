@@ -2,6 +2,7 @@ import copy
 import shutil
 import subprocess
 import sys
+import json
 from enum import Enum
 from pathlib import Path
 from pprint import pprint
@@ -41,6 +42,7 @@ class MainModel(QtWidgets.QMainWindow):
     highlight_current_folder_name = pyqtSignal(str)
     load_folder_with_click = pyqtSignal(str)
     show_wrong_folder_names = pyqtSignal(list)
+    set_base_folder = pyqtSignal()
 
     def __init__(self, loader=None):
         super().__init__()
@@ -182,7 +184,18 @@ class MainModel(QtWidgets.QMainWindow):
                 self.subfolders[label] = count
         self.subfolders = {k: self.subfolders[k] for k in sorted(self.subfolders.keys())}
 
+    def load_json(self, json_data):
+        try:
+            with open(json_data[0], 'r', encoding='utf-8') as json_file:
+                self.json_data = json.load(json_file)
+            values_set = sorted(set(self.json_data.values()))
 
+            self.base_folder = self.set_base_folder.emit()
+            print(self.base_folder)
+
+
+        except Exception as e:
+            print("Error while loading json")
 
     def clear_selected_images(self):
         self.selected_images = set()

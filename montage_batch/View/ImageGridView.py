@@ -30,6 +30,7 @@ class ImageGridView(QtWidgets.QWidget):
         self.clickable_viewmodel = ClickableViewModel
         self.grid_view_model.image_ready.connect(self.add_image_to_layout)
         self.grid_view_model.batch_should_be_shown.connect(self.show_batch)
+        self.grid_view_model.show_base_folder_dialog(self.on_show_base_folder_dialog)
         #self.viewmodel.infoMessage.connect(self.change_info_label)
 
     def mousePressEvent(self, event):
@@ -125,8 +126,16 @@ class ImageGridView(QtWidgets.QWidget):
         if selected_folder_path:
             self.grid_view_model.load_main_folder(selected_folder_path)
 
+    def on_load_json(self):
+        json_data = QtWidgets.QFileDialog.getOpenFileName(self, "Select JSON", "JSON files (*.json);;All files (*)")
+        if json_data:
+            self.grid_view_model.load_json(json_data)
+
     def show_batch(self):
         self.grid_view_model.load_batch()
 
+    def on_show_base_folder_dialog(self):
+        base_folder = QtWidgets.QFileDialog. getExistingDirectory(self, "Select Base Folder")
+        return base_folder
 
 
