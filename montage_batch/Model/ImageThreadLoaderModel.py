@@ -9,7 +9,7 @@ from PyQt5 import QtCore, QtGui
 
 
 class ImageLoaderThread(QtCore.QThread):
-    image_loaded = QtCore.pyqtSignal(int, QtGui.QPixmap, str)
+    image_loaded = QtCore.pyqtSignal(list)
     @staticmethod
     def cleanup_thumbs():
         print(13)
@@ -51,6 +51,7 @@ class ImageLoaderThread(QtCore.QThread):
         self._is_running = False
 
     def run(self):
+        batch_data = []
         for idx, path in enumerate(self.paths):
             if not self._is_running:
                 break
@@ -59,13 +60,19 @@ class ImageLoaderThread(QtCore.QThread):
             if not os.path.exists(thumb_path):
                 self.generate_thumbnail(path, thumb_path)
             try:
-                # img = Image.open(path)
-                # img.thumbnail((128, 128))
-                pixmap = QtGui.QPixmap(str(thumb_path))
-                # qimage = ImageQt(img)
-                # pixmap = QtGui.QPixmap.fromImage(qimage)
-                if self._is_running:
-                    self.image_loaded.emit(idx, pixmap, str(path))
+                #pixmap = QtGui.QPixmap(str(thumb_path))
+                with open(thumb_path, 'rb') as thumb:
+                    data = thumb.read()
+
+                batch_data.append((idx, data, str(path)))
+
+                if len(batch_data) >= 50 and self._is_running:
+                    self.image_loaded.emit(batch_data)
+                    batch_data = []
+
             except Exception as e:
                 print(f"Thumb path: {thumb_path}, Exists? {Path(thumb_path).exists()}")
                 print(f"Error loading image {path}: {e}")
+
+        if batch_data:
+            self.image_loaded.emit(batch_data)

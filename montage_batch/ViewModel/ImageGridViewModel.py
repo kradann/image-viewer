@@ -1,6 +1,7 @@
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QDialog
+
 
 from View.FolderSelectionDialog import FolderSelectionDialog
 from Model.BatchLoaderModel import ImageBatchLoader
@@ -50,7 +51,7 @@ class ImageGridViewModel(QObject):
         self.main_model.show_wrong_folder_names.connect(self.show_wrong_folder_names)
 
     def spinbox_value_changed(self, value, scroll_area_width, thumb_width):
-        if (scroll_area_width - (value+2)*6) // thumb_width >= value: # space between thumbs
+        if (scroll_area_width - (value+2)*value) // thumb_width >= value: # space between thumbs
             self.main_model.set_num_of_col(value)
             self.load_batch()
         else:
@@ -82,21 +83,25 @@ class ImageGridViewModel(QObject):
 
         batch = self.main_model.get_current_batch
         self.thread = ImageLoaderThread(batch)
-        self.thread.image_loaded.connect(lambda idx, pixmap, path: self._on_image_loaded(idx,pixmap, path, generation))
+        self.thread.image_loaded.connect(lambda batch_data: self._on_image_loaded(batch_data, generation))
 
         self.thread.start()
 
-    def _on_image_loaded(self, idx, pixmap, path, generation):
+    def _on_image_loaded(self, batch_data, generation):
         if generation != self._load_generation:
             return
 
-        self.on_image_loaded(idx,pixmap,path)
+        self.on_image_loaded(batch_data)
 
-    def on_image_loaded(self, idx, pixmap, path):
+    def on_image_loaded(self, batch_data):
         # Compute row/col and selection state here
-        row, col = divmod(idx, self.main_model.get_num_of_columns)  # or self.model.num_of_col
-        is_selected = self.main_model.is_selected(path)  # ask model if selected
-        self.image_ready.emit(row, col, path, pixmap, is_selected)
+        for idx, data, path in batch_data:
+            pixmap = QtGui.QPixmap()
+            pixmap.loadFromData(data)
+            row, col = divmod(idx, self.main_model.get_num_of_columns)  # or self.model.num_of_col
+            is_selected = self.main_model.is_selected(path)  # ask model if selected
+            self.image_ready.emit(row, col, path, pixmap, is_selected)
+
 
 
     def load_main_folder(self, path):

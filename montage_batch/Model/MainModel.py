@@ -168,22 +168,6 @@ class MainModel(QtWidgets.QMainWindow):
         self.load_folder.emit(self.subfolders, 0)
 
 
-
-    def collect_sign_types(self):
-        main_path = Path(self.main_folder)
-        if not main_path.exists() or not main_path.is_dir():
-            return []
-
-        self.regions = sorted([d for d in self.main_folder.iterdir() if d.is_dir()])
-        all_sign_types = {
-            st.name
-            for region in self.regions
-            for st in region.iterdir()
-            if st.is_dir()
-        }
-        return sorted(all_sign_types)
-
-
     def collect_subfolders(self):
         self.labels = self.find_label_folders()
 

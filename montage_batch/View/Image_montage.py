@@ -6,22 +6,16 @@ from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QFont, QKeySequence
 from PyQt5.QtWidgets import QShortcut, QMessageBox, QLabel
 
+
 from View.Styles import *
 from View.ImageGridView import ImageGridView
 from View.FolderListView import FolderListWidget
-from View.ClickableLabel import ClickableLabel
 
-from ViewModel.FolderListViewModel import FolderListViewModel
-from ViewModel.ImageGridViewModel import ImageGridViewModel
-from ViewModel.ClickableViewModel import ClickableViewModel
-
-from Model.MainModel import MainModel
-from Model.BatchLoaderModel import ImageBatchLoader
 
 
 
 class ImageMontageApp(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, main_model, grid_view_model, folder_list_view_model):
         super().__init__()
         #Customizing main window
         self.setWindowTitle("Image Batch Viewer")
@@ -29,11 +23,11 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.resize(1600, 900)
 
         #init main model
-        self.main_model = MainModel()
+        self.main_model = main_model
 
         #init ViewModels and Views
-        self.grid_view_model = ImageGridViewModel(self.main_model)
-        self.folder_list_view_model = FolderListViewModel(self.main_model, self.grid_view_model)
+        self.grid_view_model = grid_view_model
+        self.folder_list_view_model = folder_list_view_model
         self.grid_view = ImageGridView(parent=self, main_model=self.main_model, grid_view_model=self.grid_view_model)
         self.grid_view.setMouseTracking(True)
 
@@ -247,7 +241,9 @@ class ImageMontageApp(QtWidgets.QWidget):
 
     def on_load_folder(self):
         self.change_info_label("Loading Folders...", display_time=0)
+        self.layout().setEnabled(False)
         self.grid_view.on_load_folder()
+        self.layout().setEnabled(True)
         self.change_info_label("Folders Loaded")
         self.update_batch_info()
         #commented because it's easier to debug

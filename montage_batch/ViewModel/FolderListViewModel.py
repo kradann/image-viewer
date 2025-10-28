@@ -43,6 +43,7 @@ class FolderListViewModel(QObject):
     def folder_clicked(self, folder_name):
         if not isinstance(folder_name, str):
             folder_name = folder_name.text().split()[0]
-        self.main_model.load_folder_by_folder_name(folder_name)
-        #self.highlight_current_folder_name.emit(str(self.main_model.get_folder_path().name))
-        self.update_info.emit()
+            if folder_name != self.main_model.get_current_label:
+                self.main_model.load_folder_by_folder_name(folder_name)
+                #self.highlight_current_folder_name.emit(str(self.main_model.get_folder_path().name))
+                self.update_info.emit()
