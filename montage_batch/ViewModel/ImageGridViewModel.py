@@ -50,7 +50,7 @@ class ImageGridViewModel(QObject):
         self.main_model.update_folder_list_label.connect(self.update_folder_list)
         self.main_model.change_info_label.connect(self.update_info_label)
         self.main_model.show_wrong_folder_names.connect(self.show_wrong_folder_names)
-        self.main_model.set_base_folder.connect(self.show_dialog_for_base_folder)
+        self.main_model.set_base_folder_signal.connect(self.show_dialog_for_base_folder)
 
     def spinbox_value_changed(self, value, scroll_area_width, thumb_width):
         if (scroll_area_width - (value+2)*value) // thumb_width >= value: # space between thumbs
@@ -62,7 +62,7 @@ class ImageGridViewModel(QObject):
     def _check_button_state(self):
         if not self.main_model:
             return
-        can_enable = bool(self.main_model.main_folder and self.main_model.selected_images)
+        can_enable = bool((self.main_model.main_folder or self.main_model.get_base_folder) and self.main_model.selected_images)
         self.button_state_changed.emit(can_enable)
 
     def add_image(self, idx, pixmap, path):
@@ -109,21 +109,24 @@ class ImageGridViewModel(QObject):
 
     def load_main_folder(self, path):
         subfolders = self.main_model.load_main_folder(path)
-        self.load_images(subfolders,0)
+        self.load_images(subfolders,0, self.main_model.get_is_json)
 
 
     def update_info_label(self, text):
         self.info_message.emit(text)
 
     def update_folder_list(self):
-        self.main_model.collect_subfolders()
+        if self.main_model.get_is_json:
+            self.main_model.collect_labels_from_json()
+        else:
+            self.main_model.collect_subfolders()
         self.load_subfolders_list.emit(self.main_model.get_subfolders)
 
 
-    def load_images(self, subfolders, batch_idx):
+    def load_images(self, subfolders, batch_idx, is_json):
         self.main_model.clear_selected_images()
 
-        self.main_model.set_loader(ImageBatchLoader(self.main_model.current_label_folder_paths, batch_size=1000, start_batch_idx=batch_idx))
+        self.main_model.set_loader(ImageBatchLoader(self.main_model.current_label_folder_paths, batch_size=1000, start_batch_idx=batch_idx, is_json=is_json))
         self.load_batch()
         self.info_message.emit("Folder loaded!")
         self.change_current_folder.emit(str(self.main_model.get_current_label))
@@ -195,7 +198,10 @@ class ImageGridViewModel(QObject):
         self.show_wrong_folder_names_window.emit(wrong_folder_names)
 
     def show_dialog_for_base_folder(self):
-        return self.show_base_folder_dialog.emit()
+        self.show_base_folder_dialog.emit()
+
+    def set_base_folder(self, base_folder_path):
+        self.main_model.set_base_folder(base_folder_path)
 
     @staticmethod
     def cleanup_thumbs():

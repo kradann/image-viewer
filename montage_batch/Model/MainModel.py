@@ -14,7 +14,7 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QMessageBox
 
 from Model.sign_types import SIGN_TYPES
-
+from sympy import false
 
 APP_VERSION = "0.1.0"
 GITHUB_RELEASE_LINK = "https://api.github.com/repos/kradann/image-viewer/releases/latest"
@@ -34,7 +34,7 @@ def check_image_name(img_path, output_folder):
 
 class MainModel(QtWidgets.QMainWindow):
     load_subfolders = pyqtSignal(list)
-    load_folder= pyqtSignal(dict, int)
+    load_folder= pyqtSignal(dict, int, bool)
     clear_images =  pyqtSignal()
     load_selected_images = pyqtSignal(set)
     change_info_label = pyqtSignal(str)
@@ -42,7 +42,7 @@ class MainModel(QtWidgets.QMainWindow):
     highlight_current_folder_name = pyqtSignal(str)
     load_folder_with_click = pyqtSignal(str)
     show_wrong_folder_names = pyqtSignal(list)
-    set_base_folder = pyqtSignal()
+    set_base_folder_signal = pyqtSignal()
 
     def __init__(self, loader=None):
         super().__init__()
@@ -53,6 +53,8 @@ class MainModel(QtWidgets.QMainWindow):
         self.main_folder = None  # Folder that stores the subfolders / Folder that stored the folders of the regions
 
         self.labels = dict()
+
+        self.is_input_from_json = False
 
         self.first_check = True
         self.wrong_folder_names = list()
@@ -77,6 +79,9 @@ class MainModel(QtWidgets.QMainWindow):
 
     def set_num_of_col(self, number):
         self.num_of_col = number
+
+    def set_base_folder(self, base_folder_path):
+        self.base_folder = Path(base_folder_path)
 
     # === Getters ===
     @property
@@ -115,6 +120,13 @@ class MainModel(QtWidgets.QMainWindow):
     def get_current_label(self):
         return self.current_label
 
+    @property
+    def get_is_json(self):
+        return self.is_input_from_json
+
+    def get_base_folder(self):
+        return self.base_folder
+
     def get_position(self, idx):
         return idx // self.num_of_col, idx % self.num_of_col
 
@@ -135,6 +147,7 @@ class MainModel(QtWidgets.QMainWindow):
     def load_main_folder(self, path : str):
         if not path:
             return None, []
+        self.is_input_from_json = False
         self.main_folder = Path(path)
 
         self.collect_subfolders()
@@ -167,7 +180,7 @@ class MainModel(QtWidgets.QMainWindow):
     def load_folder_by_folder_name(self, folder_name : str):
         self.current_label_folder_paths = self.labels[folder_name]
         self.current_label = folder_name
-        self.load_folder.emit(self.subfolders, 0)
+        self.load_folder.emit(self.subfolders, 0, self.is_input_from_json)
 
 
     def collect_subfolders(self):
@@ -184,24 +197,40 @@ class MainModel(QtWidgets.QMainWindow):
                 self.subfolders[label] = count
         self.subfolders = {k: self.subfolders[k] for k in sorted(self.subfolders.keys())}
 
+    def collect_labels_from_json(self):
+        self.is_input_from_json = True
+        for path, label in self.json_data.items():
+            if (self.base_folder / path).exists():
+                if self.current_label is None:
+                    self.current_label = label
+                if label not in self.subfolders.keys():
+                    self.subfolders[label] = 0
+                self.subfolders[label] += 1
+
+                if (self.base_folder / path) not in self.labels[label]:
+                    self.labels[label].append(self.base_folder / path)
+
     def load_json(self, json_data):
-        try:
+
             with open(json_data[0], 'r', encoding='utf-8') as json_file:
                 self.json_data = json.load(json_file)
-            values_set = sorted(set(self.json_data.values()))
 
-            self.base_folder = self.set_base_folder.emit()
-            print(self.base_folder)
+            self.set_base_folder_signal.emit()
 
+            self.labels = {label : [] for label in SIGN_TYPES}
 
-        except Exception as e:
-            print("Error while loading json")
+            if self.base_folder:
+                self.collect_labels_from_json()
+
+                self.current_label_folder_paths = self.labels[self.current_label]
+
+                self.load_folder.emit(self.subfolders, 0, self.is_input_from_json)
+
 
     def clear_selected_images(self):
         self.selected_images = set()
 
     def is_selected(self, path):
-        #print(self.selected_images)
         for img in self.selected_images:
             if str(img) == str(path):
                 return True
@@ -220,9 +249,8 @@ class MainModel(QtWidgets.QMainWindow):
             self.selected_images.add(path)
 
 
-    #TODO: Test these 2 function below
     def load_prev_folder(self):
-        if self.main_folder is None:
+        if self.main_folder is None and self.base_folder is None:
             return
 
         subfolders = list(self.subfolders.keys())
@@ -244,11 +272,10 @@ class MainModel(QtWidgets.QMainWindow):
             self.current_label_folder_paths = self.labels[current_prev_label]
             self.current_label = current_prev_label
 
-            self.load_folder.emit(self.subfolders, 0)
-        #TODO: Move blue highlight when changing folder
+            self.load_folder.emit(self.subfolders, 0, self.is_input_from_json)
 
     def load_next_folder(self):
-        if self.main_folder is None:
+        if self.main_folder is None and self.base_folder is None:
             return
         subfolders = list(self.subfolders.keys())
         next_folder_idx = subfolders.index(str(self.current_label))+1
@@ -268,9 +295,7 @@ class MainModel(QtWidgets.QMainWindow):
             self.current_label_folder_paths = self.labels[current_next_label]
             self.current_label = current_next_label
 
-            self.load_folder.emit(self.subfolders, 0)
-
-        #TODO: Move blue highlight when changing folder
+            self.load_folder.emit(self.subfolders, 0, self.is_input_from_json)
 
     def load_prev_batch(self):
         if self.loader:
@@ -292,7 +317,8 @@ class MainModel(QtWidgets.QMainWindow):
 
                 # check if destination folder contains file that has same name
                 dst_path = check_image_name(img_path, output_folder)
-                shutil.move(img_path, str(dst_path))
+                print(f'image path: {img_path} \n output folder: {output_folder} \n dst : {dst_path}')
+                #shutil.move(img_path, str(dst_path))
 
             self.change_info_label.emit(f"Selected images move successfully to {selected_folder}")
             self.update_folder_list_label.emit()
@@ -306,7 +332,7 @@ class MainModel(QtWidgets.QMainWindow):
             self.show_only_selected()
         else:
             self.selected_images = set()
-            self.load_folder.emit(self.subfolders, self.loader.current_batch_idx)
+            self.load_folder.emit(self.subfolders, self.loader.current_batch_idx, self.is_input_from_json)
 
     def show_only_selected(self):
         if not self.loader:

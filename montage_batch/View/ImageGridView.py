@@ -30,7 +30,7 @@ class ImageGridView(QtWidgets.QWidget):
         self.clickable_viewmodel = ClickableViewModel
         self.grid_view_model.image_ready.connect(self.add_image_to_layout)
         self.grid_view_model.batch_should_be_shown.connect(self.show_batch)
-        self.grid_view_model.show_base_folder_dialog(self.on_show_base_folder_dialog)
+        self.grid_view_model.show_base_folder_dialog.connect(self.on_show_base_folder_dialog)
         #self.viewmodel.infoMessage.connect(self.change_info_label)
 
     def mousePressEvent(self, event):
@@ -98,6 +98,7 @@ class ImageGridView(QtWidgets.QWidget):
         path_label.setAlignment(QtCore.Qt.AlignCenter)
         path_label.setWordWrap(True)
         path_label.setFixedWidth(self.thumbnail_size[0])
+        path_label.setFixedHeight(30)
         path_label.setMaximumHeight(30)
         path_label.setStyleSheet(GRID_PATH_STYLE)
 
@@ -136,6 +137,6 @@ class ImageGridView(QtWidgets.QWidget):
 
     def on_show_base_folder_dialog(self):
         base_folder = QtWidgets.QFileDialog. getExistingDirectory(self, "Select Base Folder")
-        return base_folder
+        self.grid_view_model.set_base_folder(base_folder)
 
 
