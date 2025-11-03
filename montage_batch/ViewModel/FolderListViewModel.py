@@ -1,10 +1,6 @@
-import json
-import os
 from pathlib import Path
-
-from PyQt5 import QtWidgets
 from PyQt5.QtCore import QObject, pyqtSignal
-from Model.FolderListModel import FolderListModel
+
 
 
 class FolderListViewModel(QObject):

@@ -33,7 +33,7 @@ class FolderListWidget(QtWidgets.QListWidget):
             }
         """)
 
-
+        #TODO: Not correct for MVVM
         self.main_model.highlight_current_folder_name.connect(self.highlight_by_name)
         self.grid_view_model.load_subfolders_list.connect(self.load_list)
         font = QtGui.QFont("Courier New")

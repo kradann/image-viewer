@@ -1,15 +1,14 @@
 import hashlib
 import os
 from pathlib import Path
-
 from PIL import Image
-from PyQt5 import QtCore, QtGui
+from PyQt5.QtCore import QThread, pyqtSignal
 
 
 
 
-class ImageLoaderThread(QtCore.QThread):
-    image_loaded = QtCore.pyqtSignal(list)
+class ImageLoaderThread(QThread):
+    image_loaded = pyqtSignal(list)
     @staticmethod
     def cleanup_thumbs():
         print(13)

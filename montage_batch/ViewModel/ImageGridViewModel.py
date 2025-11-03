@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QDialog
@@ -30,7 +32,7 @@ class ImageGridViewModel(QObject):
     show_wrong_folder_names_window = pyqtSignal(list)
     not_enough_space = pyqtSignal(int)
     show_base_folder_dialog = pyqtSignal()
-
+    show_folder_selection_dialog = pyqtSignal(str)
 
 
     def __init__(self, mainmodel):
@@ -156,10 +158,13 @@ class ImageGridViewModel(QObject):
         self.batch_should_be_shown.emit()
 
     def on_move_selected(self):
-        dialog = FolderSelectionDialog()
-        if dialog.exec_() != QDialog.Accepted or not dialog.selected_folder:
-            return
-        self.main_model.move_selected(dialog.selected_folder)
+        preferred_label = self.main_model.get_current_label if self.main_model.get_is_json else None
+        #TODO: Not create dialog here, move it to VIEW
+        self.show_folder_selection_dialog.emit(preferred_label)
+
+
+    def move_selected(self, selected_folder):
+        self.main_model.move_selected(selected_folder)
 
     def on_unselect_select_all(self):
 
@@ -202,6 +207,18 @@ class ImageGridViewModel(QObject):
 
     def set_base_folder(self, base_folder_path):
         self.main_model.set_base_folder(base_folder_path)
+
+    def get_current_labels(self):
+        return self.main_model.get_current_label_list
+
+    def load_eu_sign_types(self):
+        self.main_model.load_labels_from_json(str(Path(__file__).parent.parent / 'resources/EU_sign_types.json'))
+
+    def load_us_sign_types(self):
+        self.main_model.load_labels_from_json(str(Path(__file__).parent.parent / 'resources/US_sign_types.json'))
+
+    def load_labels_from_json(self, path):
+        self.main_model.load_labels_from_json(path)
 
     @staticmethod
     def cleanup_thumbs():

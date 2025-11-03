@@ -1,8 +1,5 @@
-
 from pathlib import Path
 
-from PIL import Image
-from PyQt5 import QtCore, QtGui
 
 
 def collect_image_paths(source):

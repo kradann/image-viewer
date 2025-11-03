@@ -4,7 +4,7 @@ from Model.MainModel import MainModel
 from ViewModel.ImageGridViewModel import ImageGridViewModel
 from ViewModel.FolderListViewModel import FolderListViewModel
 
-from View.Image_montage import ImageMontageApp
+from View.ImageMontage import ImageMontageApp
 
 
 

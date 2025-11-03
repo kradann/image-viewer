@@ -1,11 +1,9 @@
-from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal, QObject
-
 from PyQt5.QtGui import QPixmap
 from Model.ImageThreadLoaderModel import *
 
 
-class ClickableViewModel(QtCore.QObject):
+class ClickableViewModel(QObject):
     clicked = pyqtSignal()
     imageCut = pyqtSignal(str, str, str)
     imagePathChanged = pyqtSignal(str)

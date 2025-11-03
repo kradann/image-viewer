@@ -1,20 +1,10 @@
-import copy
-import shutil
-import subprocess
-import sys
-import json
-from enum import Enum
+import copy, shutil, subprocess, sys, json, requests
 from pathlib import Path
-from pprint import pprint
-
-import requests
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QFont
+from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QMessageBox
-
 from Model.sign_types import SIGN_TYPES
-from sympy import false
+
+
 
 APP_VERSION = "0.1.0"
 GITHUB_RELEASE_LINK = "https://api.github.com/repos/kradann/image-viewer/releases/latest"
@@ -32,7 +22,7 @@ def check_image_name(img_path, output_folder):
     return dst_path
 
 
-class MainModel(QtWidgets.QMainWindow):
+class MainModel(QObject):
     load_subfolders = pyqtSignal(list)
     load_folder= pyqtSignal(dict, int, bool)
     clear_images =  pyqtSignal()
@@ -55,6 +45,9 @@ class MainModel(QtWidgets.QMainWindow):
         self.labels = dict()
 
         self.is_input_from_json = False
+
+        self.current_label_list = list()
+        self.load_labels_from_json(str(Path(__file__).parent.parent / 'resources/EU_sign_types.json'))
 
         self.first_check = True
         self.wrong_folder_names = list()
@@ -123,6 +116,10 @@ class MainModel(QtWidgets.QMainWindow):
     @property
     def get_is_json(self):
         return self.is_input_from_json
+
+    @property
+    def get_current_label_list(self):
+        return self.current_label_list
 
     def get_base_folder(self):
         return self.base_folder
@@ -211,20 +208,19 @@ class MainModel(QtWidgets.QMainWindow):
                     self.labels[label].append(self.base_folder / path)
 
     def load_json(self, json_data):
-
             with open(json_data[0], 'r', encoding='utf-8') as json_file:
                 self.json_data = json.load(json_file)
-
+            if not isinstance(self.json_data, dict):
+                raise ValueError("Invalid json format")
             self.set_base_folder_signal.emit()
 
             self.labels = {label : [] for label in SIGN_TYPES}
 
             if self.base_folder:
                 self.collect_labels_from_json()
-
-                self.current_label_folder_paths = self.labels[self.current_label]
-
-                self.load_folder.emit(self.subfolders, 0, self.is_input_from_json)
+                if self.current_label:
+                    self.current_label_folder_paths = self.labels[self.current_label]
+                    self.load_folder.emit(self.subfolders, 0, self.is_input_from_json)
 
 
     def clear_selected_images(self):
@@ -317,8 +313,8 @@ class MainModel(QtWidgets.QMainWindow):
 
                 # check if destination folder contains file that has same name
                 dst_path = check_image_name(img_path, output_folder)
-                print(f'image path: {img_path} \n output folder: {output_folder} \n dst : {dst_path}')
-                #shutil.move(img_path, str(dst_path))
+
+                shutil.move(img_path, str(dst_path))
 
             self.change_info_label.emit(f"Selected images move successfully to {selected_folder}")
             self.update_folder_list_label.emit()
@@ -343,6 +339,7 @@ class MainModel(QtWidgets.QMainWindow):
         self.load_selected_images.emit(self.dropped_selected)
 
     #TODO: check if function works
+    #TODO: Dont use messageBox
     def check_for_update(self):
         try:
             response = requests.get(GITHUB_RELEASE_LINK, timeout=10)
@@ -380,6 +377,15 @@ class MainModel(QtWidgets.QMainWindow):
                 QMessageBox.information(self, "Update", "Already up to date!")
         except Exception as e:
             QMessageBox.information(self, "Update", f"An error occurred: {e}")
+
+    def load_labels_from_json(self, json_path):
+        with open(json_path, 'r') as label_json:
+            labels_from_json = json.load(label_json)
+        self.current_label_list = labels_from_json
+        if self.is_input_from_json:
+            pass
+        else:
+            self.load_main_folder(self.main_folder)
 
 
 

@@ -34,6 +34,7 @@ class ClickableLabel(QtWidgets.QLabel):
             self.show_context_menu(event.pos())
         elif event.button() == QtCore.Qt.LeftButton and self.cut_mode and self.preview_pos:
             self.vm.cut_image(self,self.pixmap(), self.cut_mode, event.pos())
+            #TODO: Not correct for MVVM
             self.main_model.load_folder_by_folder_name(self.img_path.parent.name)
         else:
             super().mousePressEvent(event)

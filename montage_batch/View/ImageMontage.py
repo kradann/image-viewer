@@ -3,10 +3,11 @@ from typing import Union
 
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QFont, QKeySequence
-from PyQt5.QtWidgets import QShortcut, QMessageBox, QLabel
+from PyQt5.QtGui import QFont, QKeySequence, QColor
+from PyQt5.QtWidgets import QShortcut, QMessageBox, QLabel, QDialog
 
 
+from View.FolderSelectionDialog import FolderSelectionDialog
 from View.Styles import *
 from View.ImageGridView import ImageGridView
 from View.FolderListView import FolderListWidget
@@ -85,7 +86,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.add_button("Current Batch", self.show_batch)
         self.add_button("Unselect/Select all", self.un_select_select_all)
         self.add_button("Selected Check", self.show_only_selected)
-        self.move_selected_button, _ = self.add_button("Move Selected Images", self.move_selected)
+        self.move_selected_button, _ = self.add_button("Move Selected Images\n (EU)", self.move_selected)
         self.add_button("Reload scrolling", self.load_v_value)
         self.add_button("Check for Update", self.check_for_update)
 
@@ -132,6 +133,9 @@ class ImageMontageApp(QtWidgets.QWidget):
         # === Menu Bar ===
         self.menu_bar = QtWidgets.QMenuBar(self)
         self.outer_layout.setMenuBar(self.menu_bar)
+        self.eu_sign_types_widget = None
+        self.us_sign_types_widget = None
+        self.add_new_labels_widget = None
         self.setup_menubar()
 
         # === Styling ===
@@ -151,6 +155,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.grid_view_model.info_message.connect(self.change_info_label)
         self.grid_view_model.show_wrong_folder_names_window.connect(self.show_wrong_folder_names)
         self.grid_view_model.not_enough_space.connect(self.show_not_enough_space_message)
+        self.grid_view_model.show_folder_selection_dialog.connect(self.show_folder_selection_dialog)
 
     def add_button(self, name: str, func, shortcut: Union[str, tuple] = None):
         button = QtWidgets.QPushButton(name)
@@ -181,6 +186,20 @@ class ImageMontageApp(QtWidgets.QWidget):
         load_json_action = QtWidgets.QAction("Load JSON", self)
         load_json_action.triggered.connect(self.on_load_json)
         file_menu.addAction(load_json_action)
+
+        load_label_json = file_menu.addMenu("Set Sign Types")
+
+        eu_sign_types_action = QtWidgets.QAction("EU Sign Types", self)
+        eu_sign_types_action.triggered.connect(self.load_eu_sign_types)
+        load_label_json.addAction(eu_sign_types_action)
+
+        us_sign_types_action = QtWidgets.QAction("US Sign Types", self)
+        us_sign_types_action.triggered.connect(self.load_us_sign_types)
+        load_label_json.addAction(us_sign_types_action)
+
+        add_new_labels_action = QtWidgets.QAction("Add New Labels", self)
+        add_new_labels_action.triggered.connect(self.add_new_labels)
+        load_label_json.addAction(add_new_labels_action)
 
         status_menu = self.menu_bar.addMenu("Status")
 
@@ -243,7 +262,10 @@ class ImageMontageApp(QtWidgets.QWidget):
     def on_load_folder(self):
         self.change_info_label("Loading Folders...", display_time=0)
         self.layout().setEnabled(False)
-        self.grid_view.on_load_folder()
+
+        selected_folder_path = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Folder")
+        self.grid_view.on_load_folder(selected_folder_path)
+
         self.layout().setEnabled(True)
         self.change_info_label("Folders Loaded")
         self.update_batch_info()
@@ -265,7 +287,25 @@ class ImageMontageApp(QtWidgets.QWidget):
         '''
 
     def on_load_json(self):
-        self.grid_view.on_load_json()
+        json_data = QtWidgets.QFileDialog.getOpenFileName(self, "Select JSON", filter="JSON files (*.json);;All files (*)")
+        self.grid_view.on_load_json(json_data)
+
+    def load_eu_sign_types(self):
+        self.grid_view_model.load_eu_sign_types()
+        self.move_selected_button.setText("Move Selected Images\n (EU)")
+        self.change_info_label("Labels changed to EU traffic signs.")
+
+    def load_us_sign_types(self):
+        self.grid_view_model.load_us_sign_types()
+        self.move_selected_button.setText("Move Selected Images\n (US)")
+        self.change_info_label("Labels changed to US traffic signs.")
+
+
+    def add_new_labels(self):
+        json_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Select label JSON", filter="JSON files (*.json);;All files (*)")
+        self.grid_view_model.load_labels_from_json(json_file_path)
+        self.move_selected_button.setText("Move Selected Images\n (Custom)")
+        self.change_info_label("New labels added and set")
 
     def update_info_after_list_clicked(self):
         self.update_batch_info()
@@ -274,8 +314,9 @@ class ImageMontageApp(QtWidgets.QWidget):
     def update_batch_info(self):
         if self.main_model.loader:
             self.batch_info_label.setText(f"Batch: {self.main_model.loader.current_batch_idx + 1} / {self.main_model.loader.number_of_batches // 1000 + 1}")
+            #TODO: don't get data directly from main model
 
-    def change_info_label(self, text=None, text_color="#3cfb8b", display_time=5000):
+    def change_info_label(self, text=None, display_time=5000):
         label = self.info_label
         label.setText(text)
         # Save the current text
@@ -295,6 +336,11 @@ class ImageMontageApp(QtWidgets.QWidget):
         msg = f"There are not enough space for {value} columns"
         QMessageBox.information(self, "Changing columns warning", msg)
         self.column_spinbox.setValue(value-1)
+
+    def show_folder_selection_dialog(self, preferred_label):
+        dialog = FolderSelectionDialog(preferred=preferred_label, grid_view_model=self.grid_view_model)
+        if dialog.exec_() == QDialog.Accepted and dialog.selected_folder:
+            self.grid_view_model.move_selected(dialog.selected_folder)
 
     def closeEvent(self, event):
         self.grid_view_model.cleanup_thumbs()

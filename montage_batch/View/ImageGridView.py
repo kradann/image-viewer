@@ -122,13 +122,11 @@ class ImageGridView(QtWidgets.QWidget):
 
         self.grid_view_model.add_image_to_grid(container, row, col)
 
-    def on_load_folder(self):
-        selected_folder_path = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Folder")
+    def on_load_folder(self, selected_folder_path):
         if selected_folder_path:
             self.grid_view_model.load_main_folder(selected_folder_path)
 
-    def on_load_json(self):
-        json_data = QtWidgets.QFileDialog.getOpenFileName(self, "Select JSON", "JSON files (*.json);;All files (*)")
+    def on_load_json(self, json_data):
         if json_data:
             self.grid_view_model.load_json(json_data)
 
