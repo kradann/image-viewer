@@ -1,8 +1,9 @@
 import copy, shutil, subprocess, sys, json, requests
+import pprint
 from pathlib import Path
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QMessageBox
-from Model.sign_types import SIGN_TYPES
+
 
 
 
@@ -23,16 +24,19 @@ def check_image_name(img_path, output_folder):
 
 
 class MainModel(QObject):
-    load_subfolders = pyqtSignal(list)
+    #Signals for grid view model
+    # notifies grid view model to load images from folder (subfolders, start batch index, is the input json)
     load_folder= pyqtSignal(dict, int, bool)
-    clear_images =  pyqtSignal()
-    load_selected_images = pyqtSignal(set)
-    change_info_label = pyqtSignal(str)
-    update_folder_list_label = pyqtSignal()
-    highlight_current_folder_name = pyqtSignal(str)
-    load_folder_with_click = pyqtSignal(str)
-    show_wrong_folder_names = pyqtSignal(list)
-    set_base_folder_signal = pyqtSignal()
+    clear_images =  pyqtSignal() #clears images from grid
+    load_selected_images = pyqtSignal(set) # #notifies grid view model to load only selected images
+    update_folder_list = pyqtSignal() # updates folder list
+    show_wrong_folder_names = pyqtSignal(list) #shows wrong folder dialog
+    set_base_folder_signal = pyqtSignal() #shows base folder dialog
+    change_info_label = pyqtSignal(str)  # updates info label
+
+    #Signals for folder list view model
+    highlight_current_folder_name = pyqtSignal(str)  # highlight current folder in folder list by name
+    load_folder_with_click = pyqtSignal(str)  # loads folder by click
 
     def __init__(self, loader=None):
         super().__init__()
@@ -121,6 +125,14 @@ class MainModel(QObject):
     def get_current_label_list(self):
         return self.current_label_list
 
+    @property
+    def get_loader(self):
+        return self.loader
+
+    @property
+    def get_batch_size(self):
+        return self.batch_size
+
     def get_base_folder(self):
         return self.base_folder
 
@@ -128,12 +140,12 @@ class MainModel(QObject):
         return idx // self.num_of_col, idx % self.num_of_col
 
     def find_label_folders(self):
-        label_paths = {label : [] for label in SIGN_TYPES}
+        label_paths = {label : [] for label in self.current_label_list}
         wrong_folder_name = []
         if self.main_folder:
             for path in Path(self.main_folder).rglob('*'):
                 if path.is_dir():
-                    if path.name in SIGN_TYPES:
+                    if path.name in self.current_label_list:
                         label_paths[path.name].append(path)
                     else:
                         wrong_folder_name.append(path.name)
@@ -214,7 +226,7 @@ class MainModel(QObject):
                 raise ValueError("Invalid json format")
             self.set_base_folder_signal.emit()
 
-            self.labels = {label : [] for label in SIGN_TYPES}
+            self.labels = {label : [] for label in self.current_label_list}
 
             if self.base_folder:
                 self.collect_labels_from_json()
@@ -317,7 +329,7 @@ class MainModel(QObject):
                 shutil.move(img_path, str(dst_path))
 
             self.change_info_label.emit(f"Selected images move successfully to {selected_folder}")
-            self.update_folder_list_label.emit()
+            self.update_folder_list.emit()
 
         else:
             self.change_info_label.emit("No selected image found!")
@@ -382,6 +394,7 @@ class MainModel(QObject):
         with open(json_path, 'r') as label_json:
             labels_from_json = json.load(label_json)
         self.current_label_list = labels_from_json
+        self.current_label_list.sort()
         if self.is_input_from_json:
             pass
         else:

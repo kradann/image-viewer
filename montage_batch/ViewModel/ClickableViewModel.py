@@ -4,11 +4,6 @@ from Model.ImageThreadLoaderModel import *
 
 
 class ClickableViewModel(QObject):
-    clicked = pyqtSignal()
-    imageCut = pyqtSignal(str, str, str)
-    imagePathChanged = pyqtSignal(str)
-    # (pixmap, mode, pos)
-
     def __init__(self,model, img_path, main_model=None, parent=None):
         super().__init__(parent)
         self.model = model
@@ -16,7 +11,6 @@ class ClickableViewModel(QObject):
         self.selected = False
         self.preview_pos = None
         self.main_model = main_model
-
 
 
     def cut_image(self, pixmap: QPixmap, mode: str, pos):
@@ -42,6 +36,7 @@ class ClickableViewModel(QObject):
                 break
             name_idx += 1
 
+        #TODO: Save and other I/O should be in Model
         # Save to disk
         cropped_0.save(str(self.img_path))
         cropped_1.save(str(new_path))

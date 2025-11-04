@@ -17,39 +17,47 @@ def clear_images(labels):
 
 
 class ImageGridViewModel(QObject):
-    #TODO: Check which signal do i actually use :)
-    button_state_changed = pyqtSignal(bool)
-    image_added = pyqtSignal(int,int, str, object,bool)
+    button_state_changed = pyqtSignal(bool) # updates move selected button visually
+
+    #Signals to main view
+    not_enough_space = pyqtSignal(int)  # notifies main view to show not enough space warning
+    show_folder_selection_dialog = pyqtSignal(str)  # notifies main view to show folder selection dialog
+    add_image_to_grid_action = pyqtSignal(object, int, int)  # notifies main view to add widget to image_layout
+
+    #Signals to grid view
+    # notifies grid view to add image to grid (row, column, image path, pixmap of image, is image selected)
     image_ready = pyqtSignal(int,int, str, object,bool)
-    batch_loaded = pyqtSignal(str)
-    folder_loaded = pyqtSignal(dict) #subfolders
-    batch_should_be_shown = pyqtSignal()
-    info_message = pyqtSignal(str)
-    change_current_folder = pyqtSignal(str)
-    add_image_to_grid_action = pyqtSignal(object, int,int)
-    load_subfolders_list = pyqtSignal(dict)
-    update_folder_list_signal = pyqtSignal(str,int)
+    show_base_folder_dialog = pyqtSignal()  # notifies grid view to show base folder dialog
+    show_batch = pyqtSignal() #notifies grid view to display current batch
+
+    #Signals to folder list view
+    load_subfolders_list = pyqtSignal(dict) #notifies folder list view to load the folder list
+
+    # Signals to change labels
+    info_message = pyqtSignal(str)  # updates info label
+    change_current_folder = pyqtSignal(str)  # updates current folder label
+
+    # notifies main view to display the wrong folder names dialog (currently not using this)
     show_wrong_folder_names_window = pyqtSignal(list)
-    not_enough_space = pyqtSignal(int)
-    show_base_folder_dialog = pyqtSignal()
-    show_folder_selection_dialog = pyqtSignal(str)
 
 
-    def __init__(self, mainmodel):
+    def __init__(self, main_model):
         super(ImageGridViewModel, self).__init__()
-        self.main_model = mainmodel
-        self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self._check_button_state)
-        self.timer.start(500)
+        self.main_model = main_model
         self.thread = None
         self.labels = list()
         self.isAllSelected = False
         self._load_generation = 0
 
+        #Timer for checking button state frequently
+        self.timer = QtCore.QTimer()
+        self.timer.timeout.connect(self._check_button_state)
+        self.timer.start(500)
+
         self.main_model.load_folder.connect(self.load_images)
         self.main_model.load_selected_images.connect(self.load_selected_images)
         self.main_model.clear_images.connect(self.clear_images)
-        self.main_model.update_folder_list_label.connect(self.update_folder_list)
+        self.main_model.update_folder_list.connect(self.update_folder_list)
         self.main_model.change_info_label.connect(self.update_info_label)
         self.main_model.show_wrong_folder_names.connect(self.show_wrong_folder_names)
         self.main_model.set_base_folder_signal.connect(self.show_dialog_for_base_folder)
@@ -67,10 +75,6 @@ class ImageGridViewModel(QObject):
         can_enable = bool((self.main_model.main_folder or self.main_model.get_base_folder) and self.main_model.selected_images)
         self.button_state_changed.emit(can_enable)
 
-    def add_image(self, idx, pixmap, path):
-        row, col = self.main_model.get_position(idx)
-        selected = self.main_model.is_selected(path)
-        self.image_added.emit(row, col, path, pixmap, selected)
 
     def toggle_selection(self, path):
         self.main_model.toggle_selection(path)
@@ -124,6 +128,8 @@ class ImageGridViewModel(QObject):
             self.main_model.collect_subfolders()
         self.load_subfolders_list.emit(self.main_model.get_subfolders)
 
+    def on_load_folder_by_name(self, folder_name):
+        self.main_model.load_folder_by_folder_name(folder_name)
 
     def load_images(self, subfolders, batch_idx, is_json):
         self.main_model.clear_selected_images()
@@ -151,15 +157,14 @@ class ImageGridViewModel(QObject):
 
     def on_prev_batch(self):
         self.main_model.load_prev_batch()
-        self.batch_should_be_shown.emit()
+        self.show_batch.emit()
 
     def on_next_batch(self):
         self.main_model.load_next_batch()
-        self.batch_should_be_shown.emit()
+        self.show_batch.emit()
 
     def on_move_selected(self):
         preferred_label = self.main_model.get_current_label if self.main_model.get_is_json else None
-        #TODO: Not create dialog here, move it to VIEW
         self.show_folder_selection_dialog.emit(preferred_label)
 
 
@@ -210,6 +215,12 @@ class ImageGridViewModel(QObject):
 
     def get_current_labels(self):
         return self.main_model.get_current_label_list
+
+    def on_get_loader(self):
+        return self.main_model.get_loader
+
+    def on_get_batch_size(self):
+        return self.main_model.get_batch_size
 
     def load_eu_sign_types(self):
         self.main_model.load_labels_from_json(str(Path(__file__).parent.parent / 'resources/EU_sign_types.json'))

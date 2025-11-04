@@ -45,7 +45,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.left_widget.setLayout(self.left_panel)
 
         # Init folder list
-        self.folder_list = FolderListWidget(self.main_model, self.grid_view_model)
+        self.folder_list = FolderListWidget(self.main_model, self.grid_view_model, folder_list_view_model=self.folder_list_view_model)
 
         # Current folder label (below folder list)
         self.current_folder_label = QtWidgets.QLabel("Current Folder")
@@ -88,7 +88,8 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.add_button("Selected Check", self.show_only_selected)
         self.move_selected_button, _ = self.add_button("Move Selected Images\n (EU)", self.move_selected)
         self.add_button("Reload scrolling", self.load_v_value)
-        self.add_button("Check for Update", self.check_for_update)
+        self.check_for_update_button ,_ = self.add_button("Check for Update", self.check_for_update)
+        self.check_for_update_button.setEnabled(False)
 
 
 
@@ -147,7 +148,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.batch_info_label.setStyleSheet(BATCH_INFO_STYLE)
 
         # connect signals
-        self.folder_list_view_model.update_info.connect(self.update_info_after_list_clicked)
+        self.folder_list_view_model.update_batch_info.connect(self.update_info_after_list_clicked)
         self.folder_list.itemClicked.connect(self.folder_list_view_model.folder_clicked)
         self.grid_view_model.add_image_to_grid_action.connect(self.on_add_image)
         self.grid_view_model.button_state_changed.connect(self.update_button_state)
@@ -312,9 +313,11 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.change_info_label("Folder Loaded")
 
     def update_batch_info(self):
-        if self.main_model.loader:
-            self.batch_info_label.setText(f"Batch: {self.main_model.loader.current_batch_idx + 1} / {self.main_model.loader.number_of_batches // 1000 + 1}")
-            #TODO: don't get data directly from main model
+        loader = self.grid_view_model.on_get_loader()
+        if loader:
+            self.batch_info_label.setText(
+                f"Batch: {loader.current_batch_idx + 1} / {loader.number_of_batches // self.grid_view_model.on_get_batch_size() + 1}")
+
 
     def change_info_label(self, text=None, display_time=5000):
         label = self.info_label

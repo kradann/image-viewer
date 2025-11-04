@@ -29,7 +29,7 @@ class ImageGridView(QtWidgets.QWidget):
         self.grid_view_model = grid_view_model
         self.clickable_viewmodel = ClickableViewModel
         self.grid_view_model.image_ready.connect(self.add_image_to_layout)
-        self.grid_view_model.batch_should_be_shown.connect(self.show_batch)
+        self.grid_view_model.show_batch.connect(self.show_batch)
         self.grid_view_model.show_base_folder_dialog.connect(self.on_show_base_folder_dialog)
         #self.viewmodel.infoMessage.connect(self.change_info_label)
 
@@ -102,7 +102,8 @@ class ImageGridView(QtWidgets.QWidget):
         path_label.setMaximumHeight(30)
         path_label.setStyleSheet(GRID_PATH_STYLE)
 
-        label = ClickableLabel(img_path=Path(path), vm=self.clickable_viewmodel, main_model=self.main_model)
+        label = ClickableLabel(img_path=Path(path), vm=self.clickable_viewmodel, main_model=self.main_model, grid_view_model=self.grid_view_model)
+        label.cutRequested.connect(self.clickable_viewmodel.cut_image)
         label.setFixedSize(*self.thumbnail_size)
         label.setPixmap(
             pixmap.scaled(*self.thumbnail_size, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))

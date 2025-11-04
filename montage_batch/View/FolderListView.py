@@ -15,10 +15,11 @@ def _apply_status_color(item, status):
 
 
 class FolderListWidget(QtWidgets.QListWidget):
-    def __init__(self, main_model,grid_view_model, parent=None):
+    def __init__(self, main_model,grid_view_model, parent=None, folder_list_view_model=None):
         super().__init__(parent)
         self.main_model = main_model
         self.grid_view_model = grid_view_model
+        self.folder_list_view_model = folder_list_view_model
         self.highlight_color = QtGui.QColor(0, 120, 215, 180)
         self.current_item_name = None
 
@@ -33,8 +34,8 @@ class FolderListWidget(QtWidgets.QListWidget):
             }
         """)
 
-        #TODO: Not correct for MVVM
-        self.main_model.highlight_current_folder_name.connect(self.highlight_by_name)
+        self.folder_list_view_model.highlight_folder_name.connect(self.highlight_by_name)
+        #self.main_model.highlight_current_folder_name.connect(self.highlight_by_name)
         self.grid_view_model.load_subfolders_list.connect(self.load_list)
         font = QtGui.QFont("Courier New")
         font.setPointSize(10)
