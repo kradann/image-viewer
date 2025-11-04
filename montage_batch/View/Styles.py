@@ -39,6 +39,7 @@ BATCH_INFO_STYLE = f"""
                     background: transparent; 
                     color: #3cfb8b; 
                     font-size: 20px;
+                    border: 2px white solid;
                 """
 
 MAIN_WINDOW_STYLE = f"""
@@ -52,3 +53,16 @@ MAIN_WINDOW_STYLE = f"""
                 );
             }}
         """
+
+GRID_PATH_STYLE = f"""
+                color: #000000;
+                font-size: 12px;
+                background-color: transparent;
+            """
+
+FOLDER_LIST_STYLE = f"""
+                QListWidget::item:selected {{
+                    background-color: rgba(0, 120, 215, 180);
+                    color: white;
+                }}
+            """

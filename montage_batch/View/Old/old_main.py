@@ -5,7 +5,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
-from typing import Union, final
+from typing import Union
 
 import requests
 from PyQt5 import QtWidgets, QtGui, QtCore
@@ -14,11 +14,9 @@ from PyQt5.QtGui import QKeySequence, QFont
 from PyQt5.QtWidgets import QShortcut, QDialog, QMessageBox
 
 from FolderList import FolderListWidget
-from FolderSelectionDialog import FolderSelectionDialog
+from FolderSelectionDialog import FolderSelectionDialog, sign_types
 from ImageGrid import ImageGridWidget, ImageBatchLoader, ImageLoaderThread
-from sign_types_dialog import SignTypeDialog, eu_sign_types, us_sign_types
-from NewFolderDialog import NewFolderNameDialog
-from Styles import *
+from montage_batch.View.Styles import *
 
 global window
 
@@ -29,8 +27,6 @@ def refresh_grid():
 
 APP_VERSION = "0.1.0"
 GITHUB_RELEASE_LINK = "https://api.github.com/repos/kradann/image-viewer/releases/latest"
-
-
 
 
 def cleanup_thumbs():
@@ -76,7 +72,6 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.update_selected_check_button)
         self.timer.start(500)
-        self.used_sign_types = None
 
         self.batch_info_label.setStyleSheet(BATCH_INFO_STYLE)
         self.batch_info_label.setAlignment(Qt.AlignCenter)
@@ -112,16 +107,6 @@ class ImageMontageApp(QtWidgets.QWidget):
         save_status_action = QtWidgets.QAction("Save Status", self)
         save_status_action.triggered.connect(self.folder_list.save_status_action)
         status_menu.addAction(save_status_action)
-
-        sign_type_menu = self.menu_bar.addMenu("Sign Types")
-        eu_sign_type_action = QtWidgets.QAction("EU sign types", self)
-        eu_sign_type_action.triggered.connect(lambda: self.set_sign_type(type='eu'))
-        sign_type_menu.addAction(eu_sign_type_action)
-
-        us_sign_type_action = QtWidgets.QAction("US sign types", self)
-        us_sign_type_action.triggered.connect(lambda: self.set_sign_type(type='us'))
-        sign_type_menu.addAction(us_sign_type_action)
-
 
         self.menu_bar.setStyleSheet(MENU_BAR_STYLE)
 
@@ -193,9 +178,6 @@ class ImageMontageApp(QtWidgets.QWidget):
 
         self.outer_layout.addLayout(self.label_row_layout)
 
-        while self.used_sign_types is None:
-            self.set_sign_type()
-
     def add_button(self, name: str, func, shortcut: Union[str, tuple] = None):
         button = QtWidgets.QPushButton(name)
         button.setFont(QFont("Arial", 10))
@@ -215,25 +197,6 @@ class ImageMontageApp(QtWidgets.QWidget):
                 q_shortcut.activated.connect(func)
         return button, q_shortcut
 
-    def set_sign_type(self, type=None):
-        if type is None:
-            dialog = SignTypeDialog()
-            if dialog.exec_() != QDialog.Accepted or not dialog.selected_type:
-                return
-
-            self.used_sign_types = dialog.selected_type
-
-        elif type=="eu":
-            self.used_sign_types = eu_sign_types
-        else:
-            self.used_sign_types = us_sign_types
-
-        if self.used_sign_types == eu_sign_types:
-            self.change_info_label("Sign type changed to EU")
-        else:
-            self.change_info_label("Sign type changed to US")
-
-
     def load_folder(self):
         self.folder_list.clear()
         self.clear_images()
@@ -243,7 +206,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.subfolders = [f.name for f in Path(self.main_folder).iterdir() if f.is_dir()]
             self.subfolders.sort()
 
-            if any(sub in self.used_sign_types for sub in self.subfolders):
+            if any(sub in sign_types for sub in self.subfolders):
                 self.is_all_region = False
                 self.folder_path = Path(self.main_folder) / self.subfolders[0]
                 self.load_subfolders(self.main_folder)
@@ -279,7 +242,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             wrong_subfolder_name = []
 
             for name in self.subfolders:
-                if name in self.used_sign_types:
+                if name in sign_types:
                     full_path = Path(path) / name
                     if full_path.is_dir():
                         num_images = len(list(Path(full_path).iterdir()))
@@ -513,7 +476,7 @@ class ImageMontageApp(QtWidgets.QWidget):
                 return
 
             # create selection dialog
-            dialog = FolderSelectionDialog(self, sign_types=self.used_sign_types)
+            dialog = FolderSelectionDialog(self)
             if dialog.exec_() != QDialog.Accepted or not dialog.selected_folder:
                 return
 
@@ -550,7 +513,7 @@ class ImageMontageApp(QtWidgets.QWidget):
                 self.refresh()
             #self.load_subfolders(self.main_folder)
         elif not self.is_JSON_active and self.is_all_region:
-            dialog = FolderSelectionDialog(self, sign_types=self.used_sign_types)
+            dialog = FolderSelectionDialog(self)
             if dialog.exec_() != QDialog.Accepted or not dialog.selected_folder:
                 return
             if self.selected_images:
@@ -587,7 +550,7 @@ class ImageMontageApp(QtWidgets.QWidget):
                 self.refresh()
             #self.load_subfolders()
         elif self.is_JSON_active and not self.is_all_region:
-            dialog = FolderSelectionDialog(self, self.loader.label, sign_types=self.used_sign_types)
+            dialog = FolderSelectionDialog(self, self.loader.label)
             if dialog.exec_() != QDialog.Accepted or not dialog.selected_folder:
                 return
             if self.selected_images:
