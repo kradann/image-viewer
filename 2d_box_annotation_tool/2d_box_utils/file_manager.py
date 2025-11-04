@@ -3,7 +3,7 @@ import json
 
 from collections import defaultdict
 from PyQt5 import QtWidgets
-#from utils.index_manager import IndexManager
+#from 2d_box_utils.index_manager import IndexManager
 from utils.annotation_manager import AnnotationManager
 
 
