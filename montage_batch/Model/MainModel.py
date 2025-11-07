@@ -200,8 +200,10 @@ class MainModel(QObject):
         for label, paths in self.labels.items():
             if paths:
                 count = 0
+                #removed count for speed
+                '''
                 for path in paths:
-                    count += sum(1 for file in path.iterdir() if file.suffix.lower() == '.png')
+                    count += sum(1 for file in path.iterdir() if file.suffix.lower() == '.png')'''
 
                 self.subfolders[label] = count
         self.subfolders = {k: self.subfolders[k] for k in sorted(self.subfolders.keys())}
