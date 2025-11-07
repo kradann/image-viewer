@@ -42,7 +42,8 @@ class ImageGridView(QtWidgets.QWidget):
             self.rubber_band.setGeometry(QtCore.QRect(self.origin, QtCore.QSize()))
             self.rubber_band.show()
         elif event.button() == QtCore.Qt.RightButton:
-            self.show_context_menu(event.pos())
+            if event.pos() is ClickableLabel:
+                self.show_context_menu(event.pos())
 
     def mouseMoveEvent(self, event):
         if self.drag_selecting:
