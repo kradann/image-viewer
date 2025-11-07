@@ -94,7 +94,7 @@ class ImageGridView(QtWidgets.QWidget):
         vbox.setSpacing(2)
         vbox.setAlignment(QtCore.Qt.AlignTop)
 
-        path_label = QtWidgets.QLabel(str(path).split('/')[-2].replace('_','_\u200b')) #Added white space to be able to cut it into 2 lines
+        path_label = QtWidgets.QLabel(str(Path(path).parent.name.replace('_','_\u200b'))) #Added white space to be able to cut it into 2 lines
         path_label.setAlignment(QtCore.Qt.AlignCenter)
         path_label.setWordWrap(True)
         path_label.setFixedWidth(self.thumbnail_size[0])
