@@ -2,8 +2,7 @@ from pathlib import Path
 
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtWidgets import QDialog
-
+from PyQt5.QtWidgets import QDialog, QApplication
 
 from View.FolderSelectionDialog import FolderSelectionDialog
 from Model.BatchLoaderModel import ImageBatchLoader
@@ -40,6 +39,8 @@ class ImageGridViewModel(QObject):
     # notifies main view to display the wrong folder names dialog (currently not using this)
     show_wrong_folder_names_window = pyqtSignal(list)
 
+    load_finished_signal = pyqtSignal()
+
 
     def __init__(self, main_model):
         super(ImageGridViewModel, self).__init__()
@@ -61,6 +62,7 @@ class ImageGridViewModel(QObject):
         self.main_model.change_info_label.connect(self.update_info_label)
         self.main_model.show_wrong_folder_names.connect(self.show_wrong_folder_names)
         self.main_model.set_base_folder_signal.connect(self.show_dialog_for_base_folder)
+
 
     def spinbox_value_changed(self, value, scroll_area_width, thumb_width):
         if (scroll_area_width - (value+2)*value) // thumb_width >= value: # space between thumbs
@@ -92,6 +94,7 @@ class ImageGridViewModel(QObject):
         batch = self.main_model.get_current_batch
         self.thread = ImageLoaderThread(batch)
         self.thread.image_loaded.connect(lambda batch_data: self._on_image_loaded(batch_data, generation))
+        self.thread.load_finished.connect(lambda : self.on_load_finished(generation))
 
         self.thread.start()
 
@@ -109,6 +112,13 @@ class ImageGridViewModel(QObject):
             row, col = divmod(idx, self.main_model.get_num_of_columns)  # or self.model.num_of_col
             is_selected = self.main_model.is_selected(path)  # ask model if selected
             self.image_ready.emit(row, col, path, pixmap, is_selected)
+
+    def on_load_finished(self, generation):
+        if generation == self._load_generation:
+            QtCore.QTimer.singleShot(0, self.load_finished_signal)
+
+    def load_finished(self):
+        self.load_finished_signal.emit()
 
     def load_json(self, json_data):
         self.main_model.load_json(json_data)
@@ -230,6 +240,15 @@ class ImageGridViewModel(QObject):
 
     def load_labels_from_json(self, path):
         self.main_model.load_labels_from_json(path)
+
+    def create_log_folder(self):
+        self.main_model.create_log_folder()
+
+    def create_log_file(self):
+        self.main_model.create_log_file()
+
+    def get_log_file_path(self):
+        return self.main_model.get_log_file_path
 
     @staticmethod
     def cleanup_thumbs():

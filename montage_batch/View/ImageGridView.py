@@ -31,6 +31,7 @@ class ImageGridView(QtWidgets.QWidget):
         self.grid_view_model.image_ready.connect(self.add_image_to_layout)
         self.grid_view_model.show_batch.connect(self.show_batch)
         self.grid_view_model.show_base_folder_dialog.connect(self.on_show_base_folder_dialog)
+
         #self.viewmodel.infoMessage.connect(self.change_info_label)
 
     def mousePressEvent(self, event):

@@ -1,5 +1,6 @@
 import copy, shutil, subprocess, sys, json, requests
-import pprint
+import logging
+from datetime import datetime
 from pathlib import Path
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QMessageBox
@@ -21,6 +22,9 @@ def check_image_name(img_path, output_folder):
         counter += 1
 
     return dst_path
+
+
+
 
 
 class MainModel(QObject):
@@ -52,6 +56,8 @@ class MainModel(QObject):
 
         self.current_label_list = list()
         self.load_labels_from_json(str(Path(__file__).parent.parent / 'resources/EU_sign_types.json'))
+
+        self.current_log_file_path = None
 
         self.first_check = True
         self.wrong_folder_names = list()
@@ -133,6 +139,10 @@ class MainModel(QObject):
     def get_batch_size(self):
         return self.batch_size
 
+    @property
+    def get_log_file_path(self):
+        return self.current_log_file_path
+
     def get_base_folder(self):
         return self.base_folder
 
@@ -158,7 +168,7 @@ class MainModel(QObject):
             return None, []
         self.is_input_from_json = False
         self.main_folder = Path(path)
-
+        logging.info(f"{path} loadded as main folder")
         self.collect_subfolders()
 
         #self.collect_subfolders()
@@ -222,19 +232,21 @@ class MainModel(QObject):
                     self.labels[label].append(self.base_folder / path)
 
     def load_json(self, json_data):
-            with open(json_data[0], 'r', encoding='utf-8') as json_file:
-                self.json_data = json.load(json_file)
-            if not isinstance(self.json_data, dict):
-                raise ValueError("Invalid json format")
-            self.set_base_folder_signal.emit()
 
-            self.labels = {label : [] for label in self.current_label_list}
+        with open(json_data[0], 'r', encoding='utf-8') as json_file:
+            self.json_data = json.load(json_file)
+            logging.info(f"{json_data[0]} loaded")
+        if not isinstance(self.json_data, dict):
+            raise ValueError("Invalid json format")
+        self.set_base_folder_signal.emit()
 
-            if self.base_folder:
-                self.collect_labels_from_json()
-                if self.current_label:
-                    self.current_label_folder_paths = self.labels[self.current_label]
-                    self.load_folder.emit(self.subfolders, 0, self.is_input_from_json)
+        self.labels = {label : [] for label in self.current_label_list}
+
+        if self.base_folder:
+            self.collect_labels_from_json()
+            if self.current_label:
+                self.current_label_folder_paths = self.labels[self.current_label]
+                self.load_folder.emit(self.subfolders, 0, self.is_input_from_json)
 
 
     def clear_selected_images(self):
@@ -329,6 +341,7 @@ class MainModel(QObject):
                 dst_path = check_image_name(img_path, output_folder)
 
                 shutil.move(img_path, str(dst_path))
+                logging.info(f"{img_path} moved to {dst_path}")
 
             self.change_info_label.emit(f"Selected images move successfully to {selected_folder}")
             self.update_folder_list.emit()
@@ -391,6 +404,26 @@ class MainModel(QObject):
                 QMessageBox.information(self, "Update", "Already up to date!")
         except Exception as e:
             QMessageBox.information(self, "Update", f"An error occurred: {e}")
+
+    @staticmethod
+    def create_log_folder():
+        log_folder_path = Path(__file__).parent.parent / '.logs'
+        log_folder_path.mkdir(parents=True, exist_ok=True)
+
+
+    def create_log_file(self):
+        log_dir = Path(__file__).resolve().parent.parent / '.logs'
+        log_filename = log_dir / f"app_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
+        self.current_log_file_path = str(log_filename)
+        logging.basicConfig(
+            filename=log_filename,
+            level=logging.INFO,
+            format="%(asctime)s - %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S"
+        )
+
+        logging.info("Annotation tool started!")
+
 
     def load_labels_from_json(self, json_path):
         with open(json_path, 'r') as label_json:

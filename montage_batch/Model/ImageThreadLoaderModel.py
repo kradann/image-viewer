@@ -9,6 +9,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 
 class ImageLoaderThread(QThread):
     image_loaded = pyqtSignal(list)
+    load_finished = pyqtSignal()
     @staticmethod
     def cleanup_thumbs():
         print(13)
@@ -75,3 +76,5 @@ class ImageLoaderThread(QThread):
 
         if batch_data:
             self.image_loaded.emit(batch_data)
+
+        self.load_finished.emit()
