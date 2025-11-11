@@ -11,10 +11,10 @@ class FolderListViewModel(QObject):
     update_batch_info = pyqtSignal() #updates batch info after loading folder
     highlight_folder_name = pyqtSignal(str)
 
-    def __init__(self, mainmodel, gridviewmodel):
+    def __init__(self, main_model, grid_view_model):
         super().__init__()
-        self.main_model = mainmodel
-        self.grid_viewmodel = gridviewmodel
+        self.main_model = main_model
+        self.grid_viewmodel = grid_view_model
 
         self.main_model.load_folder_with_click.connect(self.folder_clicked)
         self.main_model.highlight_current_folder_name.connect(self.on_highlight_by_name)

@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QMessageBox
 
 
 
+
 APP_VERSION = "0.1.0"
 GITHUB_RELEASE_LINK = "https://api.github.com/repos/kradann/image-viewer/releases/latest"
 
@@ -372,7 +373,7 @@ class MainModel(QObject):
             response = requests.get(GITHUB_RELEASE_LINK, timeout=10)
 
             if response.status_code == 404:
-                QMessageBox.information(self, "Update", "No releases found")
+                QMessageBox.information(self, 'Update', "No releases found")
                 return
 
             data = response.json()

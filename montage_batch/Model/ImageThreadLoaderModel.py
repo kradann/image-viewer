@@ -7,6 +7,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 
 
 
+
 class ImageLoaderThread(QThread):
     image_loaded = pyqtSignal(list)
     load_finished = pyqtSignal()
