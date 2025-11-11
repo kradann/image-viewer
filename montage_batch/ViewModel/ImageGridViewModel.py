@@ -22,6 +22,7 @@ class ImageGridViewModel(QObject):
     not_enough_space = pyqtSignal(int)  # notifies main view to show not enough space warning
     show_folder_selection_dialog = pyqtSignal(str)  # notifies main view to show folder selection dialog
     add_image_to_grid_action = pyqtSignal(object, int, int)  # notifies main view to add widget to image_layout
+    show_not_found_images = pyqtSignal(list) #notifies main view to show list of not found images name when importing directory tree
 
     #Signals to grid view
     # notifies grid view to add image to grid (row, column, image path, pixmap of image, is image selected)
@@ -249,6 +250,16 @@ class ImageGridViewModel(QObject):
 
     def get_log_file_path(self):
         return self.main_model.get_log_file_path
+
+    def load_dir_tree(self, dir_tree_path, base_folder):
+        self.main_model.load_dir_tree(dir_tree_path)
+
+        if self.main_model.dir_tree_data:
+            not_found_images = self.main_model.move_file_dir_tree(Path(base_folder))
+            self.show_not_found_images.emit(not_found_images)
+
+    def export_dir_tree(self, folder_path):
+        self.main_model.make_directory_tree(folder_path)
 
     @staticmethod
     def cleanup_thumbs():

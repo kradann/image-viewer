@@ -12,6 +12,7 @@ from View.Styles import *
 from View.ImageGridView import ImageGridView
 from View.FolderListView import FolderListWidget
 from View.LogWindow import LogWindow
+from View.NotFoundImageWindow import NotFoundImageWindow
 
 
 
@@ -93,6 +94,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.check_for_update_button.setEnabled(False)
         self.add_button("Show Log", self.show_log)
         self.log_window = None
+        self.not_found_images_window = None
 
 
 
@@ -159,6 +161,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.grid_view_model.not_enough_space.connect(self.show_not_enough_space_message)
         self.grid_view_model.show_folder_selection_dialog.connect(self.show_folder_selection_dialog)
         self.grid_view_model.load_finished_signal.connect(self.on_load_finished)
+        self.grid_view_model.show_not_found_images.connect(self.show_not_found_images_info)
 
         # Create log folder if doesn't exists
         self.grid_view_model.create_log_folder()
@@ -193,6 +196,16 @@ class ImageMontageApp(QtWidgets.QWidget):
         load_json_action = QtWidgets.QAction("Load JSON", self)
         load_json_action.triggered.connect(self.on_load_json)
         file_menu.addAction(load_json_action)
+
+        directory_tree = file_menu.addMenu("Directory Tree")
+
+        import_directory_tree = QtWidgets.QAction("Import", self)
+        import_directory_tree.triggered.connect(self.on_import_dir_tree)
+        directory_tree.addAction(import_directory_tree)
+
+        export_directory_tree = QtWidgets.QAction("Export", self)
+        export_directory_tree.triggered.connect(self.on_export_dir_tree)
+        directory_tree.addAction(export_directory_tree)
 
         load_label_json = file_menu.addMenu("Set Sign Types")
 
@@ -305,8 +318,27 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.load_v_value()
 
     def on_load_json(self):
-        json_data = QtWidgets.QFileDialog.getOpenFileName(self, "Select JSON", filter="JSON files (*.json);;All files (*)")
-        self.grid_view.on_load_json(json_data)
+        try:
+            json_data = QtWidgets.QFileDialog.getOpenFileName(self, "Select JSON", filter="JSON files (*.json);;All files (*)")
+            self.grid_view.on_load_json(json_data)
+        except Exception as e:
+            logging.info(f"Error {e}")
+            QtWidgets.QMessageBox.critical("Error while loading json")
+
+    def on_import_dir_tree(self):
+        #try:
+        #TODO: Save automaticly to file
+        base_folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Base Folder")
+        dir_tree_path = QtWidgets.QFileDialog.getOpenFileName(self, "Select Directory Tree JSON", filter="JSON files (*.json);;All files (*)")
+        self.grid_view_model.load_dir_tree(dir_tree_path, base_folder)
+        '''except Exception as e:
+            logging.info(f"Error {e}")
+            QtWidgets.QMessageBox.critical(self,"Error","Error while loading json")'''
+
+    def on_export_dir_tree(self):
+        folder_path = QtWidgets.QFileDialog.getExistingDirectory(self, "Select folder to save directory tree")
+        if folder_path:
+            self.grid_view_model.export_dir_tree(folder_path)
 
     def load_eu_sign_types(self):
         self.grid_view_model.load_eu_sign_types()
@@ -361,6 +393,10 @@ class ImageMontageApp(QtWidgets.QWidget):
         dialog = FolderSelectionDialog(preferred=preferred_label, grid_view_model=self.grid_view_model)
         if dialog.exec_() == QDialog.Accepted and dialog.selected_folder:
             self.grid_view_model.move_selected(dialog.selected_folder)
+
+    def show_not_found_images_info(self, not_found_images):
+        self.not_found_images_window = NotFoundImageWindow(not_found_images)
+        self.not_found_images_window.show()
 
     def closeEvent(self, event):
         self.grid_view_model.cleanup_thumbs()

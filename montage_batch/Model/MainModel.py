@@ -1,5 +1,6 @@
 import copy, shutil, subprocess, sys, json, requests
 import logging
+import pprint
 from datetime import datetime
 from pathlib import Path
 from PyQt5.QtCore import pyqtSignal, QObject
@@ -59,6 +60,9 @@ class MainModel(QObject):
         self.load_labels_from_json(str(Path(__file__).parent.parent / 'resources/EU_sign_types.json'))
 
         self.current_log_file_path = None
+
+        self.dir_tree_data = None
+
 
         self.first_check = True
         self.wrong_folder_names = list()
@@ -144,6 +148,10 @@ class MainModel(QObject):
     def get_log_file_path(self):
         return self.current_log_file_path
 
+    @property
+    def get_dir_tree_data(self):
+        return self.dir_tree_data
+
     def get_base_folder(self):
         return self.base_folder
 
@@ -160,6 +168,7 @@ class MainModel(QObject):
                         label_paths[path.name].append(path)
                     else:
                         wrong_folder_name.append(path.name)
+            pprint.pprint(label_paths)
             return label_paths
         return None
 
@@ -435,6 +444,56 @@ class MainModel(QObject):
             pass
         else:
             self.load_main_folder(self.main_folder)
+
+    def load_dir_tree(self, dir_tree_path):
+        with open(dir_tree_path[0], 'r') as dir_tree:
+            #content = dir_tree.read()
+            #print(repr(content))
+            self.dir_tree_data = json.load(dir_tree)
+
+    def move_file_dir_tree(self, base_folder):
+        try:
+            not_found_images = []
+            if base_folder.exists():
+                if not isinstance(self.dir_tree_data, dict):
+                    raise ValueError("Wrong JSON file format. Should be dict")
+                self.main_folder = base_folder
+                labels_folder = self.find_label_folders()
+                for key, value in self.dir_tree_data.items(): #(image name, where to move (relative path)
+                    image_found = False
+                    for label_folders_list in labels_folder.values(): # (label, folder path to that label)
+                        for label_path in label_folders_list:  # list of folder path
+                            for image in label_path.iterdir(): # folder path
+                                if image.name == key:
+                                    image_found = True
+                                    print(image,'\n',base_folder / value / image.name)
+                                    #shutil.move(image, value)
+                    if not image_found:
+                        not_found_images.append(key)
+
+                return not_found_images
+
+            else:
+                raise ValueError("No Folder Loaded")
+        except Exception as e:
+            logging.info(e)
+
+    def make_directory_tree(self, folder_path):
+        if not Path(folder_path).exists():
+            raise ValueError("Folder not exists")
+
+        if not self.main_folder or self.base_folder:
+            raise ValueError("Load folder to make directory tree")
+
+        text = dict()
+        if self.main_folder:
+            for folder in Path(self.main_folder).rglob('*'):
+                if folder.is_dir():
+                    for image in folder.iterdir():
+                        if str(image).endswith('.png'):
+                            text[image.name] = str(image)
+
+        pprint.pprint(text)
 
 
 
