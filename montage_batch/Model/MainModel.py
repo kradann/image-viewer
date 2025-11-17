@@ -297,7 +297,7 @@ class MainModel(QObject):
 
         if prev_folder_idx >= 0:
             current_prev_label = list(self.subfolders.keys())[prev_folder_idx]
-            while list(self.subfolders.values())[prev_folder_idx] == 0:
+            while list(self.subfolders.values())[prev_folder_idx] != 0: #matter if files are counted but currently, they are not (it was ==)
                 if prev_folder_idx == 0:
                     break
                 prev_folder_idx -= 1
@@ -315,13 +315,14 @@ class MainModel(QObject):
             return
         subfolders = list(self.subfolders.keys())
         next_folder_idx = subfolders.index(str(self.current_label))+1
-
+        print(subfolders)
+        print(next_folder_idx)
         # get label name because subfolder does not contain every label name
         current_next_label = list(self.subfolders.keys())[next_folder_idx-1]
 
         if next_folder_idx <= len(subfolders) - 1:
             current_next_label = list(self.subfolders.keys())[next_folder_idx]
-            while list(self.subfolders.values())[next_folder_idx] == 0:
+            while list(self.subfolders.values())[next_folder_idx] != 0: #matter if files are counted but currently, they are not (it was ==)
                 if next_folder_idx == len(subfolders) - 1:
                     break
                 next_folder_idx += 1
