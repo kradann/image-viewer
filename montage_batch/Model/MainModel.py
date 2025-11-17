@@ -485,16 +485,25 @@ class MainModel(QObject):
         if not self.main_folder or self.base_folder:
             raise ValueError("Load folder to make directory tree")
 
+        folder_path = Path(folder_path)
+        main = Path(self.main_folder)
         text = dict()
         if self.main_folder:
-            for folder in Path(self.main_folder).rglob('*'):
+            for folder in main.rglob('*'):
                 if folder.is_dir():
                     for image in folder.iterdir():
                         if str(image).endswith('.png'):
-                            text[image.name] = str(image)
+                            rel_path = image.relative_to(main)
+                            text[image.name] = str(rel_path)
 
-        pprint.pprint(text)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
+        json_path = folder_path / f"dir_tree_{timestamp}.json"
+
+        with open(json_path, 'w') as f:
+            json.dump(text, f, indent=4)
+
+        self.change_info_label.emit("Directory tree export file created")
 
 
 
