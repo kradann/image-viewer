@@ -63,6 +63,7 @@ class MainModel(QObject):
 
         self.dir_tree_data = None
 
+        self.last_move = dict()
 
         self.first_check = True
         self.wrong_folder_names = list()
@@ -152,6 +153,10 @@ class MainModel(QObject):
     def get_dir_tree_data(self):
         return self.dir_tree_data
 
+    @property
+    def get_last_move(self):
+        return self.last_move
+
     def get_base_folder(self):
         return self.base_folder
 
@@ -168,7 +173,6 @@ class MainModel(QObject):
                         label_paths[path.name].append(path)
                     else:
                         wrong_folder_name.append(path.name)
-            pprint.pprint(label_paths)
             return label_paths
         return None
 
@@ -339,6 +343,7 @@ class MainModel(QObject):
 
     def move_selected(self, selected_folder):
         if self.selected_images:
+            self.last_move = dict()
             for img_path in self.selected_images:
                 self.dropped_selected.discard(img_path)
                 img_path = Path(img_path)
@@ -349,7 +354,7 @@ class MainModel(QObject):
 
                 # check if destination folder contains file that has same name
                 dst_path = check_image_name(img_path, output_folder)
-
+                self.last_move[str(img_path)] = str(dst_path)
                 shutil.move(img_path, str(dst_path))
                 logging.info(f"{img_path} moved to {dst_path}")
 
@@ -374,6 +379,13 @@ class MainModel(QObject):
         self.clear_images.emit()
         self.dropped_selected = {img for img in self.selected_images}
         self.load_selected_images.emit(self.dropped_selected)
+
+
+    def undo_last_move(self):
+        if self.last_move:
+            for key, value in self.last_move.items():
+                shutil.move(value, key)
+            self.change_info_label.emit("Last move undid")
 
     #TODO: check if function works
     #TODO: Dont use messageBox

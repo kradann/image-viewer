@@ -1,4 +1,4 @@
-from pathlib import Path
+from pathlib import Path, PosixPath
 
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal, QObject
@@ -23,6 +23,7 @@ class ImageGridViewModel(QObject):
     show_folder_selection_dialog = pyqtSignal(str)  # notifies main view to show folder selection dialog
     add_image_to_grid_action = pyqtSignal(object, int, int)  # notifies main view to add widget to image_layout
     show_not_found_images = pyqtSignal(list) #notifies main view to show list of not found images name when importing directory tree
+    show_last_move_window = pyqtSignal(dict, PosixPath)
 
     #Signals to grid view
     # notifies grid view to add image to grid (row, column, image path, pixmap of image, is image selected)
@@ -260,6 +261,14 @@ class ImageGridViewModel(QObject):
 
     def export_dir_tree(self, folder_path):
         self.main_model.make_directory_tree(folder_path)
+
+    def get_last_move(self):
+        last_move = self.main_model.last_move
+        main_folder = self.main_model.main_folder
+        self.show_last_move_window.emit(last_move, main_folder)
+
+    def undo_last_move(self):
+        self.main_model.undo_last_move()
 
     @staticmethod
     def cleanup_thumbs():

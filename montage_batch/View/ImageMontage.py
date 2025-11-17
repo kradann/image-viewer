@@ -13,6 +13,7 @@ from View.ImageGridView import ImageGridView
 from View.FolderListView import FolderListWidget
 from View.LogWindow import LogWindow
 from View.NotFoundImageWindow import NotFoundImageWindow
+from View.LastMoveWindow import LastMoveWindow
 
 
 
@@ -95,8 +96,8 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.add_button("Show Log", self.show_log)
         self.log_window = None
         self.not_found_images_window = None
-
-
+        self.last_move_window = None
+        self.add_button("Undo", self.undo)
 
 
         # Arrange right side vertically
@@ -162,6 +163,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.grid_view_model.show_folder_selection_dialog.connect(self.show_folder_selection_dialog)
         self.grid_view_model.load_finished_signal.connect(self.on_load_finished)
         self.grid_view_model.show_not_found_images.connect(self.show_not_found_images_info)
+        self.grid_view_model.show_last_move_window.connect(self.show_last_move_window)
 
         # Create log folder if doesn't exists
         self.grid_view_model.create_log_folder()
@@ -287,6 +289,9 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.log_window = LogWindow(self.grid_view_model.get_log_file_path())
         self.log_window.show()
 
+    def undo(self):
+        self.grid_view_model.get_last_move()
+
     def on_load_folder(self):
         self.change_info_label("Loading Folders...", display_time=0)
         self.layout().setEnabled(False)
@@ -397,6 +402,12 @@ class ImageMontageApp(QtWidgets.QWidget):
     def show_not_found_images_info(self, not_found_images):
         self.not_found_images_window = NotFoundImageWindow(not_found_images)
         self.not_found_images_window.show()
+
+    def show_last_move_window(self, text, main_folder):
+        self.last_move_window = LastMoveWindow(text, main_folder)
+        self.last_move_window.show()
+        if self.last_move_window.exec_() == QDialog.Accepted:
+            self.grid_view_model.undo_last_move()
 
     def closeEvent(self, event):
         self.grid_view_model.cleanup_thumbs()
