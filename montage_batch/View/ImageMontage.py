@@ -4,15 +4,31 @@ from typing import Union
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QFont, QKeySequence, QColor
-from PyQt5.QtWidgets import QShortcut, QMessageBox, QLabel, QDialog
-
+from PyQt5.QtWidgets import QShortcut, QMessageBox, QLabel, QDialog, QAction
 
 from View.FolderSelectionDialog import FolderSelectionDialog
 from View.Styles import *
 from View.ImageGridView import ImageGridView
 from View.FolderListView import FolderListWidget
 
+import subprocess
 
+def get_git_info():
+    try:
+        branch = subprocess.check_output(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+            stderr=subprocess.STDOUT
+        ).decode().strip()
+
+        commit = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"],
+            stderr=subprocess.STDOUT
+        ).decode().strip()
+
+        return branch, commit
+
+    except Exception:
+        return "unknown", "unknown"
 
 
 class ImageMontageApp(QtWidgets.QWidget):
@@ -209,6 +225,21 @@ class ImageMontageApp(QtWidgets.QWidget):
 
         save_status_action = QtWidgets.QAction("Save Status", self)
         status_menu.addAction(save_status_action)
+
+        version_menu = self.menu_bar.addMenu("Version")
+        show_version = QAction("Show version info", self)
+        show_version.triggered.connect(self.show_version_info)
+
+        version_menu.addAction(show_version)
+
+    def show_version_info(self):
+        branch, commit = get_git_info()
+
+        QMessageBox.information(
+            self,
+            "Version info",
+            f"Branch: {branch}\nCommit: {commit}"
+        )
 
     def update_button_state(self, enabled: bool):
         if enabled:
