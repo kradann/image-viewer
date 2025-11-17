@@ -122,7 +122,7 @@ class ImageGridViewModel(QObject):
         self.info_message.emit(text)
 
     def update_folder_list(self):
-        if self.main_model.get_is_json:
+        if self.main_model.get_is_json: #TODO: Rethink
             self.main_model.collect_labels_from_json()
         else:
             self.main_model.collect_subfolders()

@@ -1,16 +1,17 @@
 from pathlib import Path
-
+import pprint
 
 
 def collect_image_paths(source):
     image_paths = []
     print("source", source)
-    if isinstance(source, list):
-        for region in source:
-            region_path = Path(region)
-            for file in region_path.rglob("*"):
-                if file.suffix.lower() in (".png", ".jpg", ".jpeg", ".bmp"):
-                    image_paths.append(file)
+    if isinstance(source, set):
+        for folder in source:
+            print(folder)
+            if folder.is_dir():
+                for file in folder.rglob("*"):
+                    if file.suffix.lower() in (".png", ".jpg", ".jpeg", ".bmp"):
+                        image_paths.append(file)
     return sorted(image_paths)
 
 
@@ -21,7 +22,7 @@ class ImageBatchLoader(object):
             self.image_paths = source
         else:
             self.image_paths = collect_image_paths(source)
-        #pprint.pprint(self.image_paths)
+
         self.current_batch_idx = start_batch_idx
         self.label = None
         self.number_of_batches = len(self.image_paths)

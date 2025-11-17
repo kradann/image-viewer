@@ -50,7 +50,7 @@ class MainModel(QObject):
 
         self.is_input_from_json = False
 
-        self.current_label_list = list()
+        self.current_label_list = set()
         self.load_labels_from_json(str(Path(__file__).parent.parent / 'resources/EU_sign_types.json'))
 
         self.first_check = True
@@ -140,15 +140,21 @@ class MainModel(QObject):
         return idx // self.num_of_col, idx % self.num_of_col
 
     def find_label_folders(self):
-        label_paths = {label : [] for label in self.current_label_list}
-        wrong_folder_name = []
+        #label_paths = {label : [] for label in self.current_label_list}
+
+        label_paths = {label: set() for label in self.current_label_list}
+
+        wrong_folder_names = []
+        base = Path(self.main_folder)
         if self.main_folder:
-            for path in Path(self.main_folder).rglob('*'):
+            for path in base.rglob('*'):
                 if path.is_dir():
-                    if path.name in self.current_label_list:
-                        label_paths[path.name].append(path)
+                    folder_name = path.name
+                    if folder_name in self.current_label_list:
+                        label_paths[folder_name].add(path)
                     else:
-                        wrong_folder_name.append(path.name)
+                        wrong_folder_names.append(folder_name)
+
             return label_paths
         return None
 
@@ -195,31 +201,31 @@ class MainModel(QObject):
     def collect_subfolders(self):
         self.labels = self.find_label_folders()
 
-        self.labels = {k: self.labels[k] for k in sorted(self.labels.keys())}
-
+        self.labels = {k: self.labels[k] for k in sorted(self.labels.keys()) if self.labels[k]}
+        print(self.labels)
         for label, paths in self.labels.items():
-            if paths:
+            '''if paths:
                 count = 0
                 #removed count for speed
-                '''
+                
                 for path in paths:
                     count += sum(1 for file in path.iterdir() if file.suffix.lower() == '.png')'''
 
-                self.subfolders[label] = count
+            self.subfolders[label] = 0
         self.subfolders = {k: self.subfolders[k] for k in sorted(self.subfolders.keys())}
 
     def collect_labels_from_json(self):
         self.is_input_from_json = True
         for path, label in self.json_data.items():
-            if (self.base_folder / path).exists():
+            image_path = self.base_folder / path
+            if image_path.exists():
                 if self.current_label is None:
                     self.current_label = label
                 if label not in self.subfolders.keys():
                     self.subfolders[label] = 0
                 self.subfolders[label] += 1
+                self.labels[label].add(image_path)
 
-                if (self.base_folder / path) not in self.labels[label]:
-                    self.labels[label].append(self.base_folder / path)
 
     def load_json(self, json_data):
             with open(json_data[0], 'r', encoding='utf-8') as json_file:
@@ -228,7 +234,7 @@ class MainModel(QObject):
                 raise ValueError("Invalid json format")
             self.set_base_folder_signal.emit()
 
-            self.labels = {label : [] for label in self.current_label_list}
+            self.labels = {label : set() for label in self.current_label_list}
 
             if self.base_folder:
                 self.collect_labels_from_json()
@@ -315,23 +321,31 @@ class MainModel(QObject):
         if self.loader:
             self.loader.next_batch()
 
+
+    #TODO: update folder list only if new folder created, can do better
     def move_selected(self, selected_folder):
         if self.selected_images:
+            new_folder_created = False
             for img_path in self.selected_images:
                 self.dropped_selected.discard(img_path)
                 img_path = Path(img_path)
 
                 # image path main_folder/data_type/region/label/image.jpg
                 output_folder = img_path.parent.parent / selected_folder # cut path to region and add new label
+
+                folder_existed = output_folder.exists()
                 output_folder.mkdir(parents=True, exist_ok=True)
 
+                if not folder_existed:
+                    new_folder_created = True
                 # check if destination folder contains file that has same name
                 dst_path = check_image_name(img_path, output_folder)
 
                 shutil.move(img_path, str(dst_path))
 
             self.change_info_label.emit(f"Selected images move successfully to {selected_folder}")
-            self.update_folder_list.emit()
+            if new_folder_created:
+                self.update_folder_list.emit()
 
         else:
             self.change_info_label.emit("No selected image found!")
