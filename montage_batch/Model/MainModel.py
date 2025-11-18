@@ -1,5 +1,7 @@
 import copy, shutil, subprocess, sys, json, requests
+import logging
 import pprint
+from datetime import datetime
 from pathlib import Path
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QMessageBox
@@ -52,6 +54,12 @@ class MainModel(QObject):
 
         self.current_label_list = set()
         self.load_labels_from_json(str(Path(__file__).parent.parent / 'resources/EU_sign_types.json'))
+
+        self.current_log_file_path = None
+
+        self.dir_tree_data = None
+
+        self.last_move = dict()
 
         self.first_check = True
         self.wrong_folder_names = list()
@@ -133,6 +141,18 @@ class MainModel(QObject):
     def get_batch_size(self):
         return self.batch_size
 
+    @property
+    def get_log_file_path(self):
+        return self.current_log_file_path
+
+    @property
+    def get_dir_tree_data(self):
+        return self.dir_tree_data
+
+    @property
+    def get_last_move(self):
+        return self.last_move
+
     def get_base_folder(self):
         return self.base_folder
 
@@ -163,7 +183,7 @@ class MainModel(QObject):
             return None, []
         self.is_input_from_json = False
         self.main_folder = Path(path)
-
+        logging.info(f"{path} loadded as main folder")
         self.collect_subfolders()
 
         #self.collect_subfolders()
@@ -225,19 +245,21 @@ class MainModel(QObject):
 
 
     def load_json(self, json_data):
-            with open(json_data[0], 'r', encoding='utf-8') as json_file:
-                self.json_data = json.load(json_file)
-            if not isinstance(self.json_data, dict):
-                raise ValueError("Invalid json format")
-            self.set_base_folder_signal.emit()
 
-            self.labels = {label : set() for label in self.current_label_list}
+        with open(json_data[0], 'r', encoding='utf-8') as json_file:
+            self.json_data = json.load(json_file)
+            logging.info(f"{json_data[0]} loaded")
+        if not isinstance(self.json_data, dict):
+            raise ValueError("Invalid json format")
+        self.set_base_folder_signal.emit()
 
-            if self.base_folder:
-                self.collect_labels_from_json()
-                if self.current_label:
-                    self.current_label_folder_paths = self.labels[self.current_label]
-                    self.load_folder.emit(self.subfolders, 0, self.is_input_from_json)
+        self.labels = {label : set() for label in self.current_label_list}
+
+        if self.base_folder:
+            self.collect_labels_from_json()
+            if self.current_label:
+                self.current_label_folder_paths = self.labels[self.current_label]
+                self.load_folder.emit(self.subfolders, 0, self.is_input_from_json)
 
 
     def clear_selected_images(self):
@@ -318,11 +340,10 @@ class MainModel(QObject):
         if self.loader:
             self.loader.next_batch()
 
-
-    #TODO: update folder list only if new folder created, can do better
     def move_selected(self, selected_folder):
         if self.selected_images:
             new_folder_created = False
+            self.last_move = dict()
             for img_path in self.selected_images:
                 self.dropped_selected.discard(img_path)
                 img_path = Path(img_path)
@@ -337,8 +358,9 @@ class MainModel(QObject):
                     new_folder_created = True
                 # check if destination folder contains file that has same name
                 dst_path = check_image_name(img_path, output_folder)
-
+                self.last_move[str(img_path)] = str(dst_path)
                 shutil.move(img_path, str(dst_path))
+                logging.info(f"{img_path} moved to {dst_path}")
 
             self.change_info_label.emit(f"Selected images move successfully to {selected_folder}")
             if new_folder_created:
@@ -363,6 +385,13 @@ class MainModel(QObject):
         self.dropped_selected = {img for img in self.selected_images}
         self.load_selected_images.emit(self.dropped_selected)
 
+
+    def undo_last_move(self):
+        if self.last_move:
+            for key, value in self.last_move.items():
+                shutil.move(value, key)
+            self.change_info_label.emit("Last move undid")
+
     #TODO: check if function works
     #TODO: Dont use messageBox
     def check_for_update(self):
@@ -370,7 +399,7 @@ class MainModel(QObject):
             response = requests.get(GITHUB_RELEASE_LINK, timeout=10)
 
             if response.status_code == 404:
-                QMessageBox.information(self, "Update", "No releases found")
+                QMessageBox.information(self, 'Update', "No releases found")
                 return
 
             data = response.json()
@@ -403,6 +432,26 @@ class MainModel(QObject):
         except Exception as e:
             QMessageBox.information(self, "Update", f"An error occurred: {e}")
 
+    @staticmethod
+    def create_log_folder():
+        log_folder_path = Path(__file__).parent.parent / '.logs'
+        log_folder_path.mkdir(parents=True, exist_ok=True)
+
+
+    def create_log_file(self):
+        log_dir = Path(__file__).resolve().parent.parent / '.logs'
+        log_filename = log_dir / f"app_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
+        self.current_log_file_path = str(log_filename)
+        logging.basicConfig(
+            filename=log_filename,
+            level=logging.INFO,
+            format="%(asctime)s - %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S"
+        )
+
+        logging.info("Annotation tool started!")
+
+
     def load_labels_from_json(self, json_path):
         with open(json_path, 'r') as label_json:
             labels_from_json = json.load(label_json)
@@ -413,6 +462,65 @@ class MainModel(QObject):
         else:
             self.load_main_folder(self.main_folder)
 
+    def load_dir_tree(self, dir_tree_path):
+        with open(dir_tree_path[0], 'r') as dir_tree:
+            #content = dir_tree.read()
+            #print(repr(content))
+            self.dir_tree_data = json.load(dir_tree)
+
+    def move_file_dir_tree(self, base_folder):
+        try:
+            not_found_images = []
+            if base_folder.exists():
+                if not isinstance(self.dir_tree_data, dict):
+                    raise ValueError("Wrong JSON file format. Should be dict")
+                self.main_folder = base_folder
+                labels_folder = self.find_label_folders()
+                for key, value in self.dir_tree_data.items(): #(image name, where to move (relative path)
+                    image_found = False
+                    for label_folders_list in labels_folder.values(): # (label, folder path to that label)
+                        for label_path in label_folders_list:  # list of folder path
+                            for image in label_path.iterdir(): # folder path
+                                if image.name == key:
+                                    image_found = True
+                                    print(image,'\n',base_folder / value / image.name)
+                                    #shutil.move(image, value)
+                    if not image_found:
+                        not_found_images.append(key)
+
+                return not_found_images
+
+            else:
+                raise ValueError("No Folder Loaded")
+        except Exception as e:
+            logging.info(e)
+
+    def make_directory_tree(self, folder_path):
+        if not Path(folder_path).exists():
+            raise ValueError("Folder not exists")
+
+        if not self.main_folder or self.base_folder:
+            raise ValueError("Load folder to make directory tree")
+
+        folder_path = Path(folder_path)
+        main = Path(self.main_folder)
+        text = dict()
+        if self.main_folder:
+            for folder in main.rglob('*'):
+                if folder.is_dir():
+                    for image in folder.iterdir():
+                        if str(image).endswith('.png'):
+                            rel_path = image.relative_to(main)
+                            text[image.name] = str(rel_path)
+
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+        json_path = folder_path / f"dir_tree_{timestamp}.json"
+
+        with open(json_path, 'w') as f:
+            json.dump(text, f, indent=4)
+
+        self.change_info_label.emit("Directory tree export file created")
 
 
 

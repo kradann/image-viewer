@@ -1,4 +1,4 @@
-import time
+import logging
 from typing import Union
 
 from PyQt5 import QtWidgets, QtCore
@@ -10,6 +10,9 @@ from View.FolderSelectionDialog import FolderSelectionDialog
 from View.Styles import *
 from View.ImageGridView import ImageGridView
 from View.FolderListView import FolderListWidget
+from View.LogWindow import LogWindow
+from View.NotFoundImageWindow import NotFoundImageWindow
+from View.LastMoveWindow import LastMoveWindow
 
 import subprocess
 
@@ -106,7 +109,11 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.add_button("Reload scrolling", self.load_v_value)
         self.check_for_update_button ,_ = self.add_button("Check for Update", self.check_for_update)
         self.check_for_update_button.setEnabled(False)
-
+        self.add_button("Show Log", self.show_log)
+        self.log_window = None
+        self.not_found_images_window = None
+        self.last_move_window = None
+        self.add_button("Undo", self.undo)
 
 
         # Arrange right side vertically
@@ -150,9 +157,6 @@ class ImageMontageApp(QtWidgets.QWidget):
         # === Menu Bar ===
         self.menu_bar = QtWidgets.QMenuBar(self)
         self.outer_layout.setMenuBar(self.menu_bar)
-        self.eu_sign_types_widget = None
-        self.us_sign_types_widget = None
-        self.add_new_labels_widget = None
         self.setup_menubar()
 
         # === Styling ===
@@ -173,6 +177,13 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.grid_view_model.show_wrong_folder_names_window.connect(self.show_wrong_folder_names)
         self.grid_view_model.not_enough_space.connect(self.show_not_enough_space_message)
         self.grid_view_model.show_folder_selection_dialog.connect(self.show_folder_selection_dialog)
+        self.grid_view_model.load_finished_signal.connect(self.on_load_finished)
+        self.grid_view_model.show_not_found_images.connect(self.show_not_found_images_info)
+        self.grid_view_model.show_last_move_window.connect(self.show_last_move_window)
+
+        # Create log folder if doesn't exists
+        self.grid_view_model.create_log_folder()
+        self.grid_view_model.create_log_file()
 
     def add_button(self, name: str, func, shortcut: Union[str, tuple] = None):
         button = QtWidgets.QPushButton(name)
@@ -203,6 +214,16 @@ class ImageMontageApp(QtWidgets.QWidget):
         load_json_action = QtWidgets.QAction("Load JSON", self)
         load_json_action.triggered.connect(self.on_load_json)
         file_menu.addAction(load_json_action)
+
+        directory_tree = file_menu.addMenu("Directory Tree")
+
+        import_directory_tree = QtWidgets.QAction("Import", self)
+        import_directory_tree.triggered.connect(self.on_import_dir_tree)
+        directory_tree.addAction(import_directory_tree)
+
+        export_directory_tree = QtWidgets.QAction("Export", self)
+        export_directory_tree.triggered.connect(self.on_export_dir_tree)
+        directory_tree.addAction(export_directory_tree)
 
         load_label_json = file_menu.addMenu("Set Sign Types")
 
@@ -279,17 +300,28 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.grid_view_model.on_unselect_select_all()
 
     def show_only_selected(self):
+        self.vertical_value = self.scroll_area.verticalScrollBar().value()
         self.grid_view_model.on_show_only_selected()
 
     def move_selected(self):
-        self.vertical_value = self.scroll_area.verticalScrollBar().value()
+        if self.vertical_value == 0:
+            self.vertical_value = self.scroll_area.verticalScrollBar().value()
         self.grid_view_model.on_move_selected()
 
     def load_v_value(self):
         self.scroll_area.verticalScrollBar().setValue(self.vertical_value)
+        self.vertical_value = 0
 
     def check_for_update(self):
         self.grid_view_model.on_check_for_update()
+
+    def show_log(self):
+        print("asdasdsa")
+        self.log_window = LogWindow(self.grid_view_model.get_log_file_path())
+        self.log_window.show()
+
+    def undo(self):
+        self.grid_view_model.get_last_move()
 
     def on_load_folder(self):
         self.change_info_label("Loading Folders...", display_time=0)
@@ -318,9 +350,31 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.change_info_label("Folder load failed")
         '''
 
+    def on_load_finished(self):
+        self.load_v_value()
+
     def on_load_json(self):
-        json_data = QtWidgets.QFileDialog.getOpenFileName(self, "Select JSON", filter="JSON files (*.json);;All files (*)")
-        self.grid_view.on_load_json(json_data)
+        try:
+            json_data = QtWidgets.QFileDialog.getOpenFileName(self, "Select JSON", filter="JSON files (*.json);;All files (*)")
+            self.grid_view.on_load_json(json_data)
+        except Exception as e:
+            logging.info(f"Error {e}")
+            QtWidgets.QMessageBox.critical("Error while loading json")
+
+    def on_import_dir_tree(self):
+        #try:
+        #TODO: Save automaticly to file
+        base_folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Base Folder")
+        dir_tree_path = QtWidgets.QFileDialog.getOpenFileName(self, "Select Directory Tree JSON", filter="JSON files (*.json);;All files (*)")
+        self.grid_view_model.load_dir_tree(dir_tree_path, base_folder)
+        '''except Exception as e:
+            logging.info(f"Error {e}")
+            QtWidgets.QMessageBox.critical(self,"Error","Error while loading json")'''
+
+    def on_export_dir_tree(self):
+        folder_path = QtWidgets.QFileDialog.getExistingDirectory(self, "Select folder to save directory tree")
+        if folder_path:
+            self.grid_view_model.export_dir_tree(folder_path)
 
     def load_eu_sign_types(self):
         self.grid_view_model.load_eu_sign_types()
@@ -376,7 +430,18 @@ class ImageMontageApp(QtWidgets.QWidget):
         if dialog.exec_() == QDialog.Accepted and dialog.selected_folder:
             self.grid_view_model.move_selected(dialog.selected_folder)
 
+    def show_not_found_images_info(self, not_found_images):
+        self.not_found_images_window = NotFoundImageWindow(not_found_images)
+        self.not_found_images_window.show()
+
+    def show_last_move_window(self, text, main_folder):
+        self.last_move_window = LastMoveWindow(text, main_folder)
+        self.last_move_window.show()
+        if self.last_move_window.exec_() == QDialog.Accepted:
+            self.grid_view_model.undo_last_move()
+
     def closeEvent(self, event):
         self.grid_view_model.cleanup_thumbs()
+        logging.info("Annotation tool closed")
         event.accept()
 

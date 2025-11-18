@@ -1,9 +1,8 @@
-from pathlib import Path
+from pathlib import Path, PosixPath
 
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtWidgets import QDialog
-
+from PyQt5.QtWidgets import QDialog, QApplication
 
 from View.FolderSelectionDialog import FolderSelectionDialog
 from Model.BatchLoaderModel import ImageBatchLoader
@@ -23,6 +22,8 @@ class ImageGridViewModel(QObject):
     not_enough_space = pyqtSignal(int)  # notifies main view to show not enough space warning
     show_folder_selection_dialog = pyqtSignal(str)  # notifies main view to show folder selection dialog
     add_image_to_grid_action = pyqtSignal(object, int, int)  # notifies main view to add widget to image_layout
+    show_not_found_images = pyqtSignal(list) #notifies main view to show list of not found images name when importing directory tree
+    show_last_move_window = pyqtSignal(dict, PosixPath)
 
     #Signals to grid view
     # notifies grid view to add image to grid (row, column, image path, pixmap of image, is image selected)
@@ -39,6 +40,8 @@ class ImageGridViewModel(QObject):
 
     # notifies main view to display the wrong folder names dialog (currently not using this)
     show_wrong_folder_names_window = pyqtSignal(list)
+
+    load_finished_signal = pyqtSignal()
 
 
     def __init__(self, main_model):
@@ -61,6 +64,7 @@ class ImageGridViewModel(QObject):
         self.main_model.change_info_label.connect(self.update_info_label)
         self.main_model.show_wrong_folder_names.connect(self.show_wrong_folder_names)
         self.main_model.set_base_folder_signal.connect(self.show_dialog_for_base_folder)
+
 
     def spinbox_value_changed(self, value, scroll_area_width, thumb_width):
         if (scroll_area_width - (value+2)*value) // thumb_width >= value: # space between thumbs
@@ -92,6 +96,7 @@ class ImageGridViewModel(QObject):
         batch = self.main_model.get_current_batch
         self.thread = ImageLoaderThread(batch)
         self.thread.image_loaded.connect(lambda batch_data: self._on_image_loaded(batch_data, generation))
+        self.thread.load_finished.connect(lambda : self.on_load_finished(generation))
 
         self.thread.start()
 
@@ -109,6 +114,13 @@ class ImageGridViewModel(QObject):
             row, col = divmod(idx, self.main_model.get_num_of_columns)  # or self.model.num_of_col
             is_selected = self.main_model.is_selected(path)  # ask model if selected
             self.image_ready.emit(row, col, path, pixmap, is_selected)
+
+    def on_load_finished(self, generation):
+        if generation == self._load_generation:
+            QtCore.QTimer.singleShot(0, self.load_finished_signal)
+
+    def load_finished(self):
+        self.load_finished_signal.emit()
 
     def load_json(self, json_data):
         self.main_model.load_json(json_data)
@@ -230,6 +242,33 @@ class ImageGridViewModel(QObject):
 
     def load_labels_from_json(self, path):
         self.main_model.load_labels_from_json(path)
+
+    def create_log_folder(self):
+        self.main_model.create_log_folder()
+
+    def create_log_file(self):
+        self.main_model.create_log_file()
+
+    def get_log_file_path(self):
+        return self.main_model.get_log_file_path
+
+    def load_dir_tree(self, dir_tree_path, base_folder):
+        self.main_model.load_dir_tree(dir_tree_path)
+
+        if self.main_model.dir_tree_data:
+            not_found_images = self.main_model.move_file_dir_tree(Path(base_folder))
+            self.show_not_found_images.emit(not_found_images)
+
+    def export_dir_tree(self, folder_path):
+        self.main_model.make_directory_tree(folder_path)
+
+    def get_last_move(self):
+        last_move = self.main_model.last_move
+        main_folder = self.main_model.main_folder
+        self.show_last_move_window.emit(last_move, main_folder)
+
+    def undo_last_move(self):
+        self.main_model.undo_last_move()
 
     @staticmethod
     def cleanup_thumbs():
