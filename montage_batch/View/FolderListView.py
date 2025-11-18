@@ -94,7 +94,7 @@ class FolderListWidget(QtWidgets.QListWidget):
     def load_list(self, subfolders):
         self.clear()
         for folder in subfolders:
-            display_text = f"{folder:<45} "  # left-align name, right-align number
+            display_text = f"{folder:<45} {subfolders[folder]:>6}"  # left-align name, right-align number
             self.addItem(display_text)
 
         if hasattr(self, "current_item_name") and self.current_item_name:

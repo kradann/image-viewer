@@ -140,7 +140,6 @@ class MainModel(QObject):
         return idx // self.num_of_col, idx % self.num_of_col
 
     def find_label_folders(self):
-        #label_paths = {label : [] for label in self.current_label_list}
 
         label_paths = {label: set() for label in self.current_label_list}
 
@@ -200,18 +199,16 @@ class MainModel(QObject):
 
     def collect_subfolders(self):
         self.labels = self.find_label_folders()
-
+        from tqdm import tqdm
         self.labels = {k: self.labels[k] for k in sorted(self.labels.keys()) if self.labels[k]}
         print(self.labels)
         for label, paths in self.labels.items():
-            '''if paths:
+            if paths:
                 count = 0
-                #removed count for speed
-                
-                for path in paths:
-                    count += sum(1 for file in path.iterdir() if file.suffix.lower() == '.png')'''
+                for path in tqdm(paths):
+                    count += sum(1 for file in path.iterdir() if file.suffix.lower() == '.png')
 
-            self.subfolders[label] = 0
+                self.subfolders[label] = count
         self.subfolders = {k: self.subfolders[k] for k in sorted(self.subfolders.keys())}
 
     def collect_labels_from_json(self):
