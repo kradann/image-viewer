@@ -1,5 +1,5 @@
 from pathlib import Path
-import pprint
+from tqdm import tqdm
 
 
 def collect_image_paths(source):

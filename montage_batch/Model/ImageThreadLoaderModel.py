@@ -3,13 +3,13 @@ import os
 from pathlib import Path
 from PIL import Image
 from PyQt5.QtCore import QThread, pyqtSignal
-
+from tqdm import tqdm
 
 
 
 
 class ImageLoaderThread(QThread):
-    image_loaded = pyqtSignal(list)
+    image_loaded = pyqtSignal(int, bytes, str)
     load_finished = pyqtSignal()
     @staticmethod
     def cleanup_thumbs():
@@ -32,12 +32,13 @@ class ImageLoaderThread(QThread):
         return cache_path / f"{hash_name}.jpg"
 
     @staticmethod
-    def generate_thumbnail(image_path: str, thumb_path: str, size=(300, 300)):
+    def generate_thumbnail(image_path: str, thumb_path: str, size=(500, 500)):
         try:
             with Image.open(image_path) as img:
                 img = img.convert("RGB")
-                img.thumbnail(size, Image.LANCZOS)
-                img.save(thumb_path, "JPEG")
+                # Use faster resampling
+                img.thumbnail(size, Image.Resampling.BILINEAR)  # Faster than LANCZOS
+                img.save(thumb_path, "JPEG", optimize=False)  # Faster save
         except Exception as e:
             print(f"Thumbnail error for {image_path}: {e}")
 
@@ -51,6 +52,31 @@ class ImageLoaderThread(QThread):
     def stop(self):
         self._is_running = False
 
+    def run(self):
+        for idx, path in enumerate(self.paths):
+            if not self._is_running:
+                break
+
+            thumb_path = str(self.get_thumb_path(path, cache_dir=self.cache_dir))
+            if not os.path.exists(thumb_path):
+                self.generate_thumbnail(path, thumb_path)
+
+            try:
+                with open(thumb_path, 'rb') as thumb:
+                    data = thumb.read()
+
+                self.image_loaded.emit(idx, data, str(path))
+
+                # Yield to prevent blocking
+                if idx % 10 == 0:
+                    QThread.msleep(1)
+
+            except Exception as e:
+                print(f"Error loading image {path}: {e}")
+
+        self.load_finished.emit()
+
+    '''
     def run(self):
         batch_data = []
         for idx, path in enumerate(self.paths):
@@ -67,10 +93,10 @@ class ImageLoaderThread(QThread):
 
                 batch_data.append((idx, data, str(path)))
 
-                if len(batch_data) >= 50 and self._is_running:
+                if len(batch_data) >= 5 and self._is_running:
                     self.image_loaded.emit(batch_data)
                     batch_data = []
-                    QThread.yieldCurrentThread()
+
 
             except Exception as e:
                 print(f"Thumb path: {thumb_path}, Exists? {Path(thumb_path).exists()}")
@@ -79,4 +105,4 @@ class ImageLoaderThread(QThread):
         if batch_data:
             self.image_loaded.emit(batch_data)
 
-        self.load_finished.emit()
+        self.load_finished.emit()'''

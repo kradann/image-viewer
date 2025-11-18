@@ -280,7 +280,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.change_info_label("Previous Folder Loaded")
             self.update_batch_info()
         except Exception as e:
-            logging.info(f"Error {e}")
+            logging.error(f"Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Folder Load Error",
@@ -294,7 +294,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.change_info_label("Next Folder Loaded")
             self.update_batch_info()
         except Exception as e:
-            logging.info(f"Error {e}")
+            logging.error(f"Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Folder Load Error",
@@ -308,7 +308,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.change_info_label("Previous Batch Loaded")
             self.update_batch_info()
         except Exception as e:
-            logging.info(f"Previous Batch Error {e}")
+            logging.error(f"Previous Batch Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Previous Batch Error",
@@ -322,7 +322,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.change_info_label("Next Batch Loaded")
             self.update_batch_info()
         except Exception as e:
-            logging.info(f"Next Batch Error {e}")
+            logging.error(f"Next Batch Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Next Batch Error",
@@ -335,7 +335,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.grid_view.show_batch()
             self.change_info_label("Current Batch Loaded")
         except Exception as e:
-            logging.info(f"Show Batch Error {e}")
+            logging.error(f"Show Batch Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Show Batch Error",
@@ -346,7 +346,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         try:
             self.grid_view_model.on_unselect_select_all()
         except Exception as e:
-            logging.info(f"Image Selecting Error {e}")
+            logging.error(f"Image Selecting Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Image Selecting Error",
@@ -358,7 +358,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.vertical_value = self.scroll_area.verticalScrollBar().value()
             self.grid_view_model.on_show_only_selected()
         except Exception as e:
-            logging.info(f"Show Only Selected Error {e}")
+            logging.error(f"Show Only Selected Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Show Only Selected Error",
@@ -371,7 +371,7 @@ class ImageMontageApp(QtWidgets.QWidget):
                 self.vertical_value = self.scroll_area.verticalScrollBar().value()
             self.grid_view_model.on_move_selected()
         except Exception as e:
-            logging.info(f"Image moving Error {e}")
+            logging.error(f"Image moving Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Image moving Error",
@@ -390,7 +390,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.log_window = LogWindow(self.grid_view_model.get_log_file_path())
             self.log_window.show()
         except Exception as e:
-            logging.info(f"Log Window Error {e}")
+            logging.error(f"Log Window Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Log Window Error",
@@ -401,7 +401,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         try:
             self.grid_view_model.get_last_move()
         except Exception as e:
-            logging.info(f"Undo Error {e}")
+            logging.error(f"Undo Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Undo Error",
@@ -418,7 +418,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.change_info_label("Folder Loaded")
             self.update_batch_info()
         except Exception as e:
-            logging.info(f"Folder Load Error {e}")
+            logging.error(f"Folder Load Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Folder Load Error",
@@ -436,7 +436,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             json_data = QtWidgets.QFileDialog.getOpenFileName(self, "Select JSON", filter="JSON files (*.json);;All files (*)")
             self.grid_view.on_load_json(json_data)
         except Exception as e:
-            logging.info(f"Loading JSON Error {e}")
+            logging.error(f"Loading JSON Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Loading JSON Error",
@@ -449,7 +449,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             dir_tree_path = QtWidgets.QFileDialog.getOpenFileName(self, "Select Directory Tree JSON", filter="JSON files (*.json);;All files (*)")
             self.grid_view_model.load_dir_tree(dir_tree_path, base_folder)
         except Exception as e:
-            logging.info(f"Import Directory Tree Error {e}")
+            logging.error(f"Import Directory Tree Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Import Directory Tree Error",
@@ -462,7 +462,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             if folder_path:
                 self.grid_view_model.export_dir_tree(folder_path)
         except Exception as e:
-            logging.info(f"Export Directory Tree Error {e}")
+            logging.error(f"Export Directory Tree Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Export Directory Tree Error",
@@ -476,7 +476,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.move_selected_button.setText("Move Selected Images\n (EU)")
             self.change_info_label("Labels changed to EU traffic signs.")
         except Exception as e:
-            logging.info(f"Load EU Sign Types Error {e}")
+            logging.error(f"Load EU Sign Types Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Load EU Sign Types Error",
@@ -490,7 +490,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.move_selected_button.setText("Move Selected Images\n (US)")
             self.change_info_label("Labels changed to US traffic signs.")
         except Exception as e:
-            logging.info(f"Load US Sign Types Error {e}")
+            logging.error(f"Load US Sign Types Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Load US Sign Types Error",
@@ -505,7 +505,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.move_selected_button.setText("Move Selected Images\n (Custom)")
             self.change_info_label("New labels added and set")
         except Exception as e:
-            logging.info(f"Load Custom Types Error {e}")
+            logging.error(f"Load Custom Types Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Load Custom Types Error",
@@ -550,7 +550,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             if dialog.exec_() == QDialog.Accepted and dialog.selected_folder:
                 self.grid_view_model.move_selected(dialog.selected_folder)
         except Exception as e:
-            logging.info(f"Show Folder Selection Error {e}")
+            logging.error(f"Show Folder Selection Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Show Folder Selection Error",
@@ -562,7 +562,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             self.not_found_images_window = NotFoundImageWindow(not_found_images)
             self.not_found_images_window.show()
         except Exception as e:
-            logging.info(f"Show Not Found Images Error {e}")
+            logging.error(f"Show Not Found Images Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Show Not Found Images Error",
@@ -576,7 +576,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             if self.last_move_window.exec_() == QDialog.Accepted:
                 self.grid_view_model.undo_last_move()
         except Exception as e:
-            logging.info(f"Show Last Move Error {e}")
+            logging.error(f"Show Last Move Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Show Last Move Error",
@@ -589,7 +589,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             logging.info("Annotation tool closed")
             event.accept()
         except Exception as e:
-            logging.info(f"Closing Error {e}")
+            logging.error(f"Closing Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self,
                 "Closing Error",

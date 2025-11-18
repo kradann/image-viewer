@@ -87,42 +87,56 @@ class ImageGridView(QtWidgets.QWidget):
                 return label
         return None
 
-
     def add_image_to_layout(self, row, col, path, pixmap, is_selected):
+
         container = QtWidgets.QWidget()
+        container.setMaximumHeight(self.thumbnail_size[1] + 40)
 
         vbox = QtWidgets.QVBoxLayout(container)
-        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setContentsMargins(2, 2, 2, 2)
         vbox.setSpacing(2)
-        vbox.setAlignment(QtCore.Qt.AlignTop)
 
-        path_label = QtWidgets.QLabel(str(Path(path).parent.name.replace('_','_\u200b'))) #Added white space to be able to cut it into 2 lines
+        # Simplified path label
+        path_label = QtWidgets.QLabel(str(Path(path).parent.name.replace('_', '_\u200b')))
         path_label.setAlignment(QtCore.Qt.AlignCenter)
         path_label.setWordWrap(True)
         path_label.setFixedWidth(self.thumbnail_size[0])
-        path_label.setFixedHeight(30)
         path_label.setMaximumHeight(30)
         path_label.setStyleSheet(GRID_PATH_STYLE)
 
-        label = ClickableLabel(img_path=Path(path), vm=self.clickable_viewmodel, main_model=self.main_model, grid_view_model=self.grid_view_model)
+        # Create label
+        label = ClickableLabel(
+            img_path=Path(path),
+            vm=self.clickable_viewmodel,
+            main_model=self.main_model,
+            grid_view_model=self.grid_view_model
+        )
         label.cutRequested.connect(self.clickable_viewmodel.cut_image)
         label.setFixedSize(*self.thumbnail_size)
+
+        # Use FastTransformation for speed
         label.setPixmap(
-            pixmap.scaled(*self.thumbnail_size, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
+            pixmap.scaled(
+                *self.thumbnail_size,
+                QtCore.Qt.KeepAspectRatio,
+                QtCore.Qt.FastTransformation  # FAST instead of SMOOTH
+            )
+        )
+
         label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         label.setScaledContents(False)
-        label.clicked.connect(lambda: self.vm.toggle_selection(path.img_path))
 
         container.image_label = label
 
-
+        # Defer border update
         if is_selected:
             label.selected = True
-            label.add_red_boarder()
+            QtCore.QTimer.singleShot(0, label.add_red_boarder)
 
         vbox.addWidget(path_label)
         vbox.addWidget(label)
 
+        # Add to grid
         self.grid_view_model.add_image_to_grid(container, row, col)
 
     def on_load_folder(self, selected_folder_path):

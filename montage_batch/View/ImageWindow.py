@@ -8,7 +8,8 @@ class ImageWindow(QDialog):
         super().__init__()
 
         self.setWindowTitle("Image Window")
-
+        self.setMinimumWidth(400)
+        self.setMinimumHeight(400)
         self.image_path = str(image_path)
         self.pixmap = QPixmap(self.image_path)
 
@@ -21,7 +22,6 @@ class ImageWindow(QDialog):
 
         self.path_label = QLabel(self.image_path)
         self.path_label.setWordWrap(True)
-        self.path_label.setMaximumWidth(int(self.pixmap.width()*1.5))
         self.path_label.setAlignment(QtCore.Qt.AlignCenter)
 
         layout = QVBoxLayout(self)

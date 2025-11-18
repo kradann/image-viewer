@@ -4,6 +4,7 @@ from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QDialog, QApplication
 
+
 from View.FolderSelectionDialog import FolderSelectionDialog
 from Model.BatchLoaderModel import ImageBatchLoader
 from Model.ImageThreadLoaderModel import ImageLoaderThread
@@ -52,6 +53,10 @@ class ImageGridViewModel(QObject):
         self.isAllSelected = False
         self._load_generation = 0
 
+        self.pending_widgets = []
+        self.process_timer = QtCore.QTimer()
+        self.process_timer.timeout.connect(self.process_pending_widgets)
+
         #Timer for checking button state frequently
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self._check_button_state)
@@ -94,17 +99,40 @@ class ImageGridViewModel(QObject):
 
         batch = self.main_model.get_current_batch
         self.thread = ImageLoaderThread(batch)
-        self.thread.image_loaded.connect(lambda batch_data: self._on_image_loaded(batch_data, generation))
+        self.thread.image_loaded.connect(lambda idx, data, path: self._on_single_image_loaded(idx,data, path, generation))
         self.thread.load_finished.connect(lambda : self.on_load_finished(generation))
 
         self.thread.start()
 
-    def _on_image_loaded(self, batch_data, generation):
+    def _on_single_image_loaded(self, idx, data, path, generation):
         if generation != self._load_generation:
             return
+        pixmap = QtGui.QPixmap()
+        pixmap.loadFromData(data)
+        row, col = divmod(idx, self.main_model.get_num_of_columns)  # or self.model.num_of_col
+        is_selected = self.main_model.is_selected(path)  # ask model if selected
+        self.pending_widgets.append((row, col, path, pixmap, is_selected))
 
-        self.on_image_loaded(batch_data)
+        if not self.process_timer.isActive():
+            self.process_timer.start(5)
+        #self.on_image_loaded(batch_data)
 
+    def process_pending_widgets(self):
+        if not self.pending_widgets:
+            self.process_timer.stop()
+            return
+
+        batch_size = 5
+        for _ in range(min(batch_size, len(self.pending_widgets))):
+            if not self.pending_widgets:
+                break
+
+            row, col, path, pixmap, is_selected = self.pending_widgets.pop(0)
+            self.image_ready.emit(row,col,path,pixmap,is_selected)
+
+        if self.pending_widgets:
+            QApplication.processEvents()
+    '''
     def on_image_loaded(self, batch_data):
         # Compute row/col and selection state here
         for idx, data, path in batch_data:
@@ -112,7 +140,7 @@ class ImageGridViewModel(QObject):
             pixmap.loadFromData(data)
             row, col = divmod(idx, self.main_model.get_num_of_columns)  # or self.model.num_of_col
             is_selected = self.main_model.is_selected(path)  # ask model if selected
-            self.image_ready.emit(row, col, path, pixmap, is_selected)
+            self.image_ready.emit(row, col, path, pixmap, is_selected)'''
 
     def on_load_finished(self, generation):
         if generation == self._load_generation:
@@ -126,7 +154,7 @@ class ImageGridViewModel(QObject):
 
     def load_main_folder(self, path):
         self.main_model.load_main_folder(path)
-        self.load_images(self.main_model.get_subfolders,0, self.main_model.get_is_json)
+
 
 
     def update_info_label(self, text):
@@ -135,8 +163,6 @@ class ImageGridViewModel(QObject):
     def update_folder_list(self):
         if self.main_model.get_is_json: #TODO: Rethink
             self.main_model.collect_labels_from_json()
-        else:
-            self.main_model.collect_subfolders()
         self.load_subfolders_list.emit(self.main_model.get_subfolders)
 
     def on_load_folder_by_name(self, folder_name):
@@ -145,6 +171,7 @@ class ImageGridViewModel(QObject):
     def load_images(self, subfolders, batch_idx, is_json):
         self.main_model.clear_selected_images()
 
+
         self.main_model.set_loader(ImageBatchLoader(self.main_model.current_label_folder_paths, batch_size=1000, start_batch_idx=batch_idx, is_json=is_json))
         self.load_batch()
         self.info_message.emit("Folder loaded!")
@@ -152,6 +179,10 @@ class ImageGridViewModel(QObject):
         self.load_subfolders_list.emit(subfolders)
 
     def clear_images(self):
+        self.pending_widgets.clear()
+        if self.process_timer.isActive():
+            self.process_timer.stop()
+
         for label in self.labels:
             label.deleteLater()
         self.labels = list()

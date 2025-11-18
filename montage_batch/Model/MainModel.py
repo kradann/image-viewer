@@ -5,6 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QMessageBox
+from Model.FolderScanThread import FolderScanThread
 
 
 
@@ -42,6 +43,7 @@ class MainModel(QObject):
 
     def __init__(self, loader=None):
         super().__init__()
+        self.scan_thread = None
         self.loader = loader
 
         self.current_label_folder_paths = None
@@ -184,14 +186,9 @@ class MainModel(QObject):
         self.is_input_from_json = False
         self.main_folder = Path(path)
         logging.info(f"{path} loadded as main folder")
-        self.collect_subfolders()
+        self.collect_subfolders_async()
 
-        #self.collect_subfolders()
-        #print("első" , list(labels.values())[0])
-        self.current_label_folder_paths = list(self.labels.values())[0]
-        self.current_label = list(self.labels.keys())[0]
 
-        self.update_folder_list.emit()
 
     def load_folder_by_folder_name(self, folder_name : str):
         self.current_label_folder_paths = self.labels[folder_name]
@@ -199,7 +196,7 @@ class MainModel(QObject):
         self.load_folder.emit(self.subfolders, 0, self.is_input_from_json)
 
 
-    def collect_subfolders(self):
+    '''def collect_subfolders(self):
         self.labels = self.find_label_folders()
         from tqdm import tqdm
         self.labels = {k: self.labels[k] for k in sorted(self.labels.keys()) if self.labels[k]}
@@ -211,7 +208,23 @@ class MainModel(QObject):
                     count += sum(1 for file in path.iterdir() if file.suffix.lower() == '.png')
 
                 self.subfolders[label] = count
-        self.subfolders = {k: self.subfolders[k] for k in sorted(self.subfolders.keys())}
+        self.subfolders = {k: self.subfolders[k] for k in sorted(self.subfolders.keys())}'''
+
+    def collect_subfolders_async(self):
+        self.scan_thread = FolderScanThread(self.main_folder, self.current_label_list)
+        self.scan_thread.scanned.connect(self._on_scan_done)
+        self.scan_thread.start()
+
+    def _on_scan_done(self, labels, counts):
+        self.labels = {k: labels[k] for k in sorted(labels.keys()) if labels[k]}
+        self.subfolders = {k: counts.get(k,0) for k in sorted(counts.keys())}
+
+        if self.labels:
+            self.current_label = list(self.labels.keys())[0]
+            self.current_label_folder_paths = self.labels[self.current_label]
+
+        self.update_folder_list.emit()
+        self.load_folder.emit(self.subfolders, 0, self.is_input_from_json)
 
     def collect_labels_from_json(self):
         self.is_input_from_json = True
