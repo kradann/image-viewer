@@ -88,7 +88,6 @@ class ImageGridViewModel(QObject):
 
         if hasattr(self, 'thread') and self.thread is not None:
             self.thread.stop()
-            self.thread.wait()
 
         self._load_generation += 1
         generation = self._load_generation
@@ -126,8 +125,8 @@ class ImageGridViewModel(QObject):
         self.main_model.load_json(json_data)
 
     def load_main_folder(self, path):
-        subfolders = self.main_model.load_main_folder(path)
-        self.load_images(subfolders,0, self.main_model.get_is_json)
+        self.main_model.load_main_folder(path)
+        self.load_images(self.main_model.get_subfolders,0, self.main_model.get_is_json)
 
 
     def update_info_label(self, text):

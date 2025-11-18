@@ -274,39 +274,109 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.image_layout.addWidget(click, row, col)
 
     def prev_folder(self):
-        self.grid_view_model.on_prev_folder()
-        self.change_info_label("Previous Folder Loaded")
-        self.update_batch_info()
+        try:
+            self.change_info_label("Previous Folder Loading...", display_time=0)
+            self.grid_view_model.on_prev_folder()
+            self.change_info_label("Previous Folder Loaded")
+            self.update_batch_info()
+        except Exception as e:
+            logging.info(f"Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Folder Load Error",
+                f"An error occurred while loading the previous folder: \n\n{e}",
+            )
 
     def next_folder(self):
-        self.grid_view_model.on_next_folder()
-        self.change_info_label("Next Folder Loaded")
-        self.update_batch_info()
+        try:
+            self.change_info_label("Next Folder Loading...", display_time=0)
+            self.grid_view_model.on_next_folder()
+            self.change_info_label("Next Folder Loaded")
+            self.update_batch_info()
+        except Exception as e:
+            logging.info(f"Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Folder Load Error",
+                f"An error occurred while loading the next folder: \n\n{e}",
+            )
 
     def previous_batch(self):
-        self.grid_view_model.on_prev_batch()
-        self.change_info_label("Previous Batch Loaded")
-        self.update_batch_info()
+        try:
+            self.change_info_label("Previous Batch Loading...", display_time=0)
+            self.grid_view_model.on_prev_batch()
+            self.change_info_label("Previous Batch Loaded")
+            self.update_batch_info()
+        except Exception as e:
+            logging.info(f"Previous Batch Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Previous Batch Error",
+                f"An error occurred while loading the previous batch: \n\n{e}",
+            )
 
     def next_batch(self):
-        self.grid_view_model.on_next_batch()
-        self.change_info_label("Next Batch Loaded")
-        self.update_batch_info()
+        try:
+            self.change_info_label("Next Batch Loading...", display_time=0)
+            self.grid_view_model.on_next_batch()
+            self.change_info_label("Next Batch Loaded")
+            self.update_batch_info()
+        except Exception as e:
+            logging.info(f"Next Batch Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Next Batch Error",
+                f"An error occurred while loading the next batch: \n\n{e}",
+            )
 
     def show_batch(self):
-        self.grid_view.show_batch()
+        try:
+            self.change_info_label("Current Batch Loading...", display_time=0)
+            self.grid_view.show_batch()
+            self.change_info_label("Current Batch Loaded")
+        except Exception as e:
+            logging.info(f"Show Batch Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Show Batch Error",
+                f"An error occurred while loading the current batch: \n\n{e}",
+            )
 
     def un_select_select_all(self):
-        self.grid_view_model.on_unselect_select_all()
+        try:
+            self.grid_view_model.on_unselect_select_all()
+        except Exception as e:
+            logging.info(f"Image Selecting Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Image Selecting Error",
+                f"An error occurred while selecting or unselecting images: \n\n{e}",
+            )
 
     def show_only_selected(self):
-        self.vertical_value = self.scroll_area.verticalScrollBar().value()
-        self.grid_view_model.on_show_only_selected()
+        try:
+            self.vertical_value = self.scroll_area.verticalScrollBar().value()
+            self.grid_view_model.on_show_only_selected()
+        except Exception as e:
+            logging.info(f"Show Only Selected Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Show Only Selected Error",
+                f"An error occurred while loading selected images: \n\n{e}",
+            )
 
     def move_selected(self):
-        if self.vertical_value == 0:
-            self.vertical_value = self.scroll_area.verticalScrollBar().value()
-        self.grid_view_model.on_move_selected()
+        try:
+            if self.vertical_value == 0:
+                self.vertical_value = self.scroll_area.verticalScrollBar().value()
+            self.grid_view_model.on_move_selected()
+        except Exception as e:
+            logging.info(f"Image moving Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Image moving Error",
+                f"An error occurred while trying to move images: \n\n{e}",
+            )
 
     def load_v_value(self):
         self.scroll_area.verticalScrollBar().setValue(self.vertical_value)
@@ -316,31 +386,39 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.grid_view_model.on_check_for_update()
 
     def show_log(self):
-        print("asdasdsa")
-        self.log_window = LogWindow(self.grid_view_model.get_log_file_path())
-        self.log_window.show()
+        try:
+            self.log_window = LogWindow(self.grid_view_model.get_log_file_path())
+            self.log_window.show()
+        except Exception as e:
+            logging.info(f"Log Window Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Log Window Error",
+                f"An error occurred while loading log window: \n\n{e}",
+            )
 
     def undo(self):
-        self.grid_view_model.get_last_move()
+        try:
+            self.grid_view_model.get_last_move()
+        except Exception as e:
+            logging.info(f"Undo Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Undo Error",
+                f"An error occurred while undo last move: \n\n{e}",
+            )
 
     def on_load_folder(self):
-        self.change_info_label("Loading Folders...", display_time=0)
-        self.layout().setEnabled(False)
-
-        selected_folder_path = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Folder")
-        self.grid_view.on_load_folder(selected_folder_path)
-
-        self.layout().setEnabled(True)
-        self.change_info_label("Folders Loaded")
-        self.update_batch_info()
-        #commented because it's easier to debug
-        '''
         try:
-            self.change_info_label("Loading Folders...", time=0)
-            self.GridView.on_load_folder()
+            self.change_info_label("Loading Folders...", display_time=0)
+            #self.layout().setEnabled(False)
+            selected_folder_path = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Folder")
+            self.grid_view.on_load_folder(selected_folder_path)
+            #self.layout().setEnabled(True)
             self.change_info_label("Folder Loaded")
             self.update_batch_info()
         except Exception as e:
+            logging.info(f"Folder Load Error {e}")
             QtWidgets.QMessageBox.critical(
                 self,
                 "Folder Load Error",
@@ -348,7 +426,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             )
 
             self.change_info_label("Folder load failed")
-        '''
+
 
     def on_load_finished(self):
         self.load_v_value()
@@ -358,40 +436,81 @@ class ImageMontageApp(QtWidgets.QWidget):
             json_data = QtWidgets.QFileDialog.getOpenFileName(self, "Select JSON", filter="JSON files (*.json);;All files (*)")
             self.grid_view.on_load_json(json_data)
         except Exception as e:
-            logging.info(f"Error {e}")
-            QtWidgets.QMessageBox.critical("Error while loading json")
+            logging.info(f"Loading JSON Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Loading JSON Error",
+                f"An error occurred while loading JSON: \n\n{e}"
+            )
 
     def on_import_dir_tree(self):
-        #try:
-        #TODO: Save automaticly to file
-        base_folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Base Folder")
-        dir_tree_path = QtWidgets.QFileDialog.getOpenFileName(self, "Select Directory Tree JSON", filter="JSON files (*.json);;All files (*)")
-        self.grid_view_model.load_dir_tree(dir_tree_path, base_folder)
-        '''except Exception as e:
-            logging.info(f"Error {e}")
-            QtWidgets.QMessageBox.critical(self,"Error","Error while loading json")'''
+        try:
+            base_folder = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Base Folder")
+            dir_tree_path = QtWidgets.QFileDialog.getOpenFileName(self, "Select Directory Tree JSON", filter="JSON files (*.json);;All files (*)")
+            self.grid_view_model.load_dir_tree(dir_tree_path, base_folder)
+        except Exception as e:
+            logging.info(f"Import Directory Tree Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Import Directory Tree Error",
+                f"Error while importing directory tree \n\n {e}"
+            )
 
     def on_export_dir_tree(self):
-        folder_path = QtWidgets.QFileDialog.getExistingDirectory(self, "Select folder to save directory tree")
-        if folder_path:
-            self.grid_view_model.export_dir_tree(folder_path)
+        try:
+            folder_path = QtWidgets.QFileDialog.getExistingDirectory(self, "Select folder to save directory tree")
+            if folder_path:
+                self.grid_view_model.export_dir_tree(folder_path)
+        except Exception as e:
+            logging.info(f"Export Directory Tree Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Export Directory Tree Error",
+                f"Error while exporting directory tree \n\n {e}"
+            )
 
     def load_eu_sign_types(self):
-        self.grid_view_model.load_eu_sign_types()
-        self.move_selected_button.setText("Move Selected Images\n (EU)")
-        self.change_info_label("Labels changed to EU traffic signs.")
+        try:
+            self.change_info_label("Changing to EU Traffic Signs...", display_time=0)
+            self.grid_view_model.load_eu_sign_types()
+            self.move_selected_button.setText("Move Selected Images\n (EU)")
+            self.change_info_label("Labels changed to EU traffic signs.")
+        except Exception as e:
+            logging.info(f"Load EU Sign Types Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Load EU Sign Types Error",
+                f"Error while loading EU Sign Types\n\n {e}"
+            )
 
     def load_us_sign_types(self):
-        self.grid_view_model.load_us_sign_types()
-        self.move_selected_button.setText("Move Selected Images\n (US)")
-        self.change_info_label("Labels changed to US traffic signs.")
+        try:
+            self.change_info_label("Changing to US Traffic Signs...", display_time=0)
+            self.grid_view_model.load_us_sign_types()
+            self.move_selected_button.setText("Move Selected Images\n (US)")
+            self.change_info_label("Labels changed to US traffic signs.")
+        except Exception as e:
+            logging.info(f"Load US Sign Types Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Load US Sign Types Error",
+                f"Error while loading US Sign Types\n\n {e}"
+            )
 
 
     def add_new_labels(self):
-        json_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Select label JSON", filter="JSON files (*.json);;All files (*)")
-        self.grid_view_model.load_labels_from_json(json_file_path)
-        self.move_selected_button.setText("Move Selected Images\n (Custom)")
-        self.change_info_label("New labels added and set")
+        try:
+            json_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Select label JSON", filter="JSON files (*.json);;All files (*)")
+            self.grid_view_model.load_labels_from_json(json_file_path)
+            self.move_selected_button.setText("Move Selected Images\n (Custom)")
+            self.change_info_label("New labels added and set")
+        except Exception as e:
+            logging.info(f"Load Custom Types Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Load Custom Types Error",
+                f"Error while loading Custom Types\n\n {e}"
+            )
 
     def update_info_after_list_clicked(self):
         self.update_batch_info()
@@ -426,22 +545,55 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.column_spinbox.setValue(value-1)
 
     def show_folder_selection_dialog(self, preferred_label):
-        dialog = FolderSelectionDialog(preferred=preferred_label, grid_view_model=self.grid_view_model)
-        if dialog.exec_() == QDialog.Accepted and dialog.selected_folder:
-            self.grid_view_model.move_selected(dialog.selected_folder)
+        try:
+            dialog = FolderSelectionDialog(preferred=preferred_label, grid_view_model=self.grid_view_model)
+            if dialog.exec_() == QDialog.Accepted and dialog.selected_folder:
+                self.grid_view_model.move_selected(dialog.selected_folder)
+        except Exception as e:
+            logging.info(f"Show Folder Selection Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Show Folder Selection Error",
+                f"Error while loading folder selection window\n\n {e}"
+            )
 
     def show_not_found_images_info(self, not_found_images):
-        self.not_found_images_window = NotFoundImageWindow(not_found_images)
-        self.not_found_images_window.show()
+        try:
+            self.not_found_images_window = NotFoundImageWindow(not_found_images)
+            self.not_found_images_window.show()
+        except Exception as e:
+            logging.info(f"Show Not Found Images Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Show Not Found Images Error",
+                f"Error while loading not found images window\n\n {e}"
+            )
 
     def show_last_move_window(self, text, main_folder):
-        self.last_move_window = LastMoveWindow(text, main_folder)
-        self.last_move_window.show()
-        if self.last_move_window.exec_() == QDialog.Accepted:
-            self.grid_view_model.undo_last_move()
+        try:
+            self.last_move_window = LastMoveWindow(text, main_folder)
+            self.last_move_window.show()
+            if self.last_move_window.exec_() == QDialog.Accepted:
+                self.grid_view_model.undo_last_move()
+        except Exception as e:
+            logging.info(f"Show Last Move Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Show Last Move Error",
+                f"Error while loading last move window\n\n {e}"
+            )
 
     def closeEvent(self, event):
-        self.grid_view_model.cleanup_thumbs()
-        logging.info("Annotation tool closed")
-        event.accept()
+        try:
+            self.grid_view_model.cleanup_thumbs()
+            logging.info("Annotation tool closed")
+            event.accept()
+        except Exception as e:
+            logging.info(f"Closing Error {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Closing Error",
+                f"Error while closing tool\n\n {e}"
+            )
+
 

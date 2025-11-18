@@ -191,25 +191,7 @@ class MainModel(QObject):
         self.current_label_folder_paths = list(self.labels.values())[0]
         self.current_label = list(self.labels.keys())[0]
 
-        '''
-        if all(sub in SIGN_TYPES for sub in self.subfolders):
-            if self.wrong_folder_names:
-                self.show_wrong_folder_names.emit(self.wrong_folder_names)
-            self.folder_path = self.main_folder / list(self.subfolders.keys())[0]
-            self.mode = Mode.SINGLE
-            return self.mode, self.subfolders
-        else:
-            self.all_sign_types = self.collect_sign_types()
-            if all(sign in SIGN_TYPES for sign in self.all_sign_types):
-                if self.wrong_folder_names:
-                    self.show_wrong_folder_names.emit(self.wrong_folder_names)
-                self.subfolders = {sign_type : 0 for sign_type in self.all_sign_types}
-                self.mode = Mode.MULTIPLE
-                self.image_paths = [Path(region, self.all_sign_types[0]) for region in self.regions] #load first TS type
-                return self.mode, self.image_paths
-        '''
-        return self.subfolders
-
+        self.update_folder_list.emit()
 
     def load_folder_by_folder_name(self, folder_name : str):
         self.current_label_folder_paths = self.labels[folder_name]
@@ -457,9 +439,7 @@ class MainModel(QObject):
             labels_from_json = json.load(label_json)
         self.current_label_list = labels_from_json
         self.current_label_list.sort()
-        if self.is_input_from_json:
-            pass
-        else:
+        if not self.is_input_from_json:
             self.load_main_folder(self.main_folder)
 
     def load_dir_tree(self, dir_tree_path):

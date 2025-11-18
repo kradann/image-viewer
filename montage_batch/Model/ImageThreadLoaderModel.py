@@ -32,7 +32,7 @@ class ImageLoaderThread(QThread):
         return cache_path / f"{hash_name}.jpg"
 
     @staticmethod
-    def generate_thumbnail(image_path: str, thumb_path: str, size=(800, 800)):
+    def generate_thumbnail(image_path: str, thumb_path: str, size=(300, 300)):
         try:
             with Image.open(image_path) as img:
                 img = img.convert("RGB")
@@ -70,6 +70,7 @@ class ImageLoaderThread(QThread):
                 if len(batch_data) >= 50 and self._is_running:
                     self.image_loaded.emit(batch_data)
                     batch_data = []
+                    QThread.yieldCurrentThread()
 
             except Exception as e:
                 print(f"Thumb path: {thumb_path}, Exists? {Path(thumb_path).exists()}")
