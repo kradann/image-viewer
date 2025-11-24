@@ -287,10 +287,10 @@ class ImageGridViewModel(QObject):
         return self.main_model.get_batch_size
 
     def load_eu_sign_types(self):
-        self.main_model.load_labels_from_json(str(Path(__file__).parent.parent / 'resources/EU_sign_types.json'))
+        self.main_model.load_labels_from_json(str(Path(__file__).parent.parent / 'resources/sign_types/EU_sign_types.json'))
 
     def load_us_sign_types(self):
-        self.main_model.load_labels_from_json(str(Path(__file__).parent.parent / 'resources/US_sign_types.json'))
+        self.main_model.load_labels_from_json(str(Path(__file__).parent.parent / 'resources/sign_types/US_sign_types.json'))
 
     def load_labels_from_json(self, path):
         self.main_model.load_labels_from_json(path)

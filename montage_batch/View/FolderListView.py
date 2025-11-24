@@ -1,6 +1,5 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
-from ViewModel.FolderListViewModel import FolderListViewModel
-from View.Styles import FOLDER_LIST_STYLE
+from View.HelpWindow import HelpWindow
 
 def _apply_status_color(item, status):
     transparency = 125
@@ -33,6 +32,8 @@ class FolderListWidget(QtWidgets.QListWidget):
                 color: white;
             }
         """)
+
+        self.help_window = None
 
         self.folder_list_view_model.highlight_folder_name.connect(self.highlight_by_name)
         #self.main_model.highlight_current_folder_name.connect(self.highlight_by_name)
@@ -70,12 +71,15 @@ class FolderListWidget(QtWidgets.QListWidget):
         for status in ["Not Done", "In Progress", "Done"]:
             action = menu.addAction(status)
         remove = menu.addAction("Remove Status")
+        help = menu.addAction("Help")
         chosen = menu.exec_(self.mapToGlobal(pos))
 
         if chosen:
             name = item.text().split()[0]
             if chosen.text() == "Remove Status":
                 self.vm.set_status(name, None)
+            elif chosen == help:
+                self.show_help_window(item.text().split()[0])
             else:
                 self.vm.set_status(name, chosen.text().lower().replace(" ", "_"))
 
@@ -99,3 +103,8 @@ class FolderListWidget(QtWidgets.QListWidget):
 
         if hasattr(self, "current_item_name") and self.current_item_name:
             self.highlight_by_name(self.current_item_name)
+
+
+    def show_help_window(self,label_name):
+        self.help_window = HelpWindow(label_name)
+        self.help_window.show()
