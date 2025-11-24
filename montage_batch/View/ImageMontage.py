@@ -371,7 +371,7 @@ class ImageMontageApp(QtWidgets.QWidget):
             if self.vertical_value == 0:
                 self.vertical_value = self.scroll_area.verticalScrollBar().value()
             self.grid_view_model.on_move_selected()
-            self.show_batch()
+            self.grid_view_model.reload_current_label()
 
         except Exception as e:
             logging.error(f"Image moving Error", exc_info=True)
@@ -403,6 +403,7 @@ class ImageMontageApp(QtWidgets.QWidget):
     def undo(self):
         try:
             self.grid_view_model.get_last_move()
+
         except Exception as e:
             logging.error(f"Undo Error", exc_info=True)
             QtWidgets.QMessageBox.critical(

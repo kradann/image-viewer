@@ -94,6 +94,9 @@ class ImageGridViewModel(QObject):
 
         if hasattr(self, 'thread') and self.thread is not None:
             self.thread.stop()
+            self.thread.wait()  # Wait for thread to finish
+            self.thread.deleteLater()  # Clean up thread
+            self.thread = None
 
         self._load_generation += 1
         generation = self._load_generation
@@ -243,6 +246,12 @@ class ImageGridViewModel(QObject):
         self.main_model.show_only_selected()
 
     def load_selected_images(self, dropped_images):
+        if hasattr(self, 'thread') and self.thread is not None:
+            self.thread.stop()
+            self.thread.wait()
+            self.thread.deleteLater()
+            self.thread = None
+
         self.thread = ImageLoaderThread(sorted(dropped_images))
         self.thread.image_loaded.connect(lambda idx, data, path: self._on_single_image_loaded(idx,data, path, self._load_generation))
         self.thread.start()
@@ -303,7 +312,14 @@ class ImageGridViewModel(QObject):
 
     def undo_last_move(self):
         self.main_model.undo_last_move()
+        _, counts = scan_and_count_labels(self.main_model.get_main_folder, self.get_current_labels())
+        self.main_model.set_subfolders(counts)
+        self.reload_current_label()
 
+
+    def reload_current_label(self):
+        self.main_model.load_folder_by_folder_name(self.main_model.get_current_label)
+        self.show_batch.emit()
     @staticmethod
     def cleanup_thumbs():
         ImageLoaderThread.cleanup_thumbs()
