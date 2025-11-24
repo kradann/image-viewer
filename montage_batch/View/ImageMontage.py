@@ -432,7 +432,7 @@ class ImageMontageApp(QtWidgets.QWidget):
 
     def on_load_finished(self):
         self.change_info_label("Folder Loaded")
-        self.load_v_value()
+        QTimer.singleShot(100,self.load_v_value)
         self.update_batch_info()
 
     def on_load_json(self):

@@ -148,7 +148,16 @@ class ImageGridViewModel(QObject):
 
     def on_load_finished(self, generation):
         if generation == self._load_generation:
-            QtCore.QTimer.singleShot(0, self.load_finished_signal)
+            # Ensure all pending widgets are processed first
+            while self.pending_widgets:
+                self.process_pending_widgets()
+
+            # Stop the timer if it's running
+            if self.process_timer.isActive():
+                self.process_timer.stop()
+
+            # Now emit the signal after a small delay to ensure layout is complete
+            QtCore.QTimer.singleShot(100, self.load_finished_signal.emit)
 
     def load_finished(self):
         self.load_finished_signal.emit()
