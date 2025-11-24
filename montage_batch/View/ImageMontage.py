@@ -1,4 +1,5 @@
 import logging
+import time
 from typing import Union
 
 from PyQt5 import QtWidgets, QtCore
@@ -370,6 +371,8 @@ class ImageMontageApp(QtWidgets.QWidget):
             if self.vertical_value == 0:
                 self.vertical_value = self.scroll_area.verticalScrollBar().value()
             self.grid_view_model.on_move_selected()
+            self.show_batch()
+
         except Exception as e:
             logging.error(f"Image moving Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
@@ -415,8 +418,6 @@ class ImageMontageApp(QtWidgets.QWidget):
             selected_folder_path = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Folder")
             self.grid_view.on_load_folder(selected_folder_path)
             #self.layout().setEnabled(True)
-            self.change_info_label("Folder Loaded")
-            self.update_batch_info()
         except Exception as e:
             logging.error(f"Folder Load Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
@@ -429,7 +430,9 @@ class ImageMontageApp(QtWidgets.QWidget):
 
 
     def on_load_finished(self):
+        self.change_info_label("Folder Loaded")
         self.load_v_value()
+        self.update_batch_info()
 
     def on_load_json(self):
         try:

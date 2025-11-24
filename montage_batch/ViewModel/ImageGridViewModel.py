@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QDialog, QApplication
 from View.FolderSelectionDialog import FolderSelectionDialog
 from Model.BatchLoaderModel import ImageBatchLoader
 from Model.ImageThreadLoaderModel import ImageLoaderThread
+from Model.FolderScanThread import scan_and_count_labels
 
 
 
@@ -163,6 +164,9 @@ class ImageGridViewModel(QObject):
     def update_folder_list(self):
         if self.main_model.get_is_json: #TODO: Rethink
             self.main_model.collect_labels_from_json()
+        else:
+            _ , counts = scan_and_count_labels(self.main_model.get_main_folder, self.get_current_labels())
+            self.main_model.set_subfolders(counts)
         self.load_subfolders_list.emit(self.main_model.get_subfolders)
 
     def on_load_folder_by_name(self, folder_name):
@@ -240,7 +244,7 @@ class ImageGridViewModel(QObject):
 
     def load_selected_images(self, dropped_images):
         self.thread = ImageLoaderThread(sorted(dropped_images))
-        self.thread.image_loaded.connect(self.on_image_loaded)
+        self.thread.image_loaded.connect(lambda idx, data, path: self._on_single_image_loaded(idx,data, path, self._load_generation))
         self.thread.start()
 
     def on_check_for_update(self):

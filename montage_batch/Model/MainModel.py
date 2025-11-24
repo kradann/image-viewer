@@ -90,6 +90,10 @@ class MainModel(QObject):
     def set_base_folder(self, base_folder_path):
         self.base_folder = Path(base_folder_path)
 
+    def set_subfolders(self, count):
+        self.subfolders = count
+        self.subfolders = dict(sorted(self.subfolders.items()))
+
     # === Getters ===
     @property
     def get_current_batch(self):
@@ -154,6 +158,10 @@ class MainModel(QObject):
     @property
     def get_last_move(self):
         return self.last_move
+
+    @property
+    def get_main_folder(self):
+        return self.main_folder
 
     def get_base_folder(self):
         return self.base_folder
@@ -351,6 +359,7 @@ class MainModel(QObject):
 
                 if not folder_existed:
                     new_folder_created = True
+                    self.labels[output_folder.name].add(output_folder)
                 # check if destination folder contains file that has same name
                 dst_path = check_image_name(img_path, output_folder)
                 self.last_move[str(img_path)] = str(dst_path)
@@ -358,8 +367,8 @@ class MainModel(QObject):
                 logging.info(f"{img_path} moved to {dst_path}")
 
             self.change_info_label.emit(f"Selected images move successfully to {selected_folder}")
-            if new_folder_created:
-                self.update_folder_list.emit()
+
+            self.update_folder_list.emit()
 
         else:
             self.change_info_label.emit("No selected image found!")
@@ -370,7 +379,7 @@ class MainModel(QObject):
             self.show_only_selected()
         else:
             self.selected_images = set()
-            self.load_folder.emit(self.subfolders, self.loader.current_batch_idx, self.is_input_from_json)
+            #self.load_folder.emit(self.subfolders, self.loader.current_batch_idx, self.is_input_from_json)
 
     def show_only_selected(self):
         if not self.loader:

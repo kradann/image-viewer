@@ -1,18 +1,39 @@
+import os
+from pathlib import Path
+from tqdm import tqdm
+import time
+
+import os
+from pathlib import Path
+from tqdm import tqdm
+
+import os
 from pathlib import Path
 from tqdm import tqdm
 
 
 def collect_image_paths(source):
+    """Collect with consistent ordering - sort folders and directories"""
     image_paths = []
-    print("source", source)
+
     if isinstance(source, set):
-        for folder in source:
-            print(folder)
+        # Sort folders first for consistent order
+        for folder in sorted(source):
             if folder.is_dir():
-                for file in folder.rglob("*"):
-                    if file.suffix.lower() in (".png", ".jpg", ".jpeg", ".bmp"):
-                        image_paths.append(file)
-    return sorted(image_paths)
+                # Collect all paths from this folder first
+                folder_paths = []
+                for dirpath, dirnames, filenames in os.walk(folder):
+                    # Sort subdirectories for consistent traversal order
+                    dirnames.sort()
+
+                    # Sort filenames and filter
+                    for fname in sorted(filenames):
+                        if fname.lower().endswith('.png'):
+                            folder_paths.append(Path(dirpath) / fname)
+
+                image_paths.extend(folder_paths)
+
+    return image_paths
 
 
 class ImageBatchLoader(object):
@@ -22,6 +43,7 @@ class ImageBatchLoader(object):
             self.image_paths = list(source)
         else:
             self.image_paths = collect_image_paths(source)
+
 
         self.current_batch_idx = start_batch_idx
         self.label = None
