@@ -53,6 +53,7 @@ class ImageGridViewModel(QObject):
         self.labels = list()
         self.isAllSelected = False
         self._load_generation = 0
+        self._load_finished_emitted = False
 
         self.pending_widgets = []
         self.process_timer = QtCore.QTimer()
@@ -99,6 +100,7 @@ class ImageGridViewModel(QObject):
             self.thread = None
 
         self._load_generation += 1
+        self._load_finished_emitted = False
         generation = self._load_generation
 
         batch = self.main_model.get_current_batch
@@ -124,6 +126,10 @@ class ImageGridViewModel(QObject):
     def process_pending_widgets(self):
         if not self.pending_widgets:
             self.process_timer.stop()
+            # Notify that all widgets have been processed (only once)
+            if not self._load_finished_emitted:
+                self._load_finished_emitted = True
+                QtCore.QTimer.singleShot(0, self.load_finished_signal)
             return
 
         batch_size = 5
@@ -147,17 +153,8 @@ class ImageGridViewModel(QObject):
             self.image_ready.emit(row, col, path, pixmap, is_selected)'''
 
     def on_load_finished(self, generation):
-        if generation == self._load_generation:
-            # Ensure all pending widgets are processed first
-            while self.pending_widgets:
-                self.process_pending_widgets()
-
-            # Stop the timer if it's running
-            if self.process_timer.isActive():
-                self.process_timer.stop()
-
-            # Now emit the signal after a small delay to ensure layout is complete
-            QtCore.QTimer.singleShot(100, self.load_finished_signal.emit)
+        # Thread finished loading, but don't signal yet - wait for widget processing
+        pass
 
     def load_finished(self):
         self.load_finished_signal.emit()
@@ -327,7 +324,7 @@ class ImageGridViewModel(QObject):
 
 
     def reload_current_label(self):
-        self.main_model.load_folder_by_folder_name(self.main_model.get_current_label)
+        self.main_model.load_folder_by_folder_name(self.main_model.get_current_label, self.main_model.get_loader.current_batch_idx)
         self.show_batch.emit()
     @staticmethod
     def cleanup_thumbs():

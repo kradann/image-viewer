@@ -1,5 +1,4 @@
 import logging
-import time
 from typing import Union
 
 from PyQt5 import QtWidgets, QtCore
@@ -382,7 +381,8 @@ class ImageMontageApp(QtWidgets.QWidget):
             )
 
     def load_v_value(self):
-        self.scroll_area.verticalScrollBar().setValue(self.vertical_value)
+        print(self.vertical_value)
+        if self.vertical_value != 0 : self.scroll_area.verticalScrollBar().setValue(self.vertical_value)
         self.vertical_value = 0
 
     def check_for_update(self):
@@ -403,7 +403,6 @@ class ImageMontageApp(QtWidgets.QWidget):
     def undo(self):
         try:
             self.grid_view_model.get_last_move()
-
         except Exception as e:
             logging.error(f"Undo Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
@@ -473,6 +472,8 @@ class ImageMontageApp(QtWidgets.QWidget):
                 f"Error while exporting directory tree \n\n {e}"
             )
 
+
+    #TODO: if image folder loaded switching sign types not works properly
     def load_eu_sign_types(self):
         try:
             self.change_info_label("Changing to EU Traffic Signs...", display_time=0)

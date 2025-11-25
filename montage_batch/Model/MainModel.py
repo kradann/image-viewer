@@ -198,10 +198,10 @@ class MainModel(QObject):
 
 
 
-    def load_folder_by_folder_name(self, folder_name : str):
+    def load_folder_by_folder_name(self, folder_name : str, batch=0):
         self.current_label_folder_paths = self.labels[folder_name]
         self.current_label = folder_name
-        self.load_folder.emit(self.subfolders, 0, self.is_input_from_json)
+        self.load_folder.emit(self.subfolders, batch, self.is_input_from_json)
 
 
     '''def collect_subfolders(self):
@@ -359,7 +359,10 @@ class MainModel(QObject):
 
                 if not folder_existed:
                     new_folder_created = True
-                    self.labels[output_folder.name].add(output_folder)
+                    if output_folder.name not in self.labels:
+                        self.labels[output_folder.name] = set()
+                    if output_folder not in self.labels[output_folder.name]:
+                        self.labels[output_folder.name].add(output_folder)
                 # check if destination folder contains file that has same name
                 dst_path = check_image_name(img_path, output_folder)
                 self.last_move[str(img_path)] = str(dst_path)
