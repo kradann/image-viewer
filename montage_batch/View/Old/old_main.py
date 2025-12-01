@@ -129,7 +129,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.origin = QtCore.QPoint()
         self.drag_selecting = False
 
-        #left panel (contains list of sign types)
+        #left panel (contains list of sign_types)
         self.left_panel.addWidget(self.folder_list, stretch=1)
         self.left_panel.addWidget(self.scroll_area, stretch=5)
 

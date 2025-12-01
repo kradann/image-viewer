@@ -225,8 +225,8 @@ class SignTypeDialog(QDialog):
         self.selected_type = None
 
         # Gombok
-        self.eu = QPushButton("Eu sign types")
-        self.us = QPushButton("US sign types")
+        self.eu = QPushButton("Eu sign_types")
+        self.us = QPushButton("US sign_types")
 
         # Layout
         layout = QVBoxLayout()

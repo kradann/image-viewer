@@ -55,7 +55,7 @@ class MainModel(QObject):
         self.is_input_from_json = False
 
         self.current_label_list = set()
-        self.load_labels_from_json(str(Path(__file__).parent.parent / 'resources/EU_sign_types.json'))
+        self.load_labels_from_json(str(Path(__file__).parent.parent / 'resources/sign_types/EU_sign_types.json'))
 
         self.current_log_file_path = None
 
