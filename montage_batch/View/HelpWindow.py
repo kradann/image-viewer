@@ -1,3 +1,4 @@
+from PIL.ImageChops import offset
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QHBoxLayout
 from PyQt5.QtGui import QPixmap
 from PyQt5 import QtCore
@@ -23,10 +24,11 @@ class HelpWindow(QWidget):
             __file__).parent.parent / "resources/description.json" else None
         self.label_name = label_name
         self.description_text = None
-        self.images = None
+        self.example_images = None
         self.text = None
         self.description = None
-        self.has_content = False
+        self.has_example = False
+        self.has_counterexample = False
         self.label_key = None
 
 
@@ -50,13 +52,22 @@ class HelpWindow(QWidget):
 
 
 
-        self.folder_path = Path(__file__).parent.parent / 'resources/examples' / self.label_name  if (Path(__file__).parent.parent / 'resources/examples' / self.label_name ).exists() else None
+        self.example_folder_path = Path(__file__).parent.parent / 'resources/examples' / self.label_name  if (Path(__file__).parent.parent / 'resources/examples' / self.label_name).exists() else None
 
-        if self.folder_path:
-            self.images = [file for file in self.folder_path.iterdir()]
-            if self.images:
-                self.has_content = True
-                self.init_ui()
+        self.counterexample_folder_path = Path(__file__).parent.parent / 'resources/counterexamples' / self.label_name  if (Path(__file__).parent.parent / 'resources/counterexamples' / self.label_name).exists() else None
+
+        if self.example_folder_path:
+            self.example_images = [file for file in self.example_folder_path.iterdir()]
+            if self.example_images:
+                self.has_example = True
+
+        if self.counterexample_folder_path:
+            self.counterexample_images = [file for file in self.counterexample_folder_path.iterdir()]
+            if self.counterexample_images:
+                self.has_example = True
+
+        if self.has_example and self.has_counterexample:
+            self.init_ui()
 
     def init_ui(self):
         layout = QVBoxLayout(self)
@@ -66,13 +77,13 @@ class HelpWindow(QWidget):
         layout.addWidget(title_label)
 
         # Create a scroll area to hold the images
-        scroll_area = QScrollArea(self)
-        scroll_area.setWidgetResizable(True)
+        example_scroll_area = QScrollArea(self)
+        example_scroll_area.setWidgetResizable(True)
         scroll_content = QWidget()
         scroll_layout = QHBoxLayout(scroll_content)
 
         # Load and display images
-        for image_path in self.images:
+        for image_path in self.example_images:
             image_label = QLabel(self)
             pixmap = QPixmap(str(image_path))
 
@@ -82,8 +93,28 @@ class HelpWindow(QWidget):
             image_label.setPixmap(scaled_pixmap)
             scroll_layout.addWidget(image_label)
 
-        scroll_area.setWidget(scroll_content)
-        layout.addWidget(scroll_area)
+        example_scroll_area.setWidget(scroll_content)
+        layout.addWidget(example_scroll_area)
+
+        # Create a scroll area to hold the images
+        counterexample_scroll_area = QScrollArea(self)
+        counterexample_scroll_area.setWidgetResizable(True)
+        scroll_content = QWidget()
+        scroll_layout = QHBoxLayout(scroll_content)
+
+        # Load and display images
+        for image_path in self.counterexample_images:
+            image_label = QLabel(self)
+            pixmap = QPixmap(str(image_path))
+
+            # Scale the pixmap to a fixed size while keeping the aspect ratio
+            scaled_pixmap = pixmap.scaled(200, 200, aspectRatioMode=QtCore.Qt.KeepAspectRatio,
+                                          transformMode=QtCore.Qt.SmoothTransformation)
+            image_label.setPixmap(scaled_pixmap)
+            scroll_layout.addWidget(image_label)
+
+        counterexample_scroll_area.setWidget(scroll_content)
+        layout.addWidget(counterexample_scroll_area)
 
         # Label space below images
         if self.text is not None:
