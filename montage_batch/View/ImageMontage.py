@@ -149,7 +149,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.right_panel.addWidget(self.batch_info_label, stretch=1)
 
         # === Combine Panels ===
-        self.main_layout.addWidget(self.left_widget, stretch=3)
+        self.main_layout.addWidget(self.left_widget, stretch=2)
         self.main_layout.addLayout(self.middle_panel, stretch=6)
         self.main_layout.addLayout(self.right_panel, stretch=1)
 
