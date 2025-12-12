@@ -150,7 +150,7 @@ class ImageMontageApp(QtWidgets.QWidget):
 
         # === Combine Panels ===
         self.main_layout.addWidget(self.left_widget, stretch=2)
-        self.main_layout.addLayout(self.middle_panel, stretch=6)
+        self.main_layout.addLayout(self.middle_panel, stretch=7)
         self.main_layout.addLayout(self.right_panel, stretch=1)
 
         # === Menu Bar ===
