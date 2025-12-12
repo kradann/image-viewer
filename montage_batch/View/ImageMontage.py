@@ -61,6 +61,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.left_panel = QtWidgets.QVBoxLayout()
         self.left_widget = QtWidgets.QWidget()
         self.left_widget.setMaximumWidth(430)
+        self.left_widget.setMinimumWidth(30)
         self.left_widget.setLayout(self.left_panel)
 
         # Init folder list
@@ -149,9 +150,25 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.right_panel.addWidget(self.batch_info_label, stretch=1)
 
         # === Combine Panels ===
-        self.main_layout.addWidget(self.left_widget, stretch=2)
-        self.main_layout.addLayout(self.middle_panel, stretch=9)
-        self.main_layout.addLayout(self.right_panel, stretch=1)
+        middle_widget = QtWidgets.QWidget()
+        middle_widget.setLayout(self.middle_panel)
+        right_widget = QtWidgets.QWidget()
+        right_widget.setLayout(self.right_panel)
+        right_widget.setMinimumWidth(30)
+
+        self.splitter = QtWidgets.QSplitter(Qt.Horizontal)
+        self.splitter.addWidget(self.left_widget)
+        self.splitter.addWidget(middle_widget)
+        self.splitter.addWidget(right_widget)
+        self.splitter.setStretchFactor(0,0)
+        self.splitter.setStretchFactor(1,1)
+        self.splitter.setStretchFactor(2,2)
+        self.splitter.setSizes([300,1100,200])
+        #self.main_layout.addWidget(self.left_widget, stretch=2)
+        #self.main_layout.addLayout(self.middle_panel, stretch=15)
+        #self.main_layout.addLayout(self.right_panel, stretch=1)
+
+        self.outer_layout.addWidget(self.splitter)
 
         # === Menu Bar ===
         self.menu_bar = QtWidgets.QMenuBar(self)

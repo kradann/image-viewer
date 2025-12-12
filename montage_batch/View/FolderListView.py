@@ -25,7 +25,7 @@ class FolderListWidget(QtWidgets.QListWidget):
         self.highlight_color = QtGui.QColor(0, 120, 215, 180)
         self.current_item_name = None
         self.setMouseTracking(True)
-
+        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.show_context_menu)
 
