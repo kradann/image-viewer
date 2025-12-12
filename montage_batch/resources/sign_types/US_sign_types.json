@@ -4,6 +4,8 @@
   "unknown_sign",
   "us_giveway",
   "us_giveway_to_pedestrians",
+  "us_hov",
+  "us_hov_end",
   "us_minimum_speed_10",
   "us_minimum_speed_100",
   "us_minimum_speed_105",
@@ -28,6 +30,10 @@
   "us_minimum_speed_85",
   "us_minimum_speed_90",
   "us_minimum_speed_95",
+  "us_noentry",
+  "us_nopassing",
+  "us_orange_ground_diamond_unknown",
+  "us_orange_ground_rectangle_unknown",
   "us_pedestrian_crossing",
   "us_roadworks",
   "us_roadworks_end",
@@ -153,5 +159,8 @@
   "us_speedlimit_trucks_90",
   "us_speedlimit_trucks_95",
   "us_stop",
-  "us_stop_for_pedestrians"
+  "us_stop_for_pedestrians",
+  "us_yellow_ground_diamond_unknown",
+  "us_yellow_ground_rectangle_unknown",
+  "us_white_ground_rectangle_unknown"
 ]
