@@ -37,13 +37,7 @@ class FolderListWidget(QtWidgets.QListWidget):
             }
         """)
 
-        self.hover_timer = QtCore.QTimer()
-        self.hover_timer.setSingleShot(True)
-        self.hover_timer.timeout.connect(self.show_hover_popup)
-        self.pending_label_name = None
-
-        self.hover_help_window = None
-        self.last_hovered_label_name = None
+        self.help_window = None
 
         self.folder_list_view_model.highlight_folder_name.connect(self.highlight_by_name)
         #self.main_model.highlight_current_folder_name.connect(self.highlight_by_name)
@@ -117,54 +111,6 @@ class FolderListWidget(QtWidgets.QListWidget):
 
 
     def show_help_window(self,label_name):
-        pass
-        #self.help_window = HelpWindow(label_name)
-        #self.help_window.show()
-
-    def mouseMoveEvent(self, event):
-        item = self.itemAt(event.pos())
-
-        if item:
-            label_name = item.text().split()[0]
-
-            #Check if mouse moved on same label
-            if self.last_hovered_label_name != label_name:
-                self.last_hovered_label_name = label_name
-                self.pending_label_name = label_name
-                self.hover_timer.start(300)
-
-        else:
-            if not self.hover_help_window:
-                self.hover_timer.stop()
-
-        super().mouseMoveEvent(event)
-
-    def leaveEvent(self, event):
-        # stop timer
-        self.hover_timer.stop()
+        self.help_window = HelpWindow(label_name)
 
 
-        if self.hover_help_window:
-            QtCore.QTimer.singleShot(200, self.check_and_close_popup)
-
-        super().leaveEvent(event)
-
-    def check_and_close_popup(self):
-        """Check if mouse is over popup before closing"""
-        if self.hover_help_window and not self.hover_help_window.underMouse():
-            self.hover_help_window.close()
-            self.hover_help_window = None
-
-    def show_hover_popup(self):
-        if self.pending_label_name:
-            if self.hover_help_window:
-                self.hover_help_window.close()
-            self.hover_help_window = HelpWindow(self.pending_label_name, parent=self)
-
-            if self.hover_help_window.has_content:
-                pos = QtGui.QCursor.pos()
-                self.hover_help_window.move(pos + QtCore.QPoint(20,20))
-                self.hover_help_window.show()
-            else:
-                self.hover_help_window = None
-            self.pending_label_name = None

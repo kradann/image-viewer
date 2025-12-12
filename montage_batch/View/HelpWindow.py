@@ -1,5 +1,5 @@
 from PIL.ImageChops import offset
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QHBoxLayout, QMessageBox
 from PyQt5.QtGui import QPixmap
 from PyQt5 import QtCore
 from pathlib import Path
@@ -11,29 +11,26 @@ import json
 class HelpWindow(QWidget):
     def __init__(self, label_name, parent=None):
         super().__init__()
-        self.setWindowFlags(
-            QtCore.Qt.Window |
-            QtCore.Qt.FramelessWindowHint |
-            QtCore.Qt.WindowStaysOnTopHint
-        )
-        self.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.setMouseTracking(True)
-        self.setAttribute(QtCore.Qt.WA_Hover)
 
         description_json_path = Path(__file__).parent.parent / "resources/description.json" if Path(
             __file__).parent.parent / "resources/description.json" else None
         self.label_name = label_name
         self.description_text = None
         self.example_images = None
+        self.counterexample_images = None
         self.text = None
         self.description = None
-        self.has_example = False
-        self.has_counterexample = False
         self.label_key = None
+        self.example_folder_path = None
+        self.counterexample_folder_path = None
+        self.has_content = False
 
-
-        with open(description_json_path, 'r') as json_data:
-            self.description = json.load(json_data)
+        if description_json_path.exists():
+            with open(description_json_path, 'r') as json_data:
+                self.description = json.load(json_data)
+        else:
+            QMessageBox.warning(self, "Description JSON", "No description JSON found")
 
         if self.description is not None:
             self.text = self.description.get(self.label_name )
@@ -51,23 +48,21 @@ class HelpWindow(QWidget):
 
 
 
-
-        self.example_folder_path = Path(__file__).parent.parent / 'resources/examples' / self.label_name  if (Path(__file__).parent.parent / 'resources/examples' / self.label_name).exists() else None
-
-        self.counterexample_folder_path = Path(__file__).parent.parent / 'resources/counterexamples' / self.label_name  if (Path(__file__).parent.parent / 'resources/counterexamples' / self.label_name).exists() else None
+        if self.label_name:
+            self.example_folder_path = Path(__file__).parent.parent / 'resources/examples' / self.label_name  if (Path(__file__).parent.parent / 'resources/examples' / self.label_name).exists() else None
+            self.counterexample_folder_path = Path(__file__).parent.parent / 'resources/counterexamples' / self.label_name  if (Path(__file__).parent.parent / 'resources/counterexamples' / self.label_name).exists() else None
 
         if self.example_folder_path:
             self.example_images = [file for file in self.example_folder_path.iterdir()]
-            if self.example_images:
-                self.has_example = True
 
         if self.counterexample_folder_path:
             self.counterexample_images = [file for file in self.counterexample_folder_path.iterdir()]
-            if self.counterexample_images:
-                self.has_example = True
 
-        if self.has_example and self.has_counterexample:
+        if (self.example_images or self.counterexample_images or self.text) and self.description :
             self.init_ui()
+            self.show()
+        else:
+            QMessageBox.warning(self, "No description", f"No Description found for {label_name}")
 
     def init_ui(self):
         layout = QVBoxLayout(self)
@@ -75,6 +70,10 @@ class HelpWindow(QWidget):
         title_label = QLabel(self.label_name)
         title_label.setAlignment(QtCore.Qt.AlignCenter)
         layout.addWidget(title_label)
+
+        print("Examples:", self.example_images)
+        print("CounterExamples:", self.counterexample_images)
+        print("text:", self.text)
 
         # Create a scroll area to hold the images
         example_scroll_area = QScrollArea(self)
@@ -124,13 +123,3 @@ class HelpWindow(QWidget):
             layout.addWidget(self.description_text)
 
         self.setLayout(layout)
-
-    def leaveEvent(self, event):
-        """Close the window when mouse leaves"""
-        QtCore.QTimer.singleShot(100, self.close_if_not_hovered)
-        super().leaveEvent(event)
-
-    def close_if_not_hovered(self):
-        """Delayed close to avoid flickering"""
-        if not self.underMouse():
-            self.close()
