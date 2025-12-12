@@ -46,7 +46,7 @@ class FolderListWidget(QtWidgets.QListWidget):
         font.setPointSize(10)
         self.setFont(font)
 
-        self.setMinimumWidth(430)
+        #self.setMinimumWidth(430)
 
     def on_status_changed(self, folder_name, status):
         item = self._find_item_by_name(folder_name)

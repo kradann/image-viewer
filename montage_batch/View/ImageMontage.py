@@ -77,7 +77,6 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.middle_panel = QtWidgets.QVBoxLayout()
         self.image_layout = QtWidgets.QGridLayout(self.grid_view)
         self.scroll_area = QtWidgets.QScrollArea()
-        self.scroll_area.setMinimumWidth(1000)
         self.scroll_area.setWidget(self.grid_view)
         self.scroll_area.setWidgetResizable(True)
         self.vertical_value = 0 # Position on vertical axes
@@ -132,7 +131,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.column_spinbox = QtWidgets.QSpinBox()
         self.column_spinbox.setAlignment(Qt.AlignRight)
         self.column_spinbox.setRange(3,10)
-        self.column_spinbox.setValue(6)
+        self.column_spinbox.setValue(5)
         self.column_spinbox.valueChanged.connect(lambda value : self.grid_view_model.spinbox_value_changed(value, self.scroll_area.width(), self.grid_view.thumbnail_size[0]))
 
         self.column_control_layout.addWidget(self.column_label)
@@ -150,7 +149,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.right_panel.addWidget(self.batch_info_label, stretch=1)
 
         # === Combine Panels ===
-        self.main_layout.addWidget(self.left_widget, stretch=2)
+        self.main_layout.addWidget(self.left_widget, stretch=3)
         self.main_layout.addLayout(self.middle_panel, stretch=6)
         self.main_layout.addLayout(self.right_panel, stretch=1)
 
