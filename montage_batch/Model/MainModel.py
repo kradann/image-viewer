@@ -107,9 +107,6 @@ class MainModel(QObject):
     def get_num_of_columns(self):
         return self.num_of_col
 
-    @property
-    def get_mode(self):
-        return self.mode
 
     @property
     def get_folder_paths(self):
@@ -163,6 +160,7 @@ class MainModel(QObject):
     def get_main_folder(self):
         return self.main_folder
 
+    @property
     def get_base_folder(self):
         return self.base_folder
 
@@ -201,6 +199,7 @@ class MainModel(QObject):
     def load_folder_by_folder_name(self, folder_name : str, batch=0):
         self.current_label_folder_paths = self.labels[folder_name]
         self.current_label = folder_name
+        print(self.current_label_folder_paths)
         self.load_folder.emit(self.subfolders, batch, self.is_input_from_json)
 
 
@@ -363,11 +362,22 @@ class MainModel(QObject):
                         self.labels[output_folder.name] = set()
                     if output_folder not in self.labels[output_folder.name]:
                         self.labels[output_folder.name].add(output_folder)
+
                 # check if destination folder contains file that has same name
                 dst_path = check_image_name(img_path, output_folder)
                 self.last_move[str(img_path)] = str(dst_path)
                 shutil.move(img_path, str(dst_path))
                 logging.info(f"{img_path} moved to {dst_path}")
+
+                #remove moved image from json dict to not be displayed
+                if self.is_input_from_json and self.json_data:
+                    try:
+                        src_path = img_path.relative_to(self.base_folder)
+                        self.json_data.pop(src_path, None)
+                        self.labels[self.get_current_label].remove(Path(img_path))
+                    except ValueError:
+                        pass
+
 
             self.change_info_label.emit(f"Selected images move successfully to {selected_folder}")
 
