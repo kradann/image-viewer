@@ -60,7 +60,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         # === Left Panel ===
         self.left_panel = QtWidgets.QVBoxLayout()
         self.left_widget = QtWidgets.QWidget()
-        self.left_widget.setMaximumWidth(430)
+        #self.left_widget.setMaximumWidth(430)
         self.left_widget.setMinimumWidth(30)
         self.left_widget.setLayout(self.left_panel)
 
@@ -80,6 +80,10 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.scroll_area = QtWidgets.QScrollArea()
         self.scroll_area.setWidget(self.grid_view)
         self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setMinimumWidth(520)
+
+        self.scroll_area.resizeEvent = self.on_scroll_area_resized
+
         self.vertical_value = 0 # Position on vertical axes
         self.image_layout.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignCenter)
 
@@ -132,7 +136,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.column_spinbox = QtWidgets.QSpinBox()
         self.column_spinbox.setAlignment(Qt.AlignRight)
         self.column_spinbox.setRange(3,10)
-        self.column_spinbox.setValue(5)
+        self.column_spinbox.setValue(6)
         self.column_spinbox.valueChanged.connect(lambda value : self.grid_view_model.spinbox_value_changed(value, self.scroll_area.width(), self.grid_view.thumbnail_size[0]))
 
         self.column_control_layout.addWidget(self.column_label)
@@ -288,6 +292,25 @@ class ImageMontageApp(QtWidgets.QWidget):
 
     def on_add_image(self, click, row, col):
         self.image_layout.addWidget(click, row, col)
+
+    def on_scroll_area_resized(self, event):
+        QtWidgets.QScrollArea.resizeEvent(self.scroll_area, event)
+
+        current_cols = self.column_spinbox.value()
+        scroll_w = self.scroll_area.width()
+        thumb_w = self.grid_view.thumbnail_size[0]
+
+        if(scroll_w - (current_cols + 2) * current_cols) // thumb_w >= current_cols:
+            return
+
+        new_cols = current_cols
+        while new_cols > self.column_spinbox.minimum():
+            new_cols -= 1
+            if (scroll_w - (current_cols + 2) * current_cols) // thumb_w >= new_cols:
+                break
+
+        if new_cols != current_cols:
+            self.column_spinbox.setValue(new_cols)
 
     def prev_folder(self):
         try:
