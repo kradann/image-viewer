@@ -300,14 +300,20 @@ class ImageMontageApp(QtWidgets.QWidget):
         scroll_w = self.scroll_area.width()
         thumb_w = self.grid_view.thumbnail_size[0]
 
-        if(scroll_w - (current_cols + 2) * current_cols) // thumb_w >= current_cols:
-            return
+        max_cols = self.column_spinbox.maximum()
+        min_cols = self.column_spinbox.minimum()
+
+        def fits(cols):
+            return (scroll_w - (cols + 2) * cols) // thumb_w >= cols
 
         new_cols = current_cols
-        while new_cols > self.column_spinbox.minimum():
-            new_cols -= 1
-            if (scroll_w - (current_cols + 2) * current_cols) // thumb_w >= new_cols:
-                break
+
+        while new_cols < max_cols and fits(new_cols + 1):
+            new_cols += 1
+
+        if not fits(new_cols):
+            while new_cols > min_cols and not fits(new_cols):
+                new_cols -= 1
 
         if new_cols != current_cols:
             self.column_spinbox.setValue(new_cols)

@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path, PosixPath
 
 from PyQt5 import QtCore, QtGui
@@ -91,24 +92,27 @@ class ImageGridViewModel(QObject):
         self.main_model.toggle_selection(path)
 
     def load_batch(self):
-        self.clear_images()
+        try:
+            self.clear_images()
 
-        if hasattr(self, 'thread') and self.thread is not None:
-            self.thread.stop()
-            self.thread.wait()  # Wait for thread to finish
-            self.thread.deleteLater()  # Clean up thread
-            self.thread = None
+            if hasattr(self, 'thread') and self.thread is not None:
+                self.thread.stop()
+                self.thread.wait()  # Wait for thread to finish
+                self.thread.deleteLater()  # Clean up thread
+                self.thread = None
 
-        self._load_generation += 1
-        self._load_finished_emitted = False
-        generation = self._load_generation
+            self._load_generation += 1
+            self._load_finished_emitted = False
+            generation = self._load_generation
 
-        batch = self.main_model.get_current_batch
-        self.thread = ImageLoaderThread(batch)
-        self.thread.image_loaded.connect(lambda idx, data, path: self._on_single_image_loaded(idx,data, path, generation))
-        self.thread.load_finished.connect(lambda : self.on_load_finished(generation))
+            batch = self.main_model.get_current_batch
+            self.thread = ImageLoaderThread(batch)
+            self.thread.image_loaded.connect(lambda idx, data, path: self._on_single_image_loaded(idx,data, path, generation))
+            self.thread.load_finished.connect(lambda : self.on_load_finished(generation))
 
-        self.thread.start()
+            self.thread.start()
+        except Exception as e:
+            logging.error(e)
 
     def _on_single_image_loaded(self, idx, data, path, generation):
         if generation != self._load_generation:
@@ -315,7 +319,8 @@ class ImageGridViewModel(QObject):
     def get_last_move(self):
         last_move = self.main_model.last_move
         main_folder = self.main_model.main_folder
-        self.show_last_move_window.emit(last_move, main_folder)
+        if last_move and main_folder:
+            self.show_last_move_window.emit(last_move, main_folder)
 
     def undo_last_move(self):
         self.main_model.undo_last_move()
