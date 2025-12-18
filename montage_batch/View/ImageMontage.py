@@ -2,9 +2,9 @@ import logging
 from typing import Union
 
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, QSize
 from PyQt5.QtGui import QFont, QKeySequence, QColor
-from PyQt5.QtWidgets import QShortcut, QMessageBox, QLabel, QDialog, QAction
+from PyQt5.QtWidgets import QShortcut, QMessageBox, QLabel, QDialog, QAction, QHBoxLayout, QWidget, QVBoxLayout
 
 from View.FolderSelectionDialog import FolderSelectionDialog
 from View.Styles import *
@@ -96,28 +96,40 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.middle_panel.addWidget(self.info_label, stretch=1)
 
         # === Right Panel ===
-        self.right_panel = QtWidgets.QVBoxLayout()
-        self.button_container = QtWidgets.QWidget()
-        self.button_layout_wrapper = QtWidgets.QVBoxLayout(self.button_container)
-        self.button_panel = QtWidgets.QVBoxLayout()
+        self.right_panel = QVBoxLayout()
+        self.button_container = QWidget()
+        self.button_layout_wrapper = QVBoxLayout(self.button_container)
+        self.button_panel = QVBoxLayout()
+        self.button_panel.setAlignment(Qt.AlignCenter)
 
         # Add buttons
-        self.add_button("Previous Folder", self.prev_folder)
-        self.add_button("Next Folder", self.next_folder)
-        self.add_button("Previous Batch", self.previous_batch)
-        self.add_button("Next Batch", self.next_batch)
-        self.add_button("Current Batch", self.show_batch)
-        self.add_button("Unselect/Select all", self.un_select_select_all)
-        self.add_button("Selected Check", self.show_only_selected)
+        button_row_1 = QHBoxLayout()
+        prev_folder_button, _ = self.add_button("Previous\nFolder", self.prev_folder, size=(70,90))
+        next_folder_button, _ =self.add_button("Next\nFolder", self.next_folder, size=(70,90))
+        button_row_1.addWidget(prev_folder_button)
+        button_row_1.addWidget(next_folder_button)
+        self.button_panel.addLayout(button_row_1)
+
+        button_row_2 = QHBoxLayout()
+        prev_batch_button, _ =self.add_button("Previous\nBatch", self.previous_batch, size=(70,90))
+        next_batch_button, _ =self.add_button("Next\nBatch", self.next_batch, size=(70,90))
+        button_row_2.addWidget(prev_batch_button)
+        button_row_2.addWidget(next_batch_button)
+        self.button_panel.addLayout(button_row_2)
+
+        current_batch_button, _ =self.add_button("Current Batch", self.show_batch)
+
+        button_row_3 = QHBoxLayout()
+        unselect_button, _ =self.add_button("Unselect\nall", self.un_select_select_all, size=(70,90))
+        select_all_button, _ =self.add_button("Select\nall", self.un_select_select_all, size=(70,90))
+        button_row_3.addWidget(unselect_button)
+        button_row_3.addWidget(select_all_button)
+        self.button_panel.addLayout(button_row_3)
+
+        selected_check_button, _ =self.add_button("Selected Check", self.show_only_selected)
         self.move_selected_button, _ = self.add_button("Move Selected Images\n (EU)", self.move_selected)
-        self.add_button("Reload scrolling", self.load_v_value)
-        self.check_for_update_button ,_ = self.add_button("Check for Update", self.check_for_update)
-        self.check_for_update_button.setEnabled(False)
-        self.add_button("Show Log", self.show_log)
-        self.log_window = None
-        self.not_found_images_window = None
-        self.last_move_window = None
-        self.add_button("Undo", self.undo)
+        reload_scrolling_button, _ =self.add_button("Reload scrolling", self.load_v_value)
+        undo_button, _ =self.add_button("Undo", self.undo)
 
 
         # Arrange right side vertically
@@ -205,12 +217,18 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.grid_view_model.create_log_folder()
         self.grid_view_model.create_log_file()
 
-    def add_button(self, name: str, func, shortcut: Union[str, tuple] = None):
+        #Create variables for pop up windows
+        self.log_window = None
+        self.not_found_images_window = None
+        self.last_move_window = None
+
+    def add_button(self, name: str, func, shortcut: Union[str, tuple] = None, size : tuple[int,int] = (160,40)):
         button = QtWidgets.QPushButton(name)
         button.setFont(QFont("Arial", 10))
-        button.setFixedSize(160, 40)
+        button.setFixedSize(size[0], size[1])
         button.setStyleSheet(BUTTON_STYLE)
-        self.button_panel.addWidget(button)
+        if size == (160,40):
+            self.button_panel.addWidget(button)
         button.clicked.connect(func)
 
         q_shortcut = None
@@ -270,8 +288,16 @@ class ImageMontageApp(QtWidgets.QWidget):
         version_menu = self.menu_bar.addMenu("Version")
         show_version = QAction("Show version info", self)
         show_version.triggered.connect(self.show_version_info)
-
         version_menu.addAction(show_version)
+
+        check_for_update = QAction("Check for update", self)
+        check_for_update.triggered.connect(self.check_for_update)
+        version_menu.addAction(check_for_update)
+
+        log_menu = self.menu_bar.addMenu("Log")
+        show_log_action = QAction("Show Log", self)
+        show_log_action.triggered.connect(self.show_log)
+        log_menu.addAction(show_log_action)
 
     def show_version_info(self):
         branch, commit = get_git_info()
