@@ -306,7 +306,8 @@ class ImageGridViewModel(QObject):
 
         if self.main_model.dir_tree_data:
             not_found_images = self.main_model.move_file_dir_tree(Path(base_folder))
-            self.show_not_found_images.emit(not_found_images)
+            if not_found_images:
+                self.show_not_found_images.emit(not_found_images)
 
     def export_dir_tree(self, folder_path):
         self.main_model.make_directory_tree(folder_path)

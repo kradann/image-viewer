@@ -498,8 +498,10 @@ class MainModel(QObject):
                             for image in label_path.iterdir(): # folder path
                                 if image.name == key:
                                     image_found = True
-                                    print(image,'\n',base_folder / value / image.name)
-                                    #shutil.move(image, value)
+                                    print(image,'\n',base_folder / Path(value).parent / image.name)
+                                    output_folder = base_folder / Path(value).parent
+                                    output_folder.mkdir(parents=True, exist_ok=True)
+                                    shutil.move(image, str(output_folder / image.name))
                     if not image_found:
                         not_found_images.append(key)
 
