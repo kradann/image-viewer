@@ -38,7 +38,7 @@ MENU_BAR_STYLE = f"""
 BATCH_INFO_STYLE = f"""
                     background: transparent; 
                     color: #3cfb8b; 
-                    font-size: 20px;
+                    font-size: 18px;
                     border: 2px white solid;
                 """
 

@@ -96,47 +96,180 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.middle_panel.addWidget(self.info_label, stretch=1)
 
         # === Right Panel ===
+        # === Right Panel ===
         self.right_panel = QVBoxLayout()
         self.button_container = QWidget()
         self.button_layout_wrapper = QVBoxLayout(self.button_container)
         self.button_panel = QVBoxLayout()
         self.button_panel.setAlignment(Qt.AlignCenter)
 
-        # Add buttons
-        button_row_1 = QHBoxLayout()
-        prev_folder_button, _ = self.add_button("Previous\nFolder", self.prev_folder, size=(70,90))
-        next_folder_button, _ =self.add_button("Next\nFolder", self.next_folder, size=(70,90))
-        button_row_1.addWidget(prev_folder_button)
-        button_row_1.addWidget(next_folder_button)
-        self.button_panel.addLayout(button_row_1)
+        # --- NAVIGATION KONTAINER ---
+        self.top_buttons_container = QWidget()
+        self.top_buttons_container_layout = QVBoxLayout(self.top_buttons_container)
+        self.top_buttons_container_layout.setAlignment(Qt.AlignCenter)
+        self.top_buttons_container_layout.setSpacing(10)
 
-        button_row_2 = QHBoxLayout()
-        prev_batch_button, _ =self.add_button("Previous\nBatch", self.previous_batch, size=(70,90))
-        next_batch_button, _ =self.add_button("Next\nBatch", self.next_batch, size=(70,90))
-        button_row_2.addWidget(prev_batch_button)
-        button_row_2.addWidget(next_batch_button)
-        self.button_panel.addLayout(button_row_2)
+        self.top_buttons_label = QLabel("Navigation")
+        self.top_buttons_label.setAlignment(Qt.AlignCenter)
+        self.top_buttons_label.setStyleSheet(
+            "color: white; font-size: 14px; background-color: transparent;"
+        )
+        self.top_buttons_container_layout.addWidget(self.top_buttons_label)
 
-        current_batch_button, _ =self.add_button("Current Batch", self.show_batch)
+        self.top_buttons_container.setStyleSheet(
+            "background-color: rgba(64, 64, 64, 153); border-radius: 5px;"
+        )
 
-        button_row_3 = QHBoxLayout()
-        unselect_button, _ =self.add_button("Unselect\nall", self.un_select_select_all, size=(70,90))
-        select_all_button, _ =self.add_button("Select\nall", self.un_select_select_all, size=(70,90))
-        button_row_3.addWidget(unselect_button)
-        button_row_3.addWidget(select_all_button)
-        self.button_panel.addLayout(button_row_3)
+        # 1. sor: Previous / Next Folder
+        nav_row_1 = QHBoxLayout()
+        prev_folder_button, _ = self.add_button(
+            "Previous\nFolder", self.prev_folder, size=(70, 90)
+        )
+        next_folder_button, _ = self.add_button(
+            "Next\nFolder",
+            self.next_folder,
+            size=(70, 90),
+            background_color="rgba(59, 170, 59, 200)",
+            text_color="black",
+        )
+        nav_row_1.addWidget(prev_folder_button)
+        nav_row_1.addWidget(next_folder_button)
+        self.top_buttons_container_layout.addLayout(nav_row_1)
 
-        selected_check_button, _ =self.add_button("Selected Check", self.show_only_selected)
-        self.move_selected_button, _ = self.add_button("Move Selected Images\n (EU)", self.move_selected)
-        reload_scrolling_button, _ =self.add_button("Reload scrolling", self.load_v_value)
-        undo_button, _ =self.add_button("Undo", self.undo)
+        # 2. sor: < Batch >
+        nav_row_2 = QHBoxLayout()
+        prev_batch_button, _ = self.add_button("<", self.previous_batch, size=(40, 40))
+        self.batch_info_label = QLabel("Batch", self)
+        self.batch_info_label.setAlignment(Qt.AlignCenter)
+        next_batch_button, _ = self.add_button(">", self.next_batch, size=(40, 40))
+        nav_row_2.addWidget(prev_batch_button)
+        nav_row_2.addWidget(self.batch_info_label)
+        nav_row_2.addWidget(next_batch_button)
+        self.top_buttons_container_layout.addLayout(nav_row_2)
 
+        # 3. sor: Current Batch (NAVIGATION BENN)
+        nav_row_3 = QHBoxLayout()
+        current_batch_button, _ = self.add_button(
+            "Current Batch", self.show_batch, size=(140, 40)
+        )
+        nav_row_3.addWidget(current_batch_button)
+        self.top_buttons_container_layout.addLayout(nav_row_3)
 
+        # Navigation blokk megy a fő button_panel-be
+        self.button_panel.addWidget(self.top_buttons_container)
+        self.button_panel.addSpacing(20)
+
+        # --- SELECTION KONTAINER (Navigation mintájára) ---
+        self.selection_container = QWidget()
+        self.selection_container_layout = QVBoxLayout(self.selection_container)
+        self.selection_container_layout.setAlignment(Qt.AlignCenter)
+        self.selection_container_layout.setSpacing(10)
+
+        self.selection_label = QLabel("Selection")
+        self.selection_label.setAlignment(Qt.AlignCenter)
+        self.selection_label.setStyleSheet(
+            "color: white; font-size: 14px; background-color: transparent;"
+        )
+        self.selection_container_layout.addWidget(self.selection_label)
+
+        # háttér, hasonló a Navigation-hoz
+        self.selection_container.setStyleSheet(
+            "background-color: rgba(64, 64, 64, 153); border-radius: 5px;"
+        )
+
+        # sor: Unselect / Select all
+        selection_row = QHBoxLayout()
+        unselect_button, _ = self.add_button(
+            "Unselect\nall", self.un_select_select_all, size=(70, 90)
+        )
+        select_all_button, _ = self.add_button(
+            "Select\nall", self.un_select_select_all, size=(70, 90),
+            background_color="rgba(59, 170, 59, 200)",  # opcionális zöld
+            text_color="black",
+        )
+        selection_row.addWidget(unselect_button)
+        selection_row.addWidget(select_all_button)
+        self.selection_container_layout.addLayout(selection_row)
+
+        # Selection blokk a fő button_panel-be
+        self.button_panel.addWidget(self.selection_container)
+        self.button_panel.addSpacing(20)
+
+        # --- SELECTED KONTAINER (Selected Check + Move) ---
+        self.selected_container = QWidget()
+        self.selected_container_layout = QVBoxLayout(self.selected_container)
+        self.selected_container_layout.setAlignment(Qt.AlignCenter)
+        self.selected_container_layout.setSpacing(10)
+
+        self.selected_label = QLabel("Moving")
+        self.selected_label.setAlignment(Qt.AlignCenter)
+        self.selected_label.setStyleSheet(
+            "color: white; font-size: 14px; background-color: transparent;"
+        )
+        self.selected_container_layout.addWidget(self.selected_label)
+
+        # háttér, hasonló a Navigation/Selection-hoz
+        self.selected_container.setStyleSheet(
+            "background-color: rgba(64, 64, 64, 153); border-radius: 5px;"
+        )
+
+        # sor: Selected Check / Move Selected
+        selected_row = QHBoxLayout()
+        selected_check_button, _ = self.add_button(
+            "Selected\nCheck", self.show_only_selected, size=(70, 90)
+        )
+        self.move_selected_button, _ = self.add_button(
+            "Move\nSelected", self.move_selected, size=(70, 90),
+            background_color="rgba(59, 170, 59, 200)",
+            text_color="black",
+        )
+        selected_row.addWidget(selected_check_button)
+        selected_row.addWidget(self.move_selected_button)
+        self.selected_container_layout.addLayout(selected_row)
+
+        # Selected blokk a fő button_panel-be
+        self.button_panel.addWidget(self.selected_container)
+        self.button_panel.addSpacing(20)
+
+        # --- OTHER KONTAINER (Reload + Undo) ---
+        self.other_container = QWidget()
+        self.other_container_layout = QVBoxLayout(self.other_container)
+        self.other_container_layout.setAlignment(Qt.AlignCenter)
+        self.other_container_layout.setSpacing(10)
+
+        self.other_label = QLabel("Other")
+        self.other_label.setAlignment(Qt.AlignCenter)
+        self.other_label.setStyleSheet(
+            "color: white; font-size: 14px; background-color: transparent;"
+        )
+        self.other_container_layout.addWidget(self.other_label)
+
+        # háttér, hasonló a többi blokkhoz
+        self.other_container.setStyleSheet(
+            "background-color: rgba(64, 64, 64, 153); border-radius: 5px;"
+        )
+
+        # sor: Reload / Undo
+        other_row = QHBoxLayout()
+        reload_scrolling_button, _ = self.add_button(
+            "Reload\nscrolling", self.load_v_value, size=(70, 90)
+        )
+        undo_button, _ = self.add_button(
+            "Undo", self.undo, size=(70, 90)
+        )
+        other_row.addWidget(reload_scrolling_button)
+        other_row.addWidget(undo_button)
+        self.other_container_layout.addLayout(other_row)
+
+        # Other blokk a fő button_panel-be
+        self.button_panel.addWidget(self.other_container)
+        self.button_panel.addSpacing(20)
         # Arrange right side vertically
         self.button_layout_wrapper.addStretch(1)
         self.button_layout_wrapper.addLayout(self.button_panel)
         self.button_layout_wrapper.addStretch(1)
         self.button_layout_wrapper.setAlignment(Qt.AlignCenter)
+
 
         # Column spinbox
         self.column_control_layout = QtWidgets.QHBoxLayout()
@@ -158,12 +291,12 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.button_layout_wrapper.insertLayout(3, self.column_control_layout)
 
         # Batch info label
-        self.batch_info_label = QtWidgets.QLabel("Batch Info", self)
+        #self.batch_info_label = QtWidgets.QLabel("Batch Info", self)
         self.batch_info_label.setAlignment(Qt.AlignCenter)
 
         #Add buttons and batch info label to right side panel
         self.right_panel.addWidget(self.button_container, stretch=8)
-        self.right_panel.addWidget(self.batch_info_label, stretch=1)
+        #self.right_panel.addWidget(self.batch_info_label, stretch=1)
 
         # === Combine Panels ===
         middle_widget = QtWidgets.QWidget()
@@ -179,7 +312,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.splitter.setStretchFactor(0,0)
         self.splitter.setStretchFactor(1,1)
         self.splitter.setStretchFactor(2,2)
-        self.splitter.setSizes([300,1100,200])
+        self.splitter.setSizes([300,1075,225])
         #self.main_layout.addWidget(self.left_widget, stretch=2)
         #self.main_layout.addLayout(self.middle_panel, stretch=15)
         #self.main_layout.addLayout(self.right_panel, stretch=1)
@@ -222,11 +355,18 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.not_found_images_window = None
         self.last_move_window = None
 
-    def add_button(self, name: str, func, shortcut: Union[str, tuple] = None, size : tuple[int,int] = (160,40)):
+    def add_button(self, name: str, func, shortcut: Union[str, tuple] = None, size : tuple[int,int] = (160,40), background_color : str = None, text_color : str = None):
         button = QtWidgets.QPushButton(name)
         button.setFont(QFont("Arial", 10))
         button.setFixedSize(size[0], size[1])
-        button.setStyleSheet(BUTTON_STYLE)
+        style_parts = [BUTTON_STYLE]
+        if background_color:
+            style_parts.append(f"background-color: {background_color};")
+
+        if text_color:
+            style_parts.append(f"color: {text_color}")
+
+        button.setStyleSheet("".join(style_parts))
         if size == (160,40):
             self.button_panel.addWidget(button)
         button.clicked.connect(func)
@@ -596,7 +736,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         loader = self.grid_view_model.on_get_loader()
         if loader:
             self.batch_info_label.setText(
-                f"Batch: {loader.current_batch_idx + 1} / {loader.number_of_batches // self.grid_view_model.on_get_batch_size() + 1}")
+                f"{loader.current_batch_idx + 1} / {loader.number_of_batches // self.grid_view_model.on_get_batch_size() + 1}")
 
 
     def change_info_label(self, text=None, display_time=5000):
