@@ -32,7 +32,7 @@ class MainModel(QObject):
     load_folder= pyqtSignal(dict, int, bool)
     clear_images =  pyqtSignal() #clears images from grid
     load_selected_images = pyqtSignal(set) # #notifies grid view model to load only selected images
-    update_folder_list = pyqtSignal() # updates folder list
+    update_folder_list = pyqtSignal(dict) # updates folder list
     show_wrong_folder_names = pyqtSignal(list) #shows wrong folder dialog
     set_base_folder_signal = pyqtSignal() #shows base folder dialog
     change_info_label = pyqtSignal(str)  # updates info label
@@ -78,7 +78,7 @@ class MainModel(QObject):
         self.json = None
         self.json_data = None
         self.num_of_col = 6
-        self.batch_size = 1000
+        self.batch_size = 500
 
         self.saved_selection_for_select_all = set()
         self.saved_selection_for_unselect_all = set()
@@ -231,12 +231,13 @@ class MainModel(QObject):
     def _on_scan_done(self, labels, counts):
         self.labels = {k: labels[k] for k in sorted(labels.keys()) if labels[k]}
         self.subfolders = {k: counts.get(k,0) for k in sorted(counts.keys())}
+        print(counts)
 
         if self.labels:
             self.current_label = list(self.labels.keys())[0]
             self.current_label_folder_paths = self.labels[self.current_label]
 
-        self.update_folder_list.emit()
+        self.update_folder_list.emit(counts)
         self.load_folder.emit(self.subfolders, 0, self.is_input_from_json)
 
     def collect_labels_from_json(self):
@@ -387,7 +388,7 @@ class MainModel(QObject):
 
             self.change_info_label.emit(f"Selected images move successfully to {selected_folder}")
 
-            self.update_folder_list.emit()
+            self.update_folder_list.emit(dict())
 
         else:
             self.change_info_label.emit("No selected image found!")

@@ -37,7 +37,7 @@ def collect_image_paths(source):
 
 
 class ImageBatchLoader(object):
-    def __init__(self, source, batch_size=1000, start_batch_idx=0, is_json=False):
+    def __init__(self, source, batch_size=500, start_batch_idx=0, is_json=False):
         self.batch_size = batch_size
         if is_json:
             self.image_paths = list(source)

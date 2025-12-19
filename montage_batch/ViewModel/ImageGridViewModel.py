@@ -175,11 +175,12 @@ class ImageGridViewModel(QObject):
     def update_info_label(self, text):
         self.info_message.emit(text)
 
-    def update_folder_list(self):
+    def update_folder_list(self, counts):
         if self.main_model.get_is_json: #TODO: Rethink
             self.main_model.collect_labels_from_json()
         else:
-            _ , counts = scan_and_count_labels(self.main_model.get_main_folder, self.get_current_labels())
+            if not counts:
+                _ , counts = scan_and_count_labels(self.main_model.get_main_folder, self.get_current_labels())
             self.main_model.set_subfolders(counts)
         self.load_subfolders_list.emit(self.main_model.get_subfolders)
 
@@ -190,7 +191,7 @@ class ImageGridViewModel(QObject):
         self.main_model.clear_selected_images()
 
 
-        self.main_model.set_loader(ImageBatchLoader(self.main_model.current_label_folder_paths, batch_size=1000, start_batch_idx=batch_idx, is_json=is_json))
+        self.main_model.set_loader(ImageBatchLoader(self.main_model.current_label_folder_paths, batch_size=500, start_batch_idx=batch_idx, is_json=is_json))
         self.load_batch()
         self.info_message.emit("Folder loaded!")
         self.change_current_folder.emit(str(self.main_model.get_current_label))
