@@ -719,8 +719,6 @@ class ImageMontageApp(QtWidgets.QWidget):
                 f"Error while exporting directory tree \n\n {e}"
             )
 
-
-    #TODO: if image folder loaded switching sign types not works properly
     def load_eu_sign_types(self):
         try:
             self.change_info_label("Changing to EU Traffic Signs...", display_time=0)
