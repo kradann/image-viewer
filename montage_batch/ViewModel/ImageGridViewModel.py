@@ -52,7 +52,8 @@ class ImageGridViewModel(QObject):
         self.main_model = main_model
         self.thread = None
         self.labels = list()
-        self.isAllSelected = False
+        self.is_all_selected = False
+        self.is_all_unselected = False
         self._load_generation = 0
         self._load_finished_emitted = False
 
@@ -230,27 +231,57 @@ class ImageGridViewModel(QObject):
     def move_selected(self, selected_folder):
         self.main_model.move_selected(selected_folder)
 
-    def on_unselect_select_all(self):
+    def on_select_all(self):
+        if self.main_model.is_unselect_all_active():
+            self.main_model.restore_selection_for_unselect_all()
 
-        if not self.isAllSelected:
-            self.isAllSelected = True
+        if not self.main_model.is_select_all_active():
+            # FIRST CLICK: save current selection, then select all
+            self.main_model.save_selection_for_select_all()
+            self.main_model.selected_images.clear()
+
             for container in self.labels:
                 if hasattr(container, "image_label"):
                     label = container.image_label
                     label.selected = True
                     self.main_model.add_image_to_selected(label.img_path)
                     label.add_red_boarder()
-
         else:
-            self.isAllSelected = False
+            # SECOND CLICK: restore saved selection
+            self.main_model.restore_selection_for_select_all()
+
+            # update UI according to restored selection
+            for container in self.labels:
+                if hasattr(container, "image_label"):
+                    label = container.image_label
+                    label.selected = self.main_model.is_selected(label.img_path)
+                    label.add_red_boarder()
+
+
+    def on_un_select_all(self):
+        if self.main_model.is_select_all_active():
+            self.main_model.restore_selection_for_select_all()
+
+        if not self.main_model.is_unselect_all_active():
+            # first click: save current selection, then unselect all
+            self.main_model.save_selection_for_unselect_all()
+            self.main_model.clear_selected_images()
+
             for container in self.labels:
                 if hasattr(container, "image_label"):
                     label = container.image_label
                     label.selected = False
-                    self.main_model.discard_image_from_selected(label.img_path)
                     label.add_red_boarder()
+        else:
+            # second click: restore saved selection
+            self.main_model.restore_selection_for_unselect_all()
 
-        #self.load_batch()
+            # update UI according to restored selection
+            for container in self.labels:
+                if hasattr(container, "image_label"):
+                    label = container.image_label
+                    label.selected = self.main_model.is_selected(label.img_path)
+                    label.add_red_boarder()
 
     def on_show_only_selected(self):
         self.main_model.show_only_selected()

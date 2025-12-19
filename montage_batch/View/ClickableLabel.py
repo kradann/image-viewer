@@ -69,16 +69,12 @@ class ClickableLabel(QtWidgets.QLabel):
         menu = QtWidgets.QMenu()
         vertical_cut = menu.addAction("Vertical Cut")
         horizontal_cut = menu.addAction("Horizontal Cut")
-        #TODO: Do info
-        info = menu.addAction("Info")
         open_image = menu.addAction("Open Image")
         action = menu.exec_(self.mapToGlobal(pos))
         if action == vertical_cut:
             self.cut_mode = 'vertical'
         elif action == horizontal_cut:
             self.cut_mode = 'horizontal'
-        elif action == info:
-            pass
         elif action == open_image:
             self.image_window = ImageWindow(self.img_path)
             self.image_window.show()

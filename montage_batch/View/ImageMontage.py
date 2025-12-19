@@ -4,7 +4,8 @@ from typing import Union
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import Qt, QTimer, QSize
 from PyQt5.QtGui import QFont, QKeySequence, QColor
-from PyQt5.QtWidgets import QShortcut, QMessageBox, QLabel, QDialog, QAction, QHBoxLayout, QWidget, QVBoxLayout
+from PyQt5.QtWidgets import QShortcut, QMessageBox, QLabel, QDialog, QAction, QHBoxLayout, QWidget, QVBoxLayout, \
+    QSplitter
 
 from View.FolderSelectionDialog import FolderSelectionDialog
 from View.Styles import *
@@ -71,8 +72,8 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.current_folder_label = QtWidgets.QLabel("Current Folder")
 
         # Add to left panel
-        self.left_panel.addWidget(self.folder_list, stretch=9)
-        self.left_panel.addWidget(self.current_folder_label, stretch=1)
+        self.left_panel.addWidget(self.folder_list, stretch=1)
+        #self.left_panel.addWidget(self.current_folder_label, stretch=1)
 
         # === Middle Panel ===
         self.middle_panel = QtWidgets.QVBoxLayout()
@@ -92,8 +93,8 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.info_label.setAlignment(Qt.AlignCenter)
 
         # Add scroll_area and info label to middle panel
-        self.middle_panel.addWidget(self.scroll_area, stretch=8)
-        self.middle_panel.addWidget(self.info_label, stretch=1)
+        self.middle_panel.addWidget(self.scroll_area)
+        #self.middle_panel.addWidget(self.info_label, stretch=1)
 
         # === Right Panel ===
         # === Right Panel ===
@@ -139,9 +140,11 @@ class ImageMontageApp(QtWidgets.QWidget):
         # 2. sor: < Batch >
         nav_row_2 = QHBoxLayout()
         prev_batch_button, _ = self.add_button("<", self.previous_batch, size=(40, 40))
+        prev_batch_button.setStyleSheet(ARROW_BUTTON_STYLE)
         self.batch_info_label = QLabel("Batch", self)
         self.batch_info_label.setAlignment(Qt.AlignCenter)
         next_batch_button, _ = self.add_button(">", self.next_batch, size=(40, 40))
+        next_batch_button.setStyleSheet(ARROW_BUTTON_STYLE)
         nav_row_2.addWidget(prev_batch_button)
         nav_row_2.addWidget(self.batch_info_label)
         nav_row_2.addWidget(next_batch_button)
@@ -180,10 +183,10 @@ class ImageMontageApp(QtWidgets.QWidget):
         # sor: Unselect / Select all
         selection_row = QHBoxLayout()
         unselect_button, _ = self.add_button(
-            "Unselect\nall", self.un_select_select_all, size=(70, 90)
+            "Unselect\nall", self.un_select_all, size=(70, 90)
         )
         select_all_button, _ = self.add_button(
-            "Select\nall", self.un_select_select_all, size=(70, 90),
+            "Select\nall", self.select_all, size=(70, 90),
             background_color="rgba(59, 170, 59, 200)",  # opcionális zöld
             text_color="black",
         )
@@ -277,6 +280,7 @@ class ImageMontageApp(QtWidgets.QWidget):
 
         self.column_label = QLabel("Columns: ")
         self.column_label.setStyleSheet(INFO_LABEL_STYLE)
+        self.column_label.setAlignment(Qt.AlignLeft)
 
         self.column_spinbox = QtWidgets.QSpinBox()
         self.column_spinbox.setAlignment(Qt.AlignRight)
@@ -286,24 +290,23 @@ class ImageMontageApp(QtWidgets.QWidget):
 
         self.column_control_layout.addWidget(self.column_label)
         self.column_control_layout.addWidget(self.column_spinbox)
-        self.column_control_layout.addStretch(1)
-
-        self.button_layout_wrapper.insertLayout(3, self.column_control_layout)
+        self.column_control_layout.setAlignment(Qt.AlignCenter)
+        #self.button_layout_wrapper.insertLayout(3, self.column_control_layout)
 
         # Batch info label
         #self.batch_info_label = QtWidgets.QLabel("Batch Info", self)
         self.batch_info_label.setAlignment(Qt.AlignCenter)
 
         #Add buttons and batch info label to right side panel
-        self.right_panel.addWidget(self.button_container, stretch=8)
-        #self.right_panel.addWidget(self.batch_info_label, stretch=1)
+        self.right_panel.addWidget(self.button_container)
+
 
         # === Combine Panels ===
         middle_widget = QtWidgets.QWidget()
         middle_widget.setLayout(self.middle_panel)
         right_widget = QtWidgets.QWidget()
         right_widget.setLayout(self.right_panel)
-        right_widget.setMinimumWidth(30)
+        right_widget.setMinimumWidth(200)
 
         self.splitter = QtWidgets.QSplitter(Qt.Horizontal)
         self.splitter.addWidget(self.left_widget)
@@ -319,6 +322,27 @@ class ImageMontageApp(QtWidgets.QWidget):
 
         self.outer_layout.addWidget(self.splitter)
 
+        self.bottom_bar = QHBoxLayout()
+        self.bottom_bar.setContentsMargins(10,5,10,10)
+        self.bottom_bar.setSpacing(20)
+        self.bottom_bar.setAlignment(Qt.AlignCenter)
+
+        self.bottom_bar.addWidget(self.current_folder_label, stretch=1, alignment=Qt.AlignLeft)
+        self.bottom_bar.addWidget(self.info_label, stretch=2, alignment=Qt.AlignCenter)
+        self.bottom_bar.addLayout(self.column_control_layout, stretch=1)
+
+        self.bottom_widget = QWidget()
+        self.bottom_widget.setLayout(self.bottom_bar)
+
+        self.main_splitter = QSplitter(Qt.Vertical)
+        self.main_splitter.addWidget(self.splitter)
+        self.main_splitter.addWidget(self.bottom_widget)
+
+        self.main_splitter.setStretchFactor(0,1)
+        self.main_splitter.setStretchFactor(1,0)
+
+        self.outer_layout.addWidget(self.main_splitter)
+
         # === Menu Bar ===
         self.menu_bar = QtWidgets.QMenuBar(self)
         self.outer_layout.setMenuBar(self.menu_bar)
@@ -333,6 +357,7 @@ class ImageMontageApp(QtWidgets.QWidget):
         self.batch_info_label.setStyleSheet(BATCH_INFO_STYLE)
 
         # connect signals
+        self.main_model.show_message.connect(self.on_show_message)
         self.folder_list_view_model.update_batch_info.connect(self.update_info_after_list_clicked)
         self.folder_list.itemClicked.connect(self.folder_list_view_model.folder_clicked)
         self.grid_view_model.add_image_to_grid_action.connect(self.on_add_image)
@@ -553,9 +578,20 @@ class ImageMontageApp(QtWidgets.QWidget):
                 f"An error occurred while loading the current batch: \n\n{e}",
             )
 
-    def un_select_select_all(self):
+    def un_select_all(self):
         try:
-            self.grid_view_model.on_unselect_select_all()
+            self.grid_view_model.on_un_select_all()
+        except Exception as e:
+            logging.error(f"Image Selecting Error", exc_info=True)
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Image Selecting Error",
+                f"An error occurred while selecting or unselecting images: \n\n{e}",
+            )
+
+    def select_all(self):
+        try:
+            self.grid_view_model.on_select_all()
         except Exception as e:
             logging.error(f"Image Selecting Error", exc_info=True)
             QtWidgets.QMessageBox.critical(
@@ -798,6 +834,9 @@ class ImageMontageApp(QtWidgets.QWidget):
                 "Show Last Move Error",
                 f"Error while loading last move window\n\n {e}"
             )
+
+    def on_show_message(self, title, text):
+        QMessageBox.information(self, title,text)
 
     def closeEvent(self, event):
         try:

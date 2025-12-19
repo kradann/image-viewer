@@ -1,6 +1,11 @@
 BUTTON_STYLE = f"""
                 color: #3cfb8b; 
-                background-color: #303436;
+                background-color: #404448;
+            """
+ARROW_BUTTON_STYLE = f"""
+                color: #3cfb8b; 
+                background-color: #404448;
+                font-size: 25px;
             """
 INFO_LABEL_STYLE = f"""
             font-size: 20px;

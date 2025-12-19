@@ -36,6 +36,7 @@ class MainModel(QObject):
     show_wrong_folder_names = pyqtSignal(list) #shows wrong folder dialog
     set_base_folder_signal = pyqtSignal() #shows base folder dialog
     change_info_label = pyqtSignal(str)  # updates info label
+    show_message = pyqtSignal(str,str)
 
     #Signals for folder list view model
     highlight_current_folder_name = pyqtSignal(str)  # highlight current folder in folder list by name
@@ -78,6 +79,11 @@ class MainModel(QObject):
         self.json_data = None
         self.num_of_col = 6
         self.batch_size = 1000
+
+        self.saved_selection_for_select_all = set()
+        self.saved_selection_for_unselect_all = set()
+        self.select_all_active = False
+        self.unselect_all_active = False
 
     # === Setters ===
 
@@ -410,24 +416,23 @@ class MainModel(QObject):
             self.change_info_label.emit("Last move undid")
 
     #TODO: check if function works
-    #TODO: Dont use messageBox
     def check_for_update(self):
         try:
             response = requests.get(GITHUB_RELEASE_LINK, timeout=10)
 
             if response.status_code == 404:
-                QMessageBox.information(self, 'Update', "No releases found")
+                self.show_message.emit("Update", "No releases found")
                 return
 
             data = response.json()
             latest_release = data["tag_name"]
 
             if latest_release != APP_VERSION:
-                QMessageBox.information(self, "Update", f"New version {latest_release} available!")
+                self.show_message.emit("Update", f"New version {latest_release} available!")
 
                 assets = data.get("assets", [])
                 if not assets:
-                    QMessageBox.information(self, "Update", "No release asset found!")
+                    self.show_message.emit("Update", "No release asset found!")
                     return
 
                 download_url = assets[0]["browser_download_url"]
@@ -439,15 +444,15 @@ class MainModel(QObject):
                         if chunk:
                             f.write(chunk)
 
-                QMessageBox.information(self, "Update", f"Downloaded {file_name} successfully!")
+                self.show_message.emit("Update", f"Downloaded {file_name} successfully!")
 
                 new_path = Path(file_name).resolve()
                 subprocess.Popen([new_path])
                 sys.exit(0)
             else:
-                QMessageBox.information(self, "Update", "Already up to date!")
+                self.show_message.emit("Update", "Already up to date!")
         except Exception as e:
-            QMessageBox.information(self, "Update", f"An error occurred: {e}")
+            self.show_message.emit("Update", f"An error occurred: {e}")
 
     @staticmethod
     def create_log_folder():
@@ -539,6 +544,28 @@ class MainModel(QObject):
 
         self.change_info_label.emit("Directory tree export file created")
 
+
+    def save_selection_for_select_all(self):
+        self.saved_selection_for_select_all = set(self.selected_images)
+        self.select_all_active = True
+
+    def restore_selection_for_select_all(self):
+        self.selected_images = set(self.saved_selection_for_select_all)
+        self.select_all_active = False
+
+    def is_select_all_active(self):
+        return self.select_all_active
+
+    def save_selection_for_unselect_all(self):
+        self.saved_selection_for_unselect_all = set(self.selected_images)
+        self.unselect_all_active = True
+
+    def restore_selection_for_unselect_all(self):
+        self.selected_images = set(self.saved_selection_for_unselect_all)
+        self.unselect_all_active = False
+
+    def is_unselect_all_active(self):
+        return self.unselect_all_active
 
 
 
