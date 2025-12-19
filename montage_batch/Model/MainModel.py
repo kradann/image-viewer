@@ -231,7 +231,6 @@ class MainModel(QObject):
     def _on_scan_done(self, labels, counts):
         self.labels = {k: labels[k] for k in sorted(labels.keys()) if labels[k]}
         self.subfolders = {k: counts.get(k,0) for k in sorted(counts.keys())}
-        print(counts)
 
         if self.labels:
             self.current_label = list(self.labels.keys())[0]
