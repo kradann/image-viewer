@@ -26,11 +26,11 @@ class ImageGridViewModel(QObject):
     show_folder_selection_dialog = pyqtSignal(str)  # notifies main view to show folder selection dialog
     add_image_to_grid_action = pyqtSignal(object, int, int)  # notifies main view to add widget to image_layout
     show_not_found_images = pyqtSignal(list) #notifies main view to show list of not found images name when importing directory tree
-    show_last_move_window = pyqtSignal(dict, PosixPath)
+    show_last_move_window = pyqtSignal(dict, str)
 
     #Signals to grid view
     # notifies grid view to add image to grid (row, column, image path, pixmap of image, is image selected)
-    image_ready = pyqtSignal(int,int, str, object,bool)
+    image_ready = pyqtSignal(int, int, str, object, bool)
     show_base_folder_dialog = pyqtSignal()  # notifies grid view to show base folder dialog
     show_batch = pyqtSignal() #notifies grid view to display current batch
 
@@ -352,7 +352,7 @@ class ImageGridViewModel(QObject):
         last_move = self.main_model.last_move
         main_folder = self.main_model.main_folder
         if last_move and main_folder:
-            self.show_last_move_window.emit(last_move, main_folder)
+            self.show_last_move_window.emit(last_move, str(main_folder))
 
     def undo_last_move(self):
         self.main_model.undo_last_move()
